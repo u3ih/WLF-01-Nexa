@@ -182,6 +182,52 @@ def test_the_offline_tier_still_carries_the_period(monkeypatch) -> None:
     assert call.args["key"] == f"{data_coverage()['latest_month'][:4]}-07"
 
 
+# -- task 4: one question, four facets ------------------------------------
+
+TASK_4 = ('Bắt khoản bất thường & gói "quên huỷ": nhận diện gói đăng ký định '
+          "kỳ, khoản trùng, khoản lạ; giải thích tên cửa hàng khó hiểu.")
+
+# What each half of the question has to come back with.
+TASK_4_FACETS = ["recurring_subscription", "forgotten_subscription",
+                 "duplicate_charge", "unknown_merchant"]
+
+
+def test_task_4_routes_to_findings_covering_every_facet() -> None:
+    call = keyword_route(TASK_4)
+    assert call.name == "get_findings"
+    for facet in TASK_4_FACETS:
+        assert facet in call.args["kind"]
+    # recurring_subscription is not an alert, so the plan list needs the full
+    # pool or the answer reports "this data has no subscriptions".
+    assert call.args["alerts_only"] is False
+
+
+def test_task_4_result_shows_every_facet_within_the_prompt_budget() -> None:
+    from app.llm.prompts import humanize
+    from app.llm.prompts.payload import fit
+    import json
+
+    call = keyword_route(TASK_4)
+    result = run_tool(call.name, call.args, "vi")
+    # `count` is what matched, not what is shown.
+    assert result["count"] > len(result["findings"])
+    kept = json.loads(fit(humanize(result)))
+    kinds = {f["kind"] for f in kept["findings"]}
+    for facet in TASK_4_FACETS:
+        assert facet in kinds, f"{facet} was trimmed out of the prompt"
+
+
+def test_the_model_reaching_for_the_catch_all_loses_to_a_named_tool(model_up):
+    """get_overview carries counts, not rows, and the reply then denies holding
+    detail we do hold."""
+    model_up.setattr(type(client), "_chat",
+                     lambda self, m, tools=None, num_predict=1200:
+                     _tool_call("get_overview", {}))
+    call = client.route(TASK_4, "vi", LABELS)
+    assert call.name == "get_findings"
+    assert call.chosen_by == "keyword"
+
+
 # -- a period the data does not hold --------------------------------------
 
 def test_a_month_inside_the_data_reports_itself() -> None:

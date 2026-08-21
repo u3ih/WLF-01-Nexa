@@ -142,19 +142,49 @@ def list_subscriptions(lang: str = "vi") -> dict[str, Any]:
     }
 
 
+def _balance_by_kind(pool: list[Any], per_kind: int,
+                     order: list[str] | None = None) -> list[Any]:
+    """At most `per_kind` per kind, then dealt round-robin across the kinds.
+
+    The prompt budget drops rows from the tail. Without the interleave a
+    question that asks about several kinds at once gets a prefix filled by
+    whichever kind happens to be the most numerous — 66 off-hours charges bury
+    the one forgotten subscription the question was really about.
+
+    `order` is the order the kinds were asked for, so the first round deals the
+    caller's priorities and a later trim eats the afterthoughts.
+    """
+    buckets: dict[str, list[Any]] = {k: [] for k in (order or [])}
+    for finding in pool:
+        bucket = buckets.setdefault(finding.kind.value, [])
+        if len(bucket) < per_kind:
+            bucket.append(finding)
+    out: list[Any] = []
+    for round_index in range(per_kind):
+        for bucket in buckets.values():
+            if round_index < len(bucket):
+                out.append(bucket[round_index])
+    return out
+
+
 def get_findings(lang: str = "vi", kind: str | None = None,
-                 label: str | None = None, alerts_only: bool = True
-                 ) -> dict[str, Any]:
+                 label: str | None = None, alerts_only: bool = True,
+                 per_kind: int | None = None) -> dict[str, Any]:
     """Flagged items with their three-tier label, sources and 60-day deadline."""
     analysis = pipeline.cached()
     pool = analysis.alerts if alerts_only else analysis.findings
-    if kind:
-        wanted = {k.strip() for k in str(kind).split(",") if k.strip()}
-        pool = [f for f in pool if f.kind.value in wanted]
+    wanted = [k.strip() for k in str(kind or "").split(",") if k.strip()]
+    if wanted:
+        pool = [f for f in pool if f.kind.value in set(wanted)]
     if label:
         pool = [f for f in pool if f.label.value == label]
+    total = len(pool)
+    if per_kind:
+        pool = _balance_by_kind(pool, int(per_kind), wanted)
     return {
-        "count": len(pool),
+        # `count` stays the number that matched, not the number shown, so a
+        # capped result still reports the real size.
+        "count": total,
         "labels": {
             "recurring_confirmed": t(lang, "labels.recurring_confirmed"),
             "needs_your_confirmation": t(lang, "labels.needs_your_confirmation"),
@@ -548,6 +578,12 @@ SPECS: list[dict[str, Any]] = [
                     "wallet_balance_mismatch, price_increase",
             "label": "optional label filter: needs_your_confirmation, "
                      "insufficient_data, recurring_confirmed",
+            "alerts_only": "true by default. Pass false to include "
+                           "recurring_subscription, which is a plan listing "
+                           "rather than an alert",
+            "per_kind": "optional cap per kind, dealt round-robin. Use when "
+                        "the question asks about several kinds at once so one "
+                        "noisy kind cannot crowd out the others",
         },
     },
     {
@@ -640,7 +676,7 @@ SPECS: list[dict[str, Any]] = [
 ]
 
 ALLOWED_ARGS = {
-    "get_findings": {"kind", "label", "alerts_only"},
+    "get_findings": {"kind", "label", "alerts_only", "per_kind"},
     "get_email_recon": {"ref", "status", "limit"},
     "get_report": {"period", "key"},
     "explain_charge": {"ref", "amount", "descriptor"},

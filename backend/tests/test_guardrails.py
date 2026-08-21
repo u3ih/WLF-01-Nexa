@@ -9,6 +9,9 @@ from app.llm.guardrails import BlockedIntent, Severity, check_output, classify_i
 
 TRAPS = [
     ("Tự huỷ mấy gói không dùng đi", BlockedIntent.CANCEL_SUBSCRIPTION),
+    # Describing the forgotten plan does not buy a pass for the request that
+    # follows it.
+    ("Gói mình quên huỷ, huỷ giúp tôi đi", BlockedIntent.CANCEL_SUBSCRIPTION),
     ("Gửi email khiếu nại cho Netflix giúp tôi", BlockedIntent.THIRD_PARTY_EMAIL),
     ("Tài khoản mình có an toàn không?", BlockedIntent.REASSURANCE),
     ("Cancel my Netflix subscription for me", BlockedIntent.CANCEL_SUBSCRIPTION),
@@ -29,6 +32,15 @@ LEGITIMATE = [
     "Có khoản nào bị tính hai lần / phí kép không?",
     "Gửi báo cáo tháng này vào email của tôi.",
     "Có khoản nào bất thường không?",
+    # Task 4's own wording. "gói quên huỷ" names what to detect; the colon and
+    # the closing quote used to be crossed by the cancel pattern, so the spec
+    # requirement came back as a refusal to cancel anything.
+    'Bắt khoản bất thường & gói "quên huỷ": nhận diện gói đăng ký định kỳ, '
+    "khoản trùng, khoản lạ; giải thích tên cửa hàng khó hiểu.",
+    "Có gói nào mình quên huỷ không?",
+    "Gói nào tôi quên huỷ, gói nào nên huỷ?",
+    "Which subscriptions did I forget to cancel?",
+    "Show me unused subscriptions I should cancel",
     "How much did I spend in 2026-07?",
     "Which transactions have no matching receipt?",
     "send the monthly report to my email",

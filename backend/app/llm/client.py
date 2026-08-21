@@ -61,6 +61,15 @@ KEYWORD_ROUTES: list[tuple[str, str]] = [
     (r"chưa (thấy )?lên thẻ|chưa vào thẻ|rời tài khoản|số dư ví|ví.{0,10}lệch|"
      r"nạp trùng|wallet|not on (the )?card|duplicate deposit|three source|3 nguồn",
      "get_tri_source"),
+    # Task 4 asks four things in one breath: the recurring plans, the plan they
+    # forgot to cancel, the duplicated charge and the descriptor they cannot
+    # read. One findings call carries all four; the subscription route below
+    # answers only the first and reports the rest as "not in this data".
+    (r"(quên|chưa)\s*(hu[ỷy])|zombie|forg(et|ot|otten).{0,14}cancel|"
+     r"(?=.*(gói|định kỳ|đăng ký|thuê bao|subscription|recurring))"
+     r"(?=.*(trùng|khoản lạ|giao dịch lạ|bất thường|duplicate|unusual|"
+     r"unknown|anomal))",
+     "get_findings:zombie_review"),
     (r"gói|định kỳ|đăng ký|thuê bao|tăng giá|subscription|recurring|price "
      r"(increase|rise|went up)", "list_subscriptions"),
     # Impersonation wording ahead of the generic email route: the same tool
@@ -93,6 +102,21 @@ CHAT_ONLY = "chat_only"
 # Argument presets for question shapes where a narrower result reads better.
 ARG_PRESETS: dict[str, dict[str, Any]] = {
     "duplicates": {"kind": "duplicate_charge,double_fee,duplicate_payin"},
+    # The whole of task 4 in one result: what recurs, what is still charging
+    # with nothing to show for it, what got billed twice, and what the
+    # descriptor actually means.
+    # alerts_only would drop recurring_subscription, which is the half of the
+    # question that asks what recurs at all. per_kind keeps one facet from
+    # eating the prompt budget the other facets need.
+    # The kind order is the priority order: one facet of the question each,
+    # then the rest, so a trim eats the afterthoughts rather than the plans.
+    "zombie_review": {"kind": "recurring_subscription,forgotten_subscription,"
+                              "duplicate_charge,unknown_merchant,"
+                              "price_increase,charged_after_cancel,"
+                              "duplicate_payin,double_fee,"
+                              "suspected_duplicate,free_trial_converted,"
+                              "off_hours_txn",
+                      "alerts_only": False, "per_kind": 2},
 }
 
 AMOUNT_IN_TEXT = re.compile(r"(?<![\d.])(\d{1,6}[.,]\d{2})(?![\d])")
@@ -648,6 +672,13 @@ class AIClient:
         try:
             chosen = self._route_with_model(question, lang, labels, fallback)
         except Exception:                               # noqa: BLE001
+            return fallback
+        # get_overview is the catch-all the model reaches for when the question
+        # names several things at once, and it carries counts rather than rows —
+        # so the reply says "this data has no detail" about detail we hold. A
+        # named tool from the table beats it, same reasoning as _no_tool_chosen.
+        if (chosen and chosen.name == DEFAULT_TOOL
+                and fallback.name != DEFAULT_TOOL):
             return fallback
         return chosen or fallback
 

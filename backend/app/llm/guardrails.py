@@ -43,6 +43,24 @@ GUIDANCE_HINTS = _p(
     r"(làm sao|làm thế nào|cách|hướng dẫn|các bước)",
 )
 
+# Phrases that *name* a cancellation instead of asking for one. "gói quên huỷ"
+# is a detection target — the plan the user forgot to cancel — so a question
+# about it must be answered, not refused. Same for "chưa huỷ", "đã huỷ",
+# "gói nào nên huỷ".
+DESCRIPTIVE_CANCEL = _p(
+    r"(quên|chưa|đã|sắp|tự động|khó|việc|nên|hạn|phí)\s*(huỷ|hủy|ngưng|dừng|cắt)",
+    r"\b(forgot|forgotten|never|already|didn'?t|haven'?t|should i)\b"
+    r".{0,12}\b(to\s+)?(cancel|unsubscribe)\b",
+    r"\b(unused|unwanted|zombie|forgotten)\b.{0,15}\b(subscriptions?|plans?)\b",
+)
+
+# ...unless the user also hands the job over. "Gói mình quên huỷ, huỷ giúp tôi"
+# is still a request to act.
+DELEGATION_MARKERS = _p(
+    r"(giúp|hộ|thay)\s*(tôi|mình|em|tớ|anh|chị)?\b",
+    r"\b(for me|on my behalf|do it for)\b",
+)
+
 INTENT_PATTERNS: dict[BlockedIntent, list[re.Pattern[str]]] = {
     BlockedIntent.THIRD_PARTY_EMAIL: _p(
         r"\b(email|write|send|contact|complain)\b.{0,30}"
@@ -58,11 +76,16 @@ INTENT_PATTERNS: dict[BlockedIntent, list[re.Pattern[str]]] = {
         # anchors inside the word, so "cancel my subscription" is refused while
         # "cancel my subscriptions" sails through and gets answered — and it is
         # the plural that asks for the most irreversible action.
-        r"\b(cancel|unsubscribe|stop|kill|end)\b.{0,30}"
+        #
+        # The gap excludes clause punctuation. `.{0,30}` reached across a colon
+        # and a closing quote, so the spec line `gói "quên huỷ": nhận diện gói
+        # đăng ký...` matched huỷ→gói from two different clauses and a detection
+        # question came back as a refusal.
+        r"\b(cancel|unsubscribe|stop|kill|end)\b[^.;:!?\"\n]{0,30}"
         r"\b(subscriptions?|plans?|memberships?|netflix|spotify|chegg|it|them)\b",
-        r"\b(cancel|unsubscribe)\b.{0,20}\b(for me|on my behalf)\b",
-        r"(tự\s*)?(huỷ|hủy|ngưng|dừng|cắt)\b.{0,30}(gói|dịch vụ|đăng ký|thuê bao|"
-        r"netflix|spotify|chegg|nó|giúp|hộ|đi)",
+        r"\b(cancel|unsubscribe)\b[^.;:!?\"\n]{0,20}\b(for me|on my behalf)\b",
+        r"(tự\s*)?(huỷ|hủy|ngưng|dừng|cắt)\b[^.;:!?\"\n]{0,30}"
+        r"(gói|dịch vụ|đăng ký|thuê bao|netflix|spotify|chegg|nó|giúp|hộ|đi)",
     ),
     BlockedIntent.DISPUTE: _p(
         r"\b(file|open|raise|start|submit)\b.{0,25}"
@@ -139,12 +162,27 @@ class IntentVerdict:
         return f"refusal.{self.intent.value}" if self.intent else None
 
 
+def _describes_rather_than_asks(text: str, match: re.Match[str]) -> bool:
+    """True when the cancel verb belongs to a description, not a request.
+
+    The window is the matched span plus the few characters before it, so
+    "quên huỷ" is recognised while a "huỷ" further down the same message is
+    judged on its own.
+    """
+    if any(p.search(text) for p in DELEGATION_MARKERS):
+        return False
+    window = text[max(0, match.start() - 16):match.end()]
+    return any(p.search(window) for p in DESCRIPTIVE_CANCEL)
+
+
 def classify_intent(text: str) -> IntentVerdict:
     guidance = any(p.search(text) for p in GUIDANCE_HINTS)
     for intent, patterns in INTENT_PATTERNS.items():
         for pattern in patterns:
-            match = pattern.search(text)
-            if match:
+            for match in pattern.finditer(text):
+                if (intent is BlockedIntent.CANCEL_SUBSCRIPTION
+                        and _describes_rather_than_asks(text, match)):
+                    continue
                 return IntentVerdict(
                     blocked=True, intent=intent,
                     severity=INTENT_SEVERITY[intent],
