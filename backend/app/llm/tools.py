@@ -18,9 +18,9 @@ from ..config import settings
 from ..engine import pipeline, reports
 from ..engine.dedupe import audit_to_json
 from ..engine.mask import mask_card, scrub_text
-from ..engine.models import CardTxnType, TxnType, fmt_display
+from ..engine.models import CardTxnType, EmailMatchStatus, TxnType, fmt_display
 from ..engine.merchants import processor_hint, resolve
-from ..engine.render import render_finding, render_findings, t
+from ..engine.render import reasons_text, render_finding, render_findings, t
 from ..mailer import cancellation_guide, create_draft
 from ..monitor import reminder_list, run_scan
 from ..store import store
@@ -122,16 +122,33 @@ def get_findings(lang: str = "vi", kind: str | None = None,
 def get_email_recon(lang: str = "vi", ref: str | None = None,
                     status: str | None = None, limit: int = MAX_ROWS
                     ) -> dict[str, Any]:
-    """Transaction <-> email table: matched / no_email_found / email_suspicious."""
+    """Transaction <-> email table (matched / no_email_found /
+    email_suspicious) plus every look-alike sender found in the mailbox.
+
+    The suspicious senders are returned in full, never only counted: an
+    impersonation email that matches no transaction has no row in the table,
+    so a count on its own would leave the one thing the user asked about
+    unanswerable.
+    """
     analysis = pipeline.cached()
     rows = analysis.recon.rows
     if ref:
         rows = [r for r in rows if r.ref == ref]
     if status:
         rows = [r for r in rows if r.status.value == status]
+    # A matched, clean row raises no question. When the table is longer than
+    # what is handed over, the unexplained rows go first, so truncation cannot
+    # hide the very rows the question is about.
+    ordered = sorted(rows, key=lambda r: (r.status is EmailMatchStatus.MATCHED,
+                                          r.when, r.ref))
+    shown = ordered[:limit]
+    suspicious = analysis.recon.suspicious
+    if ref:
+        suspicious = [s for s in suspicious if s.matched_txn_ref == ref]
     return {
         "total_rows": len(analysis.recon.rows),
-        "shown": min(len(rows), limit),
+        "shown": len(shown),
+        "truncated": len(rows) > len(shown),
         "summary": {
             "matched": analysis.recon.matched_count,
             "no_email_found": analysis.recon.missing_count,
@@ -152,7 +169,23 @@ def get_email_recon(lang: str = "vi", ref: str | None = None,
                 "message_id": r.message_id,
                 "match_score": r.score,
             }
-            for r in rows[:limit]
+            for r in shown
+        ],
+        "suspicious": [
+            {
+                "message_id": s.message_id,
+                "date": s.when.isoformat(),
+                "from_name": s.from_name,
+                "from_addr": s.from_addr,
+                "reply_to": s.reply_to,
+                "subject": scrub_text(s.subject),
+                "claimed_brand": s.claimed_brand,
+                "amounts": [fmt_display(a, lang) for a in s.amounts_cents],
+                "reasons": s.reasons,
+                "reasons_text": reasons_text(lang, s.reasons, s.claimed_brand),
+                "matched_txn_ref": s.matched_txn_ref,
+            }
+            for s in suspicious
         ],
     }
 
@@ -468,8 +501,12 @@ SPECS: list[dict[str, Any]] = [
     },
     {
         "name": "get_email_recon",
-        "description": "Transaction-to-email table. Use when the user asks "
-                       "whether a charge has a matching receipt or email.",
+        "description": "Transaction-to-email table, plus the full list of "
+                       "emails whose sender impersonates a brand (phishing "
+                       "look-alikes) with the reasons for each. Use when the "
+                       "user asks whether a charge has a matching receipt or "
+                       "email, or asks about suspicious / fake / phishing "
+                       "emails.",
         "parameters": {
             "ref": "optional transaction reference",
             "status": "optional: matched, no_email_found, email_suspicious",

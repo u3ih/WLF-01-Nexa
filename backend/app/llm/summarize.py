@@ -133,6 +133,29 @@ def summarize(tool: str, result: dict[str, Any], lang: str) -> str:
             lines.append(f"{BULLET}{row['date']} {row['descriptor']} "
                          f"{row['amount']} — {row['status_text']}"
                          + (f" ({row['email_from']})" if row['email_from'] else ""))
+        # The look-alike senders are listed by name, not just counted: several
+        # of them match no transaction at all, so the table above never shows
+        # them.
+        if result.get("suspicious"):
+            lines.append("")
+            lines.append("Email có người gửi giả danh:" if vi
+                         else "Emails with an impersonated sender:")
+            for item in result["suspicious"]:
+                head = (f"{BULLET}{item['date']} {item['from_addr']} — "
+                        f"“{item['subject']}”")
+                if item.get("claimed_brand"):
+                    head += (f" ({'tự nhận là' if vi else 'claims to be'} "
+                             f"{item['claimed_brand']})")
+                lines.append(head)
+                if item.get("reasons_text"):
+                    lines.append(f"  {item['reasons_text']}.")
+            lines.append(("Đây là dấu hiệu người gửi không khớp thương hiệu, "
+                          "không phải kết luận đã có gian lận. Đừng bấm link "
+                          "trong các email này."
+                          if vi else
+                          "These are sender-identity mismatches, not a "
+                          "conclusion that fraud occurred. Do not click the "
+                          "links in these emails."))
         return "\n".join(lines)
 
     if tool == "get_tri_source":
