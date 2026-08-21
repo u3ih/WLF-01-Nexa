@@ -18,6 +18,89 @@ from psycopg_pool import ConnectionPool
 
 from .config import settings
 
+SCHEMA = """
+CREATE TABLE IF NOT EXISTS scans (
+    id              BIGSERIAL PRIMARY KEY,
+    started_at      TIMESTAMPTZ NOT NULL DEFAULT now(),
+    finished_at     TIMESTAMPTZ,
+    trigger         TEXT NOT NULL DEFAULT 'manual',
+    new_count       INTEGER NOT NULL DEFAULT 0,
+    suppressed_count INTEGER NOT NULL DEFAULT 0
+);
+
+CREATE TABLE IF NOT EXISTS flags (
+    fingerprint     TEXT PRIMARY KEY,
+    kind            TEXT NOT NULL,
+    label           TEXT NOT NULL,
+    confidence      NUMERIC(4,2) NOT NULL,
+    amount_cents    BIGINT NOT NULL DEFAULT 0,
+    txn_ids         JSONB NOT NULL DEFAULT '[]'::jsonb,
+    period_key      TEXT NOT NULL DEFAULT '',
+    occurred_on     DATE,
+    statement_date  DATE,
+    dispute_deadline DATE,
+    params          JSONB NOT NULL DEFAULT '{}'::jsonb,
+    sources         JSONB NOT NULL DEFAULT '[]'::jsonb,
+    first_seen_at   TIMESTAMPTZ NOT NULL DEFAULT now(),
+    last_seen_at    TIMESTAMPTZ NOT NULL DEFAULT now(),
+    seen_count      INTEGER NOT NULL DEFAULT 1,
+    first_scan_id   BIGINT REFERENCES scans(id)
+);
+
+CREATE TABLE IF NOT EXISTS audit_log (
+    id              BIGSERIAL PRIMARY KEY,
+    logged_at       TIMESTAMPTZ NOT NULL DEFAULT now(),
+    event           TEXT NOT NULL,
+    fingerprint     TEXT,
+    kind            TEXT,
+    label           TEXT,
+    confidence      NUMERIC(4,2),
+    reason          TEXT NOT NULL DEFAULT '',
+    detail          JSONB NOT NULL DEFAULT '{}'::jsonb
+);
+
+CREATE TABLE IF NOT EXISTS reminders (
+    id              BIGSERIAL PRIMARY KEY,
+    fingerprint     TEXT NOT NULL REFERENCES flags(fingerprint) ON DELETE CASCADE,
+    due_date        DATE NOT NULL,
+    kind            TEXT NOT NULL,
+    title           TEXT NOT NULL,
+    status          TEXT NOT NULL DEFAULT 'open',
+    created_at      TIMESTAMPTZ NOT NULL DEFAULT now(),
+    UNIQUE (fingerprint, due_date)
+);
+
+CREATE TABLE IF NOT EXISTS chat_sessions (
+    id              BIGSERIAL PRIMARY KEY,
+    title           TEXT NOT NULL DEFAULT '',
+    created_at      TIMESTAMPTZ NOT NULL DEFAULT now(),
+    updated_at      TIMESTAMPTZ NOT NULL DEFAULT now(),
+    messages        JSONB NOT NULL DEFAULT '[]'::jsonb,
+    lang            TEXT NOT NULL DEFAULT 'vi'
+);
+
+CREATE TABLE IF NOT EXISTS report_drafts (
+    id              BIGSERIAL PRIMARY KEY,
+    created_at      TIMESTAMPTZ NOT NULL DEFAULT now(),
+    recipient       TEXT NOT NULL,
+    subject         TEXT NOT NULL,
+    body            TEXT NOT NULL,
+    period_key      TEXT NOT NULL DEFAULT '',
+    lang            TEXT NOT NULL DEFAULT 'vi',
+    confirm_token   TEXT NOT NULL UNIQUE,
+    status          TEXT NOT NULL DEFAULT 'draft',
+    confirmed_at    TIMESTAMPTZ,
+    sent_at         TIMESTAMPTZ,
+    delivery        TEXT NOT NULL DEFAULT 'smtp',
+    file_path       TEXT
+);
+
+CREATE INDEX IF NOT EXISTS flags_kind_idx ON flags (kind);
+CREATE INDEX IF NOT EXISTS audit_log_fingerprint_idx ON audit_log (fingerprint);
+CREATE INDEX IF NOT EXISTS reminders_due_idx ON reminders (due_date, status);
+"""
+
+
 class Store:
     def __init__(self, dsn: str | None = None) -> None:
         self.dsn = dsn or settings.database_url
@@ -77,6 +160,8 @@ class Store:
                 "reminders": c.execute("SELECT count(*) AS n FROM reminders")
                 .fetchone()["n"],
                 "scans": c.execute("SELECT count(*) AS n FROM scans").fetchone()["n"],
+                "chat_sessions": c.execute("SELECT count(*) AS n FROM chat_sessions")
+                .fetchone()["n"],
             }
 
     # -- scans ------------------------------------------------------------
@@ -218,6 +303,69 @@ class Store:
                 (file_path, draft_id),
             )
 
+    # -- chat history ----------------------------------------------------
+
+    def create_chat_session(self, title: str, lang: str,
+                            messages: list[dict]) -> int | None:
+        with self.conn() as c:
+            row = c.execute(
+                "INSERT INTO chat_sessions (title, lang, messages)"
+                " VALUES (%s, %s, %s) RETURNING id",
+                (title, lang, json.dumps(messages, default=str)),
+            ).fetchone()
+            return row["id"] if row else None
+
+    def list_chat_sessions(self, limit: int = 50) -> list[dict]:
+        with self.conn() as c:
+            return c.execute(
+                "SELECT id, title, created_at, updated_at, lang"
+                " FROM chat_sessions"
+                " ORDER BY updated_at DESC LIMIT %s",
+                (limit,),
+            ).fetchall()
+
+    def get_chat_session(self, session_id: int) -> dict | None:
+        with self.conn() as c:
+            return c.execute(
+                "SELECT * FROM chat_sessions WHERE id = %s",
+                (session_id,),
+            ).fetchone()
+
+    def update_chat_session(self, session_id: int, *,
+                            title: str | None = None,
+                            messages: list[dict] | None = None,
+                            lang: str | None = None) -> bool:
+        parts: list[str] = []
+        params: list = []
+        if title is not None:
+            parts.append("title = %s")
+            params.append(title)
+        if messages is not None:
+            parts.append("messages = %s")
+            params.append(json.dumps(messages, default=str))
+        if lang is not None:
+            parts.append("lang = %s")
+            params.append(lang)
+        if not parts:
+            return False
+        parts.append("updated_at = now()")
+        params.append(session_id)
+        with self.conn() as c:
+            row = c.execute(
+                f"UPDATE chat_sessions SET {', '.join(parts)}"
+                " WHERE id = %s RETURNING id",
+                params,
+            ).fetchone()
+            return row is not None
+
+    def delete_chat_session(self, session_id: int) -> bool:
+        with self.conn() as c:
+            row = c.execute(
+                "DELETE FROM chat_sessions WHERE id = %s RETURNING id",
+                (session_id,),
+            ).fetchone()
+            return row is not None
+
     # -- housekeeping -----------------------------------------------------
 
     def purge(self) -> dict[str, int]:
@@ -225,7 +373,7 @@ class Store:
         with self.conn() as c:
             before = self.counts()
             c.execute("TRUNCATE reminders, audit_log, flags, report_drafts,"
-                      " scans RESTART IDENTITY CASCADE")
+                      " scans, chat_sessions RESTART IDENTITY CASCADE")
         return before
 
 

@@ -1,4 +1,4 @@
-import type { ChatReply, Lang, Summary } from "./types";
+import type { ChatReply, ChatSession, Lang, Summary } from "./types";
 
 // Same-origin by default: next.config.mjs proxies /api to the backend.
 const BASE = process.env.NEXT_PUBLIC_API_BASE ?? "";
@@ -61,4 +61,13 @@ export const api = {
   testSmtp: (lang: Lang, recipient?: string) =>
     post<any>("/api/report/smtp-test", { lang, recipient }),
   purge: () => post<any>("/api/audit/purge", {}),
+
+  // -- Chat history -------------------------------------------------------
+  listHistory: (limit = 50) => get<ChatSession[]>(`/api/chat/history?limit=${limit}`),
+  getHistory: (id: number) => get<ChatSession>(`/api/chat/history/${id}`),
+  createHistory: (title: string, lang: Lang, messages: any[]) =>
+    post<ChatSession>("/api/chat/history", { title, lang, messages }),
+  updateHistory: (id: number, data: { title?: string; messages?: any[]; lang?: Lang }) =>
+    post<ChatSession>(`/api/chat/history/${id}`, data),
+  deleteHistory: (id: number) => post<any>(`/api/chat/history/${id}/delete`, {}),
 };
