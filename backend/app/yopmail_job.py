@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import logging
-import shutil
 import subprocess
 from threading import Lock
 from concurrent.futures import ThreadPoolExecutor, as_completed
@@ -59,6 +58,30 @@ def _targets() -> list[tuple[str, str]]:
     return list(zip(users, mailboxes))
 
 
+def _cleanup_output(output_dir) -> None:
+    """Remove HTML and other transient scraper artifacts after a success."""
+    html_files = list(output_dir.rglob("*.html"))
+    for html_file in html_files:
+        html_file.unlink(missing_ok=True)
+    log.info("removed %d temporary HTML files from %s", len(html_files), output_dir)
+
+    # These files are also intermediate; the durable result is the dataset CSV.
+    for name in ("emails_full.json", "emails_full.csv", "full_report.md"):
+        (output_dir / name).unlink(missing_ok=True)
+    for directory in sorted(
+        (path for path in output_dir.rglob("*") if path.is_dir()),
+        reverse=True,
+    ):
+        try:
+            directory.rmdir()
+        except OSError:
+            pass
+    try:
+        output_dir.rmdir()
+    except OSError:
+        pass
+
+
 def _run_one(user: str, mailbox: str, scraper_dir, dataset_dir) -> dict[str, Any]:
     output_dir = scraper_dir / "output" / user
     output_dir.mkdir(parents=True, exist_ok=True)
@@ -79,7 +102,7 @@ def _run_one(user: str, mailbox: str, scraper_dir, dataset_dir) -> dict[str, Any
     # The dataset is the durable output. Keep scraper artifacts only when a
     # run fails, so a successful five-minute cycle does not accumulate JSON,
     # reports and hundreds of HTML files.
-    shutil.rmtree(output_dir)
+    _cleanup_output(output_dir)
     return {"user": user, "mailbox": mailbox, "dataset": counts}
 
 
