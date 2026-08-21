@@ -638,8 +638,8 @@ code,
 /* The header's rail toggle is the way back when the rail is not on screen, so
    it hides itself whenever the rail already is — including "default", which
    means open on a desktop and closed on a phone. */
-.rail[data-open="true"] ~ .workspace .rail-toggle,
-.rail[data-open="default"] ~ .workspace .rail-toggle {
+.rail[data-open="true"]~.workspace .rail-toggle,
+.rail[data-open="default"]~.workspace .rail-toggle {
   display: none;
 }
 
@@ -689,7 +689,7 @@ code,
   margin: 0 auto;
 }
 
-.turn + .turn {
+.turn+.turn {
   margin-top: var(--sp-5);
 }
 
@@ -752,11 +752,11 @@ code,
   word-break: break-word;
 }
 
-.prose > :first-child {
+.prose> :first-child {
   margin-top: 0;
 }
 
-.prose > :last-child {
+.prose> :last-child {
   margin-bottom: 0;
 }
 
@@ -774,7 +774,7 @@ code,
   margin: 4px 0;
 }
 
-.prose li > p {
+.prose li>p {
   margin: 0;
 }
 
@@ -895,29 +895,36 @@ code,
   line-height: 1.7;
   word-break: break-word;
 }
-.answer > * + * {
+
+.answer>*+* {
   margin-top: 12px;
 }
+
 .answer-para {
   margin: 0;
 }
+
 .answer-list {
   margin: 0;
   padding-left: 20px;
 }
+
 .answer-list li {
   margin: 4px 0;
 }
+
 .answer-list li::marker {
   color: var(--text-faint);
 }
+
 .answer-cards {
   display: grid;
   gap: 10px;
 }
+
 /* .finding carries its own stacking margin for the drawer; the grid gap here
    would double it. */
-.answer-cards > .finding + .finding {
+.answer-cards>.finding+.finding {
   margin-top: 0;
 }
 
@@ -936,19 +943,23 @@ code,
   gap: var(--sp-2);
   align-items: center;
 }
+
 .answer-title {
   font-weight: 700;
 }
+
 .answer-detail {
   color: var(--text-dim);
   margin: 6px 0 0;
   font-size: var(--fs-sm);
 }
+
 .answer-meta {
   color: var(--text-faint);
   margin: 4px 0 0;
   font-size: var(--fs-sm);
 }
+
 .answer-sources {
   display: flex;
   flex-wrap: wrap;
@@ -957,7 +968,8 @@ code,
   margin: 9px 0 0;
   font-size: var(--fs-xs);
 }
-.answer-sources > .k {
+
+.answer-sources>.k {
   color: var(--text-faint);
 }
 
@@ -990,6 +1002,7 @@ code,
   border-color: var(--accent);
   background: color-mix(in srgb, var(--accent) 16%, transparent);
 }
+
 .chip .ref-link {
   font-weight: 600;
 }
@@ -997,12 +1010,14 @@ code,
 /* Where the reference landed. Held until the next one rather than faded out:
    the reader is comparing the row against the sentence that cited it, and a
    highlight that times out takes the connection with it. */
-tr.row-focus > td {
+tr.row-focus>td {
   background: var(--accent-soft);
 }
-tr.row-focus > td:first-child {
+
+tr.row-focus>td:first-child {
   box-shadow: inset 2px 0 0 var(--accent);
 }
+
 .finding.row-focus {
   border-color: var(--accent);
   background: var(--accent-soft);
@@ -1394,7 +1409,7 @@ tr.row-focus > td:first-child {
     margin-left: calc(var(--rail-w) * -1);
   }
 
-  .rail[data-open="default"] ~ .workspace .rail-toggle {
+  .rail[data-open="default"]~.workspace .rail-toggle {
     display: grid;
   }
 
@@ -1729,7 +1744,7 @@ th.num {
   padding: var(--sp-3);
 }
 
-.finding + .finding {
+.finding+.finding {
   margin-top: 10px;
 }
 
@@ -1832,7 +1847,7 @@ th.num {
   overflow: hidden;
 }
 
-.bar > span {
+.bar>span {
   display: block;
   height: 100%;
   border-radius: var(--radius-pill);
@@ -1856,7 +1871,7 @@ th.num {
   padding: 11px 13px;
 }
 
-.rule + .rule {
+.rule+.rule {
   margin-top: 9px;
 }
 
@@ -1967,6 +1982,15 @@ th.num {
   font-size: var(--fs-sm);
   max-height: 46vh;
   overflow: auto;
+}
+
+.draft-preview {
+  display: block;
+  width: 100%;
+  height: min(520px, 52vh);
+  border: 1px solid var(--line-soft);
+  border-radius: var(--radius-sm);
+  background: #fff;
 }
 
 /* -- History Modal ----------------------------------------------------- */
@@ -2206,4 +2230,3 @@ th.num {
 .rail-view-all:hover {
   background: var(--accent-soft);
 }
-

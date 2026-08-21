@@ -14,6 +14,8 @@ import secrets
 from datetime import date, datetime
 from email.message import EmailMessage
 from email.utils import format_datetime, make_msgid
+from html import escape
+from html.parser import HTMLParser
 from typing import Any
 
 from .config import settings
@@ -60,16 +62,7 @@ def build_report_body(lang: str, period_kind: str = "month",
     findings = render_findings(analysis.alerts, lang, today)
 
     heading = t(lang, "mail.draft_subject", period=report["period"]["label"])
-    lines: list[str] = []
-    lines.append(heading)
-    lines.append("=" * len(heading))
-    lines.append("")
-    lines.append(f"{profile['owner_name']} — {profile['account_masked']} / "
-                 f"{profile['card_masked']}")
-    lines.append(f"{report['period']['start']} → {report['period']['end']}")
-    lines.append("")
     totals = report["totals"]
-    lines.append("1) " + ("Tổng quan" if lang == "vi" else "Overview"))
     overview_keys = {
         "payin_cents": "cashflow.payin",
         "spend_cents": "cashflow.purchase",
@@ -81,63 +74,135 @@ def build_report_body(lang: str, period_kind: str = "month",
         "transfer_to_wallet_cents": "cashflow.transfer_to_wallet",
     }
     excluded = report.get("excluded", {})
-    for key, catalog_key in overview_keys.items():
-        lines.append(f"   - {t(lang, catalog_key)}: "
-                     f"{fmt_display(totals[key], lang)}"
-                     f"{bucket_scope_note(key, excluded, lang)}")
     comparison = report["comparison"]["spend"]
-    if comparison["percent"] is not None:
-        arrow = "+" if comparison["delta_cents"] > 0 else ""
-        lines.append(f"   - vs {report['comparison']['period_key']}: "
-                     f"{arrow}{fmt_display(comparison['delta_cents'], lang)} "
-                     f"({arrow}{comparison['percent']}%)")
-    # A $0.00 in the block above may mean "none" or may mean "none in USD".
-    # The difference belongs in the email, not only in the API payload.
     caveats = excluded_lines(excluded, lang)
-    if caveats:
-        lines.append(f"   {t(lang, 'excluded.head')}:")
-        lines += [f"     · {line}" for line in caveats]
-    lines.append("")
 
-    lines.append("2) " + ("3 khoản chi lớn nhất" if lang == "vi"
-                          else "Top 3 purchases"))
+    # Keep the draft deliberately brief. The full evidence remains available
+    # in the app; an email is a scan-friendly summary, not a second dashboard.
+    shown_findings = findings[:3]
+    upcoming = analysis.subs_forecast.get("upcoming", [])[:3]
+    copy = {
+        "overview": "Tổng quan" if lang == "vi" else "Overview",
+        "top": "3 khoản chi lớn nhất" if lang == "vi" else "Top 3 purchases",
+        "review": "Cần xem lại" if lang == "vi" else "Needs review",
+        "upcoming": "Sắp tới" if lang == "vi" else "Upcoming",
+        "none": "Không có cảnh báo." if lang == "vi" else "No alerts.",
+        "more": "cảnh báo khác trong ứng dụng" if lang == "vi"
+                else "more alert(s) in the app",
+    }
+
+    # A compact plain-text version is retained for chat previews and as the
+    # MIME fallback used by mail clients that do not render HTML.
+    lines = [heading,
+             f"{profile['owner_name']} — {profile['account_masked']} / "
+             f"{profile['card_masked']}",
+             f"{report['period']['start']} → {report['period']['end']}", "",
+             copy["overview"]]
+    for key, catalog_key in overview_keys.items():
+        lines.append(f"• {t(lang, catalog_key)}: {fmt_display(totals[key], lang)}"
+                     f"{bucket_scope_note(key, excluded, lang)}")
+    if comparison["percent"] is not None:
+        sign = "+" if comparison["delta_cents"] > 0 else ""
+        lines.append(f"• vs {report['comparison']['period_key']}: "
+                     f"{sign}{fmt_display(comparison['delta_cents'], lang)} "
+                     f"({sign}{comparison['percent']}%)")
+    lines += ["", copy["top"]]
     for row in report["top_purchases"]:
         label = row["merchant"] or row["descriptor"]
-        lines.append(f"   - {row['date']} {label}: "
-                     f"{fmt_display(row['amount_cents'], lang)} [{row['ref']}]")
-    lines.append("")
-
-    lines.append("3) " + ("Gói định kỳ & kỳ trừ kế tiếp" if lang == "vi"
-                          else "Subscriptions & next charges"))
-    for item in analysis.subs_forecast.get("upcoming", []):
-        lines.append(f"   - {item['merchant']}: "
-                     f"{fmt_display(item['amount_cents'], lang)} → {item['next_charge']}")
-    lines.append(f"   ({'Dự kiến cả năm' if lang == 'vi' else 'Annual projection'}: "
-                 f"{fmt_display(analysis.subs_forecast.get('annual_projection_cents', 0), lang)})")
-    lines.append("")
-
-    lines.append("4) " + ("Khoản cần bạn xem lại" if lang == "vi"
-                          else "Items for you to review"))
-    if not findings:
-        lines.append("   - " + ("Không có khoản nào được gắn cờ trong kỳ này."
-                                if lang == "vi"
-                                else "No items were flagged for this period."))
-    for item in findings:
-        lines.append(f"   - [{item['label_text']}] {item['title']}")
-        lines.append(f"     {item['detail']}")
+        lines.append(f"• {label}: {fmt_display(row['amount_cents'], lang)} "
+                     f"[{row['ref']}]")
+    lines += ["", copy["review"]]
+    if not shown_findings:
+        lines.append(f"• {copy['none']}")
+    for item in shown_findings:
+        lines.append(f"• {item['title']} — {item['next_step']}")
         if item["dispute"]["text"]:
-            lines.append(f"     {item['dispute']['text']}")
-        srcs = ", ".join(f"{s['kind_text']}:{s['ref']}" for s in item["sources"])
-        lines.append("     " + t(lang, "common.sources_line", sources=srcs))
-        lines.append(f"     → {item['next_step']}")
-    lines.append("")
+            lines.append(f"  {item['dispute']['text']}")
+    if len(findings) > len(shown_findings):
+        lines.append(f"• +{len(findings) - len(shown_findings)} {copy['more']}")
+    if upcoming:
+        lines += ["", copy["upcoming"]]
+        for item in upcoming:
+            lines.append(f"• {item['merchant']}: "
+                         f"{fmt_display(item['amount_cents'], lang)} — "
+                         f"{item['next_charge']}")
+    if caveats:
+        lines += ["", t(lang, "excluded.head")]
+        lines += [f"• {line}" for line in caveats]
+    lines += ["", disclaimer(lang)]
+    body_text = scrub_text("\n".join(lines))
 
-    lines.append("-" * 72)
-    lines.append(disclaimer(lang))
+    def h(value: Any) -> str:
+        return escape(scrub_text(str(value)), quote=True)
+
+    metric_rows = "".join(
+        "<tr><th>" + h(t(lang, catalog_key)) + "</th><td>" +
+        h(fmt_display(totals[key], lang) +
+          bucket_scope_note(key, excluded, lang)) + "</td></tr>"
+        for key, catalog_key in overview_keys.items()
+    )
+    comparison_html = ""
+    if comparison["percent"] is not None:
+        sign = "+" if comparison["delta_cents"] > 0 else ""
+        comparison_html = (
+            "<p class=\"comparison\">vs " +
+            h(report["comparison"]["period_key"]) + ": <strong>" +
+            h(f"{sign}{fmt_display(comparison['delta_cents'], lang)} "
+              f"({sign}{comparison['percent']}%)") + "</strong></p>"
+        )
+    top_html = "".join(
+        "<li><span>" + h(row["merchant"] or row["descriptor"]) +
+        " <small>[" + h(row["ref"]) + "]</small></span><strong>" +
+        h(fmt_display(row["amount_cents"], lang)) + "</strong></li>"
+        for row in report["top_purchases"]
+    ) or "<li>—</li>"
+    finding_html = "".join(
+        "<li><strong>" + h(item["title"]) + "</strong><br><span>" +
+        h(item["next_step"]) +
+        (("<br><em>" + h(item["dispute"]["text"]) + "</em>")
+         if item["dispute"]["text"] else "") + "</span></li>"
+        for item in shown_findings
+    ) or "<li>" + h(copy["none"]) + "</li>"
+    if len(findings) > len(shown_findings):
+        finding_html += ("<li class=\"muted\">+" +
+                         str(len(findings) - len(shown_findings)) + " " +
+                         h(copy["more"]) + "</li>")
+    upcoming_html = ""
+    if upcoming:
+        rows = "".join(
+            "<li><span>" + h(item["merchant"]) + "</span><span>" +
+            h(fmt_display(item["amount_cents"], lang)) + " · " +
+            h(item["next_charge"]) + "</span></li>" for item in upcoming
+        )
+        upcoming_html = ("<section><h2>" + h(copy["upcoming"]) +
+                         "</h2><ul class=\"split\">" + rows +
+                         "</ul></section>")
+    caveat_html = ""
+    if caveats:
+        caveat_html = ("<aside><strong>" + h(t(lang, "excluded.head")) +
+                       "</strong><ul>" +
+                       "".join("<li>" + h(line) + "</li>" for line in caveats) +
+                       "</ul></aside>")
+
+    body_html = f"""<!doctype html>
+<html lang="{h(lang)}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width">
+<style>
+body{{margin:0;background:#f5f6f8;color:#20242c;font:14px/1.5 Arial,sans-serif}}main{{max-width:680px;margin:0 auto;background:#fff;padding:28px}}h1{{font-size:20px;margin:0 0 4px}}h2{{font-size:15px;margin:22px 0 9px}}p{{margin:4px 0}}.meta,.muted,small{{color:#687080}}table{{width:100%;border-collapse:collapse}}th,td{{padding:7px 0;border-bottom:1px solid #e8eaf0}}th{{text-align:left;font-weight:500}}td{{text-align:right;font-weight:700}}ul{{margin:0;padding-left:20px}}li{{margin:7px 0}}ul.split{{list-style:none;padding:0}}ul.split li{{display:flex;justify-content:space-between;gap:16px}}.comparison{{margin-top:8px}}aside{{margin-top:20px;padding:12px;background:#f6f7f9;border-radius:8px;font-size:12px}}footer{{margin-top:22px;padding-top:14px;border-top:1px solid #e8eaf0;color:#687080;font-size:11px}}
+</style></head><body><main>
+<header><h1>{h(heading)}</h1><p class="meta">{h(profile['owner_name'])} · {h(profile['account_masked'])} / {h(profile['card_masked'])}</p><p class="meta">{h(report['period']['start'])} → {h(report['period']['end'])}</p></header>
+<section><h2>{h(copy['overview'])}</h2><table>{metric_rows}</table>{comparison_html}</section>
+<section><h2>{h(copy['top'])}</h2><ul class="split">{top_html}</ul></section>
+<section><h2>{h(copy['review'])}</h2><ul>{finding_html}</ul></section>
+{upcoming_html}{caveat_html}<footer>{h(disclaimer(lang))}</footer>
+</main></body></html>"""
 
     return {
         "subject": heading,
-        "body": scrub_text("\n".join(lines)),
+        # Keep the legacy body key textual; the explicit HTML key avoids
+        # surprising callers that use the draft as a chat preview.
+        "body": body_text,
+        "body_html": body_html,
+        "body_text": body_text,
         "period_key": report["period"]["key"],
         "period_label": report["period"]["label"],
         "counts": {
@@ -159,7 +224,7 @@ def create_draft(lang: str = "vi", period_kind: str = "month",
     content = build_report_body(lang, period_kind, period_key)
     token = secrets.token_urlsafe(24)
     draft_id = store.create_draft(
-        recipient=target, subject=content["subject"], body=content["body"],
+        recipient=target, subject=content["subject"], body=content["body_html"],
         period_key=content["period_key"], lang=lang, token=token,
         delivery="smtp",
     )
@@ -171,7 +236,10 @@ def create_draft(lang: str = "vi", period_kind: str = "month",
         "confirm_token": token,
         "recipient": target,
         "subject": content["subject"],
-        "body": content["body"],
+        "body": content["body_text"],
+        "body_text": content["body_text"],
+        "body_html": content["body_html"],
+        "content_type": "text/html",
         "period_key": content["period_key"],
         "period_label": content["period_label"],
         "counts": content["counts"],
@@ -203,6 +271,54 @@ def _require_smtp_config() -> None:
         raise MailConfigError("missing SMTP password; set NEXA_SMTP_PASSWORD")
 
 
+class _PlainTextParser(HTMLParser):
+    """Small dependency-free HTML fallback for multipart report email."""
+
+    _BLOCKS = {"br", "p", "div", "section", "header", "footer", "aside",
+               "tr", "li", "h1", "h2", "h3"}
+
+    def __init__(self) -> None:
+        super().__init__()
+        self.parts: list[str] = []
+        self.ignored_depth = 0
+
+    def handle_starttag(self, tag: str,
+                        attrs: list[tuple[str, str | None]]) -> None:
+        if tag in {"style", "script"}:
+            self.ignored_depth += 1
+            return
+        if self.ignored_depth:
+            return
+        if tag == "li":
+            self.parts.append("\n• ")
+        elif tag in self._BLOCKS:
+            self.parts.append("\n")
+
+    def handle_endtag(self, tag: str) -> None:
+        if tag in {"style", "script"} and self.ignored_depth:
+            self.ignored_depth -= 1
+            return
+        if self.ignored_depth:
+            return
+        if tag == "th":
+            self.parts.append(": ")
+        elif tag == "span":
+            self.parts.append(" ")
+        elif tag in self._BLOCKS or tag == "td":
+            self.parts.append("\n")
+
+    def handle_data(self, data: str) -> None:
+        if not self.ignored_depth:
+            self.parts.append(data)
+
+
+def _html_to_text(body: str) -> str:
+    parser = _PlainTextParser()
+    parser.feed(body)
+    lines = (" ".join(line.split()) for line in "".join(parser.parts).splitlines())
+    return "\n".join(line for line in lines if line).strip()
+
+
 def _build_message(recipient: str, subject: str, body: str) -> EmailMessage:
     msg = EmailMessage()
     msg["From"] = _smtp_sender()
@@ -211,7 +327,11 @@ def _build_message(recipient: str, subject: str, body: str) -> EmailMessage:
     msg["Date"] = format_datetime(datetime.now().astimezone())
     msg["Message-ID"] = make_msgid(domain="nexa.local")
     msg["X-Nexa-Delivery"] = "smtp"
-    msg.set_content(body)
+    if body.lstrip().lower().startswith(("<!doctype html", "<html")):
+        msg.set_content(_html_to_text(body))
+        msg.add_alternative(body, subtype="html")
+    else:
+        msg.set_content(body)
     return msg
 
 
