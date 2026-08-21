@@ -174,6 +174,16 @@ class FindingKind(str, Enum):
     UNKNOWN_MERCHANT = "unknown_merchant"
     MISSING_EMAIL = "missing_email"
     SUSPICIOUS_EMAIL = "suspicious_email"
+    # Task 4 — new finding kinds
+    SUSPECTED_DUPLICATE = "suspected_duplicate"
+    SPENDING_SPIKE = "spending_spike"
+    CATEGORY_CONCENTRATION = "category_concentration"
+    OFF_HOURS_TXN = "off_hours_txn"
+    RAPID_SPENDING = "rapid_spending"
+    SUBSCRIPTION_NO_WELCOME = "sub_no_welcome"
+    CHARGED_AFTER_CANCEL = "charged_after_cancel"
+    FREE_TRIAL_CONVERTED = "free_trial_converted"
+    LATE_REFUND = "late_refund"
 
 
 class EmailMatchStatus(str, Enum):
