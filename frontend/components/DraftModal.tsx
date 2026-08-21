@@ -47,7 +47,16 @@ export function DraftModal({
           <p style={{ color: "var(--label-confirm)", fontSize: 12.5 }}>
             {draft.confirm_prompt}
           </p>
-          <pre>{draft.body ?? draft.body_preview}</pre>
+          {draft.body_html ? (
+            <iframe
+              className="draft-preview"
+              title={draft.subject}
+              sandbox=""
+              srcDoc={draft.body_html}
+            />
+          ) : (
+            <pre>{draft.body ?? draft.body_preview}</pre>
+          )}
           {error ? <p className="err">{error}</p> : null}
           {sent ? (
             <p className="chip" style={{ marginTop: 8 }}>

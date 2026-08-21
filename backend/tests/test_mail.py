@@ -4,7 +4,8 @@ from __future__ import annotations
 
 from app.config import settings
 from app.mailer import (
-    DraftError, MailConfigError, create_draft, mail_recipient, send_confirmed,
+    DraftError, MailConfigError, _build_message, create_draft, mail_recipient,
+    send_confirmed,
 )
 from conftest import requires_db
 import pytest
@@ -39,6 +40,23 @@ def test_draft_does_not_send(db_ready):
     assert draft["requires_confirmation"] is True
     assert draft["recipient"] == settings.mail_to
     assert draft["confirm_token"]
+    assert draft["content_type"] == "text/html"
+    assert draft["body_html"].startswith("<!doctype html>")
+    assert "<!doctype html>" not in draft["body_text"]
+
+
+def test_html_report_has_plain_text_fallback():
+    html = "<!doctype html><html><head><style>body{color:red}</style></head>" \
+           "<body><h1>Tóm tắt</h1><p>Chi tiêu: $10.00</p></body></html>"
+    message = _build_message("notify@example.com", "Report", html)
+
+    assert message.get_content_type() == "multipart/alternative"
+    plain, rich = list(message.iter_parts())
+    assert plain.get_content_type() == "text/plain"
+    assert "Tóm tắt" in plain.get_content()
+    assert "color:red" not in plain.get_content()
+    assert rich.get_content_type() == "text/html"
+    assert "<h1>Tóm tắt</h1>" in rich.get_content()
 
 
 def test_confirmed_send_uses_smtp_only(db_ready, smtp_config):

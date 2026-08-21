@@ -1897,6 +1897,15 @@ th.num {
   overflow: auto;
 }
 
+.draft-preview {
+  display: block;
+  width: 100%;
+  height: min(520px, 52vh);
+  border: 1px solid var(--line-soft);
+  border-radius: var(--radius-sm);
+  background: #fff;
+}
+
 /* -- History Modal ----------------------------------------------------- */
 
 .modal-history {
