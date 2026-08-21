@@ -5,7 +5,6 @@ import {
 } from "lucide-react";
 import { useMemo, useState } from "react";
 
-import { api } from "@/lib/api";
 import { ui } from "@/lib/i18n";
 import type { ChatSession, Lang } from "@/lib/types";
 
@@ -37,18 +36,24 @@ export function HistoryModal({
   lang: Lang;
   history: ChatSession[];
   onSelect: (session: ChatSession) => void;
-  onDelete: (id: number) => void;
+  /** Owns the deletion itself — including detaching the open conversation, so
+   *  this list is not a second place that can delete a session on its own. */
+  onDelete: (id: number) => void | Promise<void>;
   onClose: () => void;
 }) {
   const [search, setSearch] = useState("");
   const [confirmDeleteId, setConfirmDeleteId] = useState<number | null>(null);
   const [busy, setBusy] = useState(false);
 
+  // The list endpoint carries the title and the opening question, not every
+  // turn: shipping whole conversations to draw this would mean sending the
+  // evidence attached to each answer along with them.
   const filtered = useMemo(() => {
     if (!search.trim()) return history;
     const q = search.toLowerCase().trim();
     return history.filter(
       (s) => s.title.toLowerCase().includes(q)
+        || s.preview?.toLowerCase().includes(q)
         || s.messages?.some((m) => m.text?.toLowerCase().includes(q)),
     );
   }, [history, search]);
@@ -78,8 +83,7 @@ export function HistoryModal({
   async function handleDelete(id: number) {
     setBusy(true);
     try {
-      await api.deleteHistory(id);
-      onDelete(id);
+      await onDelete(id);
     } catch {}
     setBusy(false);
     setConfirmDeleteId(null);
@@ -121,8 +125,10 @@ export function HistoryModal({
               <div key={groupLabel} className="modal-history-group">
                 <div className="modal-history-group-label">{groupLabel}</div>
                 {sessions.map((session) => {
-                  const userMessages = session.messages?.filter((m) => m.role === "user").length ?? 0;
-                  const preview = session.messages?.find((m) => m.role === "user")?.text ?? "";
+                  const userMessages = session.message_count
+                    ?? session.messages?.filter((m) => m.role === "user").length ?? 0;
+                  const preview = session.preview
+                    ?? session.messages?.find((m) => m.role === "user")?.text ?? "";
                   return (
                     <div key={session.id} className="modal-history-item"
                       onClick={() => { onSelect(session); onClose(); }}

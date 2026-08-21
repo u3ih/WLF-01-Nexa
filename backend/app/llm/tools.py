@@ -304,6 +304,45 @@ def get_report(lang: str = "vi", period: str = "month",
     return report
 
 
+def _ledger_rows(analysis: Any) -> list[dict[str, Any]]:
+    """Every transaction the export holds, flattened into one row shape.
+
+    All three ledgers, not two. The Wealify export files wallet top-ups and
+    payouts under `source_type = Ví`, so they land in `ds.wallet.events` rather
+    than in `ds.account` or `ds.card` — 168 of the 412 rows in this export. A
+    lookup that reads only the statement and the card ledger answers "there is
+    no transaction with that reference" about a reference the user is reading
+    off their own statement.
+    """
+    rows: list[dict[str, Any]] = []
+    for txn in analysis.ds.account:
+        rows.append({
+            "ref": txn.txn_id, "source": "statement", "when": txn.when,
+            "descriptor": txn.description, "amount_cents": txn.amount_cents,
+            "type": txn.type.value, "merchant": txn.merchant,
+        })
+    for card in analysis.ds.card:
+        rows.append({
+            "ref": card.card_txn_id, "source": "card", "when": card.when,
+            "descriptor": card.merchant_raw, "amount_cents": card.amount_cents,
+            "type": card.type.value, "merchant": card.merchant,
+            "card": mask_card(card.card_number),
+        })
+    wallet = analysis.ds.wallet
+    for event in (wallet.events if wallet else []):
+        rows.append({
+            "ref": event.event_id, "source": "wallet", "when": event.when,
+            "descriptor": event.descriptor,
+            # `signed_cents` and not `amount_cents`: the wallet stores a
+            # magnitude with the direction in `kind`, and an unsigned debit
+            # would be counted as money coming in.
+            "amount_cents": event.signed_cents,
+            "type": event.note, "merchant": event.counterparty or None,
+            "currency": event.currency,
+        })
+    return rows
+
+
 def explain_charge(lang: str = "vi", ref: str | None = None,
                    amount: float | None = None,
                    descriptor: str | None = None) -> dict[str, Any]:
@@ -311,21 +350,7 @@ def explain_charge(lang: str = "vi", ref: str | None = None,
     and any finding attached to it."""
     analysis = pipeline.cached()
     target_cents = int(round(amount * 100)) if amount is not None else None
-    candidates: list[dict[str, Any]] = []
-
-    for txn in analysis.ds.account:
-        candidates.append({
-            "ref": txn.txn_id, "source": "statement", "when": txn.when,
-            "descriptor": txn.description, "amount_cents": txn.amount_cents,
-            "type": txn.type.value, "merchant": txn.merchant,
-        })
-    for card in analysis.ds.card:
-        candidates.append({
-            "ref": card.card_txn_id, "source": "card", "when": card.when,
-            "descriptor": card.merchant_raw, "amount_cents": card.amount_cents,
-            "type": card.type.value, "merchant": card.merchant,
-            "card": mask_card(card.card_number),
-        })
+    candidates = _ledger_rows(analysis)
 
     def matches(row: dict[str, Any]) -> bool:
         if ref and row["ref"].upper() == ref.upper():
@@ -391,20 +416,17 @@ def search_transactions(lang: str = "vi", query: str | None = None,
                         limit: int = MAX_ROWS) -> dict[str, Any]:
     """Filter the statements. Read-only listing, newest first."""
     analysis = pipeline.cached()
-    rows: list[dict[str, Any]] = []
-    for txn in analysis.ds.account:
-        rows.append({"ref": txn.txn_id, "source": "statement", "when": txn.when,
-                     "descriptor": txn.description, "merchant": txn.merchant,
-                     "amount_cents": txn.amount_cents, "type": txn.type.value})
-    for card in analysis.ds.card:
-        rows.append({"ref": card.card_txn_id, "source": "card", "when": card.when,
-                     "descriptor": card.merchant_raw, "merchant": card.merchant,
-                     "amount_cents": card.amount_cents, "type": card.type.value})
+    rows = _ledger_rows(analysis)
 
     def keep(row: dict[str, Any]) -> bool:
         if query:
             needle = query.upper()
-            haystack = f"{row['descriptor']} {row['merchant'] or ''}".upper()
+            # The reference belongs in the haystack: "tìm giao dịch có mã
+            # TW082026786190" is a search, so it routes here rather than to
+            # explain_charge, and a descriptor-only match answers a question
+            # about an existing transaction with "0 found".
+            haystack = (f"{row['ref']} {row['descriptor']} "
+                        f"{row['merchant'] or ''}").upper()
             if needle not in haystack:
                 return False
         if min_amount is not None and abs(row["amount_cents"]) < min_amount * 100:
@@ -636,7 +658,9 @@ SPECS: list[dict[str, Any]] = [
         "description": "Filter transactions by text, minimum amount, date range "
                        "or flow type.",
         "parameters": {
-            "query": "optional text to search in the descriptor",
+            "query": "optional text to search in the transaction reference, "
+                     "the descriptor or the merchant name. Pass a reference "
+                     "such as TW082026786190 or WLF15-CD-0001 here verbatim",
             "min_amount": "optional minimum amount as a number",
             "date_from": "optional ISO date",
             "date_to": "optional ISO date",

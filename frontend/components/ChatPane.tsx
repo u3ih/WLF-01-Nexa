@@ -16,7 +16,6 @@ export interface ChatHandle {
   ask: (question: string) => void;
   reset: () => void;
   loadTurns: (turns: Turn[]) => void;
-  getTurns: () => Turn[];
 }
 
 const SUGGEST_ICONS = [Receipt, Search, CreditCard, RefreshCcw];
@@ -31,7 +30,9 @@ export const ChatPane = forwardRef<ChatHandle, {
   lang: Lang;
   ownerName: string | undefined;
   disclaimer: string;
-  onReply: (reply: ChatReply) => void;
+  /** Handed the turns the answer landed in, so the caller never has to read
+   *  them back out of a state update that may not have committed yet. */
+  onReply: (reply: ChatReply, turns: Turn[]) => void;
   onBusyChange: (busy: boolean) => void;
   onRef: (ref: string, tool: string | null) => void;
 }>(function ChatPane(
@@ -50,6 +51,41 @@ export const ChatPane = forwardRef<ChatHandle, {
   const composing = useRef(false);
   // ask() is reachable from the sidebar, so it must not close over stale state.
   const busyRef = useRef(false);
+  // The thread as it stands right now. ask() runs across an await and the
+  // handle is callable from outside, so neither can rely on the `turns` a
+  // render happened to capture.
+  const turnsRef = useRef<Turn[]>([]);
+  // A language the user asked for ("từ giờ trả lời bằng tiếng Anh"). The chat
+  // endpoint holds no session, so the request only survives the turn if it is
+  // remembered here and sent back with everything that follows. A ref, not
+  // state: ask() reads it across an await and from outside this render.
+  const replyLang = useRef<Lang | null>(null);
+  // Bumped every time the thread is replaced — a new chat, or another session
+  // opened. An answer that arrives after that was asked in a conversation the
+  // user has left: showing it would put it under the wrong thread, and the
+  // save that follows would write that thread over the session it came from.
+  const epoch = useRef(0);
+
+  /** Every change to the thread goes through here, so the ref and the state
+   *  can never disagree about what the conversation currently holds. */
+  function applyTurns(next: Turn[]) {
+    turnsRef.current = next;
+    setTurns(next);
+  }
+
+  /** Replaces the thread: the answer to anything still in flight is dropped
+   *  rather than landing in whatever is on screen by then. */
+  function replaceThread(next: Turn[]) {
+    epoch.current += 1;
+    // The language request belonged to the conversation being left.
+    replyLang.current = null;
+    applyTurns(next);
+    setError(null);
+    // The request that was pending belongs to the previous thread and can no
+    // longer report anything here, so the composer must not stay disabled.
+    busyRef.current = false;
+    setBusy(false);
+  }
 
   useEffect(() => {
     // Not on the empty state: scrolling to the bottom there would push the
@@ -61,6 +97,10 @@ export const ChatPane = forwardRef<ChatHandle, {
   }, [turns, busy]);
 
   useEffect(() => { onBusyChange(busy); }, [busy, onBusyChange]);
+
+  // Using the toggle is itself a language choice, and the newer one wins: a
+  // request made three questions ago must not override the switch just made.
+  useEffect(() => { replyLang.current = null; }, [lang]);
 
   // Grow the box with the question instead of scrolling a two-line window.
   // Measured twice on purpose: on the first commit the stylesheet is not
@@ -82,52 +122,59 @@ export const ChatPane = forwardRef<ChatHandle, {
     const text = question.trim();
     if (!text || busyRef.current) return;
     busyRef.current = true;
+    // Which conversation this question is being asked in. Checked again on the
+    // way back: everything below only applies if it is still the open one.
+    const asked = epoch.current;
     setError(null);
     setDraft("");
-    setTurns((previous) => [...previous, { role: "user", text }]);
+    applyTurns([...turnsRef.current, { role: "user", text }]);
     setBusy(true);
     try {
-      const reply = await api.chat(text, lang);
-      setTurns((previous) => [
-        ...previous,
+      const reply = await api.chat(text, lang, replyLang.current);
+      if (asked !== epoch.current) return;
+      // Null means nobody has asked for a language yet, so a turn that carries
+      // nothing must not erase a request made earlier.
+      if (reply.reply_lang) replyLang.current = reply.reply_lang;
+      const next: Turn[] = [
+        ...turnsRef.current,
         { role: "assistant", text: reply.answer, reply },
-      ]);
-      onReply(reply);
+      ];
+      applyTurns(next);
+      onReply(reply, next);
     } catch (exception) {
+      if (asked !== epoch.current) return;
       setError(exception instanceof Error ? exception.message : String(exception));
     } finally {
-      busyRef.current = false;
-      setBusy(false);
+      // Only the request the composer is actually waiting on may release it:
+      // a stale one finishing would clear the spinner of the question the user
+      // has since asked in the conversation they moved to.
+      if (asked === epoch.current) {
+        busyRef.current = false;
+        setBusy(false);
+      }
     }
   }
 
   /** Drops the answer and re-sends the question above it, so "ask again" leaves
    *  one exchange rather than stacking a near-duplicate underneath. */
   function retry(index: number) {
-    const question = turns[index - 1];
+    const question = turnsRef.current[index - 1];
     if (!question || question.role !== "user" || busyRef.current) return;
-    setTurns((previous) => previous.slice(0, index - 1));
+    // Not a thread replacement: this is the same conversation, so the epoch
+    // stays put and the answer to the re-sent question is still welcome.
+    applyTurns(turnsRef.current.slice(0, index - 1));
     ask(question.text);
-  }
-
-  function loadTurns(newTurns: Turn[]) {
-    setTurns(newTurns);
-    setError(null);
-  }
-
-  function getTurns(): Turn[] {
-    return turns;
   }
 
   useImperativeHandle(ref, () => ({
     ask,
     reset: () => {
-      setTurns([]);
+      replaceThread([]);
       setDraft("");
-      setError(null);
     },
-    loadTurns,
-    getTurns,
+    // A stored session may predate a field, so treat a missing list as empty
+    // rather than letting the thread render over undefined.
+    loadTurns: (newTurns: Turn[]) => replaceThread(newTurns ?? []),
   }));
 
   return (
@@ -220,7 +267,7 @@ export const ChatPane = forwardRef<ChatHandle, {
                 if (event.key !== "Enter" || event.shiftKey) return;
                 // keyCode 229 is the pre-standard signal for the same thing.
                 if (composing.current || event.nativeEvent.isComposing
-                    || event.keyCode === 229) {
+                  || event.keyCode === 229) {
                   return;
                 }
                 event.preventDefault();
@@ -243,9 +290,9 @@ export const ChatPane = forwardRef<ChatHandle, {
               including the 60-day deadline, which is the sentence that costs
               the user real money if they never read it. It sits under the
               composer because that is the one element that never scrolls away. */}
-          <p className="notice">
+          {/* <p className="notice">
             <strong>{ui(lang, "disclaimerLabel")}</strong> {disclaimer}
-          </p>
+          </p> */}
         </div>
       </div>
     </>

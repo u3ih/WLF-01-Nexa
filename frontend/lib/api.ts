@@ -46,8 +46,10 @@ export const api = {
   scanHistory: () => get<any>("/api/monitor/history"),
   audit: (lang: Lang, limit = 100) =>
     get<any>(`/api/audit?lang=${lang}&limit=${limit}`),
-  chat: (question: string, lang: Lang) =>
-    post<ChatReply>("/api/chat", { question, lang }),
+  /** `replyLang` carries forward a language the user asked for earlier — the
+   *  chat endpoint holds no session, so the client remembers it. */
+  chat: (question: string, lang: Lang, replyLang?: Lang | null) =>
+    post<ChatReply>("/api/chat", { question, lang, reply_lang: replyLang ?? null }),
   scan: (lang: Lang) => post<any>("/api/monitor/scan", { lang, trigger: "ui" }),
   draftReport: (lang: Lang, period: string, key?: string) =>
     post<any>("/api/report/draft", { lang, period, key }),

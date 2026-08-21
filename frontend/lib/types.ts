@@ -11,7 +11,14 @@ export interface ChatSession {
   title: string;
   created_at: string;
   updated_at: string;
-  messages: Turn[];
+  /** Only the single-session endpoint returns the turns. The list omits them:
+   *  each answer carries the evidence behind it, so a history of any length
+   *  would be megabytes to draw a sidebar. */
+  messages?: Turn[];
+  /** Stands in for the turns in the list: how many questions were asked, and
+   *  the first of them. */
+  message_count?: number;
+  preview?: string | null;
   lang: Lang;
 }
 
@@ -55,7 +62,13 @@ export interface ChatReply {
   routed_by?: string;
   source: string;
   refused: boolean;
+  /** The language the answer is written in — detected from the question, so it
+   *  can differ from the UI toggle in `ui_lang`. */
   lang: Lang;
+  ui_lang?: Lang;
+  /** Set once the user has asked for a language; send it back with the next
+   *  question so the request outlives the turn it was made in. */
+  reply_lang?: Lang | null;
   disclaimer: string;
   labels: Record<string, string>;
   guardrail: {

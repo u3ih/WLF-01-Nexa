@@ -41,6 +41,16 @@ JSON_BLOCK = re.compile(r"\{.*\}", re.S)
 STATUS_TTL_SECONDS = 30.0
 DOWN_STATUS_TTL_SECONDS = 3.0
 
+# Every reference shape the exports actually carry, as one alternation so the
+# router patterns and `extract_args` cannot drift apart. The real Wealify export
+# uses WLF15-CD-0001 / WLF15-WL-0002 for statement rows and TW082026786190 /
+# WCW082126621016 for wallet top-ups; the generated fixture uses ACC-0001 /
+# CRD-0001. A pattern that knows only the fixture shapes reads a real reference
+# as prose and drops it.
+REF_PATTERN = (r"(?:[A-Z]{2,5}\d{1,4}-[A-Z]{2,3}-\d{2,6}"
+               r"|[A-Z]{2,5}\d{6,}"
+               r"|(?:ACC|CRD)-\d{3,5})")
+
 # Tier-3 router. Order matters: the first pattern that matches wins.
 KEYWORD_ROUTES: list[tuple[str, str]] = [
     (r"(gửi|soạn).{0,25}(báo cáo).{0,25}(email|mail)|email me the report|"
@@ -51,8 +61,9 @@ KEYWORD_ROUTES: list[tuple[str, str]] = [
     # An explicit "what is this <amount|reference>" outranks the email table,
     # because explain_charge already reports the email match for that charge.
     (r"(là gì|nghĩa là gì|of what|what is|what'?s|giải thích).{0,40}"
-     r"((\$|usd)\s?\d|\d+[.,]\d{2}|(acc|crd)-\d+)|"
-     r"((\$|usd)\s?\d|\d+[.,]\d{2}|(acc|crd)-\d+).{0,40}(là gì|what is|what'?s)",
+     r"((\$|usd)\s?\d|\d+[.,]\d{2}|" + REF_PATTERN + r")|"
+     r"((\$|usd)\s?\d|\d+[.,]\d{2}|" + REF_PATTERN + r")"
+     r".{0,40}(là gì|what is|what'?s)",
      "explain_charge"),
     (r"nhắc hạn|hạn khiếu nại|reminder|deadline", "get_reminders"),
     (r"rà soát lại|quét lại|kiểm tra lại|có gì mới|check again|scan again|r?e-?scan|any new|new (issues?|findings?|alerts?)",
@@ -120,7 +131,7 @@ ARG_PRESETS: dict[str, dict[str, Any]] = {
 }
 
 AMOUNT_IN_TEXT = re.compile(r"(?<![\d.])(\d{1,6}[.,]\d{2})(?![\d])")
-REF_IN_TEXT = re.compile(r"\b((?:ACC|CRD)-\d{3,5})\b", re.I)
+REF_IN_TEXT = re.compile(rf"\b({REF_PATTERN})\b", re.I)
 
 # Period phrasings a person actually types. The model resolves these when one is
 # reachable; these patterns are the offline fallback, and the shape check on
@@ -276,6 +287,10 @@ def extract_args(question: str) -> dict[str, Any]:
     ref = REF_IN_TEXT.search(question)
     if ref:
         args["ref"] = ref.group(1).upper()
+        # `search_transactions` takes no `ref`, and "tìm giao dịch có mã X" is
+        # phrased as a search. Without this the reference is dropped on the way
+        # to the tool and the listing comes back unfiltered.
+        args["query"] = args["ref"]
     amount = AMOUNT_IN_TEXT.search(question)
     if amount:
         args["amount"] = float(amount.group(1).replace(",", "."))
@@ -294,7 +309,9 @@ def extract_args(question: str) -> dict[str, Any]:
                      "t-mobile", "tmobile"):
         if merchant in lowered:
             args["merchant"] = merchant
-            args["query"] = merchant
+            # A reference is the narrower filter of the two, so it keeps the
+            # query slot when the question names both.
+            args.setdefault("query", merchant)
             break
     return args
 
