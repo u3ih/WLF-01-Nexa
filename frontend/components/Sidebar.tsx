@@ -75,7 +75,7 @@ export function Sidebar({
           </span>
         </div>
         <button className="icon-btn" onClick={onHide} title={ui(lang, "hideRail")}
-                aria-label={ui(lang, "hideRail")}>
+          aria-label={ui(lang, "hideRail")}>
           <PanelLeft size={18} />
         </button>
       </div>
@@ -89,9 +89,9 @@ export function Sidebar({
         {/* Chat History Section */}
         <div className="rail-group">
           <div className="rail-label rail-label-click"
-               onClick={() => setHistoryOpen(!historyOpen)}
-               role="button" tabIndex={0}
-               onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") setHistoryOpen(!historyOpen); }}>
+            onClick={() => setHistoryOpen(!historyOpen)}
+            role="button" tabIndex={0}
+            onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") setHistoryOpen(!historyOpen); }}>
             <span>{ui(lang, "history")}</span>
             <span className={`rail-chevron ${historyOpen ? "open" : ""}`}>&#9662;</span>
           </div>
@@ -101,57 +101,57 @@ export function Sidebar({
                 <div className="rail-empty">{ui(lang, "historyEmpty")}</div>
               ) : (
                 <>
-                {history.slice(0, 8).map((session) => (
-                  <div
-                    key={session.id}
-                    className={`rail-item rail-history-item ${activeSessionId === session.id ? "active" : ""}`}
-                    onClick={() => onSelectHistory(session)}
-                    role="button" tabIndex={0}
-                    onKeyDown={(e) => { if (e.key === "Enter") onSelectHistory(session); }}
-                  >
-                    <Clock size={15} className="rail-history-icon" />
-                    <span className="rail-item-text rail-history-text">
-                      <span className="rail-history-title">{session.title || ui(lang, "newChat")}</span>
-                      <span className="rail-history-time">{timeAgo(session.updated_at, lang)}</span>
-                    </span>
-                    {confirmDeleteId === session.id ? (
-                      <button
-                        className="rail-history-delete confirm"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          onDeleteHistory(session.id);
-                          setConfirmDeleteId(null);
-                        }}
-                        title={ui(lang, "deleteConfirm")}
-                        aria-label={ui(lang, "deleteConfirm")}
-                      >
-                        {ui(lang, "deleteHistory")}
-                      </button>
-                    ) : (
-                      <button
-                        className="rail-history-delete"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          setConfirmDeleteId(session.id);
-                        }}
-                        title={ui(lang, "deleteHistory")}
-                        aria-label={ui(lang, "deleteHistory")}
-                      >
-                        <Trash2 size={13} />
-                      </button>
-                    )}
-                  </div>
-                ))}
-                {history.length > 8 && (
-                  <button
-                    className="rail-item rail-view-all"
-                    onClick={onShowHistoryModal}
-                  >
-                    <span className="rail-item-text">
-                      {lang === "vi" ? "Xem tất cả..." : "View all..."}
-                    </span>
-                  </button>
-                )}
+                  {history.slice(0, 8).map((session) => (
+                    <div
+                      key={session.id}
+                      className={`rail-item rail-history-item ${activeSessionId === session.id ? "active" : ""}`}
+                      onClick={() => onSelectHistory(session)}
+                      role="button" tabIndex={0}
+                      onKeyDown={(e) => { if (e.key === "Enter") onSelectHistory(session); }}
+                    >
+                      <Clock size={15} className="rail-history-icon" />
+                      <span className="rail-item-text rail-history-text">
+                        <span className="rail-history-title">{session.title || ui(lang, "newChat")}</span>
+                        <span className="rail-history-time">{timeAgo(session.updated_at, lang)}</span>
+                      </span>
+                      {confirmDeleteId === session.id ? (
+                        <button
+                          className="rail-history-delete confirm"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            onDeleteHistory(session.id);
+                            setConfirmDeleteId(null);
+                          }}
+                          title={ui(lang, "deleteConfirm")}
+                          aria-label={ui(lang, "deleteConfirm")}
+                        >
+                          {ui(lang, "deleteHistory")}
+                        </button>
+                      ) : (
+                        <button
+                          className="rail-history-delete"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setConfirmDeleteId(session.id);
+                          }}
+                          title={ui(lang, "deleteHistory")}
+                          aria-label={ui(lang, "deleteHistory")}
+                        >
+                          <Trash2 size={13} />
+                        </button>
+                      )}
+                    </div>
+                  ))}
+                  {history.length > 8 && (
+                    <button
+                      className="rail-item rail-view-all"
+                      onClick={onShowHistoryModal}
+                    >
+                      <span className="rail-item-text">
+                        {lang === "vi" ? "Xem tất cả..." : "View all..."}
+                      </span>
+                    </button>
+                  )}
                 </>
               )}
             </>
@@ -160,7 +160,7 @@ export function Sidebar({
 
         {/* One unlabelled list: the three refusal probes sit among the ordinary
             questions, because a product does not advertise what it will decline. */}
-        <div className="rail-group">
+        {/* <div className="rail-group">
           <div className="rail-label">{ui(lang, "suggestions")}</div>
           {ALL_QUESTIONS[lang].map((question) => (
             <button
@@ -174,7 +174,7 @@ export function Sidebar({
               <span className="rail-item-text">{question}</span>
             </button>
           ))}
-        </div>
+        </div> */}
 
         {account ? (
           <div className="rail-group">
@@ -193,9 +193,8 @@ export function Sidebar({
                 <span>{lang === "vi" ? "Tài khoản" : "Account"}</span>
                 <span className="v mono">
                   {account.virtual_accounts?.length
-                    ? `${account.virtual_accounts.length} ${
-                        lang === "vi" ? "tài khoản nhận" : "receiving"
-                      }`
+                    ? `${account.virtual_accounts.length} ${lang === "vi" ? "tài khoản nhận" : "receiving"
+                    }`
                     : account.account_masked}
                 </span>
               </div>

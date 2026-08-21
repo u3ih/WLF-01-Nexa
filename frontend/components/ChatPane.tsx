@@ -220,7 +220,7 @@ export const ChatPane = forwardRef<ChatHandle, {
                 if (event.key !== "Enter" || event.shiftKey) return;
                 // keyCode 229 is the pre-standard signal for the same thing.
                 if (composing.current || event.nativeEvent.isComposing
-                    || event.keyCode === 229) {
+                  || event.keyCode === 229) {
                   return;
                 }
                 event.preventDefault();
@@ -243,9 +243,9 @@ export const ChatPane = forwardRef<ChatHandle, {
               including the 60-day deadline, which is the sentence that costs
               the user real money if they never read it. It sits under the
               composer because that is the one element that never scrolls away. */}
-          <p className="notice">
+          {/* <p className="notice">
             <strong>{ui(lang, "disclaimerLabel")}</strong> {disclaimer}
-          </p>
+          </p> */}
         </div>
       </div>
     </>

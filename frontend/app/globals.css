@@ -475,6 +475,7 @@ code,
   padding: 7px 10px;
   gap: 8px;
   position: relative;
+  justify-content: space-between;
 }
 
 .rail-history-item.active {
@@ -508,6 +509,7 @@ code,
   flex-direction: column;
   gap: 1px;
   min-width: 0;
+  flex: 1;
 }
 
 .rail-history-title {
@@ -884,16 +886,43 @@ code,
    verdict palette the evidence drawer already uses — one finding, one look,
    whichever side of the screen it appears on.
    ========================================================================== */
-.answer { font-size: var(--fs-msg); line-height: 1.7; word-break: break-word; }
-.answer > * + * { margin-top: 12px; }
-.answer-para { margin: 0; }
-.answer-list { margin: 0; padding-left: 20px; }
-.answer-list li { margin: 4px 0; }
-.answer-list li::marker { color: var(--text-faint); }
-.answer-cards { display: grid; gap: 10px; }
+.answer {
+  font-size: var(--fs-msg);
+  line-height: 1.7;
+  word-break: break-word;
+}
+
+.answer>*+* {
+  margin-top: 12px;
+}
+
+.answer-para {
+  margin: 0;
+}
+
+.answer-list {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.answer-list li {
+  margin: 4px 0;
+}
+
+.answer-list li::marker {
+  color: var(--text-faint);
+}
+
+.answer-cards {
+  display: grid;
+  gap: 10px;
+}
+
 /* .finding carries its own stacking margin for the drawer; the grid gap here
    would double it. */
-.answer-cards > .finding + .finding { margin-top: 0; }
+.answer-cards>.finding+.finding {
+  margin-top: 0;
+}
 
 .answer-item {
   border: 1px solid var(--line);
@@ -903,17 +932,42 @@ code,
   font-size: var(--fs-base);
   line-height: 1.6;
 }
+
 .answer-head {
-  display: flex; flex-wrap: wrap; gap: var(--sp-2); align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-2);
+  align-items: center;
 }
-.answer-title { font-weight: 700; }
-.answer-detail { color: var(--text-dim); margin: 6px 0 0; font-size: var(--fs-sm); }
-.answer-meta { color: var(--text-faint); margin: 4px 0 0; font-size: var(--fs-sm); }
+
+.answer-title {
+  font-weight: 700;
+}
+
+.answer-detail {
+  color: var(--text-dim);
+  margin: 6px 0 0;
+  font-size: var(--fs-sm);
+}
+
+.answer-meta {
+  color: var(--text-faint);
+  margin: 4px 0 0;
+  font-size: var(--fs-sm);
+}
+
 .answer-sources {
-  display: flex; flex-wrap: wrap; gap: 6px; align-items: center;
-  margin: 9px 0 0; font-size: var(--fs-xs);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+  margin: 9px 0 0;
+  font-size: var(--fs-xs);
 }
-.answer-sources > .k { color: var(--text-faint); }
+
+.answer-sources>.k {
+  color: var(--text-faint);
+}
 
 /* The deadline is the one line in a finding that costs real money if it is
    missed, so it reads in the confirm hue rather than as body text. */
@@ -937,17 +991,27 @@ code,
   border-color: color-mix(in srgb, var(--accent) 34%, transparent);
   transition: background .15s, border-color .15s;
 }
+
 .ref-link:hover {
   border-color: var(--accent);
   background: color-mix(in srgb, var(--accent) 16%, transparent);
 }
-.chip .ref-link { font-weight: 600; }
+
+.chip .ref-link {
+  font-weight: 600;
+}
 
 /* Where the reference landed. Held until the next one rather than faded out:
    the reader is comparing the row against the sentence that cited it, and a
    highlight that times out takes the connection with it. */
-tr.row-focus > td { background: var(--accent-soft); }
-tr.row-focus > td:first-child { box-shadow: inset 2px 0 0 var(--accent); }
+tr.row-focus>td {
+  background: var(--accent-soft);
+}
+
+tr.row-focus>td:first-child {
+  box-shadow: inset 2px 0 0 var(--accent);
+}
+
 .finding.row-focus {
   border-color: var(--accent);
   background: var(--accent-soft);
