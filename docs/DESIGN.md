@@ -89,24 +89,50 @@ ATM fee sharing the day with the duplicated wire fee.
 | Card/account leakage | Masking at the boundary; no CVV field exists | `test_masking.py` |
 | Repeat alerts on a schedule | Fingerprint + unique constraint; scan returns only new items | `test_dedupe.py` |
 
-## 5. Theme — "Ledger Ink"
+## 5. Theme — Wealify palette
 
-Dark-first ink navy (`#0b1120`) with cyan accent, plus a light mode; both are
-token-driven in `frontend/app/globals.css`.
+Wealify's signature orange (`#FC6508`) on their near-black / white neutrals, set
+in **Manrope** — the typeface wealify.com uses. The palette follows the
+operating system, with a manual override that wins in both directions; all of it
+is token-driven in `frontend/app/globals.css`.
 
-Two decisions worth stating out loud:
+Manrope is self-hosted from `frontend/public/fonts/` (three variable subsets,
+52 KB total) rather than pulled from a CDN, so the UI still needs no network on
+a judge's machine. The `vietnamese` subset is included deliberately: it carries
+the precomposed diacritics **and** `U+20AB`, the ₫ sign this product prints on
+every figure. Without it Vietnamese text would drop to a fallback face
+mid-sentence. Licensed under SIL OFL 1.1 — `public/fonts/OFL.txt`.
+
+The mark is Nexa's own, drawn in Wealify's construction — thick monoline
+strokes, round caps, the crossing stroke a shade deeper. It is **not** Wealify's
+logo, and that is deliberate: this assistant tells the user, in a notice it may
+not hide, that its findings are *"không phải kết luận chính thức của Wealify"*.
+Wearing their logo would contradict that sentence.
+
+Four decisions worth stating out loud:
 
 1. **No green in the verdict palette.** Green reads as "safe, nothing to do", and
    this assistant is never allowed to imply that. *Định kỳ đã xác định* is indigo
-   (known, not blessed), *Cần bạn tự xác nhận* is amber, *Chưa đủ dữ liệu* is
-   slate. Red appears only for a dispute deadline that has passed — a fact, not a
-   judgement.
-2. **Tabular figures everywhere money appears** (`font-variant-numeric: tabular-nums`,
+   (known, not blessed), *Cần bạn tự xác nhận* is gold, *Chưa đủ dữ liệu* is
+   slate. Rose appears only for a dispute deadline that has passed — a fact, not
+   a judgement.
+2. **Verdict hues are held away from the accent.** Orange sits at hue 23°, so
+   gold is pushed out to 50° and rose down to 347°: a badge carrying a verdict
+   can never be mistaken for something clickable. Amber, the obvious choice for
+   *Cần bạn tự xác nhận*, was rejected for landing at 33–35° — close enough to
+   the accent to blur against it. Every label colour clears WCAG AA (4.5:1)
+   against its background in both themes.
+3. **Wealify's shape language, applied by element size** the way their own site
+   does it: 100px pills for controls, 20px for large surfaces, 14px for dense
+   cards, headings at weight 800. Their buttons are generously padded and set at
+   weight 400 at 16px; ours run at 13px, where 500 is the equivalent.
+4. **Tabular figures everywhere money appears** (`font-variant-numeric: tabular-nums`,
    monospace for amounts and references), so columns align and a wrong digit is
    visible. Fonts come from the system stack, so the UI needs no network.
 
-The disclaimer bar is sticky, has no dismiss control, and is rendered from the
-backend catalog — the same string the API returns with every answer.
+The mandated notice sits under the composer — the one element that never
+scrolls away — has no dismiss control, and is rendered from the backend
+catalog, the same string the API returns with every answer.
 
 ## 6. Known limits
 

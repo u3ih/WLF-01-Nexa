@@ -23,8 +23,6 @@ const UI = {
     greeting: "Chào",
     heroSub: "Mình đọc sao kê tài khoản, sao kê thẻ, ví và hộp thư của bạn, "
       + "rồi chỉ ra khoản nào đáng xem lại. Chỉ đọc — mình không đụng vào tiền.",
-    details: "Chi tiết",
-    collapse: "Thu gọn",
     copy: "Sao chép",
     copied: "Đã chép",
     retry: "Hỏi lại",
@@ -149,8 +147,6 @@ const UI = {
     greeting: "Hello",
     heroSub: "I read your account statement, card statement, wallet and mailbox, "
       + "then point out what deserves a second look. Read-only — I never touch money.",
-    details: "Details",
-    collapse: "Hide",
     copy: "Copy",
     copied: "Copied",
     retry: "Ask again",

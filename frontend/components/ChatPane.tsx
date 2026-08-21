@@ -35,17 +35,15 @@ export const ChatPane = forwardRef<ChatHandle, {
   lang: Lang;
   ownerName: string | undefined;
   disclaimer: string;
-  fxNote: string | undefined;
   onReply: (reply: ChatReply) => void;
   onBusyChange: (busy: boolean) => void;
 }>(function ChatPane(
-  { lang, ownerName, disclaimer, fxNote, onReply, onBusyChange }, ref,
+  { lang, ownerName, disclaimer, onReply, onBusyChange }, ref,
 ) {
   const [turns, setTurns] = useState<Turn[]>([]);
   const [draft, setDraft] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [noticeOpen, setNoticeOpen] = useState(false);
   const threadRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   // Vietnamese input goes through an IME. Enter pressed mid-composition is the
@@ -123,12 +121,6 @@ export const ChatPane = forwardRef<ChatHandle, {
       setError(null);
     },
   }));
-
-  // The mandated notice never leaves the screen; the rest of it is one click
-  // away rather than a permanent banner across the top of the product.
-  const cut = disclaimer.indexOf(". ");
-  const noticeLead = cut > 0 ? disclaimer.slice(0, cut + 1) : disclaimer;
-  const noticeRest = cut > 0 ? disclaimer.slice(cut + 1).trim() : "";
 
   return (
     <>
@@ -237,20 +229,14 @@ export const ChatPane = forwardRef<ChatHandle, {
             </button>
           </div>
 
+          {/* Whole notice, always. The brief calls it "hiển thị cố định, KHÔNG
+              cho ẩn", and a "details" toggle hides part of it by default —
+              including the 60-day deadline, which is the sentence that costs
+              the user real money if they never read it. It sits under the
+              composer because that is the one element that never scrolls away. */}
           <p className="notice">
-            <strong>{ui(lang, "disclaimerLabel")}</strong> {noticeLead}
-            {noticeRest || fxNote ? (
-              <button className="notice-more" onClick={() => setNoticeOpen(!noticeOpen)}>
-                {noticeOpen ? ui(lang, "collapse") : ui(lang, "details")}
-              </button>
-            ) : null}
+            <strong>{ui(lang, "disclaimerLabel")}</strong> {disclaimer}
           </p>
-          {noticeOpen ? (
-            <p className="notice notice-full">
-              {noticeRest}
-              {fxNote ? <><br />{fxNote}</> : null}
-            </p>
-          ) : null}
         </div>
       </div>
     </>

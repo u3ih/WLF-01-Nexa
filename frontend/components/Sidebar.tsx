@@ -4,6 +4,7 @@ import {
   Languages, Mail, MessageSquare, Monitor, Moon, PanelLeft, Plus, Sun,
 } from "lucide-react";
 
+import { BrandMark } from "@/components/BrandMark";
 import { ALL_QUESTIONS, ui } from "@/lib/i18n";
 import type { Lang, Summary } from "@/lib/types";
 
@@ -46,8 +47,11 @@ export function Sidebar({
     >
       <div className="rail-top">
         <div className="brand">
-          <span className="brand-mark">N</span>
-          <span className="brand-name">Nexa</span>
+          <BrandMark size={30} />
+          <span className="brand-text">
+            <span className="brand-name">Nexa</span>
+            <span className="brand-sub">for Wealify · WLF-01</span>
+          </span>
         </div>
         <button className="icon-btn" onClick={onHide} title={ui(lang, "hideRail")}
                 aria-label={ui(lang, "hideRail")}>
@@ -127,8 +131,6 @@ export function Sidebar({
           </button>
         </div>
 
-        {/* The FX note lives with the rest of the fine print, under the
-            composer, so the rail keeps one line of status and no wall of text. */}
         <p
           className="rail-note"
           title={health?.llm?.detail ?? undefined}
@@ -136,6 +138,14 @@ export function Sidebar({
           {ui(lang, "model")}:{" "}
           {health?.llm?.available ? health.llm.model : ui(lang, "offline")}
         </p>
+        {/* The ₫ rate disclosure sits here rather than under the composer: it
+            is ours to explain, not part of the notice the brief mandates, and
+            that notice now runs in full with nothing folded away beside it. */}
+        {summary?.fx?.note ? (
+          <p className="rail-note rail-note-fx" title={summary.fx.note}>
+            {summary.fx.note}
+          </p>
+        ) : null}
       </div>
     </aside>
   );

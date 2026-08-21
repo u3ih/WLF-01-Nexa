@@ -1,54 +1,106 @@
 /* ============================================================================
-   Ledger Ink — theme for a statement-review assistant.
+   Nexa — theme for a statement-review assistant, on Wealify's palette.
 
-   Three deliberate choices:
-   1. No green anywhere in the verdict palette. Green reads as "safe", and this
+   Four deliberate choices:
+   1. Wealify's signature orange (#FC6508) is the accent, on their near-black /
+      white neutrals. The product belongs to their world, so it wears their
+      colours: brand mark, primary buttons, focus rings, active tabs.
+   2. No green anywhere in the verdict palette. Green reads as "safe", and this
       tool is never allowed to say an account is safe. "Recurring — confirmed"
-      is indigo (known, not blessed), "Needs your confirmation" is amber, and
-      "Not enough data" is slate. Red is reserved for an expired dispute
+      is indigo (known, not blessed), "Needs your confirmation" is gold, and
+      "Not enough data" is slate. Rose is reserved for an expired dispute
       deadline, which is a fact, not a judgement.
-   2. Tabular figures everywhere money appears, so columns of amounts line up
+      The verdict hues are held away from the accent on purpose. Orange sits
+      at hue 23°; gold is pushed out to 50° and rose down to 347°, so a badge
+      carrying a verdict is never mistaken for something clickable. Amber, the
+      obvious choice for "needs your confirmation", was rejected for landing
+      at 33-35° — close enough to the accent to blur against it.
+   3. Tabular figures everywhere money appears, so columns of amounts line up
       and a mistyped digit is visible.
-   3. The palette follows the operating system by default. Tokens are declared
+   4. The palette follows the operating system by default. Tokens are declared
       light-first on :root, re-declared under prefers-color-scheme for the
       system default, and once more under [data-theme] so the manual toggle
       wins in both directions.
+
+   --accent is for fills, borders and rings; --accent-text is the same hue
+   darkened enough to read as text on a light background.
    ========================================================================== */
 
-:root {
-  /* ---- surfaces (light) */
-  --bg: #ffffff;
-  --bg-rail: #f0f4f9;
-  --surface: #ffffff;
-  --surface-raised: #f7f9fc;
-  --surface-sunken: #eef2f8;
-  --line: #d9e1ec;
-  --line-soft: #e8edf5;
+/* Manrope — the typeface wealify.com uses, self-hosted rather than pulled from
+   a CDN so the UI still needs no network on a judge's machine. One variable
+   file per subset, weights 400–800; the vietnamese subset carries the ₫ sign
+   (U+20AB) and the precomposed diacritics, so Vietnamese text never falls back
+   to a different face mid-sentence. SIL OFL 1.1 — see public/fonts/OFL.txt. */
+@font-face {
+  font-family: "Manrope";
+  font-style: normal;
+  font-weight: 400 800;
+  font-display: swap;
+  src: url("/fonts/manrope-vietnamese.woff2") format("woff2");
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169,
+    U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323,
+    U+0329, U+1EA0-1EF9, U+20AB;
+}
+@font-face {
+  font-family: "Manrope";
+  font-style: normal;
+  font-weight: 400 800;
+  font-display: swap;
+  src: url("/fonts/manrope-latin-ext.woff2") format("woff2");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7,
+    U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF,
+    U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: "Manrope";
+  font-style: normal;
+  font-weight: 400 800;
+  font-display: swap;
+  src: url("/fonts/manrope-latin.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+    U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
+    U+2212, U+2215, U+FEFF, U+FFFD;
+}
 
-  /* ---- text (light) */
-  --text: #17202e;
-  --text-dim: #55637a;
-  --text-faint: #7d8899;
+:root {
+  /* ---- surfaces (light)
+     Three zones the eye can name without looking for a border: the rail and
+     the evidence drawer are "chrome" on a warm ground, the conversation is the
+     white page between them. The ground is warm rather than neutral grey so it
+     sits under Wealify's orange without going cold. */
+  --bg: #ffffff;
+  --bg-rail: #f2f0ee;
+  --surface: #ffffff;
+  --surface-raised: #ffffff;
+  --surface-sunken: #e9e6e3;
+  --line: #dcd8d4;
+  --line-soft: #e6e2de;
+
+  /* ---- text (light)
+     Wealify's grey is #757575, which they set on white. Ours has to clear AA on
+     the darkest ground it lands on — the composer at #e9e6e3 — where #757575
+     only reaches 3.71:1. #666 clears every surface here. */
+  --text: #0b0b0b;
+  --text-dim: #3f3f3f;
+  --text-faint: #666666;
 
   /* ---- accent (light) */
-  --accent: #0d7490;
-  --accent-soft: #e2f4f9;
+  --accent: #fc6508;
+  --accent-text: #c2410c;
+  --accent-soft: #fff1e8;
   --accent-contrast: #ffffff;
+  --brand-gradient: linear-gradient(308deg, #ff8032 0%, #ff6421 100%);
 
   /* ---- verdict palette (light) — no green, by design */
   --label-recurring: #4f46e5;
-  --label-confirm: #b45309;
-  --label-nodata: #52627a;
-  --danger: #dc2626;
+  --label-confirm: #856f00;
+  --label-nodata: #475569;
+  --danger: #e11d48;
 
-  /* ---- cash-flow accents (light) */
-  --flow-in: #0369a1;
-  --flow-out: #c2410c;
-  --flow-fee: #7e22ce;
 
-  --shadow: 0 1px 2px rgba(15, 26, 46, .05), 0 4px 14px rgba(15, 26, 46, .07);
-  --shadow-lg: 0 12px 40px rgba(15, 26, 46, .16);
-  --scrim: rgba(23, 32, 46, .38);
+  --shadow: 0 1px 2px rgba(11, 11, 11, .05), 0 4px 14px rgba(11, 11, 11, .07);
+  --shadow-lg: 0 12px 40px rgba(11, 11, 11, .16);
+  --scrim: rgba(11, 11, 11, .42);
 
   /* ---- type scale */
   --fs-xs: 11.5px;
@@ -67,15 +119,16 @@
   --sp-6: 32px;
 
   /* ---- geometry */
-  --radius: 14px;
-  --radius-sm: 10px;
-  --radius-pill: 999px;
+  --radius: 20px;
+  --radius-sm: 14px;
+  --radius-pill: 100px;
   --rail-w: 268px;
   --drawer-w: 452px;
   --measure: 768px;
+  --ease: cubic-bezier(.4, 0, .2, 1);
 
-  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Inter,
-    "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+  --font-sans: "Manrope", ui-sans-serif, system-ui, -apple-system, "Segoe UI",
+    Inter, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
   --font-mono: ui-monospace, "SF Mono", "JetBrains Mono", "IBM Plex Mono",
     Menlo, Consolas, monospace;
 
@@ -86,68 +139,66 @@
    "follow the system" default, the attribute serves an explicit choice. */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --bg: #0b1120;
-    --bg-rail: #0f1626;
-    --surface: #111a2b;
-    --surface-raised: #16213a;
-    --surface-sunken: #131d31;
-    --line: #223050;
-    --line-soft: #1a2540;
+    --bg: #0b0b0b;
+    --bg-rail: #171717;
+    --surface: #1c1c1c;
+    --surface-raised: #212121;
+    --surface-sunken: #242424;
+    --line: #333333;
+    --line-soft: #292929;
 
-    --text: #e6edf7;
-    --text-dim: #a3b3cc;
-    --text-faint: #6f83a1;
+    --text: #f5f5f5;
+    --text-dim: #afafaf;
+    --text-faint: #8a8a8a;
 
-    --accent: #22d3ee;
-    --accent-soft: #0d2b36;
-    --accent-contrast: #04222b;
+    --accent: #ff7a2f;
+    --accent-text: #ff8f4d;
+    --accent-soft: #2a1508;
+    --accent-contrast: #1a0700;
+    --brand-gradient: linear-gradient(308deg, #ff8032 0%, #ff6421 100%);
 
     --label-recurring: #818cf8;
-    --label-confirm: #f59e0b;
+    --label-confirm: #facc15;
     --label-nodata: #94a3b8;
-    --danger: #f87171;
+    --danger: #fb7185;
 
-    --flow-in: #38bdf8;
-    --flow-out: #fb923c;
-    --flow-fee: #c084fc;
 
     --shadow: 0 1px 2px rgba(0, 0, 0, .4), 0 6px 20px rgba(0, 0, 0, .26);
     --shadow-lg: 0 16px 48px rgba(0, 0, 0, .5);
-    --scrim: rgba(3, 7, 15, .58);
+    --scrim: rgba(0, 0, 0, .62);
 
     color-scheme: dark;
   }
 }
 
 :root[data-theme="dark"] {
-  --bg: #0b1120;
-  --bg-rail: #0f1626;
-  --surface: #111a2b;
-  --surface-raised: #16213a;
-  --surface-sunken: #131d31;
-  --line: #223050;
-  --line-soft: #1a2540;
+  --bg: #0b0b0b;
+  --bg-rail: #171717;
+  --surface: #1c1c1c;
+  --surface-raised: #212121;
+  --surface-sunken: #242424;
+  --line: #333333;
+  --line-soft: #292929;
 
-  --text: #e6edf7;
-  --text-dim: #a3b3cc;
-  --text-faint: #6f83a1;
+  --text: #f5f5f5;
+  --text-dim: #afafaf;
+  --text-faint: #8a8a8a;
 
-  --accent: #22d3ee;
-  --accent-soft: #0d2b36;
-  --accent-contrast: #04222b;
+  --accent: #ff7a2f;
+  --accent-text: #ff8f4d;
+  --accent-soft: #2a1508;
+  --accent-contrast: #1a0700;
+  --brand-gradient: linear-gradient(308deg, #ff8032 0%, #ff6421 100%);
 
   --label-recurring: #818cf8;
-  --label-confirm: #f59e0b;
+  --label-confirm: #facc15;
   --label-nodata: #94a3b8;
-  --danger: #f87171;
+  --danger: #fb7185;
 
-  --flow-in: #38bdf8;
-  --flow-out: #fb923c;
-  --flow-fee: #c084fc;
 
   --shadow: 0 1px 2px rgba(0, 0, 0, .4), 0 6px 20px rgba(0, 0, 0, .26);
   --shadow-lg: 0 16px 48px rgba(0, 0, 0, .5);
-  --scrim: rgba(3, 7, 15, .58);
+  --scrim: rgba(0, 0, 0, .62);
 
   color-scheme: dark;
 }
@@ -166,7 +217,7 @@ html, body {
 }
 
 button, input, textarea, select { font: inherit; color: inherit; }
-a { color: var(--accent); }
+a { color: var(--accent-text); }
 
 .mono, .amount, code, .ref {
   font-family: var(--font-mono);
@@ -196,7 +247,11 @@ a { color: var(--accent); }
   background: var(--scrim);
   border: 0;
   padding: 0;
+  opacity: 0;
+  transition: opacity .26s var(--ease);
 }
+.scrim[data-open="true"] { opacity: 1; }
+.scrim[data-open="false"] { pointer-events: none; }
 
 /* ------------------------------------------------------------------- rail */
 
@@ -208,9 +263,9 @@ a { color: var(--accent); }
   gap: var(--sp-3);
   padding: var(--sp-3) var(--sp-3) var(--sp-2);
   background: var(--bg-rail);
-  border-right: 1px solid var(--line-soft);
+  border-right: 1px solid var(--line);
   overflow: hidden;
-  transition: margin-left .22s ease;
+  transition: margin-left .26s var(--ease);
 }
 .rail[data-open="false"] { margin-left: calc(var(--rail-w) * -1); }
 
@@ -220,15 +275,23 @@ a { color: var(--accent); }
   justify-content: space-between;
   gap: var(--sp-2);
 }
-.brand { display: flex; align-items: center; gap: 9px; min-width: 0; }
-.brand-mark {
-  width: 28px; height: 28px; border-radius: 9px;
-  background: linear-gradient(140deg, var(--accent), var(--label-recurring));
-  display: grid; place-items: center;
-  color: #fff; font-weight: 700; font-size: 14px;
-  flex-shrink: 0;
+.brand { display: flex; align-items: center; gap: 8px; min-width: 0; }
+.brand svg { flex-shrink: 0; }
+.brand-text { display: flex; flex-direction: column; min-width: 0; }
+/* Wealify sets its wordmark in heavy caps with open tracking. */
+.brand-name {
+  font-weight: 800;
+  font-size: 16px;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+  line-height: 1.15;
 }
-.brand-name { font-weight: 650; letter-spacing: -.01em; font-size: var(--fs-lg); }
+.brand-sub {
+  color: var(--text-faint);
+  font-size: 10.5px;
+  letter-spacing: .02em;
+  white-space: nowrap;
+}
 
 .rail-scroll {
   /* min-height:0 defeats the flex default of min-height:auto, which would let
@@ -272,7 +335,7 @@ a { color: var(--accent); }
 .rail-item:hover:not(:disabled) { background: var(--surface-sunken); color: var(--text); }
 .rail-item:disabled { opacity: .45; cursor: not-allowed; }
 .rail-item svg { flex-shrink: 0; color: var(--text-faint); }
-.rail-item:hover:not(:disabled) svg { color: var(--accent); }
+.rail-item:hover:not(:disabled) svg { color: var(--accent-text); }
 .rail-item-text {
   overflow: hidden;
   text-overflow: ellipsis;
@@ -291,7 +354,7 @@ a { color: var(--accent); }
   box-shadow: var(--shadow);
 }
 .rail-new:hover { background: var(--surface); border-color: var(--accent); }
-.rail-new svg { color: var(--accent); }
+.rail-new svg { color: var(--accent-text); }
 
 .rail-foot {
   display: flex;
@@ -316,6 +379,8 @@ a { color: var(--accent); }
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
+/* The rate disclosure is a sentence longer; full text in the title attribute. */
+.rail-note-fx { -webkit-line-clamp: 3; line-clamp: 3; opacity: .85; }
 
 /* Account identity: masked at the boundary, never the full number. */
 .acct {
@@ -361,7 +426,7 @@ a { color: var(--accent); }
   gap: var(--sp-2);
   padding: 10px var(--sp-4);
   min-height: 56px;
-  border-bottom: 1px solid var(--line-soft);
+  border-bottom: 1px solid var(--line);
 }
 .convo-title {
   font-weight: 600;
@@ -399,7 +464,7 @@ a { color: var(--accent); }
 .turn-ai { display: grid; grid-template-columns: 28px 1fr; gap: var(--sp-3); }
 .ai-mark {
   width: 28px; height: 28px; border-radius: 50%;
-  background: linear-gradient(140deg, var(--accent), var(--label-recurring));
+  background: var(--brand-gradient);
   display: grid; place-items: center;
   color: #fff; font-weight: 700; font-size: 12px;
   margin-top: 2px;
@@ -423,13 +488,13 @@ a { color: var(--accent); }
 .prose li > p { margin: 0; }
 .prose li::marker { color: var(--text-faint); }
 .prose h1, .prose h2, .prose h3, .prose h4 {
-  margin: 20px 0 8px; font-weight: 650; line-height: 1.35; letter-spacing: -.01em;
+  margin: 20px 0 8px; font-weight: 700; line-height: 1.35; letter-spacing: -.005em;
 }
 .prose h1 { font-size: 20px; }
 .prose h2 { font-size: 18px; }
 .prose h3 { font-size: 16.5px; }
 .prose h4 { font-size: var(--fs-msg); }
-.prose strong { font-weight: 650; }
+.prose strong { font-weight: 700; }
 .prose blockquote {
   margin: 0 0 12px; padding-left: 12px;
   border-left: 2px solid var(--line); color: var(--text-dim);
@@ -454,7 +519,7 @@ a { color: var(--accent); }
 /* A model-authored table is the one thing here wider than the column. */
 .prose-table { overflow-x: auto; margin: 0 0 12px; }
 .prose-table table { min-width: 100%; }
-.prose-table th { position: static; }
+.prose-table th { position: static; background: var(--bg); }
 
 /* ---------------------------------------------------------- safety boundary */
 
@@ -476,7 +541,7 @@ a { color: var(--accent); }
 .boundary-hard .boundary-head { color: var(--label-confirm); }
 .boundary-soft .boundary-head { color: var(--label-nodata); }
 .boundary-head svg { flex-shrink: 0; }
-.boundary-title { font-weight: 650; font-size: var(--fs-base); }
+.boundary-title { font-weight: 700; font-size: var(--fs-base); }
 .boundary-next {
   display: flex; align-items: flex-start; gap: 8px;
   width: 100%; margin-top: 12px; padding: 9px 12px;
@@ -491,7 +556,7 @@ a { color: var(--accent); }
   transition: border-color .15s;
 }
 .boundary-next:hover { border-color: var(--accent); }
-.boundary-next svg { color: var(--accent); margin-top: 2px; flex-shrink: 0; }
+.boundary-next svg { color: var(--accent-text); margin-top: 2px; flex-shrink: 0; }
 .boundary-next-k { color: var(--text-faint); }
 
 /* ------------------------------------------------------------ message actions */
@@ -512,7 +577,7 @@ a { color: var(--accent); }
   transition: background .14s, color .14s;
 }
 .act:hover { background: var(--surface-sunken); color: var(--text-dim); }
-.act[aria-pressed="true"] { background: var(--accent-soft); color: var(--accent); }
+.act[aria-pressed="true"] { background: var(--accent-soft); color: var(--accent-text); }
 .actions .badge { margin-left: 6px; }
 .thinking { display: flex; align-items: center; gap: 9px; color: var(--text-dim);
   font-size: var(--fs-sm); }
@@ -521,13 +586,13 @@ a { color: var(--accent); }
 
 .hero { padding: 4vh 0 var(--sp-5); }
 .hero-title {
-  font-size: clamp(26px, 3.6vw, 38px);
-  font-weight: 600;
-  letter-spacing: -.025em;
+  font-size: clamp(28px, 3.8vw, 42px);
+  font-weight: 800;
+  letter-spacing: -.005em;
   /* Vietnamese stacks diacritics above capitals; background-clip:text crops
      anything that overflows the line box, so the extra headroom is load-bearing. */
   line-height: 1.32;
-  background: linear-gradient(96deg, var(--accent), var(--label-recurring) 78%);
+  background: linear-gradient(96deg, #fc6508 0%, #ffa14e 90%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -574,7 +639,7 @@ a { color: var(--accent); }
   width: 30px; height: 30px;
   border-radius: 50%;
   background: var(--accent-soft);
-  color: var(--accent);
+  color: var(--accent-text);
 }
 
 /* ------------------------------------------------------------------ composer */
@@ -623,34 +688,37 @@ a { color: var(--accent); }
 
 /* Mandated notice. Always on screen, no dismiss control — it sits under the
    composer, which is the one element that never scrolls away. */
+/* Runs to three lines and stays there. Left-aligned rather than centred
+   because a centred three-line paragraph is harder to read, and this one is
+   meant to be read. */
 .notice {
-  margin-top: 9px;
+  margin: 10px 0 0;
+  padding: 0 2px;
   color: var(--text-faint);
   font-size: var(--fs-xs);
-  line-height: 1.5;
-  text-align: center;
+  line-height: 1.55;
+  text-wrap: pretty;
 }
-.notice strong { color: var(--label-confirm); font-weight: 600; }
-.notice-more {
-  border: 0; background: none; padding: 0 0 0 4px;
-  color: var(--accent); cursor: pointer;
-  font-size: var(--fs-xs); text-decoration: underline;
-}
-.notice-full { text-align: left; margin-top: 6px; color: var(--text-dim); }
+.notice strong { color: var(--label-confirm); font-weight: 700; }
 
 /* -------------------------------------------------------------------- drawer */
 
+/* Stays mounted once opened so closing can animate too; a conditionally
+   rendered panel can only ever animate its entrance. */
 .drawer {
   flex: 0 0 var(--drawer-w);
   width: var(--drawer-w);
   display: flex;
   flex-direction: column;
   min-width: 0;
-  background: var(--surface);
-  border-left: 1px solid var(--line-soft);
-  animation: drawer-in .2s ease;
+  background: var(--bg-rail);
+  border-left: 1px solid var(--line);
+  transition: margin-right .26s var(--ease), transform .26s var(--ease);
 }
-@keyframes drawer-in { from { opacity: 0; transform: translateX(14px); } }
+.drawer[data-open="false"] {
+  margin-right: calc(var(--drawer-w) * -1);
+  pointer-events: none;
+}
 
 .drawer-head {
   display: flex;
@@ -658,7 +726,7 @@ a { color: var(--accent); }
   gap: var(--sp-2);
   padding: 10px var(--sp-3) 10px var(--sp-4);
   min-height: 56px;
-  border-bottom: 1px solid var(--line-soft);
+  border-bottom: 1px solid var(--line);
 }
 .drawer-title { font-weight: 600; font-size: var(--fs-base); margin-right: auto; }
 .drawer-body { flex: 1; overflow: hidden; display: flex; flex-direction: column; }
@@ -686,7 +754,9 @@ a { color: var(--accent); }
     width: min(var(--drawer-w), 100%);
     z-index: 50;
     box-shadow: var(--shadow-lg);
+    margin-right: 0;
   }
+  .drawer[data-open="false"] { margin-right: 0; transform: translateX(100%); }
   .scrim-drawer { display: block; z-index: 45; }
 }
 
@@ -700,7 +770,7 @@ a { color: var(--accent); }
   /* Not chosen yet: open on a desktop, closed here. */
   .rail[data-open="default"] { margin-left: calc(var(--rail-w) * -1); }
   .rail[data-open="default"] ~ .workspace .rail-toggle { display: grid; }
-  .rail[data-open="true"] ~ .scrim-rail { display: block; z-index: 55; }
+  .scrim-rail { display: block; z-index: 55; }
   .thread { padding: var(--sp-4) var(--sp-3) var(--sp-2); }
   .composer-wrap { padding: var(--sp-2) var(--sp-3) var(--sp-3); }
   .convo-head { padding: 8px var(--sp-3); min-height: 52px; }
@@ -729,7 +799,7 @@ a { color: var(--accent); }
   padding: 11px var(--sp-4);
   border-bottom: 1px solid var(--line-soft);
 }
-.card-title { font-weight: 620; font-size: var(--fs-base); }
+.card-title { font-weight: 700; font-size: var(--fs-base); }
 .card-body { padding: var(--sp-3) var(--sp-4); }
 
 .btn {
@@ -737,10 +807,11 @@ a { color: var(--accent); }
   background: var(--surface-raised);
   border: 1px solid var(--line);
   color: var(--text);
-  padding: 7px 13px;
+  padding: 8px 18px;
   border-radius: var(--radius-pill);
   cursor: pointer;
   font-size: var(--fs-sm);
+  font-weight: 500;
   transition: border-color .15s, background .15s, transform .05s;
 }
 .btn:hover:not(:disabled) { border-color: var(--accent); }
@@ -753,7 +824,7 @@ a { color: var(--accent); }
   font-weight: 600;
 }
 .btn-ghost { background: transparent; }
-.btn-sm { padding: 5px 11px; font-size: var(--fs-xs); }
+.btn-sm { padding: 5px 14px; font-size: var(--fs-xs); }
 
 /* Square icon button — the rail, the two headers and the composer all use it. */
 .icon-btn {
@@ -769,7 +840,7 @@ a { color: var(--accent); }
 }
 .icon-btn:hover:not(:disabled) { background: var(--surface-sunken); color: var(--text); }
 .icon-btn:disabled { opacity: .4; cursor: not-allowed; }
-.icon-btn[aria-pressed="true"] { background: var(--accent-soft); color: var(--accent); }
+.icon-btn[aria-pressed="true"] { background: var(--accent-soft); color: var(--accent-text); }
 
 .badge {
   display: inline-flex; align-items: center; gap: 5px;
@@ -836,7 +907,7 @@ a { color: var(--accent); }
 }
 .tab:hover { color: var(--text); background: var(--surface-sunken); }
 .tab[aria-selected="true"] {
-  color: var(--accent);
+  color: var(--accent-text);
   background: var(--accent-soft);
   border-color: color-mix(in srgb, var(--accent) 30%, transparent);
   font-weight: 600;
@@ -880,7 +951,7 @@ th {
   text-transform: uppercase;
   letter-spacing: .04em;
   position: sticky; top: 0;
-  background: var(--surface);
+  background: var(--bg-rail);
 }
 tbody tr:hover { background: var(--surface-sunken); }
 td.num, th.num { text-align: right; font-family: var(--font-mono);
@@ -900,7 +971,7 @@ td.num, th.num { text-align: right; font-family: var(--font-mono);
 .finding + .finding { margin-top: 10px; }
 .finding-head { display: flex; flex-wrap: wrap; gap: var(--sp-2); align-items: center;
   justify-content: space-between; }
-.finding-title { font-weight: 620; font-size: var(--fs-base); }
+.finding-title { font-weight: 700; font-size: var(--fs-base); }
 .finding-detail { color: var(--text-dim); margin-top: 6px; font-size: var(--fs-sm); }
 .finding-next { margin-top: 8px; font-size: var(--fs-sm);
   border-left: 2px solid var(--accent); padding-left: 10px; }
@@ -952,7 +1023,7 @@ td.num, th.num { text-align: right; font-family: var(--font-mono);
 }
 .rule-hard .rule-head svg { color: var(--label-confirm); }
 .rule-soft .rule-head svg { color: var(--label-nodata); }
-.rule-title { font-weight: 620; font-size: var(--fs-base); margin-right: auto; }
+.rule-title { font-weight: 700; font-size: var(--fs-base); margin-right: auto; }
 .rule-why {
   margin: 7px 0 0;
   color: var(--text-dim);

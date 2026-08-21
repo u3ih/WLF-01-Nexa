@@ -36,6 +36,9 @@ export default function Page() {
   // phone. Picking a boolean here would need the viewport width during SSR.
   const [railOpen, setRailOpen] = useState<boolean | null>(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
+  // Mounted on first open and kept from then on, so closing animates too. It
+  // starts unmounted so the evidence endpoints are not called on page load.
+  const [drawerMounted, setDrawerMounted] = useState(false);
   const chat = useRef<ChatHandle>(null);
 
   // The inline script in layout.tsx already put the stored choice on <html>
@@ -60,6 +63,10 @@ export default function Page() {
   useEffect(() => {
     document.documentElement.lang = lang;
   }, [lang]);
+
+  useEffect(() => {
+    if (drawerOpen) setDrawerMounted(true);
+  }, [drawerOpen]);
 
   const load = useCallback(async () => {
     setError(null);
@@ -136,8 +143,10 @@ export default function Page() {
       />
       <button
         className="scrim scrim-rail"
+        data-open={railOpen === true}
         onClick={() => setRailOpen(false)}
         aria-label={ui(lang, "hideRail")}
+        tabIndex={railOpen === true ? 0 : -1}
       />
 
       <div className="workspace">
@@ -174,20 +183,25 @@ export default function Page() {
             lang={lang}
             ownerName={summary?.account?.owner_name}
             disclaimer={summary?.disclaimer ?? ""}
-            fxNote={summary?.fx?.note}
             onReply={handleReply}
             onBusyChange={setChatBusy}
           />
         </div>
 
-        {drawerOpen ? (
+        {drawerMounted ? (
           <>
             <button
               className="scrim scrim-drawer"
+              data-open={drawerOpen}
               onClick={() => setDrawerOpen(false)}
               aria-label={ui(lang, "closeEvidence")}
+              tabIndex={drawerOpen ? 0 : -1}
             />
-            <section className="drawer">
+            <section
+              className="drawer"
+              data-open={drawerOpen}
+              aria-hidden={!drawerOpen}
+            >
               <div className="drawer-head">
                 <span className="drawer-title">{ui(lang, "evidence")}</span>
                 <button
