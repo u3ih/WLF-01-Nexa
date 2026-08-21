@@ -33,6 +33,16 @@ class Settings(BaseSettings):
 
     ai_url: str = "http://localhost:11434"
     ai_model: str = "gemma4:latest"
+    # Which transport talks to the model: "ollama", "openai" (any
+    # OpenAI-compatible endpoint), or "auto" — decided from the URL shape and
+    # whether a key is configured, then confirmed by probing.
+    ai_provider: str = "auto"
+    # Hosted endpoints need a bearer token. It lives in the environment only;
+    # nothing here is ever committed, logged or sent to the browser.
+    ai_api_key: str = ""
+    # "auto" assumes an OpenAI-compatible endpoint can call tools and drops to
+    # JSON routing if it rejects the schema. "true"/"false" force the tier.
+    ai_native_tools: str = "auto"
     offline_mode: bool = False
     llm_timeout_seconds: float = 120.0
     # This is an AI product: the model is expected to be up. Transport

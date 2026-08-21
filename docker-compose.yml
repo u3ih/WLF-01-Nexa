@@ -35,11 +35,16 @@ services:
         condition: service_healthy
     environment:
       NEXA_DATABASE_URL: postgresql://nexa:nexa@postgres:5432/nexa
-      # Ollama runs on the host. For a container to reach it, Ollama must listen
-      # on all interfaces:  OLLAMA_HOST=0.0.0.0 ollama serve
-      # If it cannot be reached, the assistant answers from the engine instead.
+      # A hosted OpenAI-compatible endpoint needs only NEXA_AI_URL + key, and
+      # works from inside the container unchanged. A LOCAL Ollama runs on the
+      # host, so it must listen on all interfaces for a container to reach it:
+      #   OLLAMA_HOST=0.0.0.0 ollama serve
+      # If no model can be reached, the assistant answers from the engine.
+      NEXA_AI_PROVIDER: ${NEXA_AI_PROVIDER:-auto}
       NEXA_AI_URL: ${NEXA_AI_URL:-http://host.docker.internal:11434}
+      NEXA_AI_API_KEY: ${NEXA_AI_API_KEY:-}
       NEXA_AI_MODEL: ${NEXA_AI_MODEL:-gemma4:latest}
+      NEXA_AI_NATIVE_TOOLS: ${NEXA_AI_NATIVE_TOOLS:-auto}
       NEXA_AI_RETRIES: ${NEXA_AI_RETRIES:-2}
       NEXA_OFFLINE_MODE: ${NEXA_OFFLINE_MODE:-false}
       NEXA_MAIL_MODE: ${NEXA_MAIL_MODE:-outbox}
