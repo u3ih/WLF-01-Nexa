@@ -8,7 +8,9 @@ from functools import lru_cache
 from pathlib import Path
 from typing import Any
 
+from .. import fx as fx_module
 from ..config import settings
+from ..fx import FxTable
 from . import anomaly, classify, email_match, reports, subscriptions, tri_source
 from .loader import Dataset, load_dataset
 from .mask import last4, mask_account, mask_card
@@ -32,6 +34,10 @@ class Analysis:
     subs_forecast: dict[str, Any]
     tri: tri_source.TriSourceResult
     findings: list[Finding] = field(default_factory=list)
+    # Published rates, loaded once per analysis. Empty when no backfill has run
+    # or Postgres is down, which makes every conversion decline rather than
+    # guess — the analysis itself never touches the network.
+    fx: FxTable = field(default_factory=lambda: fx_module.EMPTY)
 
     @property
     def statement_date(self) -> date:
@@ -136,7 +142,8 @@ def _sort_key(f: Finding) -> tuple:
     )
 
 
-def run(data_dir: Path | None = None, use_pdf: bool = False) -> Analysis:
+def run(data_dir: Path | None = None, use_pdf: bool = False,
+        fx: FxTable | None = None) -> Analysis:
     ds = load_dataset(data_dir or settings.data_dir, use_pdf=use_pdf)
     cashflow = classify.classify(ds)
     recon = email_match.reconcile(ds)
@@ -156,13 +163,20 @@ def run(data_dir: Path | None = None, use_pdf: bool = False) -> Analysis:
         subs_forecast=subscriptions.forecast(subs),
         tri=tri,
         findings=sorted(findings, key=_sort_key),
+        # Read from Postgres, never fetched here. Callers that must stay offline
+        # and reproducible — every test — pass their own table or none at all.
+        fx=fx if fx is not None else fx_module.EMPTY,
     )
 
 
 @lru_cache
 def cached(use_pdf: bool = False) -> Analysis:
-    """The dataset is static sample data, so one analysis per process is enough."""
-    return run(use_pdf=use_pdf)
+    """The dataset is static sample data, so one analysis per process is enough.
+
+    Rates are the one part that does change: `fx_job` clears this cache after a
+    successful backfill so the next request converts with what was just stored.
+    """
+    return run(use_pdf=use_pdf, fx=fx_module.load_table())
 
 
 def reset_cache() -> None:
@@ -171,4 +185,5 @@ def reset_cache() -> None:
 
 def report_for(analysis: Analysis, kind: str = "month",
                key: str | None = None) -> dict[str, Any]:
-    return reports.build(analysis.ds, kind, key, analysis.subs_forecast)
+    return reports.build(analysis.ds, kind, key, analysis.subs_forecast,
+                         analysis.fx)

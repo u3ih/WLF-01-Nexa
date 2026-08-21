@@ -10,12 +10,28 @@ from typing import Any
 
 from dateutil.relativedelta import relativedelta
 
-from .classify import fee_cents, spend_cents, wallet_only_events
+from .. import fx as fx_module
+from ..fx import FxTable
+from .classify import (
+    currencies_present,
+    fee_cents,
+    flow_cents,
+    row_contributions,
+    spend_cents,
+    transfer_to_card_cents,
+    wallet_only_events,
+)
 from .loader import Dataset
 from .merchants import resolve
 from .models import CardTxnType, TxnType
 
 PERIODS = ("month", "quarter", "year")
+
+# The money buckets, as opposed to the counts and the derived comparisons. Any
+# of them can be zero in the reporting currency while another currency carries
+# a figure, so every one of them needs the same caveat treatment.
+BUCKET_KEYS = ("spend_cents", "fees_cents", "payin_cents", "payout_cents",
+               "transfer_to_card_cents", "transfer_to_wallet_cents")
 
 
 @dataclass
@@ -128,6 +144,16 @@ def _fee_rows(ds: Dataset, period: Period,
             g = grouped[e.descriptor or e.note]
             g["count"] += 1
             g["total_cents"] += e.amount_cents
+    # Fees stated in a column beside the amount rather than on a row of their
+    # own. Listed here too, or the itemised fees would not add up to
+    # `fees_cents` and the difference would look like an arithmetic error.
+    for row in list(ds.card) + wallet_only_events(ds):
+        if row.fee_cents and _counts(row, period, currency):
+            label = (getattr(row, "merchant_raw", "")
+                     or getattr(row, "descriptor", "") or "fee")
+            g = grouped[f"{label} — fee"]
+            g["count"] += 1
+            g["total_cents"] += abs(row.fee_cents)
     return sorted(
         ({"descriptor": k, **v} for k, v in grouped.items()),
         key=lambda r: -r["total_cents"],
@@ -151,26 +177,133 @@ def _period_categories(ds: Dataset, period: Period,
 
 
 def _core(ds: Dataset, period: Period, currency: str = "USD") -> dict[str, Any]:
+    """The five buckets for one period, in one currency.
+
+    Every figure comes from the same helpers `classify._totals` uses. They were
+    once computed here from `ds.account` alone, which the Wealify export does
+    not have — so four of the five buckets read $0 in every period while the
+    wallet and card ledgers carried exactly those flows.
+    """
+    to_card, sent_to_card = transfer_to_card_cents(ds, period.start, period.end,
+                                                   currency)
     return {
         "currency": currency,
         "spend_cents": spend_cents(ds, period.start, period.end, currency),
         "fees_cents": fee_cents(ds, period.start, period.end, currency),
-        "payin_cents": sum(t.amount_cents for t in ds.account
-                           if t.type is TxnType.PAYIN
-                           and _counts(t, period, currency)),
-        "payout_cents": sum(-t.amount_cents for t in ds.account
-                            if t.type is TxnType.PAYOUT
-                            and _counts(t, period, currency)),
-        "transfer_to_card_cents": sum(
-            -t.amount_cents for t in ds.account
-            if t.type is TxnType.TRANSFER_TO_CARD and _counts(t, period, currency)
-        ),
-        "transfer_to_wallet_cents": sum(
-            -t.amount_cents for t in ds.account
-            if t.type is TxnType.TRANSFER_TO_WALLET and _counts(t, period, currency)
-        ),
-        "txn_count": len([1 for t in ds.account if _in(t.day, period)])
-        + len([1 for c in ds.card if _in(c.day, period)]),
+        "payin_cents": flow_cents(ds, "payin", period.start, period.end,
+                                  currency),
+        "payout_cents": flow_cents(ds, "payout", period.start, period.end,
+                                   currency),
+        "transfer_to_card_cents": to_card,
+        "transfer_to_card_sent_cents": sent_to_card,
+        "transfer_to_card_gap_cents": sent_to_card - to_card,
+        "transfer_to_wallet_cents": flow_cents(ds, "transfer_to_wallet",
+                                               period.start, period.end,
+                                               currency),
+        # Counted on the same basis as the money above, and over the same three
+        # ledgers, so the two agree. Counting only the account and card rows
+        # while summing wallet money as well made 17 purchases look like 20
+        # transactions with nothing to show for the other three. The rows the
+        # currency and settlement filters removed are not dropped — `excluded`
+        # below says how many and what they were worth.
+        "txn_count": len([1 for r in _all_rows(ds)
+                          if _counts(r, period, currency)]),
+        "all_txn_count": len([1 for r in _all_rows(ds) if _in(r.day, period)]),
+    }
+
+
+def _all_rows(ds: Dataset) -> list[Any]:
+    """Every row that can carry money, across all three ledgers, counted once."""
+    return list(ds.account) + list(ds.card) + wallet_only_events(ds)
+
+
+def _converted(ds: Dataset, period: Period, code: str, currency: str,
+               fx: FxTable) -> dict[str, Any]:
+    """Restate one currency's buckets in the reporting currency, row by row.
+
+    Per row, not per total: each row is converted at the rate published for its
+    own date, because a bucket whose rows span a month has no single rate. A row
+    the table cannot cover is counted in `missing` and left out of the sum, and
+    `complete` then says the restated figure is partial — a converted total that
+    quietly dropped a row would be worse than no conversion at all.
+    """
+    totals: dict[str, int] = {key: 0 for key in BUCKET_KEYS}
+    used: dict[str, Any] = {}
+    missing = 0
+    for row in _all_rows(ds):
+        if not _counts(row, period, code):
+            continue
+        for bucket, cents in row_contributions(row):
+            done = fx.convert(cents, row.day, code, currency)
+            if done is None:
+                missing += 1
+                continue
+            totals[bucket] += done.cents
+            # The rate actually applied, kept so a restated figure can name its
+            # basis instead of asking the reader to trust it.
+            used[done.quote.quoted_on.isoformat()] = done.quote.as_dict()
+    return {
+        **{key: totals[key] for key in BUCKET_KEYS},
+        "complete": missing == 0 and bool(used),
+        "missing_rows": missing,
+        "rates_used": [used[day] for day in sorted(used)],
+    }
+
+
+def _excluded(ds: Dataset, period: Period, currency: str = "USD",
+              fx: FxTable | None = None) -> dict[str, Any]:
+    """What a single-currency, settled-only report left out.
+
+    "$0.00 in fees" reads as "you paid no fees". If €13.85 of fees were merely
+    not in the reporting currency, or a $18.93 charge is still pending, the
+    report owes the user that sentence rather than a zero that looks like an
+    answer.
+
+    When published rates cover the period, each foreign currency also carries
+    its equivalent in the reporting currency, so the caveat can say how much the
+    excluded rows were actually worth instead of only naming them.
+    """
+    table = fx if fx is not None else fx_module.EMPTY
+    others = []
+    for code in currencies_present(ds):
+        if code == currency:
+            continue
+        # Every bucket, not only spend and fees: a report whose *tiền vào* line
+        # said $0.00 next to an unmentioned EUR payin would mislead in exactly
+        # the same way, and nothing about this export guarantees it never will.
+        buckets = _core(ds, period, code)
+        rows = len([1 for r in _all_rows(ds) if _counts(r, period, code)])
+        if rows or any(buckets[key] for key in BUCKET_KEYS):
+            converted = _converted(ds, period, code, currency, table)
+            others.append({
+                "currency": code, "txn_count": rows,
+                **{key: buckets[key] for key in BUCKET_KEYS},
+                # Absent, not zero, when no rate covers the period: zero would
+                # read as "worth nothing" rather than "not known".
+                "converted": converted if converted["complete"]
+                or converted["rates_used"] else None,
+            })
+
+    # Pending, processing, cancelled and declined together: all four are rows
+    # the period contains but no total may count. Kept under one key rather
+    # than "in flight", because a cancelled row is not in flight — it is over.
+    unsettled = [
+        {"ref": getattr(r, "card_txn_id", None) or getattr(r, "txn_id", "")
+         or getattr(r, "event_id", ""),
+         "status": r.status.value,
+         "in_flight": r.status.is_in_flight,
+         "amount_cents": abs(r.amount_cents),
+         "currency": r.currency,
+         "descriptor": (getattr(r, "merchant_raw", "")
+                        or getattr(r, "description", "")
+                        or getattr(r, "descriptor", ""))}
+        for r in _all_rows(ds)
+        if _in(r.day, period) and not r.status.is_settled
+    ]
+    return {
+        "reporting_currency": currency,
+        "other_currencies": others,
+        "unsettled": sorted(unsettled, key=lambda r: -r["amount_cents"]),
     }
 
 
@@ -184,7 +317,8 @@ def _delta(current: int, previous: int) -> dict[str, Any]:
 
 
 def build(ds: Dataset, kind: str = "month", key: str | None = None,
-          subs_forecast: dict[str, Any] | None = None) -> dict[str, Any]:
+          subs_forecast: dict[str, Any] | None = None,
+          fx: FxTable | None = None) -> dict[str, Any]:
     if kind not in PERIODS:
         raise ValueError(f"period must be one of {PERIODS}")
     period = parse_period_key(kind, key, ds.statement_date)
@@ -209,6 +343,7 @@ def build(ds: Dataset, kind: str = "month", key: str | None = None,
         "top_purchases": purchases[:3],
         "purchase_count": len(purchases),
         "fees": _fee_rows(ds, period),
+        "excluded": _excluded(ds, period, fx=fx),
         "categories": _period_categories(ds, period),
         "subscriptions": subs_forecast or {},
         "sources": ds.source_files,
@@ -229,8 +364,8 @@ def monthly_series(ds: Dataset, months: int = 12) -> list[dict[str, Any]]:
     return out
 
 
-def all_periods(ds: Dataset, subs_forecast: dict[str, Any] | None = None
-                ) -> dict[str, Any]:
+def all_periods(ds: Dataset, subs_forecast: dict[str, Any] | None = None,
+                fx: FxTable | None = None) -> dict[str, Any]:
     return {
-        kind: build(ds, kind, None, subs_forecast) for kind in PERIODS
+        kind: build(ds, kind, None, subs_forecast, fx) for kind in PERIODS
     }

@@ -21,8 +21,8 @@ from __future__ import annotations
 from .lang import LANG_NAME, language_name
 from .narrate import NARRATE, STRICT_RETRY, narrate_prompt, strict_retry_prompt
 from .payload import PAYLOAD_BUDGET, fit, humanize
-from .router import (ROUTER, TOOL_CHOICE, native_tool_schemas, router_prompt,
-                     tool_list_text)
+from .router import (ROUTER, TEMPORAL, TOOL_CHOICE, native_tool_schemas,
+                     router_prompt, temporal_note, tool_list_text)
 from .smalltalk import SMALLTALK, smalltalk_prompt
 from .system import SYSTEM, system_prompt
 
@@ -30,7 +30,7 @@ __all__ = [
     "LANG_NAME", "language_name",
     "SYSTEM", "system_prompt",
     "TOOL_CHOICE", "ROUTER", "router_prompt", "tool_list_text",
-    "native_tool_schemas",
+    "native_tool_schemas", "TEMPORAL", "temporal_note",
     "NARRATE", "narrate_prompt", "STRICT_RETRY", "strict_retry_prompt",
     "SMALLTALK", "smalltalk_prompt",
     "humanize", "fit", "PAYLOAD_BUDGET",

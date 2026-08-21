@@ -57,11 +57,24 @@ async def lifespan(app: FastAPI):
                   "deterministic engine until the model is reachable",
                   llm_status.detail)
 
+    if settings.fx_enabled and settings.fx_backfill_on_start:
+        # Before the first scheduled fetch a fresh install has no rates, and a
+        # report would silently drop every non-USD amount. Failures are logged
+        # and dropped: missing rates cost the conversions, nothing else.
+        try:
+            from .fx_job import run_fx_job
+
+            summary = run_fx_job()
+            log.info("fx rates: %s", summary)
+        except Exception as exc:                        # noqa: BLE001
+            log.warning("fx startup backfill skipped: %s", exc)
+
     global scheduler
-    if settings.scheduler_enabled or settings.yopmail_enabled:
+    if settings.scheduler_enabled or settings.yopmail_enabled or settings.fx_enabled:
         try:
             from apscheduler.schedulers.background import BackgroundScheduler
 
+            from .fx_job import run_fx_job
             from .monitor import run_scan
             from .yopmail_job import run_yopmail_job
 
@@ -78,13 +91,24 @@ async def lifespan(app: FastAPI):
                     id="yopmail-ingest",
                     max_instances=1, coalesce=True,
                 )
+            if settings.fx_enabled:
+                # Ahead of the daily scan, so the scan's report converts with
+                # today's rate rather than yesterday's.
+                scheduler.add_job(
+                    run_fx_job, "cron", hour=settings.fx_hour,
+                    minute=settings.fx_minute, id="fx-rates",
+                    max_instances=1, coalesce=True,
+                )
             scheduler.start()
             if settings.scheduler_enabled:
                 log.info("daily monitoring scan scheduled at %02d:00",
                          settings.scan_hour)
             if settings.yopmail_enabled:
-                log.info("YOPmail ingestion scheduled every %d minutes",
-                         settings.yopmail_interval_minutes)
+                log.info("YOPmail ingestion scheduled at %02d:%02d",
+                         settings.yopmail_hour, settings.yopmail_minute)
+            if settings.fx_enabled:
+                log.info("FX rate fetch scheduled at %02d:%02d",
+                         settings.fx_hour, settings.fx_minute)
         except Exception as exc:                        # noqa: BLE001
             log.warning("scheduler not started: %s", exc)
 

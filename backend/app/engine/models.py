@@ -360,6 +360,10 @@ class WalletEvent:
     status: TxnStatus = TxnStatus.SUCCESS
     target_card_code: str = ""  # set on a wallet -> card load ("VC01")
     counterparty: str = ""      # "Paypal", "Amazon", "Payoneer", bank name
+    # An issuer charge stated separately from `amount` on the same line, e.g. a
+    # $750 withdrawal that settles at $747.75. Stays None when the export leaves
+    # the column blank or fills it with a placeholder, so absent never becomes 0.
+    fee_cents: int | None = None
 
     @property
     def signed_cents(self) -> int:

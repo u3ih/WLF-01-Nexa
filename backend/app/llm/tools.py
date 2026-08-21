@@ -37,6 +37,52 @@ def _trim_finding(item: dict[str, Any]) -> dict[str, Any]:
     return {k: v for k, v in item.items() if k != "params"}
 
 
+def _month_keys(first: str, last: str) -> list[str]:
+    year, month = int(first[:4]), int(first[5:7])
+    end = (int(last[:4]), int(last[5:7]))
+    out: list[str] = []
+    while (year, month) <= end:
+        out.append(f"{year:04d}-{month:02d}")
+        year, month = (year + 1, 1) if month == 12 else (year, month + 1)
+    return out
+
+
+def data_coverage() -> dict[str, Any]:
+    """The window the loaded export actually covers, plus its month keys.
+
+    Both the router and the narrator need it. "tháng 7" carries no year, so
+    something has to supply one, and defaulting to the wall-clock year would
+    ask for a period the export does not contain. A report for a month outside
+    the export has to say so, too: zeros read as "you spent nothing".
+    """
+    ds = pipeline.cached().ds
+    last = ds.meta.get("statement_date") or ds.statement_date.isoformat()
+    first = ds.meta.get("period_start") or last
+    return {
+        "first_day": first[:10],
+        "last_day": last[:10],
+        "months": _month_keys(first, last),
+        "latest_month": last[:7],
+    }
+
+
+def _period_coverage(period: dict[str, Any]) -> dict[str, Any]:
+    """Where the requested period sits relative to the data we hold.
+
+    ISO dates compare as strings, so the overlap test needs no parsing.
+    """
+    cover = data_coverage()
+    overlaps = (period["start"] <= cover["last_day"]
+                and period["end"] >= cover["first_day"])
+    return {
+        **cover,
+        "requested": period["key"],
+        "has_data": overlaps,
+        "partial": overlaps and (period["start"] < cover["first_day"]
+                                 or period["end"] > cover["last_day"]),
+    }
+
+
 # ------------------------------------------------------------------- tools
 
 def get_overview(lang: str = "vi") -> dict[str, Any]:
@@ -214,12 +260,17 @@ def get_report(lang: str = "vi", period: str = "month",
     analysis = pipeline.cached()
     if period not in reports.PERIODS:
         period = "month"
-    report = reports.build(analysis.ds, period, key, analysis.subs_forecast)
+    report = reports.build(analysis.ds, period, key, analysis.subs_forecast,
+                           analysis.fx)
     report["categories"] = [
         {**row, "label": t(lang, f"category.{row['category']}")}
         for row in report["categories"]
     ]
     report["trend"] = reports.monthly_series(analysis.ds, 12)
+    # Which period was actually asked for, against what the export holds. A
+    # month outside the export produces a report of zeros, and a zero with no
+    # note beside it reads as an answer.
+    report["coverage"] = _period_coverage(report["period"])
     return report
 
 
@@ -525,7 +576,10 @@ SPECS: list[dict[str, Any]] = [
                        "previous one.",
         "parameters": {
             "period": "month, quarter or year",
-            "key": "optional period key such as 2026-07, 2026-Q3 or 2026",
+            "key": "period key such as 2026-07, 2026-Q3 or 2026. Always pass "
+                   "it when the user names a period at all, resolving their "
+                   "wording against the time context given to you. Omitting "
+                   "it silently reports the latest month instead.",
         },
     },
     {

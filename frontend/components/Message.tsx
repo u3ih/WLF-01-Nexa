@@ -49,11 +49,47 @@ const FOLLOW_UP: Record<string, number> = {
 
 /* ------------------------------------------------------------ model prose */
 
+/** A cell holding nothing but one amount — currency mark, digits, separators,
+ *  a percent or a sign, and a bare `–` for the empty cell. Anchored so a
+ *  sentence that merely opens with a figure ("$300.00 was refunded") is prose
+ *  and wraps like prose; only the amount column gets the numeric treatment. */
+const NUMERIC_CELL = /^[-+–—(]?\s*[$€£¥₫]?\s*\d[\d,. ]*\s*[%)]?\s*[$€£¥₫]?$|^[-–—]$/;
+
+/** react-markdown hands a cell its children, not its text. Flatten the strings
+ *  it did render; anything with markup inside (a marked reference, a bolded
+ *  note) is not a bare amount and falls through to prose. */
+function cellText(children: any): string | null {
+  if (typeof children === "string" || typeof children === "number") {
+    return String(children);
+  }
+  if (Array.isArray(children)) {
+    const parts = children.map(cellText);
+    return parts.every((p) => p !== null) ? parts.join("") : null;
+  }
+  return null;
+}
+
+function isNumericCell(children: any): boolean {
+  const text = cellText(children)?.trim();
+  return !!text && NUMERIC_CELL.test(text);
+}
+
 function markdownComponents(onRef: OnRef, refTitle: string) {
   return {
     // Tables are the one thing a model can emit that is wider than the column.
     table: (props: any) => (
       <div className="prose-table"><table {...props} /></div>
+    ),
+    // An amount is a figure, not a phrase: it keeps one line and lines up with
+    // the amounts above it. Everything else in the row wraps as prose.
+    td: ({ node, className, children, ...props }: any) => (
+      <td
+        className={[className, isNumericCell(children) && "num"]
+          .filter(Boolean).join(" ") || undefined}
+        {...props}
+      >
+        {children}
+      </td>
     ),
     // Addresses stay text. GFM auto-links bare email addresses, and the
     // addresses this assistant prints come out of the mailbox it is auditing —

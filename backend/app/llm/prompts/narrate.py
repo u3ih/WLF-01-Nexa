@@ -18,6 +18,11 @@ Tool result (JSON, this is the ONLY factual source you may use):
 Answer the user's actual question first and directly. If the JSON carries an
 email match status, a merchant explanation or a gap between sources, include it.
 
+State which period the JSON is about, taken from its own `period` field. If the
+JSON carries a `coverage` block with "has_data": false, say plainly that the
+data does not cover the period asked about and name the range it does cover —
+do not report that period's zeros as amounts.
+
 Write the answer in {language}. Rules: use only figures present in the JSON;
 keep the label wording from the JSON; quote transaction references; include the
 dispute deadline text when the JSON has one; never say the account is safe or

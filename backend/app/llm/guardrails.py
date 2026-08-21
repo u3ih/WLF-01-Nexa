@@ -54,8 +54,12 @@ INTENT_PATTERNS: dict[BlockedIntent, list[re.Pattern[str]]] = {
         r"ngân hàng|họ|bên|hỗ trợ)",
     ),
     BlockedIntent.CANCEL_SUBSCRIPTION: _p(
+        # The nouns are optionally plural. Without the `s?` the trailing `\b`
+        # anchors inside the word, so "cancel my subscription" is refused while
+        # "cancel my subscriptions" sails through and gets answered — and it is
+        # the plural that asks for the most irreversible action.
         r"\b(cancel|unsubscribe|stop|kill|end)\b.{0,30}"
-        r"\b(subscription|plan|membership|netflix|spotify|chegg|it|them)\b",
+        r"\b(subscriptions?|plans?|memberships?|netflix|spotify|chegg|it|them)\b",
         r"\b(cancel|unsubscribe)\b.{0,20}\b(for me|on my behalf)\b",
         r"(tự\s*)?(huỷ|hủy|ngưng|dừng|cắt)\b.{0,30}(gói|dịch vụ|đăng ký|thuê bao|"
         r"netflix|spotify|chegg|nó|giúp|hộ|đi)",
