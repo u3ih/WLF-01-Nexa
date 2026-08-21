@@ -1,0 +1,72 @@
+# Nexa (WLF-01).
+#
+#   docker compose up -d postgres          → just the database (local dev)
+#   docker compose --profile full up -d --build   → whole stack
+#
+# Postgres stores application state only (flag journal, alert de-duplication,
+# reminders, report drafts). The sample financial data lives in files.
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: nexa-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: nexa
+      POSTGRES_PASSWORD: nexa
+      POSTGRES_DB: nexa
+    ports:
+      - "55432:5432"
+    volumes:
+      - nexa_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U nexa -d nexa"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+
+  backend:
+    profiles: ["full"]
+    build:
+      context: ./backend
+    container_name: nexa-backend
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      NEXA_DATABASE_URL: postgresql://nexa:nexa@postgres:5432/nexa
+      # Ollama runs on the host. For a container to reach it, Ollama must listen
+      # on all interfaces:  OLLAMA_HOST=0.0.0.0 ollama serve
+      # If it cannot be reached, the assistant answers from the engine instead.
+      NEXA_AI_URL: ${NEXA_AI_URL:-http://host.docker.internal:11434}
+      NEXA_AI_MODEL: ${NEXA_AI_MODEL:-gemma4:latest}
+      NEXA_AI_RETRIES: ${NEXA_AI_RETRIES:-2}
+      NEXA_OFFLINE_MODE: ${NEXA_OFFLINE_MODE:-false}
+      NEXA_MAIL_MODE: ${NEXA_MAIL_MODE:-outbox}
+      NEXA_USD_VND_RATE: ${NEXA_USD_VND_RATE:-26000}
+      NEXA_CORS_ORIGINS: '["http://localhost:3000"]'
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend/outbox:/app/outbox
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  frontend:
+    profiles: ["full"]
+    build:
+      context: ./frontend
+      args:
+        BACKEND_URL: http://backend:8000
+    container_name: nexa-frontend
+    restart: unless-stopped
+    depends_on:
+      backend:
+        condition: service_healthy
+    environment:
+      BACKEND_URL: http://backend:8000
+    ports:
+      - "3000:3000"
+
+volumes:
+  nexa_pgdata:

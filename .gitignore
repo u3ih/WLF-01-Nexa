@@ -1,0 +1,29 @@
+# Python
+backend/.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Node
+node_modules/
+frontend/.next/
+frontend/next-env.d.ts
+
+# Secrets and local config
+.env
+.env.local
+*.env.local
+
+# Generated sample data, mail outbox and logs.
+# Regenerate with `make seed`; contest rule 9 requires deleting these after the
+# event, and `make purge` does exactly that.
+backend/data/sample/
+backend/outbox/
+backend/logs/
+*.log
+
+# OS
+.DS_Store
+
+# TypeScript build cache
+*.tsbuildinfo
