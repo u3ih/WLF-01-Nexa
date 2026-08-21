@@ -1,136 +1,565 @@
 Index,ID,Inbox,From,Subject,Date,Page,Body Text,HTML File,Extracted Links,Extracted Codes,Scraped At
-1,"e_ZwLjBQVjZGRlZQH1ZQNjAmL4AwZ5ZN==","wealifytester@yopmail.com","[Khẩn] Xác minh tài khoản của bạn trong 24h","[Khẩn] Xác minh tài khoản của bạn trong 24h","Wealify <no-reply@wealify.com>",1,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).  Người gửi gốc (CSV): Wealify Security <no-reply@wea1ify-support.com> Email id: EM-0129 Thời điểm CSV: 2026-08-10 08:12  Bấm link xác minh nếu không tài khoản sẽ bị khoá  Yêu cầu xác minh khẩn  Tài khoản của bạn sẽ bị khoá nếu không xác minh trong 24 giờ.  Bấm vào đây để xác minh ngay","html/mail_001_e_ZwLjBQVjZGRlZQH1ZQNjAmL4AwZ5ZN.html","https://wea1ify-support.com/verify?ref=EM-0129","0129; 2026","2026-08-21T04:25:06.367Z"
-2,"e_ZwLjBQVjZGRlZQHkZQNjAmL4AGHmAN==","wealifytester@yopmail.com","Order confirmation - Shopee","Order confirmation - Shopee","Wealify <no-reply@wealify.com>",1,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).  Người gửi gốc (CSV): noreply@shopee.com Email id: EM-0128 Thời điểm CSV: 2026-04-24 15:27  Thanks  Giao dịch thẻ  CSV id: CD-0201 Wealify order_no: WLF15-CD-0201 Thẻ: VC04 Loại: purchase Merchant: SHOPEE *ORDER Số tiền: 192.52 EUR (~207.92 USD) Trạng thái CSV: success Mô tả: Shopee","html/mail_002_e_ZwLjBQVjZGRlZQHkZQNjAmL4AGHmAN.html","","0128; 2026; 0201","2026-08-21T04:25:07.075Z"
-3,"e_ZwLjBQVjZGRlZQD4ZQNjAmL4AGNjBN==","wealifytester@yopmail.com","Order confirmation - Shopee","Order confirmation - Shopee","Wealify <no-reply@wealify.com>",1,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).  Người gửi gốc (CSV): noreply@shopee.com Email id: EM-0127 Thời điểm CSV: 2026-07-30 12:18  Thanks  Giao dịch thẻ  CSV id: CD-0199 Wealify order_no: WLF15-CD-0199 Thẻ: VC04 Loại: purchase Merchant: SHOPEE *ORDER Số tiền: 45.24 EUR (~48.86 USD) Trạng thái CSV: success Mô tả: Shopee","html/mail_003_e_ZwLjBQVjZGRlZQD4ZQNjAmL4AGNjBN.html","","0127; 2026; 0199","2026-08-21T04:25:07.781Z"
-4,"e_ZwLjBQVjZGRlZQD2ZQNjAmL4AQH4ZD==","wealifytester@yopmail.com","Order confirmation - The Coffee House","Order confirmation - The Coffee House","Wealify <no-reply@wealify.com>",1,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).  Người gửi gốc (CSV): noreply@the.com Email id: EM-0126 Thời điểm CSV: 2026-07-20 00:44  Thanks  Giao dịch thẻ  CSV id: CD-0197 Wealify order_no: WLF15-CD-0197 Thẻ: VC04 Loại: purchase Merchant: SQ *THE COFFEE HOUSE Số tiền: 27.99 EUR (~30.23 USD) Trạng thái CSV: success Mô tả: The Coffee House","html/mail_004_e_ZwLjBQVjZGRlZQD2ZQNjAmL4AQH4ZD.html","","0126; 2026; 0197","2026-08-21T04:25:08.489Z"
-5,"e_ZwLjBQVjZGRkZmV3ZQNjAmH5ZmL0ZD==","wealifytester@yopmail.com","Order confirmation - Grab","Order confirmation - Grab","Wealify <no-reply@wealify.com>",1,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).  Người gửi gốc (CSV): noreply@grab.com Email id: EM-0124 Thời điểm CSV: 2026-03-31 22:01  Thanks  Giao dịch thẻ  CSV id: CD-0187 Wealify order_no: WLF15-CD-0187 Thẻ: VC02 Loại: purchase Merchant: GRAB* RIDE HCM Số tiền: 17.73 USD (~17.73 USD) Trạng thái CSV: success Mô tả: Grab","html/mail_005_e_ZwLjBQVjZGRkZmV3ZQNjAmH5ZmL0ZD.html","","0124; 2026; 0187","2026-08-21T04:25:09.199Z"
-6,"e_ZwLjBQVjZGRkZmVmZQNjAmH5ZmN5AN==","wealifytester@yopmail.com","Order confirmation - Vultr","Order confirmation - Vultr","Wealify <no-reply@wealify.com>",1,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).  Người gửi gốc (CSV): noreply@vultr.com Email id: EM-0123 Thời điểm CSV: 2026-03-15 23:02  Thanks  Giao dịch thẻ  CSV id: CD-0183 Wealify order_no: WLF15-CD-0183 Thẻ: VC04 Loại: purchase Merchant: VULTR.COM* CLOUD Số tiền: 15.89 EUR (~17.16 USD) Trạng thái CSV: success Mô tả: Vultr","html/mail_006_e_ZwLjBQVjZGRkZmVmZQNjAmH5ZmN5AN.html","","0123; 2026; 0183","2026-08-21T04:25:09.905Z"
-7,"e_ZwLjBQVjZGRkZmVjZQNjAmH5ZwH2Aj==","wealifytester@yopmail.com","Order confirmation - Namecheap","Order confirmation - Namecheap","Wealify <no-reply@wealify.com>",1,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).  Người gửi gốc (CSV): noreply@namecheap.com Email id: EM-0122 Thời điểm CSV: 2026-04-30 15:47  Thanks  Giao dịch thẻ  CSV id: CD-0177 Wealify order_no: WLF15-CD-0177 Thẻ: VC04 Loại: purchase Merchant: NAMECHEAP* DOMAIN Số tiền: 54.74 EUR (~59.12 USD) Trạng thái CSV: success Mô tả: Namecheap","html/mail_007_e_ZwLjBQVjZGRkZmVjZQNjAmH5ZwH2Aj.html","","0122; 2026; 0177","2026-08-21T04:25:10.612Z"
-8,"e_ZwLjBQVjZGRkZmR3ZQNjAmH5ZwRjAj==","wealifytester@yopmail.com","Order confirmation - Apple","Order confirmation - Apple","Wealify <no-reply@wealify.com>",1,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).  Người gửi gốc (CSV): noreply@apple.com Email id: EM-0121 Thời điểm CSV: 2026-05-26 02:02  Thanks  Giao dịch thẻ  CSV id: CD-0175 Wealify order_no: WLF15-CD-0175 Thẻ: VC02 Loại: purchase Merchant: APPLE.COM/BILL Số tiền: 64.69 USD (~64.69 USD) Trạng thái CSV: success Mô tả: Apple","html/mail_008_e_ZwLjBQVjZGRkZmR3ZQNjAmH5ZwRjAj.html","","0121; 2026; 0175","2026-08-21T04:25:11.323Z"
-9,"e_ZwLjBQVjZGRkZmR1ZQNjAmH5ZGp2AN==","wealifytester@yopmail.com","Order confirmation - Apple","Order confirmation - Apple","Wealify <no-reply@wealify.com>",1,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).  Người gửi gốc (CSV): noreply@apple.com Email id: EM-0121 Thời điểm CSV: 2026-05-26 02:02  Thanks  Giao dịch thẻ  CSV id: CD-0175 Wealify order_no: WLF15-CD-0175 Thẻ: VC02 Loại: purchase Merchant: APPLE.COM/BILL Số tiền: 64.69 USD (~64.69 USD) Trạng thái CSV: success Mô tả: Apple","html/mail_009_e_ZwLjBQVjZGRkZmR1ZQNjAmH5ZGp2AN.html","","0121; 2026; 0175","2026-08-21T04:25:12.032Z"
-10,"e_ZwLjBQVjZGRkZmRmZQNjAmH5ZGZ0Zj==","wealifytester@yopmail.com","Order confirmation - Vultr","Order confirmation - Vultr","Wealify <no-reply@wealify.com>",1,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).  Người gửi gốc (CSV): noreply@vultr.com Email id: EM-0119 Thời điểm CSV: 2026-07-27 05:03  Thanks  Giao dịch thẻ  CSV id: CD-0163 Wealify order_no: WLF15-CD-0163 Thẻ: VC02 Loại: purchase Merchant: VULTR.COM* CLOUD Số tiền: 52.98 USD (~52.98 USD) Trạng thái CSV: success Mô tả: Vultr","html/mail_010_e_ZwLjBQVjZGRkZmRmZQNjAmH5ZGZ0Zj.html","","0119; 2026; 0163","2026-08-21T04:25:12.740Z"
-11,"e_ZwLjBQVjZGRkZmRjZQNjAmH5ZQtkZN==","wealifytester@yopmail.com","Order confirmation - Shopee","Order confirmation - Shopee","Wealify <no-reply@wealify.com>",1,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).  Người gửi gốc (CSV): noreply@shopee.com Email id: EM-0118 Thời điểm CSV: 2026-08-04 08:06  Thanks  Giao dịch thẻ  CSV id: CD-0162 Wealify order_no: WLF15-CD-0162 Thẻ: VC01 Loại: purchase Merchant: SHOPEE *ORDER Số tiền: 150.23 USD (~150.23 USD) Trạng thái CSV: success Mô tả: Shopee","html/mail_011_e_ZwLjBQVjZGRkZmRjZQNjAmH5ZQtkZN.html","","0118; 2026; 0162","2026-08-21T04:25:13.447Z"
-12,"e_ZwLjBQVjZGRkZmN4ZQNjAmH5ZQZ2AD==","wealifytester@yopmail.com","Order confirmation - Shopee","Order confirmation - Shopee","Wealify <no-reply@wealify.com>",1,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).  Người gửi gốc (CSV): noreply@shopee.com Email id: EM-0117 Thời điểm CSV: 2026-04-18 06:57  Thanks  Giao dịch thẻ  CSV id: CD-0156 Wealify order_no: WLF15-CD-0156 Thẻ: VC02 Loại: purchase Merchant: SHOPEE *ORDER Số tiền: 65.7 USD (~65.7 USD) Trạng thái CSV: success Mô tả: Shopee","html/mail_012_e_ZwLjBQVjZGRkZmN4ZQNjAmH5ZQZ2AD.html","","0117; 2026; 0156","2026-08-21T04:25:14.157Z"
-13,"e_ZwLjBQVjZGRkZmN0ZQNjAmH4BGH1Aj==","wealifytester@yopmail.com","Order confirmation - Apple","Order confirmation - Apple","Wealify <no-reply@wealify.com>",1,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).  Người gửi gốc (CSV): noreply@apple.com Email id: EM-0116 Thời điểm CSV: 2026-04-08 11:31  Thanks  Giao dịch thẻ  CSV id: CD-0154 Wealify order_no: WLF15-CD-0154 Thẻ: VC03 Loại: purchase Merchant: APPLE.COM/BILL Số tiền: 45.51 USD (~45.51 USD) Trạng thái CSV: success Mô tả: Apple","html/mail_013_e_ZwLjBQVjZGRkZmN0ZQNjAmH4BGH1Aj.html","","0116; 2026; 0154","2026-08-21T04:25:14.867Z"
-14,"e_ZwLjBQVjZGRkZmNkZQNjAmH4BQp1Aj==","wealifytester@yopmail.com","Order confirmation - Vultr","Order confirmation - Vultr","Wealify <no-reply@wealify.com>",1,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).  Người gửi gốc (CSV): noreply@vultr.com Email id: EM-0115 Thời điểm CSV: 2026-04-22 01:14  Thanks  Giao dịch thẻ  CSV id: CD-0153 Wealify order_no: WLF15-CD-0153 Thẻ: VC03 Loại: purchase Merchant: VULTR.COM* CLOUD Số tiền: 8.75 USD (~8.75 USD) Trạng thái CSV: success Mô tả: Vultr","html/mail_014_e_ZwLjBQVjZGRkZmNkZQNjAmH4BQp1Aj.html","","0115; 2026; 0153","2026-08-21T04:25:15.575Z"
-15,"e_ZwLjBQVjZGRkZwH5ZQNjAmH4Amx4ZD==","wealifytester@yopmail.com","Order confirmation - Amazon","Order confirmation - Amazon","Wealify <no-reply@wealify.com>",1,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).  Người gửi gốc (CSV): noreply@amazon.com Email id: EM-0114 Thời điểm CSV: 2026-04-15 14:37  Thanks  Giao dịch thẻ  CSV id: CD-0151 Wealify order_no: WLF15-CD-0151 Thẻ: VC02 Loại: purchase Merchant: AMZN Mktp US*2K9 Số tiền: 32.66 USD (~32.66 USD) Trạng thái CSV: success Mô tả: Amazon","html/mail_015_e_ZwLjBQVjZGRkZwH5ZQNjAmH4Amx4ZD.html","","0114; 2026; 0151","2026-08-21T04:25:16.282Z"
-16,"e_ZwLjBQVjZGRkZwH2ZQNjAmH4AmZkZD==","wealifytester@yopmail.com","Order confirmation - AliExpress","Order confirmation - AliExpress","Wealify <no-reply@wealify.com>",2,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).  Người gửi gốc (CSV): noreply@aliexpress.com Email id: EM-0113 Thời điểm CSV: 2026-06-23 05:41  Thanks  Giao dịch thẻ  CSV id: CD-0150 Wealify order_no: WLF15-CD-0150 Thẻ: VC02 Loại: purchase Merchant: ALIEXPRESS.COM Số tiền: 24.61 USD (~24.61 USD) Trạng thái CSV: success Mô tả: AliExpress","html/mail_016_e_ZwLjBQVjZGRkZwH2ZQNjAmH4AmZkZD.html","","0113; 2026; 0150","2026-08-21T04:25:16.989Z"
-17,"e_ZwLjBQVjZGRkZwHmZQNjAmH4AwH3BD==","wealifytester@yopmail.com","Order confirmation - Booking.com","Order confirmation - Booking.com","Wealify <no-reply@wealify.com>",2,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).  Người gửi gốc (CSV): noreply@booking.com.com Email id: EM-0112 Thời điểm CSV: 2026-07-01 12:51  Thanks  Giao dịch thẻ  CSV id: CD-0146 Wealify order_no: WLF15-CD-0146 Thẻ: VC01 Loại: purchase Merchant: BOOKING.COM 9931 Số tiền: 588.8 USD (~588.8 USD) Trạng thái CSV: success Mô tả: Booking.com","html/mail_017_e_ZwLjBQVjZGRkZwHmZQNjAmH4AwH3BD.html","","0112; 2026; 0146; 9931","2026-08-21T04:25:17.697Z"
-18,"e_ZwLjBQVjZGRkZwR3ZQNjAmH3BGD1BN==","wealifytester@yopmail.com","Order confirmation - Shopee","Order confirmation - Shopee","Wealify <no-reply@wealify.com>",2,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).  Người gửi gốc (CSV): noreply@shopee.com Email id: EM-0111 Thời điểm CSV: 2026-05-02 14:19  Thanks  Giao dịch thẻ  CSV id: CD-0141 Wealify order_no: WLF15-CD-0141 Thẻ: VC01 Loại: purchase Merchant: SHOPEE *ORDER Số tiền: 37.36 USD (~37.36 USD) Trạng thái CSV: success Mô tả: Shopee","html/mail_018_e_ZwLjBQVjZGRkZwR3ZQNjAmH3BGD1BN.html","","0111; 2026; 0141","2026-08-21T04:25:18.406Z"
-19,"e_ZwLjBQVjZGRkZwR1ZQNjAmH3BGNjZj==","wealifytester@yopmail.com","Order confirmation - The Coffee House","Order confirmation - The Coffee House","Wealify <no-reply@wealify.com>",2,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).  Người gửi gốc (CSV): noreply@the.com Email id: EM-0110 Thời điểm CSV: 2026-06-19 19:15  Thanks  Giao dịch thẻ  CSV id: CD-0139 Wealify order_no: WLF15-CD-0139 Thẻ: VC03 Loại: purchase Merchant: SQ *THE COFFEE HOUSE Số tiền: 30.55 USD (~30.55 USD) Trạng thái CSV: success Mô tả: The Coffee House","html/mail_019_e_ZwLjBQVjZGRkZwR1ZQNjAmH3BGNjZj.html","","0110; 2026; 0139","2026-08-21T04:25:19.113Z"
-20,"e_ZwLjBQVjZGRkZwRmZQNjAmH3BQH2Zt==","wealifytester@yopmail.com","Order confirmation - The Coffee House","Order confirmation - The Coffee House","Wealify <no-reply@wealify.com>",2,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).  Người gửi gốc (CSV): noreply@the.com Email id: EM-0110 Thời điểm CSV: 2026-06-19 19:15  Thanks  Giao dịch thẻ  CSV id: CD-0139 Wealify order_no: WLF15-CD-0139 Thẻ: VC03 Loại: purchase Merchant: SQ *THE COFFEE HOUSE Số tiền: 30.55 USD (~30.55 USD) Trạng thái CSV: success Mô tả: The Coffee House","html/mail_020_e_ZwLjBQVjZGRkZwRmZQNjAmH3BQH2Zt.html","","0110; 2026; 0139","2026-08-21T04:25:19.819Z"
-21,"e_ZwLjBQVjZGRkZwRjZQNjAmH3BQN4Aj==","wealifytester@yopmail.com","Order confirmation - Shopee","Order confirmation - Shopee","Wealify <no-reply@wealify.com>",2,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).  Người gửi gốc (CSV): noreply@shopee.com Email id: EM-0108 Thời điểm CSV: 2026-04-14 16:18  Thanks  Giao dịch thẻ  CSV id: CD-0135 Wealify order_no: WLF15-CD-0135 Thẻ: VC04 Loại: purchase Merchant: SHOPEE *ORDER Số tiền: 184.04 EUR (~198.76 USD) Trạng thái CSV: success Mô tả: Shopee","html/mail_021_e_ZwLjBQVjZGRkZwRjZQNjAmH3BQN4Aj.html","","0108; 2026; 0135","2026-08-21T04:25:20.528Z"
-22,"e_ZwLjBQVjZGRkZwRjZQNjAmH3AmxlAj==","wealifytester@yopmail.com","Order confirmation - Uber","Order confirmation - Uber","Wealify <no-reply@wealify.com>",2,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).  Người gửi gốc (CSV): noreply@uber.com Email id: EM-0105 Thời điểm CSV: 2026-07-28 08:52  Thanks  Giao dịch thẻ  CSV id: CD-0123 Wealify order_no: WLF15-CD-0123 Thẻ: VC01 Loại: purchase Merchant: UBER *EATS Số tiền: 27.27 USD (~27.27 USD) Trạng thái CSV: success Mô tả: Uber","html/mail_022_e_ZwLjBQVjZGRkZwRjZQNjAmH3AmxlAj.html","","0105; 2026; 0123","2026-08-21T04:25:21.237Z"
-23,"e_ZwLjBQVjZGRkZwN4ZQNjAmH3AmH3BN==","wealifytester@yopmail.com","Order confirmation - Booking.com","Order confirmation - Booking.com","Wealify <no-reply@wealify.com>",2,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).  Người gửi gốc (CSV): noreply@booking.com.com Email id: EM-0107 Thời điểm CSV: 2026-06-14 18:15  Thanks  Giao dịch thẻ  CSV id: CD-0128 Wealify order_no: WLF15-CD-0128 Thẻ: VC01 Loại: purchase Merchant: BOOKING.COM 9931 Số tiền: 480.85 USD (~480.85 USD) Trạng thái CSV: success Mô tả: Booking.com","html/mail_023_e_ZwLjBQVjZGRkZwN4ZQNjAmH3AmH3BN.html","","0107; 2026; 0128; 9931","2026-08-21T04:25:21.946Z"
-24,"e_ZwLjBQVjZGRkZwN2ZQNjAmH3AmR4ZD==","wealifytester@yopmail.com","Order confirmation - Booking.com","Order confirmation - Booking.com","Wealify <no-reply@wealify.com>",2,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).  Người gửi gốc (CSV): noreply@booking.com.com Email id: EM-0106 Thời điểm CSV: 2026-04-05 23:54  Thanks  Giao dịch thẻ  CSV id: CD-0124 Wealify order_no: WLF15-CD-0124 Thẻ: VC02 Loại: purchase Merchant: BOOKING.COM 9931 Số tiền: 70.36 USD (~70.36 USD) Trạng thái CSV: success Mô tả: Booking.com","html/mail_024_e_ZwLjBQVjZGRkZwN2ZQNjAmH3AmR4ZD.html","","0106; 2026; 0124; 9931","2026-08-21T04:25:22.655Z"
-25,"e_ZwLjBQVjZGRkZwNkZQNjAmH3AwR2ZN==","wealifytester@yopmail.com","Order confirmation - Amazon","Order confirmation - Amazon","Wealify <no-reply@wealify.com>",2,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).  Người gửi gốc (CSV): noreply@amazon.com Email id: EM-0104 Thời điểm CSV: 2026-08-03 02:53  Thanks  Giao dịch thẻ  CSV id: CD-0118 Wealify order_no: WLF15-CD-0118 Thẻ: VC02 Loại: purchase Merchant: AMZN Mktp US*2K9 Số tiền: 145.34 USD (~145.34 USD) Trạng thái CSV: success Mô tả: Amazon","html/mail_025_e_ZwLjBQVjZGRkZwNkZQNjAmH3AwR2ZN.html","","0104; 2026; 0118","2026-08-21T04:25:23.363Z"
-26,"e_ZwLjBQVjZGRkZGH5ZQNjAmH3AGplAt==","wealifytester@yopmail.com","Order confirmation - AliExpress","Order confirmation - AliExpress","Wealify <no-reply@wealify.com>",2,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).  Người gửi gốc (CSV): noreply@aliexpress.com Email id: EM-0103 Thời điểm CSV: 2026-05-16 20:37  Thanks  Giao dịch thẻ  CSV id: CD-0116 Wealify order_no: WLF15-CD-0116 Thẻ: VC01 Loại: purchase Merchant: ALIEXPRESS.COM Số tiền: 92.36 USD (~92.36 USD) Trạng thái CSV: success Mô tả: AliExpress","html/mail_026_e_ZwLjBQVjZGRkZGH5ZQNjAmH3AGplAt.html","","0103; 2026; 0116","2026-08-21T04:25:24.070Z"
-27,"e_ZwLjBQVjZGRkZGH2ZQNjAmH3AGV0AN==","wealifytester@yopmail.com","Order confirmation - Uber","Order confirmation - Uber","Wealify <no-reply@wealify.com>",2,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).  Người gửi gốc (CSV): noreply@uber.com Email id: EM-0102 Thời điểm CSV: 2026-04-27 13:31  Thanks  Giao dịch thẻ  CSV id: CD-0111 Wealify order_no: WLF15-CD-0111 Thẻ: VC01 Loại: purchase Merchant: UBER *EATS Số tiền: 5.61 USD (~5.61 USD) Trạng thái CSV: success Mô tả: Uber","html/mail_027_e_ZwLjBQVjZGRkZGH2ZQNjAmH3AGV0AN.html","","0102; 2026; 0111","2026-08-21T04:25:24.778Z"
-28,"e_ZwLjBQVjZGRkZGHmZQNjAmH3AQHlAt==","wealifytester@yopmail.com","Order confirmation - Grab","Order confirmation - Grab","Wealify <no-reply@wealify.com>",2,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).  Người gửi gốc (CSV): noreply@grab.com Email id: EM-0101 Thời điểm CSV: 2026-04-09 14:09  Thanks  Giao dịch thẻ  CSV id: CD-0110 Wealify order_no: WLF15-CD-0110 Thẻ: VC01 Loại: purchase Merchant: GRAB* RIDE HCM Số tiền: 6.54 USD (~6.54 USD) Trạng thái CSV: success Mô tả: Grab","html/mail_028_e_ZwLjBQVjZGRkZGHmZQNjAmH3AQHlAt.html","","0101; 2026; 0110","2026-08-21T04:25:25.486Z"
-29,"e_ZwLjBQVjZGRkZGHjZQNjAmH3Zmx3Aj==","wealifytester@yopmail.com","Order confirmation - Apple","Order confirmation - Apple","Wealify <no-reply@wealify.com>",2,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).  Người gửi gốc (CSV): noreply@apple.com Email id: EM-0100 Thời điểm CSV: 2026-07-02 19:15  Thanks  Giao dịch thẻ  CSV id: CD-0109 Wealify order_no: WLF15-CD-0109 Thẻ: VC01 Loại: purchase Merchant: APPLE.COM/BILL Số tiền: 29.25 USD (~29.25 USD) Trạng thái CSV: success Mô tả: Apple","html/mail_029_e_ZwLjBQVjZGRkZGHjZQNjAmH3Zmx3Aj.html","","0100; 2026; 0109","2026-08-21T04:25:26.195Z"
-30,"e_ZwLjBQVjZGRkZGD3ZQNjAmH3ZmD2ZD==","wealifytester@yopmail.com","Order confirmation - Grab","Order confirmation - Grab","Wealify <no-reply@wealify.com>",2,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).  Người gửi gốc (CSV): noreply@grab.com Email id: EM-0099 Thời điểm CSV: 2026-03-28 08:54  Thanks  Giao dịch thẻ  CSV id: CD-0108 Wealify order_no: WLF15-CD-0108 Thẻ: VC01 Loại: purchase Merchant: GRAB* RIDE HCM Số tiền: 17.29 USD (~17.29 USD) Trạng thái CSV: success Mô tả: Grab","html/mail_030_e_ZwLjBQVjZGRkZGD3ZQNjAmH3ZmD2ZD.html","","0099; 2026; 0108","2026-08-21T04:25:26.905Z"
-31,"e_ZwLjBQVjZGRkZGD1ZQNjAmH3ZmNkBD==","wealifytester@yopmail.com","Order confirmation - Grab","Order confirmation - Grab","Wealify <no-reply@wealify.com>",3,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).  Người gửi gốc (CSV): noreply@grab.com Email id: EM-0099 Thời điểm CSV: 2026-03-28 08:54  Thanks  Giao dịch thẻ  CSV id: CD-0108 Wealify order_no: WLF15-CD-0108 Thẻ: VC01 Loại: purchase Merchant: GRAB* RIDE HCM Số tiền: 17.29 USD (~17.29 USD) Trạng thái CSV: success Mô tả: Grab","html/mail_031_e_ZwLjBQVjZGRkZGD1ZQNjAmH3ZmNkBD.html","","0099; 2026; 0108","2026-08-21T04:25:27.613Z"
-32,"e_ZwLjBQVjZGRkZGN4ZQNjAmH2AGD1Aj==","wealifytester@yopmail.com","Order confirmation - Grab","Order confirmation - Grab","Wealify <no-reply@wealify.com>",3,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).  Người gửi gốc (CSV): noreply@grab.com Email id: EM-0097 Thời điểm CSV: 2026-06-04 22:42  Thanks  Giao dịch thẻ  CSV id: CD-0102 Wealify order_no: WLF15-CD-0102 Thẻ: VC03 Loại: purchase Merchant: GRAB* RIDE HCM Số tiền: 20.92 USD (~20.92 USD) Trạng thái CSV: success Mô tả: Grab","html/mail_032_e_ZwLjBQVjZGRkZGN4ZQNjAmH2AGD1Aj.html","","0097; 2026; 0102","2026-08-21T04:25:28.320Z"
-33,"e_ZwLjBQVjZGRkZGN1ZQNjAmH2AQt2BN==","wealifytester@yopmail.com","Order confirmation - Namecheap","Order confirmation - Namecheap","Wealify <no-reply@wealify.com>",3,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).  Người gửi gốc (CSV): noreply@namecheap.com Email id: EM-0096 Thời điểm CSV: 2026-07-31 19:40  Thanks  Giao dịch thẻ  CSV id: CD-0100 Wealify order_no: WLF15-CD-0100 Thẻ: VC01 Loại: purchase Merchant: NAMECHEAP* DOMAIN Số tiền: 27.71 USD (~27.71 USD) Trạng thái CSV: success Mô tả: Namecheap","html/mail_033_e_ZwLjBQVjZGRkZGN1ZQNjAmH2AQt2BN.html","","0096; 2026; 0100","2026-08-21T04:25:29.029Z"
-34,"e_ZwLjBQVjZGRkZGNmZQNjAmH2AQZ2BN==","wealifytester@yopmail.com","Order confirmation - Shopee","Order confirmation - Shopee","Wealify <no-reply@wealify.com>",3,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).  Người gửi gốc (CSV): noreply@shopee.com Email id: EM-0095 Thời điểm CSV: 2026-03-26 14:10  Thanks  Giao dịch thẻ  CSV id: CD-0099 Wealify order_no: WLF15-CD-0099 Thẻ: VC03 Loại: purchase Merchant: SHOPEE *ORDER Số tiền: 15.84 USD (~15.84 USD) Trạng thái CSV: success Mô tả: Shopee","html/mail_034_e_ZwLjBQVjZGRkZGNmZQNjAmH2AQZ2BN.html","","0095; 2026; 0099","2026-08-21T04:25:29.736Z"
-35,"e_ZwLjBQVjZGRkZGNkZQNjAmH2ZmL2Aj==","wealifytester@yopmail.com","Order confirmation - Amazon","Order confirmation - Amazon","Wealify <no-reply@wealify.com>",3,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).  Người gửi gốc (CSV): noreply@amazon.com Email id: EM-0094 Thời điểm CSV: 2026-06-25 15:17  Thanks  Giao dịch thẻ  CSV id: CD-0093 Wealify order_no: WLF15-CD-0093 Thẻ: VC01 Loại: purchase Merchant: AMZN Mktp US*2K9 Số tiền: 66.22 USD (~66.22 USD) Trạng thái CSV: success Mô tả: Amazon","html/mail_035_e_ZwLjBQVjZGRkZGNkZQNjAmH2ZmL2Aj.html","","0094; 2026; 0093","2026-08-21T04:25:30.441Z"
-36,"e_ZwLjBQVjZGRkZQH5ZQNjAmH2ZmR5Aj==","wealifytester@yopmail.com","Order confirmation - Namecheap","Order confirmation - Namecheap","Wealify <no-reply@wealify.com>",3,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).  Người gửi gốc (CSV): noreply@namecheap.com Email id: EM-0093 Thời điểm CSV: 2026-08-14 07:24  Thanks  Giao dịch thẻ  CSV id: CD-0087 Wealify order_no: WLF15-CD-0087 Thẻ: VC01 Loại: purchase Merchant: NAMECHEAP* DOMAIN Số tiền: 56.85 USD (~56.85 USD) Trạng thái CSV: success Mô tả: Namecheap","html/mail_036_e_ZwLjBQVjZGRkZQH5ZQNjAmH2ZmR5Aj.html","","0093; 2026; 0087","2026-08-21T04:25:31.147Z"
-37,"e_ZwLjBQVjZGRkZQH3ZQNjAmH2ZwxmAj==","wealifytester@yopmail.com","Order confirmation - Steam","Order confirmation - Steam","Wealify <no-reply@wealify.com>",3,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).  Người gửi gốc (CSV): noreply@steam.com Email id: EM-0092 Thời điểm CSV: 2026-06-15 00:50  Thanks  Giao dịch thẻ  CSV id: CD-0076 Wealify order_no: WLF15-CD-0076 Thẻ: VC03 Loại: purchase Merchant: STEAMGAMES.COM Số tiền: 31.33 USD (~31.33 USD) Trạng thái CSV: success Mô tả: Steam","html/mail_037_e_ZwLjBQVjZGRkZQH3ZQNjAmH2ZwxmAj.html","","0092; 2026; 0076","2026-08-21T04:25:31.856Z"
-38,"e_ZwLjBQVjZGRkZQHmZQNjAmH2ZwRjAj==","wealifytester@yopmail.com","Order confirmation - Google Ads","Order confirmation - Google Ads","Wealify <no-reply@wealify.com>",3,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).  Người gửi gốc (CSV): noreply@google.com Email id: EM-0091 Thời điểm CSV: 2026-04-03 19:41  Thanks  Giao dịch thẻ  CSV id: CD-0075 Wealify order_no: WLF15-CD-0075 Thẻ: VC02 Loại: purchase Merchant: GOOGLE *ADS 8842 Số tiền: 104.79 USD (~104.79 USD) Trạng thái CSV: success Mô tả: Google Ads","html/mail_038_e_ZwLjBQVjZGRkZQHmZQNjAmH2ZwRjAj.html","","0091; 2026; 0075; 8842","2026-08-21T04:25:32.563Z"
-39,"e_ZwLjBQVjZGRkZQHjZQNjAmH2ZGV5AN==","wealifytester@yopmail.com","Order confirmation - Uber","Order confirmation - Uber","Wealify <no-reply@wealify.com>",3,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).  Người gửi gốc (CSV): noreply@uber.com Email id: EM-0090 Thời điểm CSV: 2026-04-04 06:54  Thanks  Giao dịch thẻ  CSV id: CD-0070 Wealify order_no: WLF15-CD-0070 Thẻ: VC01 Loại: purchase Merchant: UBER *EATS Số tiền: 30.2 USD (~30.2 USD) Trạng thái CSV: success Mô tả: Uber","html/mail_039_e_ZwLjBQVjZGRkZQHjZQNjAmH2ZGV5AN.html","","0090; 2026; 0070","2026-08-21T04:25:33.271Z"
-40,"e_ZwLjBQVjZGRkZQD4ZQNjAmH2ZQpjAt==","wealifytester@yopmail.com","Order confirmation - Namecheap","Order confirmation - Namecheap","Wealify <no-reply@wealify.com>",3,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).  Người gửi gốc (CSV): noreply@namecheap.com Email id: EM-0089 Thời điểm CSV: 2026-04-03 17:07  Thanks  Giao dịch thẻ  CSV id: CD-0069 Wealify order_no: WLF15-CD-0069 Thẻ: VC01 Loại: purchase Merchant: NAMECHEAP* DOMAIN Số tiền: 53.2 USD (~53.2 USD) Trạng thái CSV: success Mô tả: Namecheap","html/mail_040_e_ZwLjBQVjZGRkZQD4ZQNjAmH2ZQpjAt.html","","0089; 2026; 0069","2026-08-21T04:25:33.979Z"
-41,"e_ZwLjBQVjZGRkZQD1ZQNjAmH2ZQN1ZD==","wealifytester@yopmail.com","Your receipt from NORDVPN","Your receipt from NORDVPN","Wealify <no-reply@wealify.com>",3,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).  Người gửi gốc (CSV): receipts@nordvpn.com Email id: EM-0088 Thời điểm CSV: 2026-07-28 12:58  Amount 3.99  Giao dịch thẻ  CSV id: CD-0062 Wealify order_no: WLF15-CD-0062 Thẻ: VC01 Loại: purchase Merchant: NORDVPN *MONTHLY Số tiền: 3.99 USD (~3.99 USD) Trạng thái CSV: success Mô tả: Subscription NORDVPN *MONTHLY","html/mail_041_e_ZwLjBQVjZGRkZQD1ZQNjAmH2ZQN1ZD.html","","0088; 2026; 0062","2026-08-21T04:25:34.687Z"
-42,"e_ZwLjBQVjZGRkZQDkZQNjAmH1BGR0Zt==","wealifytester@yopmail.com","Your receipt from NORDVPN","Your receipt from NORDVPN","Wealify <no-reply@wealify.com>",3,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).  Người gửi gốc (CSV): receipts@nordvpn.com Email id: EM-0087 Thời điểm CSV: 2026-06-28 16:41  Amount 3.99  Giao dịch thẻ  CSV id: CD-0061 Wealify order_no: WLF15-CD-0061 Thẻ: VC01 Loại: purchase Merchant: NORDVPN *MONTHLY Số tiền: 3.99 USD (~3.99 USD) Trạng thái CSV: success Mô tả: Subscription NORDVPN *MONTHLY","html/mail_042_e_ZwLjBQVjZGRkZQDkZQNjAmH1BGR0Zt.html","","0087; 2026; 0061","2026-08-21T04:25:35.393Z"
-43,"e_ZwLjBQVjZGRkZQZ4ZQNjAmH1BQH3BD==","wealifytester@yopmail.com","Your receipt from NORDVPN","Your receipt from NORDVPN","Wealify <no-reply@wealify.com>",3,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).  Người gửi gốc (CSV): receipts@nordvpn.com Email id: EM-0086 Thời điểm CSV: 2026-05-28 17:45  Amount 3.99  Giao dịch thẻ  CSV id: CD-0060 Wealify order_no: WLF15-CD-0060 Thẻ: VC01 Loại: purchase Merchant: NORDVPN *MONTHLY Số tiền: 3.99 USD (~3.99 USD) Trạng thái CSV: success Mô tả: Subscription NORDVPN *MONTHLY","html/mail_043_e_ZwLjBQVjZGRkZQZ4ZQNjAmH1BQH3BD.html","","0086; 2026; 0060","2026-08-21T04:25:36.099Z"
-44,"e_ZwLjBQVjZGRkZQZ3ZQNjAmH1BQR5Zt==","wealifytester@yopmail.com","Your receipt from NORDVPN","Your receipt from NORDVPN","Wealify <no-reply@wealify.com>",3,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).  Người gửi gốc (CSV): receipts@nordvpn.com Email id: EM-0085 Thời điểm CSV: 2026-04-28 17:35  Amount 3.99  Giao dịch thẻ  CSV id: CD-0059 Wealify order_no: WLF15-CD-0059 Thẻ: VC01 Loại: purchase Merchant: NORDVPN *MONTHLY Số tiền: 3.99 USD (~3.99 USD) Trạng thái CSV: success Mô tả: Subscription NORDVPN *MONTHLY","html/mail_044_e_ZwLjBQVjZGRkZQZ3ZQNjAmH1BQR5Zt.html","","0085; 2026; 0059","2026-08-21T04:25:36.806Z"
-45,"e_ZwLjBQVjZGRkZQZ1ZQNjAmH1Amp4Aj==","wealifytester@yopmail.com","Your receipt from NORDVPN","Your receipt from NORDVPN","Wealify <no-reply@wealify.com>",3,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).  Người gửi gốc (CSV): receipts@nordvpn.com Email id: EM-0084 Thời điểm CSV: 2026-03-28 18:58  Amount 3.99  Giao dịch thẻ  CSV id: CD-0058 Wealify order_no: WLF15-CD-0058 Thẻ: VC01 Loại: purchase Merchant: NORDVPN *MONTHLY Số tiền: 3.99 USD (~3.99 USD) Trạng thái CSV: success Mô tả: Subscription NORDVPN *MONTHLY","html/mail_045_e_ZwLjBQVjZGRkZQZ1ZQNjAmH1Amp4Aj.html","","0084; 2026; 0058","2026-08-21T04:25:37.513Z"
-46,"e_ZwLjBQVjZGRkZQZlZQNjAmH1AwtmBD==","wealifytester@yopmail.com","Your receipt from NORDVPN","Your receipt from NORDVPN","Wealify <no-reply@wealify.com>",4,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).  Người gửi gốc (CSV): receipts@nordvpn.com Email id: EM-0083 Thời điểm CSV: 2026-02-28 15:26  Amount 3.99  Giao dịch thẻ  CSV id: CD-0057 Wealify order_no: WLF15-CD-0057 Thẻ: VC01 Loại: purchase Merchant: NORDVPN *MONTHLY Số tiền: 3.99 USD (~3.99 USD) Trạng thái CSV: success Mô tả: Subscription NORDVPN *MONTHLY","html/mail_046_e_ZwLjBQVjZGRkZQZlZQNjAmH1AwtmBD.html","","0083; 2026; 0057","2026-08-21T04:25:38.222Z"
-47,"e_ZwLjBQVjZGRkZQV5ZQNjAmH1AwV0Zt==","wealifytester@yopmail.com","Your receipt from CLOUDWAYS HOSTING","Your receipt from CLOUDWAYS HOSTING","Wealify <no-reply@wealify.com>",4,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).  Người gửi gốc (CSV): receipts@cloudways.com Email id: EM-0082 Thời điểm CSV: 2026-07-27 17:53  Amount 16.00  Giao dịch thẻ  CSV id: CD-0056 Wealify order_no: WLF15-CD-0056 Thẻ: VC02 Loại: purchase Merchant: CLOUDWAYS HOSTING Số tiền: 16.0 USD (~16.0 USD) Trạng thái CSV: success Mô tả: Subscription CLOUDWAYS HOSTING","html/mail_047_e_ZwLjBQVjZGRkZQV5ZQNjAmH1AwV0Zt.html","","0082; 2026; 0056","2026-08-21T04:25:38.930Z"
-48,"e_ZwLjBQVjZGRkZQV3ZQNjAmH1AGHjZj==","wealifytester@yopmail.com","Your receipt from CLOUDWAYS HOSTING","Your receipt from CLOUDWAYS HOSTING","Wealify <no-reply@wealify.com>",4,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).  Người gửi gốc (CSV): receipts@cloudways.com Email id: EM-0081 Thời điểm CSV: 2026-06-27 10:43  Amount 16.00  Giao dịch thẻ  CSV id: CD-0055 Wealify order_no: WLF15-CD-0055 Thẻ: VC02 Loại: purchase Merchant: CLOUDWAYS HOSTING Số tiền: 16.0 USD (~16.0 USD) Trạng thái CSV: success Mô tả: Subscription CLOUDWAYS HOSTING","html/mail_048_e_ZwLjBQVjZGRkZQV3ZQNjAmH1AGHjZj.html","","0081; 2026; 0055","2026-08-21T04:25:39.639Z"
-49,"e_ZwLjBQVjZGRkZQV0ZQNjAmH1AQt3Zj==","wealifytester@yopmail.com","Your receipt from CLOUDWAYS HOSTING","Your receipt from CLOUDWAYS HOSTING","Wealify <no-reply@wealify.com>",4,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).  Người gửi gốc (CSV): receipts@cloudways.com Email id: EM-0080 Thời điểm CSV: 2026-05-27 16:32  Amount 16.00  Giao dịch thẻ  CSV id: CD-0054 Wealify order_no: WLF15-CD-0054 Thẻ: VC02 Loại: purchase Merchant: CLOUDWAYS HOSTING Số tiền: 16.0 USD (~16.0 USD) Trạng thái CSV: success Mô tả: Subscription CLOUDWAYS HOSTING","html/mail_049_e_ZwLjBQVjZGRkZQV0ZQNjAmH1AQt3Zj.html","","0080; 2026; 0054","2026-08-21T04:25:40.345Z"
-50,"e_ZwLjBQVjZGRkZQVkZQNjAmH1AQVjAj==","wealifytester@yopmail.com","Your receipt from CLOUDWAYS HOSTING","Your receipt from CLOUDWAYS HOSTING","Wealify <no-reply@wealify.com>",4,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).  Người gửi gốc (CSV): receipts@cloudways.com Email id: EM-0079 Thời điểm CSV: 2026-04-27 17:36  Amount 16.00  Giao dịch thẻ  CSV id: CD-0053 Wealify order_no: WLF15-CD-0053 Thẻ: VC02 Loại: purchase Merchant: CLOUDWAYS HOSTING Số tiền: 16.0 USD (~16.0 USD) Trạng thái CSV: success Mô tả: Subscription CLOUDWAYS HOSTING","html/mail_050_e_ZwLjBQVjZGRkZQVkZQNjAmH1AQVjAj.html","","0079; 2026; 0053","2026-08-21T04:25:41.052Z"
-51,"e_ZwLjBQVjZGRjBGH3ZQNjAmH0BQD1Aj==","wealifytester@yopmail.com","Your receipt from CLOUDWAYS HOSTING","Your receipt from CLOUDWAYS HOSTING","Wealify <no-reply@wealify.com>",4,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).  Người gửi gốc (CSV): receipts@cloudways.com Email id: EM-0078 Thời điểm CSV: 2026-03-27 13:41  Amount 16.00  Giao dịch thẻ  CSV id: CD-0052 Wealify order_no: WLF15-CD-0052 Thẻ: VC02 Loại: purchase Merchant: CLOUDWAYS HOSTING Số tiền: 16.0 USD (~16.0 USD) Trạng thái CSV: success Mô tả: Subscription CLOUDWAYS HOSTING","html/mail_051_e_ZwLjBQVjZGRjBGH3ZQNjAmH0BQD1Aj.html","","0078; 2026; 0052","2026-08-21T04:25:41.757Z"
-52,"e_ZwLjBQVjZGRjBGH0ZQNjAmH0Amx5Aj==","wealifytester@yopmail.com","Your receipt from CLOUDWAYS HOSTING","Your receipt from CLOUDWAYS HOSTING","Wealify <no-reply@wealify.com>",4,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).  Người gửi gốc (CSV): receipts@cloudways.com Email id: EM-0077 Thời điểm CSV: 2026-02-27 18:30  Amount 16.00  Giao dịch thẻ  CSV id: CD-0051 Wealify order_no: WLF15-CD-0051 Thẻ: VC02 Loại: purchase Merchant: CLOUDWAYS HOSTING Số tiền: 16.0 USD (~16.0 USD) Trạng thái CSV: success Mô tả: Subscription CLOUDWAYS HOSTING","html/mail_052_e_ZwLjBQVjZGRjBGH0ZQNjAmH0Amx5Aj.html","","0077; 2026; 0051","2026-08-21T04:25:42.463Z"
-53,"e_ZwLjBQVjZGRjBGHkZQNjAmH0AmZ5AN==","wealifytester@yopmail.com","Your receipt from FIGMA.COM","Your receipt from FIGMA.COM","Wealify <no-reply@wealify.com>",4,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).  Người gửi gốc (CSV): receipts@figma.com Email id: EM-0076 Thời điểm CSV: 2026-07-24 10:48  Amount 15.00  Giao dịch thẻ  CSV id: CD-0050 Wealify order_no: WLF15-CD-0050 Thẻ: VC03 Loại: purchase Merchant: FIGMA.COM Số tiền: 15.0 USD (~15.0 USD) Trạng thái CSV: success Mô tả: Subscription FIGMA.COM","html/mail_053_e_ZwLjBQVjZGRjBGHkZQNjAmH0AmZ5AN.html","","0076; 2026; 0050","2026-08-21T04:25:43.169Z"
-54,"e_ZwLjBQVjZGRjBGD5ZQNjAmH0AwtlAD==","wealifytester@yopmail.com","Your receipt from FIGMA.COM","Your receipt from FIGMA.COM","Wealify <no-reply@wealify.com>",4,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).  Người gửi gốc (CSV): receipts@figma.com Email id: EM-0075 Thời điểm CSV: 2026-06-24 10:49  Amount 15.00  Giao dịch thẻ  CSV id: CD-0049 Wealify order_no: WLF15-CD-0049 Thẻ: VC03 Loại: purchase Merchant: FIGMA.COM Số tiền: 15.0 USD (~15.0 USD) Trạng thái CSV: success Mô tả: Subscription FIGMA.COM","html/mail_054_e_ZwLjBQVjZGRjBGD5ZQNjAmH0AwtlAD.html","","0075; 2026; 0049","2026-08-21T04:25:43.875Z"
-55,"e_ZwLjBQVjZGRjBGD3ZQNjAmH0AwDlBD==","wealifytester@yopmail.com","Your receipt from FIGMA.COM","Your receipt from FIGMA.COM","Wealify <no-reply@wealify.com>",4,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).  Người gửi gốc (CSV): receipts@figma.com Email id: EM-0074 Thời điểm CSV: 2026-05-24 21:06  Amount 15.00  Giao dịch thẻ  CSV id: CD-0048 Wealify order_no: WLF15-CD-0048 Thẻ: VC03 Loại: purchase Merchant: FIGMA.COM Số tiền: 15.0 USD (~15.0 USD) Trạng thái CSV: success Mô tả: Subscription FIGMA.COM","html/mail_055_e_ZwLjBQVjZGRjBGD3ZQNjAmH0AwDlBD.html","","0074; 2026; 0048","2026-08-21T04:25:44.583Z"
-56,"e_ZwLjBQVjZGRjBGD1ZQNjAmH0AGx2Zt==","wealifytester@yopmail.com","Your receipt from FIGMA.COM","Your receipt from FIGMA.COM","Wealify <no-reply@wealify.com>",4,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).  Người gửi gốc (CSV): receipts@figma.com Email id: EM-0073 Thời điểm CSV: 2026-04-24 15:21  Amount 15.00  Giao dịch thẻ  CSV id: CD-0047 Wealify order_no: WLF15-CD-0047 Thẻ: VC03 Loại: purchase Merchant: FIGMA.COM Số tiền: 15.0 USD (~15.0 USD) Trạng thái CSV: success Mô tả: Subscription FIGMA.COM","html/mail_056_e_ZwLjBQVjZGRjBGD1ZQNjAmH0AGx2Zt.html","","0073; 2026; 0047","2026-08-21T04:25:45.292Z"
-57,"e_ZwLjBQVjZGRjBGDmZQNjAmH0AGH5At==","wealifytester@yopmail.com","Your receipt from FIGMA.COM","Your receipt from FIGMA.COM","Wealify <no-reply@wealify.com>",4,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).  Người gửi gốc (CSV): receipts@figma.com Email id: EM-0072 Thời điểm CSV: 2026-03-24 14:30  Amount 15.00  Giao dịch thẻ  CSV id: CD-0046 Wealify order_no: WLF15-CD-0046 Thẻ: VC03 Loại: purchase Merchant: FIGMA.COM Số tiền: 15.0 USD (~15.0 USD) Trạng thái CSV: success Mô tả: Subscription FIGMA.COM","html/mail_057_e_ZwLjBQVjZGRjBGDmZQNjAmH0AGH5At.html","","0072; 2026; 0046","2026-08-21T04:25:45.999Z"
-58,"e_ZwLjBQVjZGRjBGDkZQNjAmH0AGRjAt==","wealifytester@yopmail.com","Your receipt from FIGMA.COM","Your receipt from FIGMA.COM","Wealify <no-reply@wealify.com>",4,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).  Người gửi gốc (CSV): receipts@figma.com Email id: EM-0071 Thời điểm CSV: 2026-02-24 12:36  Amount 15.00  Giao dịch thẻ  CSV id: CD-0045 Wealify order_no: WLF15-CD-0045 Thẻ: VC03 Loại: purchase Merchant: FIGMA.COM Số tiền: 15.0 USD (~15.0 USD) Trạng thái CSV: success Mô tả: Subscription FIGMA.COM","html/mail_058_e_ZwLjBQVjZGRjBGDkZQNjAmH0AGRjAt.html","","0071; 2026; 0045","2026-08-21T04:25:46.706Z"
-59,"e_ZwLjBQVjZGRjBGZ5ZQNjAmH0AQp2Zt==","wealifytester@yopmail.com","Your receipt from CANVA","Your receipt from CANVA","Wealify <no-reply@wealify.com>",4,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).  Người gửi gốc (CSV): receipts@canva.com Email id: EM-0070 Thời điểm CSV: 2026-07-21 15:15  Amount 12.99  Giao dịch thẻ  CSV id: CD-0044 Wealify order_no: WLF15-CD-0044 Thẻ: VC01 Loại: purchase Merchant: CANVA* PRO MONTHLY Số tiền: 12.99 USD (~12.99 USD) Trạng thái CSV: success Mô tả: Subscription CANVA* PRO MONTHLY","html/mail_059_e_ZwLjBQVjZGRjBGZ5ZQNjAmH0AQp2Zt.html","","0070; 2026; 0044","2026-08-21T04:25:47.413Z"
-60,"e_ZwLjBQVjZGRjBGZ1ZQNjAmH0Zmt3ZN==","wealifytester@yopmail.com","Your receipt from CANVA","Your receipt from CANVA","Wealify <no-reply@wealify.com>",4,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).  Người gửi gốc (CSV): receipts@canva.com Email id: EM-0069 Thời điểm CSV: 2026-06-21 13:57  Amount 12.99  Giao dịch thẻ  CSV id: CD-0043 Wealify order_no: WLF15-CD-0043 Thẻ: VC01 Loại: purchase Merchant: CANVA* PRO MONTHLY Số tiền: 12.99 USD (~12.99 USD) Trạng thái CSV: success Mô tả: Subscription CANVA* PRO MONTHLY","html/mail_060_e_ZwLjBQVjZGRjBGZ1ZQNjAmH0Zmt3ZN.html","","0069; 2026; 0043","2026-08-21T04:25:48.122Z"
-61,"e_ZwLjBQVjZGRjBGZkZQNjAmH0Zwx0BN==","wealifytester@yopmail.com","Your receipt from CANVA","Your receipt from CANVA","Wealify <no-reply@wealify.com>",5,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).  Người gửi gốc (CSV): receipts@canva.com Email id: EM-0068 Thời điểm CSV: 2026-05-21 08:42  Amount 12.99  Giao dịch thẻ  CSV id: CD-0042 Wealify order_no: WLF15-CD-0042 Thẻ: VC01 Loại: purchase Merchant: CANVA* PRO MONTHLY Số tiền: 12.99 USD (~12.99 USD) Trạng thái CSV: success Mô tả: Subscription CANVA* PRO MONTHLY","html/mail_061_e_ZwLjBQVjZGRjBGZkZQNjAmH0Zwx0BN.html","","0068; 2026; 0042","2026-08-21T04:25:48.829Z"
-62,"e_ZwLjBQVjZGRjBGV5ZQNjAmH0ZwD5Zj==","wealifytester@yopmail.com","Your receipt from CANVA","Your receipt from CANVA","Wealify <no-reply@wealify.com>",5,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).  Người gửi gốc (CSV): receipts@canva.com Email id: EM-0067 Thời điểm CSV: 2026-04-21 20:47  Amount 12.99  Giao dịch thẻ  CSV id: CD-0041 Wealify order_no: WLF15-CD-0041 Thẻ: VC01 Loại: purchase Merchant: CANVA* PRO MONTHLY Số tiền: 12.99 USD (~12.99 USD) Trạng thái CSV: success Mô tả: Subscription CANVA* PRO MONTHLY","html/mail_062_e_ZwLjBQVjZGRjBGV5ZQNjAmH0ZwD5Zj.html","","0067; 2026; 0041","2026-08-21T04:25:49.538Z"
-63,"e_ZwLjBQVjZGRjBGV3ZQNjAmH0ZGx4ZD==","wealifytester@yopmail.com","Your receipt from CANVA","Your receipt from CANVA","Wealify <no-reply@wealify.com>",5,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).  Người gửi gốc (CSV): receipts@canva.com Email id: EM-0066 Thời điểm CSV: 2026-03-21 14:04  Amount 12.99  Giao dịch thẻ  CSV id: CD-0040 Wealify order_no: WLF15-CD-0040 Thẻ: VC01 Loại: purchase Merchant: CANVA* PRO MONTHLY Số tiền: 12.99 USD (~12.99 USD) Trạng thái CSV: success Mô tả: Subscription CANVA* PRO MONTHLY","html/mail_063_e_ZwLjBQVjZGRjBGV3ZQNjAmH0ZGx4ZD.html","","0066; 2026; 0040","2026-08-21T04:25:50.246Z"
-64,"e_ZwLjBQVjZGRjBGV0ZQNjAmH0ZGZlBD==","wealifytester@yopmail.com","Your receipt from CANVA","Your receipt from CANVA","Wealify <no-reply@wealify.com>",5,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).  Người gửi gốc (CSV): receipts@canva.com Email id: EM-0065 Thời điểm CSV: 2026-02-21 11:31  Amount 12.99  Giao dịch thẻ  CSV id: CD-0039 Wealify order_no: WLF15-CD-0039 Thẻ: VC01 Loại: purchase Merchant: CANVA* PRO MONTHLY Số tiền: 12.99 USD (~12.99 USD) Trạng thái CSV: success Mô tả: Subscription CANVA* PRO MONTHLY","html/mail_064_e_ZwLjBQVjZGRjBGV0ZQNjAmH0ZGZlBD.html","","0065; 2026; 0039","2026-08-21T04:25:50.953Z"
-65,"e_ZwLjBQVjZGRjBQD4ZQNjAmHmAQL2Zt==","wealifytester@yopmail.com","Your receipt from PADDLE.NET","Your receipt from PADDLE.NET","Wealify <no-reply@wealify.com>",5,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).  Người gửi gốc (CSV): receipts@paddle.com Email id: EM-0064 Thời điểm CSV: 2026-08-18 19:43  Amount 10.00  Giao dịch thẻ  CSV id: CD-0038 Wealify order_no: WLF15-CD-0038 Thẻ: VC01 Loại: purchase Merchant: PADDLE.NET* NOTION Số tiền: 10.0 USD (~10.0 USD) Trạng thái CSV: success Mô tả: Subscription PADDLE.NET* NOTION","html/mail_065_e_ZwLjBQVjZGRjBQD4ZQNjAmHmAQL2Zt.html","","0064; 2026; 0038","2026-08-21T04:25:51.658Z"
-66,"e_ZwLjBQVjZGRjBQD1ZQNjAmHmZmx1BD==","wealifytester@yopmail.com","Your receipt from PADDLE.NET","Your receipt from PADDLE.NET","Wealify <no-reply@wealify.com>",5,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).  Người gửi gốc (CSV): receipts@paddle.com Email id: EM-0063 Thời điểm CSV: 2026-07-18 11:27  Amount 10.00  Giao dịch thẻ  CSV id: CD-0037 Wealify order_no: WLF15-CD-0037 Thẻ: VC01 Loại: purchase Merchant: PADDLE.NET* NOTION Số tiền: 10.0 USD (~10.0 USD) Trạng thái CSV: success Mô tả: Subscription PADDLE.NET* NOTION","html/mail_066_e_ZwLjBQVjZGRjBQD1ZQNjAmHmZmx1BD.html","","0063; 2026; 0037","2026-08-21T04:25:52.365Z"
-67,"e_ZwLjBQVjZGRjBQDmZQNjAmHmZmZ4AN==","wealifytester@yopmail.com","Your receipt from PADDLE.NET","Your receipt from PADDLE.NET","Wealify <no-reply@wealify.com>",5,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).  Người gửi gốc (CSV): receipts@paddle.com Email id: EM-0062 Thời điểm CSV: 2026-06-18 11:33  Amount 10.00  Giao dịch thẻ  CSV id: CD-0036 Wealify order_no: WLF15-CD-0036 Thẻ: VC01 Loại: purchase Merchant: PADDLE.NET* NOTION Số tiền: 10.0 USD (~10.0 USD) Trạng thái CSV: success Mô tả: Subscription PADDLE.NET* NOTION","html/mail_067_e_ZwLjBQVjZGRjBQDmZQNjAmHmZmZ4AN.html","","0062; 2026; 0036","2026-08-21T04:25:53.072Z"
-68,"e_ZwLjBQVjZGRjBQDkZQNjAmHmZmN5At==","wealifytester@yopmail.com","Your receipt from PADDLE.NET","Your receipt from PADDLE.NET","Wealify <no-reply@wealify.com>",5,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).  Người gửi gốc (CSV): receipts@paddle.com Email id: EM-0061 Thời điểm CSV: 2026-05-18 13:24  Amount 10.00  Giao dịch thẻ  CSV id: CD-0035 Wealify order_no: WLF15-CD-0035 Thẻ: VC01 Loại: purchase Merchant: PADDLE.NET* NOTION Số tiền: 10.0 USD (~10.0 USD) Trạng thái CSV: success Mô tả: Subscription PADDLE.NET* NOTION","html/mail_068_e_ZwLjBQVjZGRjBQDkZQNjAmHmZmN5At.html","","0061; 2026; 0035","2026-08-21T04:25:53.782Z"
-69,"e_ZwLjBQVjZGRjZQR5ZQNjAmDkBQNmZD==","wealifytester@yopmail.com","Your receipt from PADDLE.NET","Your receipt from PADDLE.NET","Wealify <no-reply@wealify.com>",5,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).  Người gửi gốc (CSV): receipts@paddle.com Email id: EM-0060 Thời điểm CSV: 2026-04-18 13:25  Amount 10.00  Giao dịch thẻ  CSV id: CD-0034 Wealify order_no: WLF15-CD-0034 Thẻ: VC01 Loại: purchase Merchant: PADDLE.NET* NOTION Số tiền: 10.0 USD (~10.0 USD) Trạng thái CSV: success Mô tả: Subscription PADDLE.NET* NOTION","html/mail_069_e_ZwLjBQVjZGRjZQR5ZQNjAmDkBQNmZD.html","","0060; 2026; 0034","2026-08-21T04:25:54.489Z"
-70,"e_ZwLjBQVjZGRjZQR5ZQNjAmDkAmxkZD==","wealifytester@yopmail.com","Your receipt from PADDLE.NET","Your receipt from PADDLE.NET","Wealify <no-reply@wealify.com>",5,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).  Người gửi gốc (CSV): receipts@paddle.com Email id: EM-0058 Thời điểm CSV: 2026-02-18 17:08  Amount 10.00  Giao dịch thẻ  CSV id: CD-0032 Wealify order_no: WLF15-CD-0032 Thẻ: VC01 Loại: purchase Merchant: PADDLE.NET* NOTION Số tiền: 10.0 USD (~10.0 USD) Trạng thái CSV: success Mô tả: Subscription PADDLE.NET* NOTION","html/mail_070_e_ZwLjBQVjZGRjZQR5ZQNjAmDkAmxkZD.html","","0058; 2026; 0032","2026-08-21T04:25:55.198Z"
-71,"e_ZwLjBQVjZGRjZQR3ZQNjAmDkAmR0ZD==","wealifytester@yopmail.com","Your receipt from ADOBE","Your receipt from ADOBE","Wealify <no-reply@wealify.com>",5,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).  Người gửi gốc (CSV): receipts@adobe.com Email id: EM-0057 Thời điểm CSV: 2026-08-15 21:22  Amount 54.99  Giao dịch thẻ  CSV id: CD-0031 Wealify order_no: WLF15-CD-0031 Thẻ: VC03 Loại: purchase Merchant: ADOBE *CREATIVE CLD Số tiền: 54.99 USD (~54.99 USD) Trạng thái CSV: success Mô tả: Subscription ADOBE *CREATIVE CLD","html/mail_071_e_ZwLjBQVjZGRjZQR3ZQNjAmDkAmR0ZD.html","","0057; 2026; 0031","2026-08-21T04:25:55.906Z"
-72,"e_ZwLjBQVjZGRjZQR3ZQNjAmDkAmN2Zt==","wealifytester@yopmail.com","Your receipt from PADDLE.NET","Your receipt from PADDLE.NET","Wealify <no-reply@wealify.com>",5,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).  Người gửi gốc (CSV): receipts@paddle.com Email id: EM-0059 Thời điểm CSV: 2026-03-18 11:35  Amount 10.00  Giao dịch thẻ  CSV id: CD-0033 Wealify order_no: WLF15-CD-0033 Thẻ: VC01 Loại: purchase Merchant: PADDLE.NET* NOTION Số tiền: 10.0 USD (~10.0 USD) Trạng thái CSV: success Mô tả: Subscription PADDLE.NET* NOTION","html/mail_072_e_ZwLjBQVjZGRjZQR3ZQNjAmDkAmN2Zt.html","","0059; 2026; 0033","2026-08-21T04:25:56.611Z"
-73,"e_ZwLjBQVjZGRjZQRkZQNjAmDkAQD1BD==","wealifytester@yopmail.com","Your receipt from ADOBE","Your receipt from ADOBE","Wealify <no-reply@wealify.com>",5,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).  Người gửi gốc (CSV): receipts@adobe.com Email id: EM-0056 Thời điểm CSV: 2026-07-15 11:24  Amount 54.99  Giao dịch thẻ  CSV id: CD-0030 Wealify order_no: WLF15-CD-0030 Thẻ: VC03 Loại: purchase Merchant: ADOBE *CREATIVE CLD Số tiền: 54.99 USD (~54.99 USD) Trạng thái CSV: success Mô tả: Subscription ADOBE *CREATIVE CLD","html/mail_073_e_ZwLjBQVjZGRjZQRkZQNjAmDkAQD1BD.html","","0056; 2026; 0030","2026-08-21T04:25:57.318Z"
-74,"e_ZwLjBQVjZGRjZQN5ZQNjAmDkAQN1Zj==","wealifytester@yopmail.com","Your receipt from ADOBE","Your receipt from ADOBE","Wealify <no-reply@wealify.com>",5,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).  Người gửi gốc (CSV): receipts@adobe.com Email id: EM-0054 Thời điểm CSV: 2026-05-15 19:12  Amount 54.99  Giao dịch thẻ  CSV id: CD-0028 Wealify order_no: WLF15-CD-0028 Thẻ: VC03 Loại: purchase Merchant: ADOBE *CREATIVE CLD Số tiền: 54.99 USD (~54.99 USD) Trạng thái CSV: success Mô tả: Subscription ADOBE *CREATIVE CLD","html/mail_074_e_ZwLjBQVjZGRjZQN5ZQNjAmDkAQN1Zj.html","","0054; 2026; 0028","2026-08-21T04:25:58.027Z"
-75,"e_ZwLjBQVjZGRjZQN2ZQNjAmDkZwHkAt==","wealifytester@yopmail.com","Your receipt from ADOBE","Your receipt from ADOBE","Wealify <no-reply@wealify.com>",5,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).  Người gửi gốc (CSV): receipts@adobe.com Email id: EM-0055 Thời điểm CSV: 2026-06-15 16:29  Amount 54.99  Giao dịch thẻ  CSV id: CD-0029 Wealify order_no: WLF15-CD-0029 Thẻ: VC03 Loại: purchase Merchant: ADOBE *CREATIVE CLD Số tiền: 54.99 USD (~54.99 USD) Trạng thái CSV: success Mô tả: Subscription ADOBE *CREATIVE CLD","html/mail_075_e_ZwLjBQVjZGRjZQN2ZQNjAmDkZwHkAt.html","","0055; 2026; 0029","2026-08-21T04:25:58.734Z"
-76,"e_ZwLjBQVjZGRjZQNkZQNjAmDkZQV2BD==","wealifytester@yopmail.com","Your receipt from ADOBE","Your receipt from ADOBE","Wealify <no-reply@wealify.com>",6,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).  Người gửi gốc (CSV): receipts@adobe.com Email id: EM-0055 Thời điểm CSV: 2026-06-15 16:29  Amount 54.99  Giao dịch thẻ  CSV id: CD-0029 Wealify order_no: WLF15-CD-0029 Thẻ: VC03 Loại: purchase Merchant: ADOBE *CREATIVE CLD Số tiền: 54.99 USD (~54.99 USD) Trạng thái CSV: success Mô tả: Subscription ADOBE *CREATIVE CLD","html/mail_076_e_ZwLjBQVjZGRjZQNkZQNjAmDkZQV2BD.html","","0055; 2026; 0029","2026-08-21T04:25:59.442Z"
-77,"e_ZwLjBQVjZGN1BGH5ZQNjAmDjBGt2Zj==","wealifytester@yopmail.com","Your receipt from ADOBE","Your receipt from ADOBE","Wealify <no-reply@wealify.com>",6,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).  Người gửi gốc (CSV): receipts@adobe.com Email id: EM-0052 Thời điểm CSV: 2026-03-15 13:09  Amount 54.99  Giao dịch thẻ  CSV id: CD-0026 Wealify order_no: WLF15-CD-0026 Thẻ: VC03 Loại: purchase Merchant: ADOBE *CREATIVE CLD Số tiền: 54.99 USD (~54.99 USD) Trạng thái CSV: success Mô tả: Subscription ADOBE *CREATIVE CLD","html/mail_077_e_ZwLjBQVjZGN1BGH5ZQNjAmDjBGt2Zj.html","","0052; 2026; 0026","2026-08-21T04:26:00.150Z"
-78,"e_ZwLjBQVjZGN1BGH2ZQNjAmDjBGDlZN==","wealifytester@yopmail.com","Your receipt from ADOBE","Your receipt from ADOBE","Wealify <no-reply@wealify.com>",6,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).  Người gửi gốc (CSV): receipts@adobe.com Email id: EM-0051 Thời điểm CSV: 2026-02-15 16:24  Amount 54.99  Giao dịch thẻ  CSV id: CD-0025 Wealify order_no: WLF15-CD-0025 Thẻ: VC03 Loại: purchase Merchant: ADOBE *CREATIVE CLD Số tiền: 54.99 USD (~54.99 USD) Trạng thái CSV: success Mô tả: Subscription ADOBE *CREATIVE CLD","html/mail_078_e_ZwLjBQVjZGN1BGH2ZQNjAmDjBGDlZN.html","","0051; 2026; 0025","2026-08-21T04:26:00.858Z"
-79,"e_ZwLjBQVjZGN1BGHmZQNjAmDjBQx0AD==","wealifytester@yopmail.com","Your receipt from OPENAI","Your receipt from OPENAI","Wealify <no-reply@wealify.com>",6,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).  Người gửi gốc (CSV): receipts@openai.com Email id: EM-0050 Thời điểm CSV: 2026-08-03 19:28  Amount 20.00  Giao dịch thẻ  CSV id: CD-0024 Wealify order_no: WLF15-CD-0024 Thẻ: VC03 Loại: purchase Merchant: OPENAI *CHATGPT SUBSCR Số tiền: 20.0 USD (~20.0 USD) Trạng thái CSV: success Mô tả: Subscription OPENAI *CHATGPT SUBSCR","html/mail_079_e_ZwLjBQVjZGN1BGHmZQNjAmDjBQx0AD.html","","0050; 2026; 0024","2026-08-21T04:26:01.565Z"
-80,"e_ZwLjBQVjZGN1BGHkZQNjAmDjBQLjBN==","wealifytester@yopmail.com","Your receipt from OPENAI","Your receipt from OPENAI","Wealify <no-reply@wealify.com>",6,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).  Người gửi gốc (CSV): receipts@openai.com Email id: EM-0049 Thời điểm CSV: 2026-07-03 18:05  Amount 20.00  Giao dịch thẻ  CSV id: CD-0023 Wealify order_no: WLF15-CD-0023 Thẻ: VC03 Loại: purchase Merchant: OPENAI *CHATGPT SUBSCR Số tiền: 20.0 USD (~20.0 USD) Trạng thái CSV: success Mô tả: Subscription OPENAI *CHATGPT SUBSCR","html/mail_080_e_ZwLjBQVjZGN1BGHkZQNjAmDjBQLjBN.html","","0049; 2026; 0023","2026-08-21T04:26:02.274Z"
-81,"e_ZwLjBQVjZGN1BGD5ZQNjAmDjBQV0AN==","wealifytester@yopmail.com","Your receipt from OPENAI","Your receipt from OPENAI","Wealify <no-reply@wealify.com>",6,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).  Người gửi gốc (CSV): receipts@openai.com Email id: EM-0048 Thời điểm CSV: 2026-06-03 17:59  Amount 20.00  Giao dịch thẻ  CSV id: CD-0022 Wealify order_no: WLF15-CD-0022 Thẻ: VC03 Loại: purchase Merchant: OPENAI *CHATGPT SUBSCR Số tiền: 20.0 USD (~20.0 USD) Trạng thái CSV: success Mô tả: Subscription OPENAI *CHATGPT SUBSCR","html/mail_081_e_ZwLjBQVjZGN1BGD5ZQNjAmDjBQV0AN.html","","0048; 2026; 0022","2026-08-21T04:26:02.982Z"
-82,"e_ZwLjBQVjZGN1BGD3ZQNjAmDjAmt0Zj==","wealifytester@yopmail.com","Your receipt from OPENAI","Your receipt from OPENAI","Wealify <no-reply@wealify.com>",6,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).  Người gửi gốc (CSV): receipts@openai.com Email id: EM-0047 Thời điểm CSV: 2026-05-03 15:22  Amount 20.00  Giao dịch thẻ  CSV id: CD-0021 Wealify order_no: WLF15-CD-0021 Thẻ: VC03 Loại: purchase Merchant: OPENAI *CHATGPT SUBSCR Số tiền: 20.0 USD (~20.0 USD) Trạng thái CSV: success Mô tả: Subscription OPENAI *CHATGPT SUBSCR","html/mail_082_e_ZwLjBQVjZGN1BGD3ZQNjAmDjAmt0Zj.html","","0047; 2026; 0021","2026-08-21T04:26:03.690Z"
-83,"e_ZwLjBQVjZGN1BGD0ZQNjAmDjAmD4Aj==","wealifytester@yopmail.com","Your receipt from OPENAI","Your receipt from OPENAI","Wealify <no-reply@wealify.com>",6,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).  Người gửi gốc (CSV): receipts@openai.com Email id: EM-0046 Thời điểm CSV: 2026-04-03 17:36  Amount 20.00  Giao dịch thẻ  CSV id: CD-0020 Wealify order_no: WLF15-CD-0020 Thẻ: VC03 Loại: purchase Merchant: OPENAI *CHATGPT SUBSCR Số tiền: 20.0 USD (~20.0 USD) Trạng thái CSV: success Mô tả: Subscription OPENAI *CHATGPT SUBSCR","html/mail_083_e_ZwLjBQVjZGN1BGD0ZQNjAmDjAmD4Aj.html","","0046; 2026; 0020","2026-08-21T04:26:04.398Z"
-84,"e_ZwLjBQVjZGN1BGDlZQNjAmDjAmN5AD==","wealifytester@yopmail.com","Your receipt from OPENAI","Your receipt from OPENAI","Wealify <no-reply@wealify.com>",6,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).  Người gửi gốc (CSV): receipts@openai.com Email id: EM-0045 Thời điểm CSV: 2026-03-03 19:47  Amount 20.00  Giao dịch thẻ  CSV id: CD-0019 Wealify order_no: WLF15-CD-0019 Thẻ: VC03 Loại: purchase Merchant: OPENAI *CHATGPT SUBSCR Số tiền: 20.0 USD (~20.0 USD) Trạng thái CSV: success Mô tả: Subscription OPENAI *CHATGPT SUBSCR","html/mail_084_e_ZwLjBQVjZGN1BGDlZQNjAmDjAmN5AD.html","","0045; 2026; 0019","2026-08-21T04:26:05.107Z"
-85,"e_ZwLjBQVjZGN1BGZ5ZQNjAmDjAwHmZD==","wealifytester@yopmail.com","Your receipt from GOOGLE","Your receipt from GOOGLE","Wealify <no-reply@wealify.com>",6,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).  Người gửi gốc (CSV): receipts@google.com Email id: EM-0044 Thời điểm CSV: 2026-08-12 14:46  Amount 13.99  Giao dịch thẻ  CSV id: CD-0018 Wealify order_no: WLF15-CD-0018 Thẻ: VC02 Loại: purchase Merchant: GOOGLE *YOUTUBEPREM Số tiền: 13.99 USD (~13.99 USD) Trạng thái CSV: success Mô tả: Subscription GOOGLE *YOUTUBEPREM","html/mail_085_e_ZwLjBQVjZGN1BGZ5ZQNjAmDjAwHmZD.html","","0044; 2026; 0018","2026-08-21T04:26:05.814Z"
-86,"e_ZwLjBQVjZGN1BGZ3ZQNjAmDjAwVmAD==","wealifytester@yopmail.com","Your receipt from GOOGLE","Your receipt from GOOGLE","Wealify <no-reply@wealify.com>",6,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).  Người gửi gốc (CSV): receipts@google.com Email id: EM-0043 Thời điểm CSV: 2026-07-12 09:23  Amount 13.99  Giao dịch thẻ  CSV id: CD-0017 Wealify order_no: WLF15-CD-0017 Thẻ: VC02 Loại: purchase Merchant: GOOGLE *YOUTUBEPREM Số tiền: 13.99 USD (~13.99 USD) Trạng thái CSV: success Mô tả: Subscription GOOGLE *YOUTUBEPREM","html/mail_086_e_ZwLjBQVjZGN1BGZ3ZQNjAmDjAwVmAD.html","","0043; 2026; 0017","2026-08-21T04:26:06.521Z"
-87,"e_ZwLjBQVjZGN1BGZ1ZQNjAmDjAGp0AD==","wealifytester@yopmail.com","Your receipt from GOOGLE","Your receipt from GOOGLE","Wealify <no-reply@wealify.com>",6,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).  Người gửi gốc (CSV): receipts@google.com Email id: EM-0042 Thời điểm CSV: 2026-06-12 15:13  Amount 13.99  Giao dịch thẻ  CSV id: CD-0016 Wealify order_no: WLF15-CD-0016 Thẻ: VC02 Loại: purchase Merchant: GOOGLE *YOUTUBEPREM Số tiền: 13.99 USD (~13.99 USD) Trạng thái CSV: success Mô tả: Subscription GOOGLE *YOUTUBEPREM","html/mail_087_e_ZwLjBQVjZGN1BGZ1ZQNjAmDjAGp0AD.html","","0042; 2026; 0016","2026-08-21T04:26:07.230Z"
-88,"e_ZwLjBQVjZGN1BGZlZQNjAmDjAGVkAj==","wealifytester@yopmail.com","Your receipt from GOOGLE","Your receipt from GOOGLE","Wealify <no-reply@wealify.com>",6,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).  Người gửi gốc (CSV): receipts@google.com Email id: EM-0041 Thời điểm CSV: 2026-05-12 18:13  Amount 13.99  Giao dịch thẻ  CSV id: CD-0015 Wealify order_no: WLF15-CD-0015 Thẻ: VC02 Loại: purchase Merchant: GOOGLE *YOUTUBEPREM Số tiền: 13.99 USD (~13.99 USD) Trạng thái CSV: success Mô tả: Subscription GOOGLE *YOUTUBEPREM","html/mail_088_e_ZwLjBQVjZGN1BGZlZQNjAmDjAGVkAj.html","","0041; 2026; 0015","2026-08-21T04:26:07.937Z"
-89,"e_ZwLjBQVjZGN1BGZjZQNjAmDjAQt3BD==","wealifytester@yopmail.com","Your receipt from GOOGLE","Your receipt from GOOGLE","Wealify <no-reply@wealify.com>",6,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).  Người gửi gốc (CSV): receipts@google.com Email id: EM-0040 Thời điểm CSV: 2026-04-12 19:22  Amount 13.99  Giao dịch thẻ  CSV id: CD-0014 Wealify order_no: WLF15-CD-0014 Thẻ: VC02 Loại: purchase Merchant: GOOGLE *YOUTUBEPREM Số tiền: 13.99 USD (~13.99 USD) Trạng thái CSV: success Mô tả: Subscription GOOGLE *YOUTUBEPREM","html/mail_089_e_ZwLjBQVjZGN1BGZjZQNjAmDjAQt3BD.html","","0040; 2026; 0014","2026-08-21T04:26:08.647Z"
-90,"e_ZwLjBQVjZGN1BGV2ZQNjAmDjAQN3ZN==","wealifytester@yopmail.com","Your receipt from GOOGLE","Your receipt from GOOGLE","Wealify <no-reply@wealify.com>",6,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).  Người gửi gốc (CSV): receipts@google.com Email id: EM-0040 Thời điểm CSV: 2026-04-12 19:22  Amount 13.99  Giao dịch thẻ  CSV id: CD-0014 Wealify order_no: WLF15-CD-0014 Thẻ: VC02 Loại: purchase Merchant: GOOGLE *YOUTUBEPREM Số tiền: 13.99 USD (~13.99 USD) Trạng thái CSV: success Mô tả: Subscription GOOGLE *YOUTUBEPREM","html/mail_090_e_ZwLjBQVjZGN1BGV2ZQNjAmDjAQN3ZN.html","","0040; 2026; 0014","2026-08-21T04:26:09.357Z"
-91,"e_ZwLjBQVjZGN1BGVmZQNjAmDjZmL4ZD==","wealifytester@yopmail.com","Your receipt from Spotify P0F2K","Your receipt from Spotify P0F2K","Wealify <no-reply@wealify.com>",7,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).  Người gửi gốc (CSV): receipts@spotify.com Email id: EM-0038 Thời điểm CSV: 2026-08-09 12:50  Amount 9.99  Giao dịch thẻ  CSV id: CD-0012 Wealify order_no: WLF15-CD-0012 Thẻ: VC02 Loại: purchase Merchant: Spotify P0F2K Số tiền: 9.99 USD (~9.99 USD) Trạng thái CSV: success Mô tả: Subscription Spotify P0F2K","html/mail_091_e_ZwLjBQVjZGN1BGVmZQNjAmDjZmL4ZD.html","","0038; 2026; 0012","2026-08-21T04:26:10.065Z"
-92,"e_ZwLjBQVjZGN1BGVlZQNjAmDjZmD0AN==","wealifytester@yopmail.com","Your receipt from Spotify P0F2K","Your receipt from Spotify P0F2K","Wealify <no-reply@wealify.com>",7,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).  Người gửi gốc (CSV): receipts@spotify.com Email id: EM-0037 Thời điểm CSV: 2026-07-09 09:48  Amount 9.99  Giao dịch thẻ  CSV id: CD-0011 Wealify order_no: WLF15-CD-0011 Thẻ: VC02 Loại: purchase Merchant: Spotify P0F2K Số tiền: 9.99 USD (~9.99 USD) Trạng thái CSV: success Mô tả: Subscription Spotify P0F2K","html/mail_092_e_ZwLjBQVjZGN1BGVlZQNjAmDjZmD0AN.html","","0037; 2026; 0011","2026-08-21T04:26:10.771Z"
-93,"e_ZwLjBQVjZGN1BGVjZQNjAmDjZmN5At==","wealifytester@yopmail.com","Your receipt from Spotify P0F2K","Your receipt from Spotify P0F2K","Wealify <no-reply@wealify.com>",7,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).  Người gửi gốc (CSV): receipts@spotify.com Email id: EM-0036 Thời điểm CSV: 2026-06-09 08:57  Amount 9.99  Giao dịch thẻ  CSV id: CD-0010 Wealify order_no: WLF15-CD-0010 Thẻ: VC02 Loại: purchase Merchant: Spotify P0F2K Số tiền: 9.99 USD (~9.99 USD) Trạng thái CSV: success Mô tả: Subscription Spotify P0F2K","html/mail_093_e_ZwLjBQVjZGN1BGVjZQNjAmDjZmN5At.html","","0036; 2026; 0010","2026-08-21T04:26:11.482Z"
-94,"e_ZwLjBQVjZGN1BGR3ZQNjAmDjZwp4AN==","wealifytester@yopmail.com","Your receipt from Spotify P0F2K","Your receipt from Spotify P0F2K","Wealify <no-reply@wealify.com>",7,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).  Người gửi gốc (CSV): receipts@spotify.com Email id: EM-0035 Thời điểm CSV: 2026-05-09 13:09  Amount 9.99  Giao dịch thẻ  CSV id: CD-0009 Wealify order_no: WLF15-CD-0009 Thẻ: VC02 Loại: purchase Merchant: Spotify P0F2K Số tiền: 9.99 USD (~9.99 USD) Trạng thái CSV: success Mô tả: Subscription Spotify P0F2K","html/mail_094_e_ZwLjBQVjZGN1BGR3ZQNjAmDjZwp4AN.html","","0035; 2026; 0009","2026-08-21T04:26:12.188Z"
-95,"e_ZwLjBQVjZGN1BGR1ZQNjAmDjZwDmBN==","wealifytester@yopmail.com","Your receipt from Spotify P0F2K","Your receipt from Spotify P0F2K","Wealify <no-reply@wealify.com>",7,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).  Người gửi gốc (CSV): receipts@spotify.com Email id: EM-0034 Thời điểm CSV: 2026-04-09 14:51  Amount 9.99  Giao dịch thẻ  CSV id: CD-0008 Wealify order_no: WLF15-CD-0008 Thẻ: VC02 Loại: purchase Merchant: Spotify P0F2K Số tiền: 9.99 USD (~9.99 USD) Trạng thái CSV: success Mô tả: Subscription Spotify P0F2K","html/mail_095_e_ZwLjBQVjZGN1BGR1ZQNjAmDjZwDmBN.html","","0034; 2026; 0008","2026-08-21T04:26:12.895Z"
-96,"e_ZwLjBQVjZGN1BGRmZQNjAmDjZwVkZN==","wealifytester@yopmail.com","Your receipt from Spotify P0F2K","Your receipt from Spotify P0F2K","Wealify <no-reply@wealify.com>",7,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).  Người gửi gốc (CSV): receipts@spotify.com Email id: EM-0033 Thời điểm CSV: 2026-03-09 15:20  Amount 9.99  Giao dịch thẻ  CSV id: CD-0007 Wealify order_no: WLF15-CD-0007 Thẻ: VC02 Loại: purchase Merchant: Spotify P0F2K Số tiền: 9.99 USD (~9.99 USD) Trạng thái CSV: success Mô tả: Subscription Spotify P0F2K","html/mail_096_e_ZwLjBQVjZGN1BGRmZQNjAmDjZwVkZN.html","","0033; 2026; 0007","2026-08-21T04:26:13.605Z"
-97,"e_ZwLjBQVjZGN1BGRjZQNjAmDjZGt1Aj==","wealifytester@yopmail.com","Your receipt from NETFLIX.COM","Your receipt from NETFLIX.COM","Wealify <no-reply@wealify.com>",7,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).  Người gửi gốc (CSV): receipts@netflix.com Email id: EM-0032 Thời điểm CSV: 2026-08-06 14:00  Amount 17.99  Giao dịch thẻ  CSV id: CD-0006 Wealify order_no: WLF15-CD-0006 Thẻ: VC02 Loại: purchase Merchant: NETFLIX.COM Số tiền: 17.99 USD (~17.99 USD) Trạng thái CSV: success Mô tả: Subscription NETFLIX.COM","html/mail_097_e_ZwLjBQVjZGN1BGRjZQNjAmDjZGt1Aj.html","","0032; 2026; 0006","2026-08-21T04:26:14.314Z"
-98,"e_ZwLjBQVjZGN1BGN4ZQNjAmDjZGH3Aj==","wealifytester@yopmail.com","Your receipt from NETFLIX.COM","Your receipt from NETFLIX.COM","Wealify <no-reply@wealify.com>",7,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).  Người gửi gốc (CSV): receipts@netflix.com Email id: EM-0031 Thời điểm CSV: 2026-07-06 13:26  Amount 17.99  Giao dịch thẻ  CSV id: CD-0005 Wealify order_no: WLF15-CD-0005 Thẻ: VC02 Loại: purchase Merchant: NETFLIX.COM Số tiền: 17.99 USD (~17.99 USD) Trạng thái CSV: success Mô tả: Subscription NETFLIX.COM","html/mail_098_e_ZwLjBQVjZGN1BGN4ZQNjAmDjZGH3Aj.html","","0031; 2026; 0005","2026-08-21T04:26:15.021Z"
-99,"e_ZwLjBQVjZGN1BGN1ZQNjAmDjZGVmAN==","wealifytester@yopmail.com","Your receipt from NETFLIX.COM","Your receipt from NETFLIX.COM","Wealify <no-reply@wealify.com>",7,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).  Người gửi gốc (CSV): receipts@netflix.com Email id: EM-0030 Thời điểm CSV: 2026-06-06 18:43  Amount 17.99  Giao dịch thẻ  CSV id: CD-0004 Wealify order_no: WLF15-CD-0004 Thẻ: VC02 Loại: purchase Merchant: NETFLIX.COM Số tiền: 17.99 USD (~17.99 USD) Trạng thái CSV: success Mô tả: Subscription NETFLIX.COM","html/mail_099_e_ZwLjBQVjZGN1BGN1ZQNjAmDjZGVmAN.html","","0030; 2026; 0004","2026-08-21T04:26:15.728Z"
-100,"e_ZwLjBQVjZGN1BGNmZQNjAmDjZQxmBD==","wealifytester@yopmail.com","Your receipt from NETFLIX.COM","Your receipt from NETFLIX.COM","Wealify <no-reply@wealify.com>",7,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).  Người gửi gốc (CSV): receipts@netflix.com Email id: EM-0029 Thời điểm CSV: 2026-05-06 19:52  Amount 15.49  Giao dịch thẻ  CSV id: CD-0003 Wealify order_no: WLF15-CD-0003 Thẻ: VC02 Loại: purchase Merchant: NETFLIX.COM Số tiền: 15.49 USD (~15.49 USD) Trạng thái CSV: success Mô tả: Subscription NETFLIX.COM","html/mail_100_e_ZwLjBQVjZGN1BGNmZQNjAmDjZQxmBD.html","","0029; 2026; 0003","2026-08-21T04:26:16.435Z"
-101,"e_ZwLjBQVjZGN1BGNjZQNjAmDjZQLmBD==","wealifytester@yopmail.com","Your receipt from NETFLIX.COM","Your receipt from NETFLIX.COM","Wealify <no-reply@wealify.com>",7,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).  Người gửi gốc (CSV): receipts@netflix.com Email id: EM-0028 Thời điểm CSV: 2026-04-06 20:43  Amount 15.49  Giao dịch thẻ  CSV id: CD-0002 Wealify order_no: WLF15-CD-0002 Thẻ: VC02 Loại: purchase Merchant: NETFLIX.COM Số tiền: 15.49 USD (~15.49 USD) Trạng thái CSV: success Mô tả: Subscription NETFLIX.COM","html/mail_101_e_ZwLjBQVjZGN1BGNjZQNjAmDjZQLmBD.html","","0028; 2026; 0002","2026-08-21T04:26:17.145Z"
-102,"e_ZwLjBQVjZGN1BQH4ZQNjAmDjZQZmBN==","wealifytester@yopmail.com","Your receipt from NETFLIX.COM","Your receipt from NETFLIX.COM","Wealify <no-reply@wealify.com>",7,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).  Người gửi gốc (CSV): receipts@netflix.com Email id: EM-0027 Thời điểm CSV: 2026-03-06 14:43  Amount 15.49  Giao dịch thẻ  CSV id: CD-0001 Wealify order_no: WLF15-CD-0001 Thẻ: VC02 Loại: purchase Merchant: NETFLIX.COM Số tiền: 15.49 USD (~15.49 USD) Trạng thái CSV: success Mô tả: Subscription NETFLIX.COM","html/mail_102_e_ZwLjBQVjZGN1BQH4ZQNjAmDjZQZmBN.html","","0027; 2026; 0001","2026-08-21T04:26:17.854Z"
-103,"e_ZwLjBQVjZGN1BQH1ZQNjAmDjZQNmZj==","wealifytester@yopmail.com","Payout confirmation Amazon","Payout confirmation Amazon","Wealify <no-reply@wealify.com>",7,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).  Người gửi gốc (CSV): payments@amazon.com Email id: EM-0026 Thời điểm CSV: 2026-05-15 00:51  You received USD 1830.84  Giao dịch VA  CSV id: VA-0160 Wealify order_no: WLF15-VA-0160 VA: VA06 Loại: payin Nguồn / đối tác: Amazon / Amazon payout Số tiền: 1830.84 USD (~1830.84 USD) Trạng thái CSV: success Mô tả: Nhận tiền từ Amazon","html/mail_103_e_ZwLjBQVjZGN1BQH1ZQNjAmDjZQNmZj.html","","0026; 2026; 1830; 0160","2026-08-21T04:26:18.563Z"
-104,"e_ZwLjBQVjZGN1BQH0ZQNjAmZ5BGtkZt==","wealifytester@yopmail.com","Payout confirmation Amazon","Payout confirmation Amazon","Wealify <no-reply@wealify.com>",7,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).  Người gửi gốc (CSV): payments@amazon.com Email id: EM-0025 Thời điểm CSV: 2026-08-08 16:47  You received USD 2001.66  Giao dịch VA  CSV id: VA-0159 Wealify order_no: WLF15-VA-0159 VA: VA06 Loại: payin Nguồn / đối tác: Amazon / Amazon payout Số tiền: 2001.66 USD (~2001.66 USD) Trạng thái CSV: success Mô tả: Nhận tiền từ Amazon","html/mail_104_e_ZwLjBQVjZGN1BQH0ZQNjAmZ5BGtkZt.html","","0025; 2026; 2001; 0159","2026-08-21T04:26:19.272Z"
-105,"e_ZwLjBQVjZGN1BQHkZQNjAmZ5BGDlAD==","wealifytester@yopmail.com","Payout confirmation Amazon","Payout confirmation Amazon","Wealify <no-reply@wealify.com>",7,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).  Người gửi gốc (CSV): payments@amazon.com Email id: EM-0024 Thời điểm CSV: 2026-06-07 06:31  You received USD 226.22  Giao dịch VA  CSV id: VA-0157 Wealify order_no: WLF15-VA-0157 VA: VA06 Loại: payin Nguồn / đối tác: Amazon / Amazon payout Số tiền: 226.22 USD (~226.22 USD) Trạng thái CSV: success Mô tả: Nhận tiền từ Amazon","html/mail_105_e_ZwLjBQVjZGN1BQHkZQNjAmZ5BGDlAD.html","","0024; 2026; 0157","2026-08-21T04:26:19.979Z"
-106,"e_ZwLjBQVjZGN1BQD5ZQNjAmZ5BGRmBD==","wealifytester@yopmail.com","Payout confirmation Amazon","Payout confirmation Amazon","Wealify <no-reply@wealify.com>",8,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).  Người gửi gốc (CSV): payments@amazon.com Email id: EM-0024 Thời điểm CSV: 2026-06-07 06:31  You received USD 226.22  Giao dịch VA  CSV id: VA-0157 Wealify order_no: WLF15-VA-0157 VA: VA06 Loại: payin Nguồn / đối tác: Amazon / Amazon payout Số tiền: 226.22 USD (~226.22 USD) Trạng thái CSV: success Mô tả: Nhận tiền từ Amazon","html/mail_106_e_ZwLjBQVjZGN1BQD5ZQNjAmZ5BGRmBD.html","","0024; 2026; 0157","2026-08-21T04:26:20.687Z"
-107,"e_ZwLjBQVjZGN1BQD2ZQNjAmZ5BQp5ZN==","wealifytester@yopmail.com","Payout confirmation Amazon","Payout confirmation Amazon","Wealify <no-reply@wealify.com>",8,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).  Người gửi gốc (CSV): payments@amazon.com Email id: EM-0022 Thời điểm CSV: 2026-07-08 04:58  You received USD 2044.27  Giao dịch VA  CSV id: VA-0153 Wealify order_no: WLF15-VA-0153 VA: VA06 Loại: payin Nguồn / đối tác: Amazon / Amazon payout Số tiền: 2044.27 USD (~2044.27 USD) Trạng thái CSV: success Mô tả: Nhận tiền từ Amazon","html/mail_107_e_ZwLjBQVjZGN1BQD2ZQNjAmZ5BQp5ZN.html","","0022; 2026; 2044; 0153","2026-08-21T04:26:21.397Z"
-108,"e_ZwLjBQVjZGN1BQD1ZQNjAmZ5BQHkAj==","wealifytester@yopmail.com","Payout confirmation Amazon","Payout confirmation Amazon","Wealify <no-reply@wealify.com>",8,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).  Người gửi gốc (CSV): payments@amazon.com Email id: EM-0021 Thời điểm CSV: 2026-04-26 04:00  You received USD 974.85  Giao dịch VA  CSV id: VA-0144 Wealify order_no: WLF15-VA-0144 VA: VA06 Loại: payin Nguồn / đối tác: Amazon / Amazon payout Số tiền: 974.85 USD (~974.85 USD) Trạng thái CSV: success Mô tả: Nhận tiền từ Amazon","html/mail_108_e_ZwLjBQVjZGN1BQD1ZQNjAmZ5BQHkAj.html","","0021; 2026; 0144","2026-08-21T04:26:22.105Z"
-109,"e_ZwLjBQVjZGN1BQDlZQNjAmZ5BQR4AN==","wealifytester@yopmail.com","Payout confirmation Amazon","Payout confirmation Amazon","Wealify <no-reply@wealify.com>",8,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).  Người gửi gốc (CSV): payments@amazon.com Email id: EM-0020 Thời điểm CSV: 2026-04-08 03:24  You received USD 1277.73  Giao dịch VA  CSV id: VA-0142 Wealify order_no: WLF15-VA-0142 VA: VA06 Loại: payin Nguồn / đối tác: Amazon / Amazon payout Số tiền: 1277.73 USD (~1277.73 USD) Trạng thái CSV: success Mô tả: Nhận tiền từ Amazon","html/mail_109_e_ZwLjBQVjZGN1BQDlZQNjAmZ5BQR4AN.html","","0020; 2026; 1277; 0142","2026-08-21T04:26:22.813Z"
-110,"e_ZwLjBQVjZGN1BQZ5ZQNjAmZ5Amp4AN==","wealifytester@yopmail.com","Payout confirmation Paypal","Payout confirmation Paypal","Wealify <no-reply@wealify.com>",8,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).  Người gửi gốc (CSV): payments@paypal.com Email id: EM-0019 Thời điểm CSV: 2026-07-20 13:15  You received USD 977.74  Giao dịch VA  CSV id: VA-0089 Wealify order_no: WLF15-VA-0089 VA: VA03 Loại: payin Nguồn / đối tác: Paypal / Paypal payout Số tiền: 977.74 USD (~977.74 USD) Trạng thái CSV: success Mô tả: Nhận tiền từ Paypal","html/mail_110_e_ZwLjBQVjZGN1BQZ5ZQNjAmZ5Amp4AN.html","","0019; 2026; 0089","2026-08-21T04:26:23.523Z"
-111,"e_ZwLjBQVjZGN1BQZ3ZQNjAmZ5AmHkZt==","wealifytester@yopmail.com","Payout confirmation Paypal","Payout confirmation Paypal","Wealify <no-reply@wealify.com>",8,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).  Người gửi gốc (CSV): payments@paypal.com Email id: EM-0018 Thời điểm CSV: 2026-05-24 06:53  You received USD 751.45  Giao dịch VA  CSV id: VA-0088 Wealify order_no: WLF15-VA-0088 VA: VA03 Loại: payin Nguồn / đối tác: Paypal / Paypal payout Số tiền: 751.45 USD (~751.45 USD) Trạng thái CSV: success Mô tả: Nhận tiền từ Paypal","html/mail_111_e_ZwLjBQVjZGN1BQZ3ZQNjAmZ5AmHkZt.html","","0018; 2026; 0088","2026-08-21T04:26:24.230Z"
-112,"e_ZwLjBQVjZGN1BQZ1ZQNjAmZ5AmVjBD==","wealifytester@yopmail.com","Payout confirmation Paypal","Payout confirmation Paypal","Wealify <no-reply@wealify.com>",8,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).  Người gửi gốc (CSV): payments@paypal.com Email id: EM-0018 Thời điểm CSV: 2026-05-24 06:53  You received USD 751.45  Giao dịch VA  CSV id: VA-0088 Wealify order_no: WLF15-VA-0088 VA: VA03 Loại: payin Nguồn / đối tác: Paypal / Paypal payout Số tiền: 751.45 USD (~751.45 USD) Trạng thái CSV: success Mô tả: Nhận tiền từ Paypal","html/mail_112_e_ZwLjBQVjZGN1BQZ1ZQNjAmZ5AmVjBD.html","","0018; 2026; 0088","2026-08-21T04:26:24.940Z"
-113,"e_ZwLjBQVjZGN1BQZlZQNjAmZ5Awp4Zj==","wealifytester@yopmail.com","Payout confirmation Paypal","Payout confirmation Paypal","Wealify <no-reply@wealify.com>",8,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).  Người gửi gốc (CSV): payments@paypal.com Email id: EM-0018 Thời điểm CSV: 2026-05-24 06:53  You received USD 751.45  Giao dịch VA  CSV id: VA-0088 Wealify order_no: WLF15-VA-0088 VA: VA03 Loại: payin Nguồn / đối tác: Paypal / Paypal payout Số tiền: 751.45 USD (~751.45 USD) Trạng thái CSV: success Mô tả: Nhận tiền từ Paypal","html/mail_113_e_ZwLjBQVjZGN1BQZlZQNjAmZ5Awp4Zj.html","","0018; 2026; 0088","2026-08-21T04:26:25.649Z"
-114,"e_ZwLjBQVjZGN1BQZjZQNjAmZ5AwH0ZN==","wealifytester@yopmail.com","Payout confirmation Paypal","Payout confirmation Paypal","Wealify <no-reply@wealify.com>",8,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).  Người gửi gốc (CSV): payments@paypal.com Email id: EM-0015 Thời điểm CSV: 2026-08-13 08:11  You received USD 1819.70  Giao dịch VA  CSV id: VA-0084 Wealify order_no: WLF15-VA-0084 VA: VA03 Loại: payin Nguồn / đối tác: Paypal / Paypal payout Số tiền: 1819.7 USD (~1819.7 USD) Trạng thái CSV: success Mô tả: Nhận tiền từ Paypal","html/mail_114_e_ZwLjBQVjZGN1BQZjZQNjAmZ5AwH0ZN.html","","0015; 2026; 1819; 0084","2026-08-21T04:26:26.356Z"
-115,"e_ZwLjBQVjZGN1BQV4ZQNjAmZ5AwVkZt==","wealifytester@yopmail.com","Payout confirmation Paypal","Payout confirmation Paypal","Wealify <no-reply@wealify.com>",8,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).  Người gửi gốc (CSV): payments@paypal.com Email id: EM-0014 Thời điểm CSV: 2026-07-21 22:42  You received USD 410.96  Giao dịch VA  CSV id: VA-0082 Wealify order_no: WLF15-VA-0082 VA: VA03 Loại: payin Nguồn / đối tác: Paypal / Paypal payout Số tiền: 410.96 USD (~410.96 USD) Trạng thái CSV: success Mô tả: Nhận tiền từ Paypal","html/mail_115_e_ZwLjBQVjZGN1BQV4ZQNjAmZ5AwVkZt.html","","0014; 2026; 0082","2026-08-21T04:26:27.065Z"
-116,"e_ZwLjBQVjZGN1BQV1ZQNjAmZ5AGL2ZD==","wealifytester@yopmail.com","Payout confirmation Paypal","Payout confirmation Paypal","Wealify <no-reply@wealify.com>",8,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).  Người gửi gốc (CSV): payments@paypal.com Email id: EM-0013 Thời điểm CSV: 2026-04-13 09:02  You received USD 2318.76  Giao dịch VA  CSV id: VA-0078 Wealify order_no: WLF15-VA-0078 VA: VA03 Loại: payin Nguồn / đối tác: Paypal / Paypal payout Số tiền: 2318.76 USD (~2318.76 USD) Trạng thái CSV: success Mô tả: Nhận tiền từ Paypal","html/mail_116_e_ZwLjBQVjZGN1BQV1ZQNjAmZ5AGL2ZD.html","","0013; 2026; 2318; 0078","2026-08-21T04:26:27.773Z"
-117,"e_ZwLjBQVjZGN1BQVmZQNjAmZ5AGDmBD==","wealifytester@yopmail.com","Payout confirmation Paypal","Payout confirmation Paypal","Wealify <no-reply@wealify.com>",8,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).  Người gửi gốc (CSV): payments@paypal.com Email id: EM-0012 Thời điểm CSV: 2026-04-23 00:39  You received USD 247.89  Giao dịch VA  CSV id: VA-0076 Wealify order_no: WLF15-VA-0076 VA: VA03 Loại: payin Nguồn / đối tác: Paypal / Paypal payout Số tiền: 247.89 USD (~247.89 USD) Trạng thái CSV: success Mô tả: Nhận tiền từ Paypal","html/mail_117_e_ZwLjBQVjZGN1BQVmZQNjAmZ5AGDmBD.html","","0012; 2026; 0076","2026-08-21T04:26:28.481Z"
-118,"e_ZwLjBQVjZGN1BQVkZQNjAmZ5AGR1ZN==","wealifytester@yopmail.com","Payout confirmation Paypal","Payout confirmation Paypal","Wealify <no-reply@wealify.com>",8,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).  Người gửi gốc (CSV): payments@paypal.com Email id: EM-0011 Thời điểm CSV: 2026-06-05 23:10  You received USD 2597.84  Giao dịch VA  CSV id: VA-0072 Wealify order_no: WLF15-VA-0072 VA: VA03 Loại: payin Nguồn / đối tác: Paypal / Paypal payout Số tiền: 2597.84 USD (~2597.84 USD) Trạng thái CSV: success Mô tả: Nhận tiền từ Paypal","html/mail_118_e_ZwLjBQVjZGN1BQVkZQNjAmZ5AGR1ZN.html","","0011; 2026; 2597; 0072","2026-08-21T04:26:29.187Z"
-119,"e_ZwLjBQVjZGN1BQR4ZQNjAmZ5AQplAt==","wealifytester@yopmail.com","Payout confirmation Paypal","Payout confirmation Paypal","Wealify <no-reply@wealify.com>",8,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).  Người gửi gốc (CSV): payments@paypal.com Email id: EM-0010 Thời điểm CSV: 2026-05-22 05:38  You received USD 1021.88  Giao dịch VA  CSV id: VA-0071 Wealify order_no: WLF15-VA-0071 VA: VA03 Loại: payin Nguồn / đối tác: Paypal / Paypal payout Số tiền: 1021.88 USD (~1021.88 USD) Trạng thái CSV: success Mô tả: Nhận tiền từ Paypal","html/mail_119_e_ZwLjBQVjZGN1BQR4ZQNjAmZ5AQplAt.html","","0010; 2026; 1021; 0071","2026-08-21T04:26:29.892Z"
-120,"e_ZwLjBQVjZGN1BQR2ZQNjAmZ5AQZ0Aj==","wealifytester@yopmail.com","Payout confirmation Payoneer","Payout confirmation Payoneer","Wealify <no-reply@wealify.com>",8,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).  Người gửi gốc (CSV): payments@payoneer.com Email id: EM-0009 Thời điểm CSV: 2026-03-03 12:26  You received USD 2531.07  Giao dịch VA  CSV id: VA-0053 Wealify order_no: WLF15-VA-0053 VA: VA02 Loại: payin Nguồn / đối tác: Payoneer / Payoneer payout Số tiền: 2531.07 USD (~2531.07 USD) Trạng thái CSV: success Mô tả: Nhận tiền từ Payoneer","html/mail_120_e_ZwLjBQVjZGN1BQR2ZQNjAmZ5AQZ0Aj.html","","0009; 2026; 2531; 0053","2026-08-21T04:26:30.598Z"
-121,"e_ZwLjBQVjZGN1BQRmZQNjAmZ5ZmxkZD==","wealifytester@yopmail.com","Payout confirmation Payoneer","Payout confirmation Payoneer","Wealify <no-reply@wealify.com>",9,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).  Người gửi gốc (CSV): payments@payoneer.com Email id: EM-0008 Thời điểm CSV: 2026-03-06 02:30  You received USD 2421.86  Giao dịch VA  CSV id: VA-0050 Wealify order_no: WLF15-VA-0050 VA: VA02 Loại: payin Nguồn / đối tác: Payoneer / Payoneer payout Số tiền: 2421.86 USD (~2421.86 USD) Trạng thái CSV: success Mô tả: Nhận tiền từ Payoneer","html/mail_121_e_ZwLjBQVjZGN1BQRmZQNjAmZ5ZmxkZD.html","","0008; 2026; 2421; 0050","2026-08-21T04:26:31.307Z"
-122,"e_ZwLjBQVjZGN1BQRkZQNjAmZ5ZmLmBD==","wealifytester@yopmail.com","Payout confirmation Payoneer","Payout confirmation Payoneer","Wealify <no-reply@wealify.com>",9,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).  Người gửi gốc (CSV): payments@payoneer.com Email id: EM-0008 Thời điểm CSV: 2026-03-06 02:30  You received USD 2421.86  Giao dịch VA  CSV id: VA-0050 Wealify order_no: WLF15-VA-0050 VA: VA02 Loại: payin Nguồn / đối tác: Payoneer / Payoneer payout Số tiền: 2421.86 USD (~2421.86 USD) Trạng thái CSV: success Mô tả: Nhận tiền từ Payoneer","html/mail_122_e_ZwLjBQVjZGN1BQRkZQNjAmZ5ZmLmBD.html","","0008; 2026; 2421; 0050","2026-08-21T04:26:32.936Z"
-123,"e_ZwLjBQVjZGN1BQN5ZQNjAmZ5ZmZ1At==","wealifytester@yopmail.com","Payout confirmation Payoneer","Payout confirmation Payoneer","Wealify <no-reply@wealify.com>",9,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).  Người gửi gốc (CSV): payments@payoneer.com Email id: EM-0008 Thời điểm CSV: 2026-03-06 02:30  You received USD 2421.86  Giao dịch VA  CSV id: VA-0050 Wealify order_no: WLF15-VA-0050 VA: VA02 Loại: payin Nguồn / đối tác: Payoneer / Payoneer payout Số tiền: 2421.86 USD (~2421.86 USD) Trạng thái CSV: success Mô tả: Nhận tiền từ Payoneer","html/mail_123_e_ZwLjBQVjZGN1BQN5ZQNjAmZ5ZmZ1At.html","","0008; 2026; 2421; 0050","2026-08-21T04:26:33.643Z"
-124,"e_ZwLjBQVjZGN1BQN3ZQNjAmZ5ZmN0ZN==","wealifytester@yopmail.com","Payout confirmation Payoneer","Payout confirmation Payoneer","Wealify <no-reply@wealify.com>",9,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).  Người gửi gốc (CSV): payments@payoneer.com Email id: EM-0005 Thời điểm CSV: 2026-03-31 10:08  You received USD 2139.53  Giao dịch VA  CSV id: VA-0045 Wealify order_no: WLF15-VA-0045 VA: VA02 Loại: payin Nguồn / đối tác: Payoneer / Payoneer payout Số tiền: 2139.53 USD (~2139.53 USD) Trạng thái CSV: success Mô tả: Nhận tiền từ Payoneer","html/mail_124_e_ZwLjBQVjZGN1BQN3ZQNjAmZ5ZmN0ZN.html","","0005; 2026; 2139; 0045","2026-08-21T04:26:34.353Z"
-125,"e_ZwLjBQVjZGN1BQN1ZQNjAmZ5Zwp2AD==","wealifytester@yopmail.com","Payout confirmation Payoneer","Payout confirmation Payoneer","Wealify <no-reply@wealify.com>",9,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).  Người gửi gốc (CSV): payments@payoneer.com Email id: EM-0004 Thời điểm CSV: 2026-05-30 03:03  You received USD 1524.41  Giao dịch VA  CSV id: VA-0044 Wealify order_no: WLF15-VA-0044 VA: VA02 Loại: payin Nguồn / đối tác: Payoneer / Payoneer payout Số tiền: 1524.41 USD (~1524.41 USD) Trạng thái CSV: success Mô tả: Nhận tiền từ Payoneer","html/mail_125_e_ZwLjBQVjZGN1BQN1ZQNjAmZ5Zwp2AD.html","","0004; 2026; 1524; 0044","2026-08-21T04:26:35.062Z"
-126,"e_ZwLjBQVjZGN1BQNmZQNjAmZ5ZwD4ZN==","wealifytester@yopmail.com","Payout confirmation Payoneer","Payout confirmation Payoneer","Wealify <no-reply@wealify.com>",9,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).  Người gửi gốc (CSV): payments@payoneer.com Email id: EM-0002 Thời điểm CSV: 2026-06-30 09:45  You received USD 2486.79  Giao dịch VA  CSV id: VA-0039 Wealify order_no: WLF15-VA-0039 VA: VA02 Loại: payin Nguồn / đối tác: Payoneer / Payoneer payout Số tiền: 2486.79 USD (~2486.79 USD) Trạng thái CSV: success Mô tả: Nhận tiền từ Payoneer","html/mail_126_e_ZwLjBQVjZGN1BQNmZQNjAmZ5ZwD4ZN.html","","0002; 2026; 2486; 0039","2026-08-21T04:26:35.770Z"
-127,"e_ZwLjBQVjZGN1BQNlZQNjAmZ5ZwZ1BD==","wealifytester@yopmail.com","Payout confirmation Payoneer","Payout confirmation Payoneer","Wealify <no-reply@wealify.com>",9,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).  Người gửi gốc (CSV): payments@payoneer.com Email id: EM-0003 Thời điểm CSV: 2026-06-06 13:21  You received USD 2219.48  Giao dịch VA  CSV id: VA-0040 Wealify order_no: WLF15-VA-0040 VA: VA02 Loại: payin Nguồn / đối tác: Payoneer / Payoneer payout Số tiền: 2219.48 USD (~2219.48 USD) Trạng thái CSV: success Mô tả: Nhận tiền từ Payoneer","html/mail_127_e_ZwLjBQVjZGN1BQNlZQNjAmZ5ZwZ1BD.html","","0003; 2026; 2219; 0040","2026-08-21T04:26:36.477Z"
-128,"e_ZwLjBQVjZGN1AmH2ZQNjAmZ5ZGpkBN==","wealifytester@yopmail.com","Payout confirmation Payoneer","Payout confirmation Payoneer","Wealify <no-reply@wealify.com>",9,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).  Người gửi gốc (CSV): payments@payoneer.com Email id: EM-0003 Thời điểm CSV: 2026-06-06 13:21  You received USD 2219.48  Giao dịch VA  CSV id: VA-0040 Wealify order_no: WLF15-VA-0040 VA: VA02 Loại: payin Nguồn / đối tác: Payoneer / Payoneer payout Số tiền: 2219.48 USD (~2219.48 USD) Trạng thái CSV: success Mô tả: Nhận tiền từ Payoneer","html/mail_128_e_ZwLjBQVjZGN1AmH2ZQNjAmZ5ZGpkBN.html","","0003; 2026; 2219; 0040","2026-08-21T04:26:37.183Z"
-129,"e_ZwLjBQVjZGN0AwZmZQNjAmV4ZmZ1At==","wealifytester@yopmail.com","[WEALIFY] RÚT TIỀN THÀNH CÔNG: 250 USD TỪ CARD VỀ WALLET","[WEALIFY] RÚT TIỀN THÀNH CÔNG: 250 USD TỪ CARD VỀ WALLET","Wealify <no-reply@wealify.com>",9,"Xin chào Lê Minh Anh,  Giao dịch rút tiền từ Virtual Card về Wealify Wallet của bạn đã được xử lý thành công.  Chi tiết giao dịch:  Mã giao dịch: WLF15-CD-0211 Loại thẻ: Volcano Ads (0001) Số tiền rút: 250 USD Số tiền nhận về Wallet: 250 USD Thời gian: 2026-08-20 10:46:26 Trạng thái: Thành công  Số dư hiện tại:  Card (0001): 96.33 USD Wallet (USD): 2750.01 USD  Bạn có thể sử dụng số dư Wallet USD để nạp thẻ khác, chuyển đổi sang USDT, hoặc giữ lại để dùng sau.  Nếu bạn không thực hiện giao dịch này, vui lòng liên hệ ngay đội ngũ hỗ trợ Wealify:  Email: support@wealify.com Telegram: @WealifySupport  Trân trọng, Đội ngũ Wealify  Cảm ơn Quý khách đã sử dụng dịch vụ của Wealify.  © 2025 Wealify. Mọi quyền được bảo lưu.","html/mail_129_e_ZwLjBQVjZGN0AwZmZQNjAmV4ZmZ1At.html","https://t.me/WealifySupport","0211; 0001; 2026; 2750; 2025","2026-08-21T04:26:37.893Z"
-130,"e_ZwLjBQVjZGN0AGN2ZQNjAmV2ZQp0ZD==","wealifytester@yopmail.com","Giao dịch rút tiền từ Tài kho ản ảo đã bị hủy","Giao dịch rút tiền từ Tài kho ản ảo đã bị hủy","Wealify <no-reply@wealify.com>",9,"Chào Lê Minh Anh,  Chúng tôi rất tiếc phải thông báo rằng giao dịch rút tiền từ Tài khoản ảo của bạn đã bị hủy.  Lý do thất bại: Lệnh rút quá hạn — tự động hủy do không được xử lý trong thời gian quy định.  Chi tiết giao dịch:  - Mã giao dịch: WLF15-VA-0032 - Thời gian: 20/07/2026 08:07AM - Phương thức: Ngân hàng - Tên ngân hàng: - Tên tài khoản: - Số tài khoản: - Số tiền rút: 50,699,000 VND - Phí: 0.00% - Thực nhận: 50,699,000 VND  Vui lòng xem lại các chi tiết và thử lại quy trình rút tiền. Nếu bạn cần hỗ trợ hoặc có bất kỳ câu hỏi nào, vui lòng liên hệ với chúng tôi tại support@wealify.com.  Trân trọng,  Đội ngũ Wealify  © 2026 Wealify. Bảo lưu mọi quyền.","html/mail_130_e_ZwLjBQVjZGN0AGN2ZQNjAmV2ZQp0ZD.html","","0032; 2026","2026-08-21T04:26:38.602Z"
-131,"e_ZwLjBQVjZGN0ZQRkZQNjAmR5AwVlZt==","wealifytester@yopmail.com","Giao dịch rút tiền từ Tài kho ản ảo đã bị hủy","Giao dịch rút tiền từ Tài kho ản ảo đã bị hủy","Wealify <no-reply@wealify.com>",9,"Chào Lê Minh Anh,  Chúng tôi rất tiếc phải thông báo rằng giao dịch rút tiền từ Tài khoản ảo của bạn đã bị hủy.  Lý do thất bại: Lệnh rút quá hạn — tự động hủy do không được xử lý trong thời gian quy định.  Chi tiết giao dịch:  - Mã giao dịch: WLF15-VA-0032 - Thời gian: 20/07/2026 08:07AM - Phương thức: Ngân hàng - Tên ngân hàng: - Tên tài khoản: - Số tài khoản: - Số tiền rút: 50,699,000 VND - Phí: 0.00% - Thực nhận: 50,699,000 VND  Vui lòng xem lại các chi tiết và thử lại quy trình rút tiền. Nếu bạn cần hỗ trợ hoặc có bất kỳ câu hỏi nào, vui lòng liên hệ với chúng tôi tại support@wealify.com.  Trân trọng,  Đội ngũ Wealify  © 2026 Wealify. Bảo lưu mọi quyền.","html/mail_131_e_ZwLjBQVjZGN0ZQRkZQNjAmR5AwVlZt.html","","0032; 2026","2026-08-21T04:26:39.309Z"
-132,"e_ZwLjBQVjZGNmAwZ4ZQNjAmR1BQL1ZD==","wealifytester@yopmail.com","[WEALIFY] RÚT TIỀN THÀNH CÔNG: 250 USD TỪ CARD VỀ WALLET","[WEALIFY] RÚT TIỀN THÀNH CÔNG: 250 USD TỪ CARD VỀ WALLET","Wealify <no-reply@wealify.com>",9,"Xin chào Lê Minh Anh,  Giao dịch rút tiền từ Virtual Card về Wealify Wallet của bạn đã được xử lý thành công.  Chi tiết giao dịch:  Mã giao dịch: WLF15-CD-0211 Loại thẻ: Volcano Ads (0001) Số tiền rút: 250 USD Số tiền nhận về Wallet: 250 USD Thời gian: 2026-08-20 10:36:26 Trạng thái: Thành công  Số dư hiện tại:  Card (0001): 96.33 USD Wallet (USD): 2750.01 USD  Bạn có thể sử dụng số dư Wallet USD để nạp thẻ khác, chuyển đổi sang USDT, hoặc giữ lại để dùng sau.  Nếu bạn không thực hiện giao dịch này, vui lòng liên hệ ngay đội ngũ hỗ trợ Wealify:  Email: support@wealify.com Telegram: @WealifySupport  Trân trọng, Đội ngũ Wealify  Cảm ơn Quý khách đã sử dụng dịch vụ của Wealify.  © 2025 Wealify. Mọi quyền được bảo lưu.","html/mail_132_e_ZwLjBQVjZGNmAwZ4ZQNjAmR1BQL1ZD.html","https://t.me/WealifySupport","0211; 0001; 2026; 2750; 2025","2026-08-21T04:26:40.016Z"
-133,"e_ZwLjBQVjZQxlZGR4ZQNjAwV2BGt3ZN==","wealifytester@yopmail.com","Wealify","(No Subject)","Wealify <no-reply@wealify.com>",9,"","html/mail_133_e_ZwLjBQVjZQxlZGR4ZQNjAwV2BGt3ZN.html","","","2026-08-21T04:26:40.723Z"
-134,"e_ZwLjBQVjZQxkAwZmZQNjAwVkAmtlZN==","wealifytester@yopmail.com","Wealify","Chào mừng! Việc đăng ký t ài khoản Wealify của bạn đ ã hoàn tất","Wealify <no-reply@wealify.com>",9,"","html/mail_134_e_ZwLjBQVjZQxkAwZmZQNjAwVkAmtlZN.html","","","2026-08-21T04:26:41.431Z"
-135,"e_ZwLjBQVjZQxkAQZmZQNjAwR4BGp2ZN==","wealifytester@yopmail.com","[Wealify] VERIFY YOUR EMAIL TO COMPLETE REGISTRATION","[Wealify] VERIFY YOUR EMAIL TO COMPLETE REGISTRATION","Wealify <no-reply@wealify.com>",9,"Hi there,  Welcome to Wealify! To verify your email address and complete your registration, please enter the one-time verification code below:  922303  The code is valid for 10 minutes. Do not share it with anyone.  If you did not initiate this registration request, please do not enter the code and contact us immediately at support@wealify.com.  Best regards,  The Wealify Team  Thank you for choosing Wealify!  © 2026 Wealify. All rights reserved.","html/mail_135_e_ZwLjBQVjZQxkAQZmZQNjAwR4BGp2ZN.html","","922303; 2026","2026-08-21T04:26:42.138Z"
+1,e_ZwLjBQVkZGZlAQRkZQNjBQHkAGR1ZD==,wealifytester@yopmail.com,TEST,TEST,Thiều Phạm Quang <phamthieu0605@gmail.com>,1,TEST,html/mail_001_e_ZwLjBQVkZGZlAQRkZQNjBQHkAGR1ZD.html,,,2026-08-21T13:36:32.460Z
+2,e_ZwLjBQVkZQx0AwDmZQNjAGHkZQR5At==,wealifytester@yopmail.com,[Wealify] XÁC NHẬN LỆNH RÚT TI ỀN,[Wealify] XÁC NHẬN LỆNH RÚT TI ỀN,Wealify <no-reply@wealify.com>,1,"Kính gửi Quý khách,
+
+Quý khách vừa khởi tạo lệnh rút tiền từ tài khoản Wealify. Để ủy quyền giao dịch này và xác nhận đây là yêu cầu từ Quý khách, vui lòng nhập mã xác nhận dưới đây:
+
+438562
+
+Mã có hiệu lực trong 2 phút. Vui lòng không chia sẻ mã này với bất kỳ ai.
+
+Nếu Quý khách không thực hiện yêu cầu rút tiền này, vui lòng không nhập mã và liên hệ ngay với chúng tôi qua support@wealify.com để được hỗ trợ.
+
+Trân trọng,
+
+Đội ngũ Wealify
+
+Cảm ơn Quý khách đã sử dụng dịch vụ của Wealify.
+
+© 2026 Wealify. Bảo lưu mọi quyền.",html/mail_002_e_ZwLjBQVkZQx0AwDmZQNjAGHkZQR5At.html,,438562; 2026,2026-08-21T13:36:33.271Z
+3,e_ZwLjBQVkZQx0AGHlZQNjAGHjZQDmBN==,wealifytester@yopmail.com,[Wealify] XÁC NHẬN LỆNH RÚT TI ỀN,[Wealify] XÁC NHẬN LỆNH RÚT TI ỀN,Wealify <no-reply@wealify.com>,1,"Kính gửi Quý khách,
+
+Quý khách vừa khởi tạo lệnh rút tiền từ tài khoản Wealify. Để ủy quyền giao dịch này và xác nhận đây là yêu cầu từ Quý khách, vui lòng nhập mã xác nhận dưới đây:
+
+776875
+
+Mã có hiệu lực trong 2 phút. Vui lòng không chia sẻ mã này với bất kỳ ai.
+
+Nếu Quý khách không thực hiện yêu cầu rút tiền này, vui lòng không nhập mã và liên hệ ngay với chúng tôi qua support@wealify.com để được hỗ trợ.
+
+Trân trọng,
+
+Đội ngũ Wealify
+
+Cảm ơn Quý khách đã sử dụng dịch vụ của Wealify.
+
+© 2026 Wealify. Bảo lưu mọi quyền.",html/mail_003_e_ZwLjBQVkZQx0AGHlZQNjAGHjZQDmBN.html,,776875; 2026,2026-08-21T13:36:34.085Z
+4,e_ZwLjBQVkZQp1ZGH4ZQNjAQN2ZQNkAt==,wealifytester@yopmail.com,[WEALIFY] XÁC NHẬN YÊU CẦU RÚT TIỀN,[WEALIFY] XÁC NHẬN YÊU CẦU RÚT TIỀN,Wealify <no-reply@wealify.com>,1,"Kính chào Quý khách,
+
+Chúng tôi đã tiếp nhận yêu cầu rút tiền của Quý khách.
+
+Dưới đây là chi tiết giao dịch:
+
+Số tiền rút: 100 USD
+Phí (0.3%): 0.3 USD
+Số tiền nhận: 99.7 USDT
+Mạng: TRX
+Ví nhận: T9yD...uWwb
+Thời gian tạo: 2026-08-21 07:51:48
+
+Yêu cầu của Quý khách đang chờ xử lý. Chúng tôi sẽ thông báo ngay khi giao dịch được duyệt.
+
+Nếu Quý khách không thực hiện giao dịch này, vui lòng không thực hiện thêm bất kỳ hành động nào và liên hệ ngay với chúng tôi qua support@wealify.com để được hỗ trợ.
+
+Trân trọng,
+Đội ngũ Wealify
+
+Cảm ơn Quý khách đã sử dụng dịch vụ của Wealify.
+
+© 2025 Wealify. Mọi quyền được bảo lưu.",html/mail_004_e_ZwLjBQVkZQp1ZGH4ZQNjAQN2ZQNkAt.html,,2026; 2025,2026-08-21T13:36:34.898Z
+5,e_ZwLjBQVkZQp1ZGDkZQNjAQN1AmH5BN==,wealifytester@yopmail.com,[Wealify] XÁC NHẬN LỆNH RÚT TI ỀN,[Wealify] XÁC NHẬN LỆNH RÚT TI ỀN,Wealify <no-reply@wealify.com>,1,"Kính gửi Quý khách,
+
+Quý khách vừa khởi tạo lệnh rút tiền từ tài khoản Wealify. Để ủy quyền giao dịch này và xác nhận đây là yêu cầu từ Quý khách, vui lòng nhập mã xác nhận dưới đây:
+
+596732
+
+Mã có hiệu lực trong 2 phút. Vui lòng không chia sẻ mã này với bất kỳ ai.
+
+Nếu Quý khách không thực hiện yêu cầu rút tiền này, vui lòng không nhập mã và liên hệ ngay với chúng tôi qua support@wealify.com để được hỗ trợ.
+
+Trân trọng,
+
+Đội ngũ Wealify
+
+Cảm ơn Quý khách đã sử dụng dịch vụ của Wealify.
+
+© 2026 Wealify. Bảo lưu mọi quyền.",html/mail_005_e_ZwLjBQVkZQp1ZGDkZQNjAQN1AmH5BN.html,,596732; 2026,2026-08-21T13:36:35.707Z
+6,e_ZwLjBQVkZQp1ZGN5ZQNjAQN1ZwxlAt==,wealifytester@yopmail.com,[Wealify] XÁC NHẬN LỆNH RÚT TI ỀN,[Wealify] XÁC NHẬN LỆNH RÚT TI ỀN,Wealify <no-reply@wealify.com>,1,"Kính gửi Quý khách,
+
+Quý khách vừa khởi tạo lệnh rút tiền từ tài khoản Wealify. Để ủy quyền giao dịch này và xác nhận đây là yêu cầu từ Quý khách, vui lòng nhập mã xác nhận dưới đây:
+
+252003
+
+Mã có hiệu lực trong 2 phút. Vui lòng không chia sẻ mã này với bất kỳ ai.
+
+Nếu Quý khách không thực hiện yêu cầu rút tiền này, vui lòng không nhập mã và liên hệ ngay với chúng tôi qua support@wealify.com để được hỗ trợ.
+
+Trân trọng,
+
+Đội ngũ Wealify
+
+Cảm ơn Quý khách đã sử dụng dịch vụ của Wealify.
+
+© 2026 Wealify. Bảo lưu mọi quyền.",html/mail_006_e_ZwLjBQVkZQp1ZGN5ZQNjAQN1ZwxlAt.html,,252003; 2026,2026-08-21T13:36:36.513Z
+7,e_ZwLjBQVkZQp1ZQDmZQNjAQN0BGR3At==,wealifytester@yopmail.com,[Wealify] XÁC NHẬN LỆNH RÚT TI ỀN,[Wealify] XÁC NHẬN LỆNH RÚT TI ỀN,Wealify <no-reply@wealify.com>,1,"Kính gửi Quý khách,
+
+Quý khách vừa khởi tạo lệnh rút tiền từ tài khoản Wealify. Để ủy quyền giao dịch này và xác nhận đây là yêu cầu từ Quý khách, vui lòng nhập mã xác nhận dưới đây:
+
+662190
+
+Mã có hiệu lực trong 2 phút. Vui lòng không chia sẻ mã này với bất kỳ ai.
+
+Nếu Quý khách không thực hiện yêu cầu rút tiền này, vui lòng không nhập mã và liên hệ ngay với chúng tôi qua support@wealify.com để được hỗ trợ.
+
+Trân trọng,
+
+Đội ngũ Wealify
+
+Cảm ơn Quý khách đã sử dụng dịch vụ của Wealify.
+
+© 2026 Wealify. Bảo lưu mọi quyền.",html/mail_007_e_ZwLjBQVkZQp1ZQDmZQNjAQN0BGR3At.html,,662190; 2026,2026-08-21T13:36:37.325Z
+8,e_ZwLjBQVkZQplBGNmZQNjZmt0ZQtkBN==,wealifytester@yopmail.com,Here's Your Wealify OTP - Act Fast!,Here's Your Wealify OTP - Act Fast!,Wealify <no-reply@wealify.com>,1,"Greetings, Lê Minh Anh,
+
+Here’s your one-time password (OTP) for your Wealify Virtual Card:
+
+719175
+
+This code will expire in 90 seconds, so be sure to use it quickly. If it’s no longer working, just request a new one.
+
+Didn't request this OTP? Please reach out to us immediately at support@wealify.com.
+
+Stay secure,
+
+Your Wealify Team
+
+	
+
+Need help? Our Customer Success Team is available 24/7.
+
+Contact us:
+
+📧 Email: support@wealify.com
+📞 Hotline: +84 962 600 392
+
+Join Our Community
+
+  
+
+	
+
+Stay Connected",html/mail_008_e_ZwLjBQVkZQplBGNmZQNjZmt0ZQtkBN.html,,719175,2026-08-21T13:36:38.137Z
+9,e_ZwLjBQVkZQLmZQD4ZQNjZmV0AQpkAj==,wealifytester@yopmail.com,Here's Your Wealify OTP - Act Fast!,Here's Your Wealify OTP - Act Fast!,Wealify <no-reply@wealify.com>,1,"Greetings, Lê Minh Anh,
+
+Here’s your one-time password (OTP) for your Wealify Virtual Card:
+
+166775
+
+This code will expire in 90 seconds, so be sure to use it quickly. If it’s no longer working, just request a new one.
+
+Didn't request this OTP? Please reach out to us immediately at support@wealify.com.
+
+Stay secure,
+
+Your Wealify Team
+
+	
+
+Need help? Our Customer Success Team is available 24/7.
+
+Contact us:
+
+📧 Email: support@wealify.com
+📞 Hotline: +84 962 600 392
+
+Join Our Community
+
+  
+
+	
+
+Stay Connected",html/mail_009_e_ZwLjBQVkZQLmZQD4ZQNjZmV0AQpkAj.html,,166775,2026-08-21T13:36:38.949Z
+10,e_ZwLjBQVkZQLlBQDlZQNjZmVlZGp0Zj==,wealifytester@yopmail.com,[Wealify] XÁC NHẬN LỆNH RÚT TI ỀN,[Wealify] XÁC NHẬN LỆNH RÚT TI ỀN,Wealify <no-reply@wealify.com>,1,"Kính gửi Quý khách,
+
+Quý khách vừa khởi tạo lệnh rút tiền từ tài khoản Wealify. Để ủy quyền giao dịch này và xác nhận đây là yêu cầu từ Quý khách, vui lòng nhập mã xác nhận dưới đây:
+
+909812
+
+Mã có hiệu lực trong 2 phút. Vui lòng không chia sẻ mã này với bất kỳ ai.
+
+Nếu Quý khách không thực hiện yêu cầu rút tiền này, vui lòng không nhập mã và liên hệ ngay với chúng tôi qua support@wealify.com để được hỗ trợ.
+
+Trân trọng,
+
+Đội ngũ Wealify
+
+Cảm ơn Quý khách đã sử dụng dịch vụ của Wealify.
+
+© 2026 Wealify. Bảo lưu mọi quyền.",html/mail_010_e_ZwLjBQVkZQLlBQDlZQNjZmVlZGp0Zj.html,,909812; 2026,2026-08-21T13:36:39.759Z
+11,e_ZwLjBQVkZQLlAmRjZQNjZmVjZmHlAt==,wealifytester@yopmail.com,[WEALIFY] XÁC NHẬN YÊU CẦU RÚT TIỀN,[WEALIFY] XÁC NHẬN YÊU CẦU RÚT TIỀN,Wealify <no-reply@wealify.com>,1,"Kính chào Quý khách,
+
+Chúng tôi đã tiếp nhận yêu cầu rút tiền của Quý khách.
+
+Dưới đây là chi tiết giao dịch:
+
+Số tiền rút: 750 USD
+Phí (0.3%): 2.25 USD
+Số tiền nhận: 747.75 USDT
+Mạng: TRX
+Ví nhận: T9yD...uWwb
+Thời gian tạo: 2026-08-21 06:27:01
+
+Yêu cầu của Quý khách đang chờ xử lý. Chúng tôi sẽ thông báo ngay khi giao dịch được duyệt.
+
+Nếu Quý khách không thực hiện giao dịch này, vui lòng không thực hiện thêm bất kỳ hành động nào và liên hệ ngay với chúng tôi qua support@wealify.com để được hỗ trợ.
+
+Trân trọng,
+Đội ngũ Wealify
+
+Cảm ơn Quý khách đã sử dụng dịch vụ của Wealify.
+
+© 2025 Wealify. Mọi quyền được bảo lưu.",html/mail_011_e_ZwLjBQVkZQLlAmRjZQNjZmVjZmHlAt.html,,2026; 2025,2026-08-21T13:36:40.570Z
+12,e_ZwLjBQVkZQLlAwDlZQNjZmR5BQZjAj==,wealifytester@yopmail.com,[Wealify] XÁC NHẬN LỆNH RÚT TI ỀN,[Wealify] XÁC NHẬN LỆNH RÚT TI ỀN,Wealify <no-reply@wealify.com>,1,"Kính gửi Quý khách,
+
+Quý khách vừa khởi tạo lệnh rút tiền từ tài khoản Wealify. Để ủy quyền giao dịch này và xác nhận đây là yêu cầu từ Quý khách, vui lòng nhập mã xác nhận dưới đây:
+
+538882
+
+Mã có hiệu lực trong 2 phút. Vui lòng không chia sẻ mã này với bất kỳ ai.
+
+Nếu Quý khách không thực hiện yêu cầu rút tiền này, vui lòng không nhập mã và liên hệ ngay với chúng tôi qua support@wealify.com để được hỗ trợ.
+
+Trân trọng,
+
+Đội ngũ Wealify
+
+Cảm ơn Quý khách đã sử dụng dịch vụ của Wealify.
+
+© 2026 Wealify. Bảo lưu mọi quyền.",html/mail_012_e_ZwLjBQVkZQLlAwDlZQNjZmR5BQZjAj.html,,538882; 2026,2026-08-21T13:36:41.380Z
+13,e_ZwLjBQVkZQLlAGR3ZQNjZmR4AGV3ZN==,wealifytester@yopmail.com,[Wealify] XÁC NHẬN LỆNH RÚT TI ỀN,[Wealify] XÁC NHẬN LỆNH RÚT TI ỀN,Wealify <no-reply@wealify.com>,1,"Kính gửi Quý khách,
+
+Quý khách vừa khởi tạo lệnh rút tiền từ tài khoản Wealify. Để ủy quyền giao dịch này và xác nhận đây là yêu cầu từ Quý khách, vui lòng nhập mã xác nhận dưới đây:
+
+365101
+
+Mã có hiệu lực trong 2 phút. Vui lòng không chia sẻ mã này với bất kỳ ai.
+
+Nếu Quý khách không thực hiện yêu cầu rút tiền này, vui lòng không nhập mã và liên hệ ngay với chúng tôi qua support@wealify.com để được hỗ trợ.
+
+Trân trọng,
+
+Đội ngũ Wealify
+
+Cảm ơn Quý khách đã sử dụng dịch vụ của Wealify.
+
+© 2026 Wealify. Bảo lưu mọi quyền.",html/mail_013_e_ZwLjBQVkZQLlAGR3ZQNjZmR4AGV3ZN.html,,365101; 2026,2026-08-21T13:36:42.192Z
+14,e_ZwLjBQVkZQLlAGR2ZQNjZmR4AQx3At==,wealifytester@yopmail.com,[Wealify] XÁC NHẬN LỆNH RÚT TI ỀN,[Wealify] XÁC NHẬN LỆNH RÚT TI ỀN,Wealify <no-reply@wealify.com>,1,"Kính gửi Quý khách,
+
+Quý khách vừa khởi tạo lệnh rút tiền từ tài khoản Wealify. Để ủy quyền giao dịch này và xác nhận đây là yêu cầu từ Quý khách, vui lòng nhập mã xác nhận dưới đây:
+
+470307
+
+Mã có hiệu lực trong 2 phút. Vui lòng không chia sẻ mã này với bất kỳ ai.
+
+Nếu Quý khách không thực hiện yêu cầu rút tiền này, vui lòng không nhập mã và liên hệ ngay với chúng tôi qua support@wealify.com để được hỗ trợ.
+
+Trân trọng,
+
+Đội ngũ Wealify
+
+Cảm ơn Quý khách đã sử dụng dịch vụ của Wealify.
+
+© 2026 Wealify. Bảo lưu mọi quyền.",html/mail_014_e_ZwLjBQVkZQLlAGR2ZQNjZmR4AQx3At.html,,470307; 2026,2026-08-21T13:36:43.005Z
+15,e_ZwLjBQVkZQLlZmN4ZQNjZmR2AmRkAt==,wealifytester@yopmail.com,[Wealify] XÁC NHẬN LỆNH RÚT TI ỀN,[Wealify] XÁC NHẬN LỆNH RÚT TI ỀN,Wealify <no-reply@wealify.com>,1,"Kính gửi Quý khách,
+
+Quý khách vừa khởi tạo lệnh rút tiền từ tài khoản Wealify. Để ủy quyền giao dịch này và xác nhận đây là yêu cầu từ Quý khách, vui lòng nhập mã xác nhận dưới đây:
+
+862356
+
+Mã có hiệu lực trong 2 phút. Vui lòng không chia sẻ mã này với bất kỳ ai.
+
+Nếu Quý khách không thực hiện yêu cầu rút tiền này, vui lòng không nhập mã và liên hệ ngay với chúng tôi qua support@wealify.com để được hỗ trợ.
+
+Trân trọng,
+
+Đội ngũ Wealify
+
+Cảm ơn Quý khách đã sử dụng dịch vụ của Wealify.
+
+© 2026 Wealify. Bảo lưu mọi quyền.",html/mail_015_e_ZwLjBQVkZQLlZmN4ZQNjZmR2AmRkAt.html,,862356; 2026,2026-08-21T13:36:43.814Z
+16,e_ZwLjBQVkZQD1AmH1ZQNjZwZ2ZwNjAj==,wealifytester@yopmail.com,Your parcel is waiting at depot,Your parcel is waiting at depot,Wealify <no-reply@wealify.com>,2,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).
+
+Người gửi gốc (CSV): delivery@dhl-express-track.com
+Người nhận: wealifytester@yopmail.com
+Email id: EM-0148
+Thời điểm CSV: 2026-08-10 22:51
+
+Pay 2.99 USD customs to release
+
+DHL: lô hàng đang giữ tại depot. Phí customs $2.99 để giải phóng. Đây là mail rác/nghi lừa — không có tracking Wealify.",html/mail_016_e_ZwLjBQVkZQD1AmH1ZQNjZwZ2ZwNjAj.html,,0148; 2026,2026-08-21T13:36:44.625Z
+17,e_ZwLjBQVkZQD1AmHmZQNjZwZ2ZGtlAD==,wealifytester@yopmail.com,Canva Magic Studio — 30% off Pro,Canva Magic Studio — 30% off Pro,Wealify <no-reply@wealify.com>,2,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).
+
+Người gửi gốc (CSV): promo@canva.com
+Người nhận: wealifytester@yopmail.com
+Email id: EM-0147
+Thời điểm CSV: 2026-08-11 15:09
+
+Design ads faster this month
+
+Canva Pro giảm 30% gói Magic Studio tháng này. Promo, không phải hóa đơn.",html/mail_017_e_ZwLjBQVkZQD1AmHmZQNjZwZ2ZGtlAD.html,,0147; 2026,2026-08-21T13:36:45.437Z
+18,e_ZwLjBQVkZQD1AmHjZQNjZwZ2ZGD4At==,wealifytester@yopmail.com,Tặng 5GB data 5G cuối tuần,Tặng 5GB data 5G cuối tuần,Wealify <no-reply@wealify.com>,2,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).
+
+Người gửi gốc (CSV): khuyenmai@viettel.com.vn
+Người nhận: wealifytester@yopmail.com
+Email id: EM-0146
+Thời điểm CSV: 2026-08-12 11:44
+
+Soạn 5G gửi 191
+
+Viettel: soạn 5G gửi 191 nhận 5GB data cuối tuần. Tin khuyến mãi nhà mạng.",html/mail_018_e_ZwLjBQVkZQD1AmHjZQNjZwZ2ZGD4At.html,,0146; 2026,2026-08-21T13:36:46.247Z
+19,e_ZwLjBQVkZQD1AmD4ZQNjZwZ2ZGV1AN==,wealifytester@yopmail.com,Action required: verify withdrawal wallet,Action required: verify withdrawal wallet,Wealify <no-reply@wealify.com>,2,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).
+
+Người gửi gốc (CSV): notice@binance.com
+Người nhận: wealifytester@yopmail.com
+Email id: EM-0145
+Thời điểm CSV: 2026-08-13 03:18
+
+Unusual login from Singapore
+
+Binance: đăng nhập lạ từ Singapore. Nếu không phải bạn, đổi mật khẩu. Email quảng cáo/cảnh báo — không khớp giao dịch Wealify.",html/mail_019_e_ZwLjBQVkZQD1AmD4ZQNjZwZ2ZGV1AN.html,,0145; 2026,2026-08-21T13:36:47.060Z
+20,e_ZwLjBQVkZQD1AmD1ZQNjZwZ2ZQx5AN==,wealifytester@yopmail.com,Your LinkedIn Premium is reserved,Your LinkedIn Premium is reserved,Wealify <no-reply@wealify.com>,2,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).
+
+Người gửi gốc (CSV): messages-noreply@linkedin.com
+Người nhận: wealifytester@yopmail.com
+Email id: EM-0144
+Thời điểm CSV: 2026-08-14 06:55
+
+1 month Premium on us
+
+LinkedIn giữ chỗ Premium 1 tháng. Không trừ thẻ trừ khi bạn bật tự gia hạn.",html/mail_020_e_ZwLjBQVkZQD1AmD1ZQNjZwZ2ZQx5AN.html,,0144; 2026,2026-08-21T13:36:47.869Z
+21,e_ZwLjBQVkZQD1AmDmZQNjZwZ2ZQpmBD==,wealifytester@yopmail.com,Lazada birthday voucher 9.9,Lazada birthday voucher 9.9,Wealify <no-reply@wealify.com>,2,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).
+
+Người gửi gốc (CSV): hello@lazada.vn
+Người nhận: wealifytester@yopmail.com
+Email id: EM-0143
+Thời điểm CSV: 2026-08-15 20:22
+
+Mã giảm 111K đơn từ 399K
+
+Lazada tặng voucher sinh nhật 111K cho đơn từ 399K. Áp dụng 9.9. Không phải xác nhận đơn hàng.",html/mail_021_e_ZwLjBQVkZQD1AmDmZQNjZwZ2ZQpmBD.html,,0143; 2026,2026-08-21T13:36:48.679Z
+22,e_ZwLjBQVkZQD1AmDkZQNjZwZ2ZQHmAj==,wealifytester@yopmail.com,GrabUnlimited free 14 days,GrabUnlimited free 14 days,Wealify <no-reply@wealify.com>,2,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).
+
+Người gửi gốc (CSV): promo@grab.com
+Người nhận: wealifytester@yopmail.com
+Email id: EM-0142
+Thời điểm CSV: 2026-08-16 08:05
+
+Ride & food voucher inside
+
+GrabUnlimited dùng thử 14 ngày: 8 chuyến giảm + voucher đồ ăn 50K. Hủy bất cứ lúc nào.",html/mail_022_e_ZwLjBQVkZQD1AmDkZQNjZwZ2ZQHmAj.html,,0142; 2026,2026-08-21T13:36:49.488Z
+23,e_ZwLjBQVkZQD1AmZ4ZQNjZwZ2ZQRlAj==,wealifytester@yopmail.com,Boost TikTok Shop listings this week,Boost TikTok Shop listings this week,Wealify <no-reply@wealify.com>,2,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).
+
+Người gửi gốc (CSV): noreply@tiktok.com
+Người nhận: wealifytester@yopmail.com
+Email id: EM-0141
+Thời điểm CSV: 2026-08-17 12:40
+
+Extra 20% ads coupon for sellers
+
+TikTok Shop: coupon +20% ads cho seller. Dùng trước cuối tuần để boost listing.",html/mail_023_e_ZwLjBQVkZQD1AmZ4ZQNjZwZ2ZQRlAj.html,,0141; 2026,2026-08-21T13:36:50.300Z
+24,e_ZwLjBQVkZQD1AmZ2ZQNjZwZ1BGxlBD==,wealifytester@yopmail.com,$50 Facebook Ads credit waiting,$50 Facebook Ads credit waiting,Wealify <no-reply@wealify.com>,2,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).
+
+Người gửi gốc (CSV): ads@facebookmail.com
+Người nhận: wealifytester@yopmail.com
+Email id: EM-0140
+Thời điểm CSV: 2026-08-18 21:15
+
+Claim your ads credit before 25 Aug
+
+Facebook Ads Manager: bạn còn $50 credit chưa dùng, hết hạn 25/08. Quảng cáo — không phải biên lai chi tiêu.",html/mail_024_e_ZwLjBQVkZQD1AmZ2ZQNjZwZ1BGxlBD.html,,0140; 2026,2026-08-21T13:36:51.110Z
+25,e_ZwLjBQVkZQD1AmZ0ZQNjZwZ1BGL3BD==,wealifytester@yopmail.com,Shopee 9.9 Mega Sale — đến 90%,Shopee 9.9 Mega Sale — đến 90%,Wealify <no-reply@wealify.com>,2,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).
+
+Người gửi gốc (CSV): deal@shopee.vn
+Người nhận: wealifytester@yopmail.com
+Email id: EM-0139
+Thời điểm CSV: 2026-08-19 07:30
+
+Voucher 500K hết hạn tonight
+
+Shopee 9.9: voucher 500.000đ + freeship. Chỉ còn hôm nay. Bấm app Shopee để lấy mã. Không gắn giao dịch Wealify.",html/mail_025_e_ZwLjBQVkZQD1AmZ0ZQNjZwZ1BGL3BD.html,,0139; 2026,2026-08-21T13:36:51.921Z
+26,e_ZwLjBQVkZQD1AmZkZQNjZwZ1BGZ2Zj==,wealifytester@yopmail.com,Payout confirmation Paypal,Payout confirmation Paypal,Wealify <no-reply@wealify.com>,2,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).
+
+Người gửi gốc (CSV): payments@paypal.com
+Người nhận: wealifytester@yopmail.com
+Email id: EM-0138
+Thời điểm CSV: 2026-08-12 19:47
+
+You received USD 1550.00
+
+Paypal mass-pay for last week's invoices. Destination: your Wealify USD VA.",html/mail_026_e_ZwLjBQVkZQD1AmZkZQNjZwZ1BGZ2Zj.html,,0138; 2026; 1550,2026-08-21T13:36:52.730Z
+27,e_ZwLjBQVkZQD1AmV5ZQNjZwZ1BGRmZj==,wealifytester@yopmail.com,Payout confirmation Payoneer,Payout confirmation Payoneer,Wealify <no-reply@wealify.com>,2,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).
+
+Người gửi gốc (CSV): payments@payoneer.com
+Người nhận: wealifytester@yopmail.com
+Email id: EM-0137
+Thời điểm CSV: 2026-08-20 09:12
+
+You received USD 89.20
+
+Small Payoneer residual payout after currency adjustment. If this looks unexpected, check your Payoneer activity.",html/mail_027_e_ZwLjBQVkZQD1AmV5ZQNjZwZ1BGRmZj.html,,0137; 2026,2026-08-21T13:36:53.538Z
+28,e_ZwLjBQVkZQD1AmV4ZQNjZwZ1BGNmBD==,wealifytester@yopmail.com,PingPong payout completed,PingPong payout completed,Wealify <no-reply@wealify.com>,2,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).
+
+Người gửi gốc (CSV): noreply@pingpongx.com
+Người nhận: wealifytester@yopmail.com
+Email id: EM-0136
+Thời điểm CSV: 2026-08-14 11:03
+
+You received VND 12880000
+
+PingPong finished a VND withdrawal to PINGPONG MSB. Batch PPX-20260814-1288.",html/mail_028_e_ZwLjBQVkZQD1AmV4ZQNjZwZ1BGNmBD.html,,0136; 2026; 12880000; 20260814; 1288,2026-08-21T13:36:54.350Z
+29,e_ZwLjBQVkZQD1AmV0ZQNjZwZ1BQLkAj==,wealifytester@yopmail.com,Etsy deposit sent to your VA,Etsy deposit sent to your VA,Wealify <no-reply@wealify.com>,2,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).
+
+Người gửi gốc (CSV): payments@etsy.com
+Người nhận: wealifytester@yopmail.com
+Email id: EM-0135
+Thời điểm CSV: 2026-08-16 16:18
+
+You received VND 48250000
+
+Etsy sent your shop deposit in VND to ETSY SELLER / BIDV. Keep this email for bookkeeping.",html/mail_029_e_ZwLjBQVkZQD1AmV0ZQNjZwZ1BQLkAj.html,,0135; 2026; 48250000,2026-08-21T13:36:55.160Z
+30,e_ZwLjBQVkZQD1AmVkZQNjZwZ1BQV4BD==,wealifytester@yopmail.com,Payout confirmation Amazon,Payout confirmation Amazon,Wealify <no-reply@wealify.com>,2,"Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).
+
+Người gửi gốc (CSV): payments@amazon.com
+Người nhận: wealifytester@yopmail.com
+Email id: EM-0134
+Thời điểm CSV: 2026-08-17 08:41
+
+You received USD 3102.88
+
+Amazon disbursed your latest US marketplace settlement to AMAZON US PAYOUT. Settlement ID 5192833.",html/mail_030_e_ZwLjBQVkZQD1AmVkZQNjZwZ1BQV4BD.html,,0134; 2026; 3102; 5192833,2026-08-21T13:36:55.970Z
+31,e_ZwLjBQVkZQD1AmR5ZQNjZwZ1Amx3BD==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,today,3,Complete the CAPTCHA to continue,html/mail_031_e_ZwLjBQVkZQD1AmR5ZQNjZwZ1Amx3BD.html,,,2026-08-21T13:36:56.778Z
+32,e_ZwLjBQVkZQD1AmR2ZQNjZwZ1AmL5Aj==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,today,3,Complete the CAPTCHA to continue,html/mail_032_e_ZwLjBQVkZQD1AmR2ZQNjZwZ1AmL5Aj.html,,,2026-08-21T13:36:57.584Z
+33,e_ZwLjBQVjZGRlZQH1ZQNjAmL4AwZ5ZN==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,Thursday,3,Complete the CAPTCHA to continue,html/mail_033_e_ZwLjBQVjZGRlZQH1ZQNjAmL4AwZ5ZN.html,,,2026-08-21T13:36:58.386Z
+34,e_ZwLjBQVjZGRlZQHkZQNjAmL4AGHmAN==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,Thursday,3,Complete the CAPTCHA to continue,html/mail_034_e_ZwLjBQVjZGRlZQHkZQNjAmL4AGHmAN.html,,,2026-08-21T13:36:59.189Z
+35,e_ZwLjBQVjZGRlZQD4ZQNjAmL4AGNjBN==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,Thursday,3,Complete the CAPTCHA to continue,html/mail_035_e_ZwLjBQVjZGRlZQD4ZQNjAmL4AGNjBN.html,,,2026-08-21T13:36:59.994Z
+36,e_ZwLjBQVjZGRlZQD2ZQNjAmL4AQH4ZD==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,Thursday,3,Complete the CAPTCHA to continue,html/mail_036_e_ZwLjBQVjZGRlZQD2ZQNjAmL4AQH4ZD.html,,,2026-08-21T13:37:00.798Z
+37,e_ZwLjBQVjZGRkZmV3ZQNjAmH5ZmL0ZD==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,Thursday,3,Complete the CAPTCHA to continue,html/mail_037_e_ZwLjBQVjZGRkZmV3ZQNjAmH5ZmL0ZD.html,,,2026-08-21T13:37:01.602Z
+38,e_ZwLjBQVjZGRkZmVmZQNjAmH5ZmN5AN==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,Thursday,3,Complete the CAPTCHA to continue,html/mail_038_e_ZwLjBQVjZGRkZmVmZQNjAmH5ZmN5AN.html,,,2026-08-21T13:37:02.405Z
+39,e_ZwLjBQVjZGRkZmVjZQNjAmH5ZwH2Aj==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,Thursday,3,Complete the CAPTCHA to continue,html/mail_039_e_ZwLjBQVjZGRkZmVjZQNjAmH5ZwH2Aj.html,,,2026-08-21T13:37:03.209Z
+40,e_ZwLjBQVjZGRkZmR3ZQNjAmH5ZwRjAj==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,Thursday,3,Complete the CAPTCHA to continue,html/mail_040_e_ZwLjBQVjZGRkZmR3ZQNjAmH5ZwRjAj.html,,,2026-08-21T13:37:04.013Z
+41,e_ZwLjBQVjZGRkZmR1ZQNjAmH5ZGp2AN==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,Thursday,3,Complete the CAPTCHA to continue,html/mail_041_e_ZwLjBQVjZGRkZmR1ZQNjAmH5ZGp2AN.html,,,2026-08-21T13:37:04.816Z
+42,e_ZwLjBQVjZGRkZmRmZQNjAmH5ZGZ0Zj==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,Thursday,3,Complete the CAPTCHA to continue,html/mail_042_e_ZwLjBQVjZGRkZmRmZQNjAmH5ZGZ0Zj.html,,,2026-08-21T13:37:05.619Z
+43,e_ZwLjBQVjZGRkZmRjZQNjAmH5ZQtkZN==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,Thursday,3,Complete the CAPTCHA to continue,html/mail_043_e_ZwLjBQVjZGRkZmRjZQNjAmH5ZQtkZN.html,,,2026-08-21T13:37:06.421Z
+44,e_ZwLjBQVjZGRkZmN4ZQNjAmH5ZQZ2AD==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,Thursday,3,Complete the CAPTCHA to continue,html/mail_044_e_ZwLjBQVjZGRkZmN4ZQNjAmH5ZQZ2AD.html,,,2026-08-21T13:37:07.225Z
+45,e_ZwLjBQVjZGRkZmN0ZQNjAmH4BGH1Aj==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,Thursday,3,Complete the CAPTCHA to continue,html/mail_045_e_ZwLjBQVjZGRkZmN0ZQNjAmH4BGH1Aj.html,,,2026-08-21T13:37:08.028Z
+46,e_ZwLjBQVjZGRkZmNkZQNjAmH4BQp1Aj==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,Thursday,4,Complete the CAPTCHA to continue,html/mail_046_e_ZwLjBQVjZGRkZmNkZQNjAmH4BQp1Aj.html,,,2026-08-21T13:37:08.832Z
+47,e_ZwLjBQVjZGRkZwH5ZQNjAmH4Amx4ZD==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,Thursday,4,Complete the CAPTCHA to continue,html/mail_047_e_ZwLjBQVjZGRkZwH5ZQNjAmH4Amx4ZD.html,,,2026-08-21T13:37:09.636Z
+48,e_ZwLjBQVjZGRkZwH2ZQNjAmH4AmZkZD==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,Thursday,4,Complete the CAPTCHA to continue,html/mail_048_e_ZwLjBQVjZGRkZwH2ZQNjAmH4AmZkZD.html,,,2026-08-21T13:37:10.438Z
+49,e_ZwLjBQVjZGRkZwHmZQNjAmH4AwH3BD==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,Thursday,4,Complete the CAPTCHA to continue,html/mail_049_e_ZwLjBQVjZGRkZwHmZQNjAmH4AwH3BD.html,,,2026-08-21T13:37:11.242Z
+50,e_ZwLjBQVjZGRkZwR3ZQNjAmH3BGD1BN==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,Thursday,4,Complete the CAPTCHA to continue,html/mail_050_e_ZwLjBQVjZGRkZwR3ZQNjAmH3BGD1BN.html,,,2026-08-21T13:37:12.045Z
+51,e_ZwLjBQVjZGRkZwR1ZQNjAmH3BGNjZj==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,Thursday,4,Complete the CAPTCHA to continue,html/mail_051_e_ZwLjBQVjZGRkZwR1ZQNjAmH3BGNjZj.html,,,2026-08-21T13:37:12.849Z
+52,e_ZwLjBQVjZGRkZwRmZQNjAmH3BQH2Zt==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,Thursday,4,Complete the CAPTCHA to continue,html/mail_052_e_ZwLjBQVjZGRkZwRmZQNjAmH3BQH2Zt.html,,,2026-08-21T13:37:13.652Z
+53,e_ZwLjBQVjZGRkZwRjZQNjAmH3BQN4Aj==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,Thursday,4,Complete the CAPTCHA to continue,html/mail_053_e_ZwLjBQVjZGRkZwRjZQNjAmH3BQN4Aj.html,,,2026-08-21T13:37:14.455Z
+54,e_ZwLjBQVjZGRkZwRjZQNjAmH3AmxlAj==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,Thursday,4,Complete the CAPTCHA to continue,html/mail_054_e_ZwLjBQVjZGRkZwRjZQNjAmH3AmxlAj.html,,,2026-08-21T13:37:15.259Z
+55,e_ZwLjBQVjZGRkZwN4ZQNjAmH3AmH3BN==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,Thursday,4,Complete the CAPTCHA to continue,html/mail_055_e_ZwLjBQVjZGRkZwN4ZQNjAmH3AmH3BN.html,,,2026-08-21T13:37:16.061Z
+56,e_ZwLjBQVjZGRkZwN2ZQNjAmH3AmR4ZD==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,Thursday,4,Complete the CAPTCHA to continue,html/mail_056_e_ZwLjBQVjZGRkZwN2ZQNjAmH3AmR4ZD.html,,,2026-08-21T13:37:16.865Z
+57,e_ZwLjBQVjZGRkZwNkZQNjAmH3AwR2ZN==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,Thursday,4,Complete the CAPTCHA to continue,html/mail_057_e_ZwLjBQVjZGRkZwNkZQNjAmH3AwR2ZN.html,,,2026-08-21T13:37:17.668Z
+58,e_ZwLjBQVjZGRkZGH5ZQNjAmH3AGplAt==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,Thursday,4,Complete the CAPTCHA to continue,html/mail_058_e_ZwLjBQVjZGRkZGH5ZQNjAmH3AGplAt.html,,,2026-08-21T13:37:18.472Z
+59,e_ZwLjBQVjZGRkZGH2ZQNjAmH3AGV0AN==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,Thursday,4,Complete the CAPTCHA to continue,html/mail_059_e_ZwLjBQVjZGRkZGH2ZQNjAmH3AGV0AN.html,,,2026-08-21T13:37:19.274Z
+60,e_ZwLjBQVjZGRkZGHmZQNjAmH3AQHlAt==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,Thursday,4,Complete the CAPTCHA to continue,html/mail_060_e_ZwLjBQVjZGRkZGHmZQNjAmH3AQHlAt.html,,,2026-08-21T13:37:20.078Z
+61,e_ZwLjBQVjZGRkZGHjZQNjAmH3Zmx3Aj==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,Thursday,5,Complete the CAPTCHA to continue,html/mail_061_e_ZwLjBQVjZGRkZGHjZQNjAmH3Zmx3Aj.html,,,2026-08-21T13:37:20.882Z
+62,e_ZwLjBQVjZGRkZGD3ZQNjAmH3ZmD2ZD==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,Thursday,5,Complete the CAPTCHA to continue,html/mail_062_e_ZwLjBQVjZGRkZGD3ZQNjAmH3ZmD2ZD.html,,,2026-08-21T13:37:21.685Z
+63,e_ZwLjBQVjZGRkZGD1ZQNjAmH3ZmNkBD==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,Thursday,5,Complete the CAPTCHA to continue,html/mail_063_e_ZwLjBQVjZGRkZGD1ZQNjAmH3ZmNkBD.html,,,2026-08-21T13:37:22.489Z
+64,e_ZwLjBQVjZGRkZGN4ZQNjAmH2AGD1Aj==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,Thursday,5,Complete the CAPTCHA to continue,html/mail_064_e_ZwLjBQVjZGRkZGN4ZQNjAmH2AGD1Aj.html,,,2026-08-21T13:37:23.294Z
+65,e_ZwLjBQVjZGRkZGN1ZQNjAmH2AQt2BN==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,Thursday,5,Complete the CAPTCHA to continue,html/mail_065_e_ZwLjBQVjZGRkZGN1ZQNjAmH2AQt2BN.html,,,2026-08-21T13:37:24.098Z
+66,e_ZwLjBQVjZGRkZGNmZQNjAmH2AQZ2BN==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,Thursday,5,Complete the CAPTCHA to continue,html/mail_066_e_ZwLjBQVjZGRkZGNmZQNjAmH2AQZ2BN.html,,,2026-08-21T13:37:24.903Z
+67,e_ZwLjBQVjZGRkZGNkZQNjAmH2ZmL2Aj==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,Thursday,5,Complete the CAPTCHA to continue,html/mail_067_e_ZwLjBQVjZGRkZGNkZQNjAmH2ZmL2Aj.html,,,2026-08-21T13:37:25.710Z
+68,e_ZwLjBQVjZGRkZQH5ZQNjAmH2ZmR5Aj==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,Thursday,5,Complete the CAPTCHA to continue,html/mail_068_e_ZwLjBQVjZGRkZQH5ZQNjAmH2ZmR5Aj.html,,,2026-08-21T13:37:26.515Z
+69,e_ZwLjBQVjZGRkZQH3ZQNjAmH2ZwxmAj==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,Thursday,5,Complete the CAPTCHA to continue,html/mail_069_e_ZwLjBQVjZGRkZQH3ZQNjAmH2ZwxmAj.html,,,2026-08-21T13:37:27.319Z
+70,e_ZwLjBQVjZGRkZQHmZQNjAmH2ZwRjAj==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,Thursday,5,Complete the CAPTCHA to continue,html/mail_070_e_ZwLjBQVjZGRkZQHmZQNjAmH2ZwRjAj.html,,,2026-08-21T13:37:28.123Z
+71,e_ZwLjBQVjZGRkZQHjZQNjAmH2ZGV5AN==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,Thursday,5,Complete the CAPTCHA to continue,html/mail_071_e_ZwLjBQVjZGRkZQHjZQNjAmH2ZGV5AN.html,,,2026-08-21T13:37:28.927Z
+72,e_ZwLjBQVjZGRkZQD4ZQNjAmH2ZQpjAt==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,Thursday,5,Complete the CAPTCHA to continue,html/mail_072_e_ZwLjBQVjZGRkZQD4ZQNjAmH2ZQpjAt.html,,,2026-08-21T13:37:29.730Z
+73,e_ZwLjBQVjZGRkZQD1ZQNjAmH2ZQN1ZD==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,Thursday,5,Complete the CAPTCHA to continue,html/mail_073_e_ZwLjBQVjZGRkZQD1ZQNjAmH2ZQN1ZD.html,,,2026-08-21T13:37:30.533Z
+74,e_ZwLjBQVjZGRkZQDkZQNjAmH1BGR0Zt==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,Thursday,5,Complete the CAPTCHA to continue,html/mail_074_e_ZwLjBQVjZGRkZQDkZQNjAmH1BGR0Zt.html,,,2026-08-21T13:37:31.337Z
+75,e_ZwLjBQVjZGRkZQZ4ZQNjAmH1BQH3BD==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,Thursday,5,Complete the CAPTCHA to continue,html/mail_075_e_ZwLjBQVjZGRkZQZ4ZQNjAmH1BQH3BD.html,,,2026-08-21T13:37:32.140Z
+76,e_ZwLjBQVjZGRkZQZ3ZQNjAmH1BQR5Zt==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,Thursday,6,Complete the CAPTCHA to continue,html/mail_076_e_ZwLjBQVjZGRkZQZ3ZQNjAmH1BQR5Zt.html,,,2026-08-21T13:37:32.945Z
+77,e_ZwLjBQVjZGRkZQZ1ZQNjAmH1Amp4Aj==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,Thursday,6,Complete the CAPTCHA to continue,html/mail_077_e_ZwLjBQVjZGRkZQZ1ZQNjAmH1Amp4Aj.html,,,2026-08-21T13:37:33.748Z
+78,e_ZwLjBQVjZGRkZQZlZQNjAmH1AwtmBD==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,Thursday,6,Complete the CAPTCHA to continue,html/mail_078_e_ZwLjBQVjZGRkZQZlZQNjAmH1AwtmBD.html,,,2026-08-21T13:37:34.553Z
+79,e_ZwLjBQVjZGRkZQV5ZQNjAmH1AwV0Zt==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,Thursday,6,Complete the CAPTCHA to continue,html/mail_079_e_ZwLjBQVjZGRkZQV5ZQNjAmH1AwV0Zt.html,,,2026-08-21T13:37:35.357Z
+80,e_ZwLjBQVjZGRkZQV3ZQNjAmH1AGHjZj==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,Thursday,6,Complete the CAPTCHA to continue,html/mail_080_e_ZwLjBQVjZGRkZQV3ZQNjAmH1AGHjZj.html,,,2026-08-21T13:37:36.161Z
+81,e_ZwLjBQVjZGRkZQV0ZQNjAmH1AQt3Zj==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,Thursday,6,Complete the CAPTCHA to continue,html/mail_081_e_ZwLjBQVjZGRkZQV0ZQNjAmH1AQt3Zj.html,,,2026-08-21T13:37:36.964Z
+82,e_ZwLjBQVjZGRkZQVkZQNjAmH1AQVjAj==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,Thursday,6,Complete the CAPTCHA to continue,html/mail_082_e_ZwLjBQVjZGRkZQVkZQNjAmH1AQVjAj.html,,,2026-08-21T13:37:37.767Z
+83,e_ZwLjBQVjZGRjBGH3ZQNjAmH0BQD1Aj==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,Thursday,6,Complete the CAPTCHA to continue,html/mail_083_e_ZwLjBQVjZGRjBGH3ZQNjAmH0BQD1Aj.html,,,2026-08-21T13:37:38.571Z
+84,e_ZwLjBQVjZGRjBGH0ZQNjAmH0Amx5Aj==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,Thursday,6,Complete the CAPTCHA to continue,html/mail_084_e_ZwLjBQVjZGRjBGH0ZQNjAmH0Amx5Aj.html,,,2026-08-21T13:37:39.373Z
+85,e_ZwLjBQVjZGRjBGHkZQNjAmH0AmZ5AN==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,Thursday,6,Complete the CAPTCHA to continue,html/mail_085_e_ZwLjBQVjZGRjBGHkZQNjAmH0AmZ5AN.html,,,2026-08-21T13:37:40.177Z
+86,e_ZwLjBQVjZGRjBGD5ZQNjAmH0AwtlAD==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,Thursday,6,Complete the CAPTCHA to continue,html/mail_086_e_ZwLjBQVjZGRjBGD5ZQNjAmH0AwtlAD.html,,,2026-08-21T13:37:40.980Z
+87,e_ZwLjBQVjZGRjBGD3ZQNjAmH0AwDlBD==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,Thursday,6,Complete the CAPTCHA to continue,html/mail_087_e_ZwLjBQVjZGRjBGD3ZQNjAmH0AwDlBD.html,,,2026-08-21T13:37:41.785Z
+88,e_ZwLjBQVjZGRjBGD1ZQNjAmH0AGx2Zt==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,Thursday,6,Complete the CAPTCHA to continue,html/mail_088_e_ZwLjBQVjZGRjBGD1ZQNjAmH0AGx2Zt.html,,,2026-08-21T13:37:42.588Z
+89,e_ZwLjBQVjZGRjBGDmZQNjAmH0AGH5At==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,Thursday,6,Complete the CAPTCHA to continue,html/mail_089_e_ZwLjBQVjZGRjBGDmZQNjAmH0AGH5At.html,,,2026-08-21T13:37:43.391Z
+90,e_ZwLjBQVjZGRjBGDkZQNjAmH0AGRjAt==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,Thursday,6,Complete the CAPTCHA to continue,html/mail_090_e_ZwLjBQVjZGRjBGDkZQNjAmH0AGRjAt.html,,,2026-08-21T13:37:44.195Z
+91,e_ZwLjBQVjZGRjBGZ5ZQNjAmH0AQp2Zt==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,Thursday,7,Complete the CAPTCHA to continue,html/mail_091_e_ZwLjBQVjZGRjBGZ5ZQNjAmH0AQp2Zt.html,,,2026-08-21T13:37:44.999Z
+92,e_ZwLjBQVjZGRjBGZ1ZQNjAmH0Zmt3ZN==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,Thursday,7,Complete the CAPTCHA to continue,html/mail_092_e_ZwLjBQVjZGRjBGZ1ZQNjAmH0Zmt3ZN.html,,,2026-08-21T13:37:45.802Z
+93,e_ZwLjBQVjZGRjBGZkZQNjAmH0Zwx0BN==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,Thursday,7,Complete the CAPTCHA to continue,html/mail_093_e_ZwLjBQVjZGRjBGZkZQNjAmH0Zwx0BN.html,,,2026-08-21T13:37:46.606Z
+94,e_ZwLjBQVjZGRjBGV5ZQNjAmH0ZwD5Zj==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,Thursday,7,Complete the CAPTCHA to continue,html/mail_094_e_ZwLjBQVjZGRjBGV5ZQNjAmH0ZwD5Zj.html,,,2026-08-21T13:37:47.409Z
+95,e_ZwLjBQVjZGRjBGV3ZQNjAmH0ZGx4ZD==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,Thursday,7,Complete the CAPTCHA to continue,html/mail_095_e_ZwLjBQVjZGRjBGV3ZQNjAmH0ZGx4ZD.html,,,2026-08-21T13:37:48.213Z
+96,e_ZwLjBQVjZGRjBGV0ZQNjAmH0ZGZlBD==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,Thursday,7,Complete the CAPTCHA to continue,html/mail_096_e_ZwLjBQVjZGRjBGV0ZQNjAmH0ZGZlBD.html,,,2026-08-21T13:37:49.018Z
+97,e_ZwLjBQVjZGRjBQD4ZQNjAmHmAQL2Zt==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,Thursday,7,Complete the CAPTCHA to continue,html/mail_097_e_ZwLjBQVjZGRjBQD4ZQNjAmHmAQL2Zt.html,,,2026-08-21T13:37:49.821Z
+98,e_ZwLjBQVjZGRjBQD1ZQNjAmHmZmx1BD==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,Thursday,7,Complete the CAPTCHA to continue,html/mail_098_e_ZwLjBQVjZGRjBQD1ZQNjAmHmZmx1BD.html,,,2026-08-21T13:37:50.624Z
+99,e_ZwLjBQVjZGRjBQDmZQNjAmHmZmZ4AN==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,Thursday,7,Complete the CAPTCHA to continue,html/mail_099_e_ZwLjBQVjZGRjBQDmZQNjAmHmZmZ4AN.html,,,2026-08-21T13:37:51.428Z
+100,e_ZwLjBQVjZGRjBQDkZQNjAmHmZmN5At==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,Thursday,7,Complete the CAPTCHA to continue,html/mail_100_e_ZwLjBQVjZGRjBQDkZQNjAmHmZmN5At.html,,,2026-08-21T13:37:52.231Z
+101,e_ZwLjBQVjZGRjZQR5ZQNjAmDkBQNmZD==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,Thursday,7,Complete the CAPTCHA to continue,html/mail_101_e_ZwLjBQVjZGRjZQR5ZQNjAmDkBQNmZD.html,,,2026-08-21T13:37:53.034Z
+102,e_ZwLjBQVjZGRjZQR5ZQNjAmDkAmxkZD==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,Thursday,7,Complete the CAPTCHA to continue,html/mail_102_e_ZwLjBQVjZGRjZQR5ZQNjAmDkAmxkZD.html,,,2026-08-21T13:37:53.838Z
+103,e_ZwLjBQVjZGRjZQR3ZQNjAmDkAmR0ZD==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,Thursday,7,Complete the CAPTCHA to continue,html/mail_103_e_ZwLjBQVjZGRjZQR3ZQNjAmDkAmR0ZD.html,,,2026-08-21T13:37:54.642Z
+104,e_ZwLjBQVjZGRjZQR3ZQNjAmDkAmN2Zt==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,Thursday,7,Complete the CAPTCHA to continue,html/mail_104_e_ZwLjBQVjZGRjZQR3ZQNjAmDkAmN2Zt.html,,,2026-08-21T13:37:55.445Z
+105,e_ZwLjBQVjZGRjZQRkZQNjAmDkAQD1BD==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,Thursday,7,Complete the CAPTCHA to continue,html/mail_105_e_ZwLjBQVjZGRjZQRkZQNjAmDkAQD1BD.html,,,2026-08-21T13:37:56.248Z
+106,e_ZwLjBQVjZGRjZQN5ZQNjAmDkAQN1Zj==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,Thursday,8,Complete the CAPTCHA to continue,html/mail_106_e_ZwLjBQVjZGRjZQN5ZQNjAmDkAQN1Zj.html,,,2026-08-21T13:37:57.050Z
+107,e_ZwLjBQVjZGRjZQN2ZQNjAmDkZwHkAt==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,Thursday,8,Complete the CAPTCHA to continue,html/mail_107_e_ZwLjBQVjZGRjZQN2ZQNjAmDkZwHkAt.html,,,2026-08-21T13:37:57.854Z
+108,e_ZwLjBQVjZGRjZQNkZQNjAmDkZQV2BD==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,Thursday,8,Complete the CAPTCHA to continue,html/mail_108_e_ZwLjBQVjZGRjZQNkZQNjAmDkZQV2BD.html,,,2026-08-21T13:37:58.658Z
+109,e_ZwLjBQVjZGN1BGH5ZQNjAmDjBGt2Zj==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,Thursday,8,Complete the CAPTCHA to continue,html/mail_109_e_ZwLjBQVjZGN1BGH5ZQNjAmDjBGt2Zj.html,,,2026-08-21T13:37:59.462Z
+110,e_ZwLjBQVjZGN1BGH2ZQNjAmDjBGDlZN==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,Thursday,8,Complete the CAPTCHA to continue,html/mail_110_e_ZwLjBQVjZGN1BGH2ZQNjAmDjBGDlZN.html,,,2026-08-21T13:38:00.265Z
+111,e_ZwLjBQVjZGN1BGHmZQNjAmDjBQx0AD==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,Thursday,8,Complete the CAPTCHA to continue,html/mail_111_e_ZwLjBQVjZGN1BGHmZQNjAmDjBQx0AD.html,,,2026-08-21T13:38:01.069Z
+112,e_ZwLjBQVjZGN1BGHkZQNjAmDjBQLjBN==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,Thursday,8,Complete the CAPTCHA to continue,html/mail_112_e_ZwLjBQVjZGN1BGHkZQNjAmDjBQLjBN.html,,,2026-08-21T13:38:01.872Z
+113,e_ZwLjBQVjZGN1BGD5ZQNjAmDjBQV0AN==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,Thursday,8,Complete the CAPTCHA to continue,html/mail_113_e_ZwLjBQVjZGN1BGD5ZQNjAmDjBQV0AN.html,,,2026-08-21T13:38:02.676Z
+114,e_ZwLjBQVjZGN1BGD3ZQNjAmDjAmt0Zj==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,Thursday,8,Complete the CAPTCHA to continue,html/mail_114_e_ZwLjBQVjZGN1BGD3ZQNjAmDjAmt0Zj.html,,,2026-08-21T13:38:03.479Z
+115,e_ZwLjBQVjZGN1BGD0ZQNjAmDjAmD4Aj==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,Thursday,8,Complete the CAPTCHA to continue,html/mail_115_e_ZwLjBQVjZGN1BGD0ZQNjAmDjAmD4Aj.html,,,2026-08-21T13:38:04.282Z
+116,e_ZwLjBQVjZGN1BGDlZQNjAmDjAmN5AD==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,Thursday,8,Complete the CAPTCHA to continue,html/mail_116_e_ZwLjBQVjZGN1BGDlZQNjAmDjAmN5AD.html,,,2026-08-21T13:38:05.086Z
+117,e_ZwLjBQVjZGN1BGZ5ZQNjAmDjAwHmZD==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,Thursday,8,Complete the CAPTCHA to continue,html/mail_117_e_ZwLjBQVjZGN1BGZ5ZQNjAmDjAwHmZD.html,,,2026-08-21T13:38:05.888Z
+118,e_ZwLjBQVjZGN1BGZ3ZQNjAmDjAwVmAD==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,Thursday,8,Complete the CAPTCHA to continue,html/mail_118_e_ZwLjBQVjZGN1BGZ3ZQNjAmDjAwVmAD.html,,,2026-08-21T13:38:06.692Z
+119,e_ZwLjBQVjZGN1BGZ1ZQNjAmDjAGp0AD==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,Thursday,8,Complete the CAPTCHA to continue,html/mail_119_e_ZwLjBQVjZGN1BGZ1ZQNjAmDjAGp0AD.html,,,2026-08-21T13:38:07.496Z
+120,e_ZwLjBQVjZGN1BGZlZQNjAmDjAGVkAj==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,Thursday,8,Complete the CAPTCHA to continue,html/mail_120_e_ZwLjBQVjZGN1BGZlZQNjAmDjAGVkAj.html,,,2026-08-21T13:38:08.300Z
+121,e_ZwLjBQVjZGN1BGZjZQNjAmDjAQt3BD==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,Thursday,9,Complete the CAPTCHA to continue,html/mail_121_e_ZwLjBQVjZGN1BGZjZQNjAmDjAQt3BD.html,,,2026-08-21T13:38:09.104Z
+122,e_ZwLjBQVjZGN1BGV2ZQNjAmDjAQN3ZN==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,Thursday,9,Complete the CAPTCHA to continue,html/mail_122_e_ZwLjBQVjZGN1BGV2ZQNjAmDjAQN3ZN.html,,,2026-08-21T13:38:09.907Z
+123,e_ZwLjBQVjZGN1BGVmZQNjAmDjZmL4ZD==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,Thursday,9,Complete the CAPTCHA to continue,html/mail_123_e_ZwLjBQVjZGN1BGVmZQNjAmDjZmL4ZD.html,,,2026-08-21T13:38:10.712Z
+124,e_ZwLjBQVjZGN1BGVlZQNjAmDjZmD0AN==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,Thursday,9,Complete the CAPTCHA to continue,html/mail_124_e_ZwLjBQVjZGN1BGVlZQNjAmDjZmD0AN.html,,,2026-08-21T13:38:11.516Z
+125,e_ZwLjBQVjZGN1BGVjZQNjAmDjZmN5At==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,Thursday,9,Complete the CAPTCHA to continue,html/mail_125_e_ZwLjBQVjZGN1BGVjZQNjAmDjZmN5At.html,,,2026-08-21T13:38:12.321Z
+126,e_ZwLjBQVjZGN1BGR3ZQNjAmDjZwp4AN==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,Thursday,9,Complete the CAPTCHA to continue,html/mail_126_e_ZwLjBQVjZGN1BGR3ZQNjAmDjZwp4AN.html,,,2026-08-21T13:38:13.124Z
+127,e_ZwLjBQVjZGN1BGR1ZQNjAmDjZwDmBN==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,Thursday,9,Complete the CAPTCHA to continue,html/mail_127_e_ZwLjBQVjZGN1BGR1ZQNjAmDjZwDmBN.html,,,2026-08-21T13:38:13.927Z
+128,e_ZwLjBQVjZGN1BGRmZQNjAmDjZwVkZN==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,Thursday,9,Complete the CAPTCHA to continue,html/mail_128_e_ZwLjBQVjZGN1BGRmZQNjAmDjZwVkZN.html,,,2026-08-21T13:38:14.731Z
+129,e_ZwLjBQVjZGN1BGRjZQNjAmDjZGt1Aj==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,Thursday,9,Complete the CAPTCHA to continue,html/mail_129_e_ZwLjBQVjZGN1BGRjZQNjAmDjZGt1Aj.html,,,2026-08-21T13:38:15.535Z
+130,e_ZwLjBQVjZGN1BGN4ZQNjAmDjZGH3Aj==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,Thursday,9,Complete the CAPTCHA to continue,html/mail_130_e_ZwLjBQVjZGN1BGN4ZQNjAmDjZGH3Aj.html,,,2026-08-21T13:38:16.339Z
+131,e_ZwLjBQVjZGN1BGN1ZQNjAmDjZGVmAN==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,Thursday,9,Complete the CAPTCHA to continue,html/mail_131_e_ZwLjBQVjZGN1BGN1ZQNjAmDjZGVmAN.html,,,2026-08-21T13:38:17.143Z
+132,e_ZwLjBQVjZGN1BGNmZQNjAmDjZQxmBD==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,Thursday,9,Complete the CAPTCHA to continue,html/mail_132_e_ZwLjBQVjZGN1BGNmZQNjAmDjZQxmBD.html,,,2026-08-21T13:38:17.946Z
+133,e_ZwLjBQVjZGN1BGNjZQNjAmDjZQLmBD==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,Thursday,9,Complete the CAPTCHA to continue,html/mail_133_e_ZwLjBQVjZGN1BGNjZQNjAmDjZQLmBD.html,,,2026-08-21T13:38:18.750Z
+134,e_ZwLjBQVjZGN1BQH4ZQNjAmDjZQZmBN==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,Thursday,9,Complete the CAPTCHA to continue,html/mail_134_e_ZwLjBQVjZGN1BQH4ZQNjAmDjZQZmBN.html,,,2026-08-21T13:38:19.554Z
+135,e_ZwLjBQVjZGN1BQH1ZQNjAmDjZQNmZj==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,Thursday,9,Complete the CAPTCHA to continue,html/mail_135_e_ZwLjBQVjZGN1BQH1ZQNjAmDjZQNmZj.html,,,2026-08-21T13:38:20.357Z
+136,e_ZwLjBQVjZGN1BQH0ZQNjAmZ5BGtkZt==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,Thursday,10,Complete the CAPTCHA to continue,html/mail_136_e_ZwLjBQVjZGN1BQH0ZQNjAmZ5BGtkZt.html,,,2026-08-21T13:38:21.161Z
+137,e_ZwLjBQVjZGN1BQHkZQNjAmZ5BGDlAD==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,Thursday,10,Complete the CAPTCHA to continue,html/mail_137_e_ZwLjBQVjZGN1BQHkZQNjAmZ5BGDlAD.html,,,2026-08-21T13:38:21.966Z
+138,e_ZwLjBQVjZGN1BQD5ZQNjAmZ5BGRmBD==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,Thursday,10,Complete the CAPTCHA to continue,html/mail_138_e_ZwLjBQVjZGN1BQD5ZQNjAmZ5BGRmBD.html,,,2026-08-21T13:38:22.770Z
+139,e_ZwLjBQVjZGN1BQD2ZQNjAmZ5BQp5ZN==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,Thursday,10,Complete the CAPTCHA to continue,html/mail_139_e_ZwLjBQVjZGN1BQD2ZQNjAmZ5BQp5ZN.html,,,2026-08-21T13:38:23.575Z
+140,e_ZwLjBQVjZGN1BQD1ZQNjAmZ5BQHkAj==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,Thursday,10,Complete the CAPTCHA to continue,html/mail_140_e_ZwLjBQVjZGN1BQD1ZQNjAmZ5BQHkAj.html,,,2026-08-21T13:38:24.379Z
+141,e_ZwLjBQVjZGN1BQDlZQNjAmZ5BQR4AN==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,Thursday,10,Complete the CAPTCHA to continue,html/mail_141_e_ZwLjBQVjZGN1BQDlZQNjAmZ5BQR4AN.html,,,2026-08-21T13:38:25.183Z
+142,e_ZwLjBQVjZGN1BQZ5ZQNjAmZ5Amp4AN==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,Thursday,10,Complete the CAPTCHA to continue,html/mail_142_e_ZwLjBQVjZGN1BQZ5ZQNjAmZ5Amp4AN.html,,,2026-08-21T13:38:25.987Z
+143,e_ZwLjBQVjZGN1BQZ3ZQNjAmZ5AmHkZt==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,Thursday,10,Complete the CAPTCHA to continue,html/mail_143_e_ZwLjBQVjZGN1BQZ3ZQNjAmZ5AmHkZt.html,,,2026-08-21T13:38:26.791Z
+144,e_ZwLjBQVjZGN1BQZ1ZQNjAmZ5AmVjBD==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,Thursday,10,Complete the CAPTCHA to continue,html/mail_144_e_ZwLjBQVjZGN1BQZ1ZQNjAmZ5AmVjBD.html,,,2026-08-21T13:38:27.595Z
+145,e_ZwLjBQVjZGN1BQZlZQNjAmZ5Awp4Zj==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,Thursday,10,Complete the CAPTCHA to continue,html/mail_145_e_ZwLjBQVjZGN1BQZlZQNjAmZ5Awp4Zj.html,,,2026-08-21T13:38:28.398Z
+146,e_ZwLjBQVjZGN1BQZjZQNjAmZ5AwH0ZN==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,Thursday,10,Complete the CAPTCHA to continue,html/mail_146_e_ZwLjBQVjZGN1BQZjZQNjAmZ5AwH0ZN.html,,,2026-08-21T13:38:29.201Z
+147,e_ZwLjBQVjZGN1BQV4ZQNjAmZ5AwVkZt==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,Thursday,10,Complete the CAPTCHA to continue,html/mail_147_e_ZwLjBQVjZGN1BQV4ZQNjAmZ5AwVkZt.html,,,2026-08-21T13:38:30.004Z
+148,e_ZwLjBQVjZGN1BQV1ZQNjAmZ5AGL2ZD==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,Thursday,10,Complete the CAPTCHA to continue,html/mail_148_e_ZwLjBQVjZGN1BQV1ZQNjAmZ5AGL2ZD.html,,,2026-08-21T13:38:30.808Z
+149,e_ZwLjBQVjZGN1BQVmZQNjAmZ5AGDmBD==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,Thursday,10,Complete the CAPTCHA to continue,html/mail_149_e_ZwLjBQVjZGN1BQVmZQNjAmZ5AGDmBD.html,,,2026-08-21T13:38:31.611Z
+150,e_ZwLjBQVjZGN1BQVkZQNjAmZ5AGR1ZN==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,Thursday,10,Complete the CAPTCHA to continue,html/mail_150_e_ZwLjBQVjZGN1BQVkZQNjAmZ5AGR1ZN.html,,,2026-08-21T13:38:32.415Z
+151,e_ZwLjBQVjZGN1BQR4ZQNjAmZ5AQplAt==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,Thursday,11,Complete the CAPTCHA to continue,html/mail_151_e_ZwLjBQVjZGN1BQR4ZQNjAmZ5AQplAt.html,,,2026-08-21T13:38:33.220Z
+152,e_ZwLjBQVjZGN1BQR2ZQNjAmZ5AQZ0Aj==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,Thursday,11,Complete the CAPTCHA to continue,html/mail_152_e_ZwLjBQVjZGN1BQR2ZQNjAmZ5AQZ0Aj.html,,,2026-08-21T13:38:34.023Z
+153,e_ZwLjBQVjZGN1BQRmZQNjAmZ5ZmxkZD==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,Thursday,11,Complete the CAPTCHA to continue,html/mail_153_e_ZwLjBQVjZGN1BQRmZQNjAmZ5ZmxkZD.html,,,2026-08-21T13:38:34.827Z
+154,e_ZwLjBQVjZGN1BQRkZQNjAmZ5ZmLmBD==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,Thursday,11,Complete the CAPTCHA to continue,html/mail_154_e_ZwLjBQVjZGN1BQRkZQNjAmZ5ZmLmBD.html,,,2026-08-21T13:38:35.630Z
+155,e_ZwLjBQVjZGN1BQN5ZQNjAmZ5ZmZ1At==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,Thursday,11,Complete the CAPTCHA to continue,html/mail_155_e_ZwLjBQVjZGN1BQN5ZQNjAmZ5ZmZ1At.html,,,2026-08-21T13:38:36.433Z
+156,e_ZwLjBQVjZGN1BQN3ZQNjAmZ5ZmN0ZN==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,Thursday,11,Complete the CAPTCHA to continue,html/mail_156_e_ZwLjBQVjZGN1BQN3ZQNjAmZ5ZmN0ZN.html,,,2026-08-21T13:38:37.237Z
+157,e_ZwLjBQVjZGN1BQN1ZQNjAmZ5Zwp2AD==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,Thursday,11,Complete the CAPTCHA to continue,html/mail_157_e_ZwLjBQVjZGN1BQN1ZQNjAmZ5Zwp2AD.html,,,2026-08-21T13:38:38.041Z
+158,e_ZwLjBQVjZGN1BQNmZQNjAmZ5ZwD4ZN==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,Thursday,11,Complete the CAPTCHA to continue,html/mail_158_e_ZwLjBQVjZGN1BQNmZQNjAmZ5ZwD4ZN.html,,,2026-08-21T13:38:38.845Z
+159,e_ZwLjBQVjZGN1BQNlZQNjAmZ5ZwZ1BD==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,Thursday,11,Complete the CAPTCHA to continue,html/mail_159_e_ZwLjBQVjZGN1BQNlZQNjAmZ5ZwZ1BD.html,,,2026-08-21T13:38:39.650Z
+160,e_ZwLjBQVjZGN1AmH2ZQNjAmZ5ZGpkBN==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,Thursday,11,Complete the CAPTCHA to continue,html/mail_160_e_ZwLjBQVjZGN1AmH2ZQNjAmZ5ZGpkBN.html,,,2026-08-21T13:38:40.453Z
+161,e_ZwLjBQVjZGN0AwZmZQNjAmV4ZmZ1At==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,Thursday,11,Complete the CAPTCHA to continue,html/mail_161_e_ZwLjBQVjZGN0AwZmZQNjAmV4ZmZ1At.html,,,2026-08-21T13:38:41.258Z
+162,e_ZwLjBQVjZGN0AGN2ZQNjAmV2ZQp0ZD==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,Thursday,11,Complete the CAPTCHA to continue,html/mail_162_e_ZwLjBQVjZGN0AGN2ZQNjAmV2ZQp0ZD.html,,,2026-08-21T13:38:42.061Z
+163,e_ZwLjBQVjZGN0ZQRkZQNjAmR5AwVlZt==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,Thursday,11,Complete the CAPTCHA to continue,html/mail_163_e_ZwLjBQVjZGN0ZQRkZQNjAmR5AwVlZt.html,,,2026-08-21T13:38:42.865Z
+164,e_ZwLjBQVjZGNmAwZ4ZQNjAmR1BQL1ZD==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,Thursday,11,Complete the CAPTCHA to continue,html/mail_164_e_ZwLjBQVjZGNmAwZ4ZQNjAmR1BQL1ZD.html,,,2026-08-21T13:38:43.670Z
+165,e_ZwLjBQVjZQxlZGR4ZQNjAwV2BGt3ZN==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,Thursday,11,Complete the CAPTCHA to continue,html/mail_165_e_ZwLjBQVjZQxlZGR4ZQNjAwV2BGt3ZN.html,,,2026-08-21T13:38:44.472Z
+166,e_ZwLjBQVjZQxkAwZmZQNjAwVkAmtlZN==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,Thursday,12,Complete the CAPTCHA to continue,html/mail_166_e_ZwLjBQVjZQxkAwZmZQNjAwVkAmtlZN.html,,,2026-08-21T13:38:45.275Z
+167,e_ZwLjBQVjZQxkAQZmZQNjAwR4BGp2ZN==,wealifytester@yopmail.com,Wealify,YOPmail - Mail viewer,Thursday,12,Complete the CAPTCHA to continue,html/mail_167_e_ZwLjBQVjZQxkAQZmZQNjAwR4BGp2ZN.html,,,2026-08-21T13:38:46.079Z

@@ -55,8 +55,8 @@ services:
     ports:
       - "8000:8000"
     volumes:
-      - ./backend/outbox:/app/outbox
-      - ./scripts/yopmail_scraper/output:/app/scripts/yopmail_scraper/output
+      - ./backend/outbox:/app/backend/outbox
+      - ./dataset:/app/dataset
     extra_hosts:
       - "host.docker.internal:host-gateway"
 
