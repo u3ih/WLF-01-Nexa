@@ -2,9 +2,19 @@ import type { ChatReply, ChatSession, Lang, Summary } from "./types";
 
 // Same-origin by default: next.config.mjs proxies /api to the backend.
 const BASE = process.env.NEXT_PUBLIC_API_BASE ?? "";
+const TOKEN_KEY = "nexa-auth-token";
+
+function authHeaders(): Record<string, string> {
+  if (typeof window === "undefined") return {};
+  const token = localStorage.getItem(TOKEN_KEY);
+  return token ? { Authorization: `Bearer ${token}` } : {};
+}
 
 async function get<T>(path: string): Promise<T> {
-  const response = await fetch(`${BASE}${path}`, { cache: "no-store" });
+  const response = await fetch(`${BASE}${path}`, {
+    cache: "no-store",
+    headers: { ...authHeaders() },
+  });
   if (!response.ok) {
     throw new Error(`${response.status} ${response.statusText} — ${path}`);
   }
@@ -14,7 +24,10 @@ async function get<T>(path: string): Promise<T> {
 async function post<T>(path: string, body: unknown): Promise<T> {
   const response = await fetch(`${BASE}${path}`, {
     method: "POST",
-    headers: { "content-type": "application/json" },
+    headers: {
+      "content-type": "application/json",
+      ...authHeaders(),
+    },
     body: JSON.stringify(body),
   });
   const payload = await response.json().catch(() => ({}));
@@ -26,6 +39,13 @@ async function post<T>(path: string, body: unknown): Promise<T> {
 }
 
 export const api = {
+  // -- Auth ----------------------------------------------------------------
+  login: (username: string, password: string) =>
+    post<{ token: string; username: string }>("/api/auth/login", { username, password }),
+  verifyToken: (token: string) =>
+    post<{ valid: boolean; username: string | null }>("/api/auth/verify", { token }),
+
+  // -- Existing endpoints --------------------------------------------------
   health: () => get<any>("/api/health"),
   summary: (lang: Lang) => get<Summary>(`/api/summary?lang=${lang}`),
   strings: (lang: Lang) =>

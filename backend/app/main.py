@@ -15,7 +15,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from .config import settings
 from .engine import pipeline
-from .routers import analysis, audit, chat, mail, meta, monitor, reports
+from .routers import analysis, audit, auth, chat, mail, meta, monitor, reports
 from .store import store
 
 logging.basicConfig(
@@ -109,7 +109,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-for module in (meta, analysis, reports, chat, mail, monitor, audit):
+for module in (meta, analysis, reports, chat, mail, monitor, audit, auth):
     app.include_router(module.router)
 
 

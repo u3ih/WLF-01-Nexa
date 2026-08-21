@@ -1,6 +1,7 @@
 "use client";
 
 import { PanelLeft, Table2, X } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 
 import { ChatPane, type ChatHandle } from "@/components/ChatPane";
@@ -24,7 +25,33 @@ function applyTheme(choice: ThemePref) {
   else root.setAttribute("data-theme", choice);
 }
 
+const TOKEN_KEY = "nexa-auth-token";
+
 export default function Page() {
+  const router = useRouter();
+  const [authed, setAuthed] = useState(false);
+
+  useEffect(() => {
+    const token = localStorage.getItem(TOKEN_KEY);
+    if (!token) {
+      router.replace("/login");
+      return;
+    }
+    // Verify the token is still valid
+    api.verifyToken(token).then((res) => {
+      if (!res.valid) {
+        localStorage.removeItem(TOKEN_KEY);
+        localStorage.removeItem("nexa-auth-user");
+        router.replace("/login");
+      } else {
+        setAuthed(true);
+      }
+    }).catch(() => {
+      // If backend is unreachable, let the user in anyway (offline mode)
+      setAuthed(true);
+    });
+  }, [router]);
+
   const [lang, setLang] = useState<Lang>("vi");
   const [theme, setTheme] = useState<ThemePref>("system");
   const [summary, setSummary] = useState<Summary | null>(null);
@@ -66,6 +93,12 @@ export default function Page() {
       chat.current?.loadTurns(full.messages);
       setCurrentSessionId(session.id);
     }).catch(() => { });
+  }
+
+  function handleLogout() {
+    localStorage.removeItem(TOKEN_KEY);
+    localStorage.removeItem("nexa-auth-user");
+    router.replace("/login");
   }
 
   async function handleDeleteHistory(id: number) {
@@ -190,6 +223,8 @@ export default function Page() {
     if (window.matchMedia("(max-width: 1279px)").matches) setDrawerOpen(false);
   }
 
+  if (!authed) return null;
+
   return (
     <div className="app">
       <Sidebar
@@ -215,6 +250,7 @@ export default function Page() {
         onSelectHistory={handleSelectHistory}
         onDeleteHistory={handleDeleteHistory}
         onShowHistoryModal={() => setHistoryModalOpen(true)}
+        onLogout={handleLogout}
       />
       <button
         className="scrim scrim-rail"

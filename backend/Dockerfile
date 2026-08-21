@@ -27,6 +27,7 @@ COPY scripts/yopmail_scraper/package*.json ./scripts/yopmail_scraper/
 RUN cd scripts/yopmail_scraper \
     && PUPPETEER_SKIP_DOWNLOAD=true npm ci --omit=dev --no-audit --no-fund
 COPY scripts/yopmail_scraper/scrape_full.js ./scripts/yopmail_scraper/
+COPY scripts/yopmail_scraper/scrape_latest.js ./scripts/yopmail_scraper/
 ENV NEXA_YOPMAIL_SCRAPER_DIR=/app/scripts/yopmail_scraper \
     NEXA_YOPMAIL_NODE=node \
     PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium

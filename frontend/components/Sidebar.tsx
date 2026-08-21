@@ -1,12 +1,12 @@
 "use client";
 
 import {
-  Clock, Languages, Mail, MessageSquare, Monitor, Moon, PanelLeft, Plus, Sun, Trash2,
+  Clock, Languages, LogOut, Mail, MessageSquare, Monitor, Moon, PanelLeft, Plus, Sun, Trash2,
 } from "lucide-react";
 import { useState } from "react";
 
 import { BrandMark } from "@/components/BrandMark";
-import { ALL_QUESTIONS, ui } from "@/lib/i18n";
+import { SAMPLE_QUESTIONS, ui } from "@/lib/i18n";
 import type { ChatSession, Lang, Summary } from "@/lib/types";
 
 export type ThemePref = "system" | "light" | "dark";
@@ -33,6 +33,7 @@ export function Sidebar({
   lang, onLang, theme, onTheme, summary, health, open, onHide,
   onAsk, onNewChat, onEmailReport, busy, busyDraft,
   history, activeSessionId, onSelectHistory, onDeleteHistory, onShowHistoryModal,
+  onLogout,
 }: {
   lang: Lang;
   onLang: (lang: Lang) => void;
@@ -54,6 +55,7 @@ export function Sidebar({
   onSelectHistory: (session: ChatSession) => void;
   onDeleteHistory: (id: number) => void;
   onShowHistoryModal: () => void;
+  onLogout: () => void;
 }) {
   const account = summary?.account;
   const ThemeIcon = THEME_ICON[theme];
@@ -162,7 +164,7 @@ export function Sidebar({
             questions, because a product does not advertise what it will decline. */}
         <div className="rail-group">
           <div className="rail-label">{ui(lang, "suggestions")}</div>
-          {ALL_QUESTIONS[lang].map((question) => (
+          {SAMPLE_QUESTIONS[lang].map((question) => (
             <button
               className="rail-item"
               key={question}
@@ -222,6 +224,11 @@ export function Sidebar({
       </div>
 
       <div className="rail-foot">
+        <button className="rail-item" onClick={onLogout}>
+          <LogOut size={16} />
+          <span className="rail-item-text">{ui(lang, "logout")}</span>
+        </button>
+
         <button className="rail-item" onClick={onEmailReport} disabled={busyDraft}>
           <Mail size={16} />
           <span className="rail-item-text">{ui(lang, "emailReport")}</span>

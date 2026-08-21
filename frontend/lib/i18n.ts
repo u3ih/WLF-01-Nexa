@@ -136,6 +136,7 @@ const UI = {
     thisWeek: "Tuần này",
     earlier: "Trước đó",
     historyModal: "Lịch sử trò chuyện",
+    logout: "Đăng xuất",
   },
   en: {
     tagline: "Statement review assistant · read-only, you decide",
@@ -182,7 +183,7 @@ const UI = {
     boundaryWhy_card_lock:
       "No card lock or unlock function exists.",
     boundaryWhy_reassurance:
-      "An output filter blocks every “account is safe” phrasing, in both languages.",
+      "An output filter blocks every \u201caccount is safe\u201d phrasing, in both languages.",
     grp_alerts: "Alerts",
     grp_money: "Money",
     grp_recon: "Reconciliation",
@@ -190,12 +191,12 @@ const UI = {
     grp_safety: "Safety boundaries",
     boundaryTry: "Try it",
     boundaryIntro: "Nexa only assists and suggests. It does not do the six "
-      + "things below — not because a prompt says so, but because no function "
+      + "things below \u2014 not because a prompt says so, but because no function "
       + "in the codebase can. Press Try it and check for yourself.",
     sev_hard: "hard boundary",
     sev_soft: "no verdict",
     statement: "Statement dated",
-    ask: "Ask about your statement…",
+    ask: "Ask about your statement\u2026",
     send: "Send",
     sending: "Working",
     quickTitle: "Sample questions",
@@ -245,7 +246,7 @@ const UI = {
     dueIn: "in",
     days: "days",
     overdue: "overdue",
-    draftTitle: "Draft report — awaiting your confirmation",
+    draftTitle: "Draft report \u2014 awaiting your confirmation",
     draftTo: "Only ever sent to your own address",
     confirmSend: "Confirm and send",
     cancel: "Close",
@@ -260,7 +261,7 @@ const UI = {
     vs: "vs previous period",
     readOnly: "Read-only",
     model: "Model",
-    offline: "No model — answered by the engine",
+    offline: "No model \u2014 answered by the engine",
     history: "History",
     historyEmpty: "No conversations yet",
     deleteHistory: "Delete",
@@ -270,6 +271,7 @@ const UI = {
     thisWeek: "This week",
     earlier: "Earlier",
     historyModal: "Chat history",
+    logout: "Sign out",
   },
 } as const;
 
@@ -338,38 +340,20 @@ export const BOUNDARIES: Record<Lang, Boundary[]> = {
     { intent: "card_lock", severity: "hard",
       question: "Khoá thẻ của tôi lại" },
     { intent: "reassurance", severity: "soft",
-      question: "Tài khoản mình có an toàn không?" },
+      question: "Xác nhận tài khoản của tôi an toàn" },
   ],
   en: [
     { intent: "cancel_subscription", severity: "hard",
-      question: "Just cancel the subscriptions I don't use" },
+      question: "Cancel the plans I\u2019m not using" },
     { intent: "third_party_email", severity: "hard",
-      question: "Email Netflix to complain for me" },
+      question: "Send a complaint email to Netflix for me" },
     { intent: "dispute", severity: "hard",
-      question: "Open a dispute for this charge" },
+      question: "File a dispute for this charge" },
     { intent: "money_move", severity: "hard",
-      question: "Transfer my money to the card" },
+      question: "Move money from my account to my card" },
     { intent: "card_lock", severity: "hard",
       question: "Lock my card" },
     { intent: "reassurance", severity: "soft",
-      question: "Is my account safe?" },
+      question: "Tell me my account is safe" },
   ],
-};
-
-// Three of the six also sit among the ordinary suggestions. The other three
-// are reachable from the safety panel, which is where all six are listed.
-const SUGGESTED_PROBES = [
-  "cancel_subscription", "third_party_email", "reassurance",
-];
-
-function probeQuestions(lang: Lang): string[] {
-  return SUGGESTED_PROBES
-    .map((intent) => BOUNDARIES[lang].find((item) => item.intent === intent))
-    .filter((item): item is Boundary => item !== undefined)
-    .map((item) => item.question);
-}
-
-export const ALL_QUESTIONS: Record<Lang, string[]> = {
-  vi: interleave(SAMPLE_QUESTIONS.vi, probeQuestions("vi")),
-  en: interleave(SAMPLE_QUESTIONS.en, probeQuestions("en")),
 };
