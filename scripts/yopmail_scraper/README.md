@@ -43,7 +43,43 @@ npm run scrape:headers
 
 ---
 
-## 📂 3. Cấu trúc dữ liệu đầu ra
+## 4. Chạy cron và ghi vào Postgres
+
+Repo có sẵn pipeline một lần tại `scripts/yopmail_cron.sh`: chạy full scraper
+headless, sau đó import `emails_full.json` vào bảng `emails`. Dữ liệu gốc cũng
+được lưu trong `dataset_imports`, `dataset_files` và `dataset_rows`; email được
+upsert theo `(mailbox, message_id)` nên chạy lại không tạo bản ghi trùng.
+
+Chuẩn bị một lần:
+
+```bash
+cd /path/to/WLF-01-Nexa/scripts/yopmail_scraper
+npm install
+cd /path/to/WLF-01-Nexa
+mkdir -p backend/logs
+chmod +x scripts/yopmail_cron.sh
+```
+
+Chạy thử thủ công:
+
+```bash
+YOPMAIL_USER=wealifytester YOPMAIL_MAILBOX=tester \
+NODE_BIN=/opt/homebrew/bin/node \
+./scripts/yopmail_cron.sh
+```
+
+Thêm vào crontab, ví dụ chạy mỗi giờ ở phút 10:
+
+```cron
+10 * * * * cd /path/to/WLF-01-Nexa && YOPMAIL_USER=wealifytester YOPMAIL_MAILBOX=tester NODE_BIN=/opt/homebrew/bin/node ./scripts/yopmail_cron.sh >> /path/to/WLF-01-Nexa/backend/logs/yopmail-cron.log 2>&1
+```
+
+`NEXA_DATABASE_URL` được đọc từ `.env` như các lệnh backend khác. Cron cần
+Postgres đang chạy và `backend/.venv` đã được tạo. Nếu YOPmail yêu cầu
+reCAPTCHA, cron sẽ dừng trước bước import để không ghi nội dung không đầy đủ;
+cần mở khóa/duy trì session theo môi trường triển khai rồi chạy lại.
+
+## 📂 5. Cấu trúc dữ liệu đầu ra
 
 Kết quả được lưu tại thư mục `./output/<tên_user>/`:
 ```text

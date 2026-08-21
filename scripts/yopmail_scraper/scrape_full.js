@@ -18,6 +18,8 @@ const outputDir = path.resolve(getArg('--output', path.join(__dirname, 'output',
 const htmlDir = path.join(outputDir, 'html');
 const maxEmails = parseInt(getArg('--limit', '0'), 10); // 0 = all
 const delayMs = parseInt(getArg('--delay', '700'), 10);
+const headless = getArg('--headless', 'false').toLowerCase() === 'true';
+const requireUnlocked = getArg('--require-unlocked', 'false').toLowerCase() === 'true';
 
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
@@ -73,14 +75,16 @@ async function runFullScraper() {
 
   if (totalEmails === 0) {
     console.log('Hòm thư trống.');
+    fs.writeFileSync(path.join(outputDir, 'emails_full.json'), '[]\n', 'utf-8');
     return;
   }
 
   // Bước 2: Khởi chạy trình duyệt
   console.log('[2/4] Đang khởi chạy trình duyệt Chromium...');
-  const browser = await puppeteer.launch({
-    headless: false,
-    defaultViewport: null,
+  let browser;
+  browser = await puppeteer.launch({
+    headless,
+    defaultViewport: headless ? { width: 1400, height: 900 } : null,
     args: [
       '--start-maximized',
       '--no-sandbox',
@@ -145,6 +149,9 @@ async function runFullScraper() {
 
     if (!isUnlocked) {
       console.log('⚠️ Chưa mở khóa được CAPTCHA. Tool vẫn sẽ tiếp tục thử cào...');
+      if (requireUnlocked) {
+        throw new Error('YOPmail CAPTCHA is still locked; refusing to import incomplete content');
+      }
     }
 
     // Bước 4: Lặp qua từng email và cào nội dung
@@ -293,8 +300,11 @@ async function runFullScraper() {
 
   } catch (err) {
     console.error('Lỗi scraper:', err);
+    process.exitCode = 1;
   } finally {
-    await browser.close();
+    if (browser) {
+      await browser.close();
+    }
   }
 }
 
