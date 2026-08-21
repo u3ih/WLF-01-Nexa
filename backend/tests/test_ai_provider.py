@@ -88,7 +88,8 @@ def test_an_openai_reply_is_reshaped_into_the_form_the_router_reads():
 
 def test_a_reply_with_no_choices_does_not_raise():
     assert OpenAIBackend._normalise({}) == {"message": {"content": "",
-                                                        "tool_calls": []}}
+                                                        "tool_calls": [],
+                                                        "finish_reason": ""}}
 
 
 def test_the_openai_request_carries_the_key_and_a_deterministic_temperature(

@@ -344,7 +344,7 @@ class OllamaBackend:
         if tools:
             payload["tools"] = tools
         try:
-            return _request("POST", "/api/chat", payload)
+            return self._normalise(_request("POST", "/api/chat", payload))
         except httpx.HTTPStatusError as exc:
             if exc.response.status_code != 400:
                 raise
@@ -352,7 +352,18 @@ class OllamaBackend:
                 raise ToolsUnsupported(_error_text(exc)) from exc
             # Older Ollama builds, or non-thinking models, reject "think".
             payload.pop("think", None)
-            return _request("POST", "/api/chat", payload)
+            return self._normalise(_request("POST", "/api/chat", payload))
+
+    @staticmethod
+    def _normalise(data: dict[str, Any]) -> dict[str, Any]:
+        """Carry the stop reason alongside the message.
+
+        Ollama names it `done_reason`, and "length" there means the same thing
+        as OpenAI's "length": the answer was cut off at the cap, not finished.
+        """
+        message = dict(data.get("message") or {})
+        message["finish_reason"] = data.get("done_reason") or ""
+        return {**data, "message": message}
 
 
 class OpenAIBackend:
@@ -435,7 +446,27 @@ class OpenAIBackend:
                 "arguments": function.get("arguments") or {},
             }})
         return {"message": {"content": message.get("content") or "",
-                            "tool_calls": calls}}
+                            "tool_calls": calls,
+                            # "length" means the cap stopped the answer. The
+                            # narrator reads this to continue instead of
+                            # returning a reply cut off mid-sentence.
+                            "finish_reason": (choices[0].get("finish_reason")
+                                              if choices else "") or ""}}
+
+
+def _join_continuation(head: str, tail: str) -> str:
+    """Stitch a continued answer back to the part that was cut off.
+
+    Where the cap fell decides the seam. After a finished sentence or table row
+    the continuation is a new block, so it gets a blank line. Cut mid-sentence —
+    or mid-row, or mid-word — it is the rest of that line and must not have a
+    line break pushed into it, or the table breaks and the sentence reads as two.
+    """
+    if not head:
+        return tail.strip()
+    if head[-1] in ".!?:;\n" or head.endswith("|"):
+        return f"{head}\n\n{tail.lstrip()}"
+    return head + tail
 
 
 def _error_text(exc: httpx.HTTPStatusError) -> str:
@@ -740,10 +771,45 @@ class AIClient:
                 "content": prompts.strict_retry_prompt(retry_violations),
             })
         try:
-            data = self._chat(messages, num_predict=900)
-            return ((data.get("message") or {}).get("content") or "").strip() or None
+            return self._narrate_whole(messages)
         except Exception:                               # noqa: BLE001
             return None
+
+    def _narrate_whole(self, messages: list[dict[str, Any]]) -> str | None:
+        """The narrated answer, continued if the cap cut it off.
+
+        A findings answer is several sections and tables long, and an endpoint
+        that hits `max_tokens` returns what it had so far with no error — the
+        reply simply stops mid-sentence. That reads as a wrong answer, so the
+        stop reason is checked and the model is asked to carry on from where it
+        stopped, up to `ai_continue_rounds` times.
+        """
+        budget = settings.ai_narrate_tokens
+        data = self._chat(messages, num_predict=budget)
+        message = data.get("message") or {}
+        text = (message.get("content") or "").strip()
+
+        for _ in range(max(0, settings.ai_continue_rounds)):
+            if str(message.get("finish_reason") or "").lower() != "length":
+                break
+            if not text:
+                # Nothing came back to continue from; a further round would
+                # only repeat the same empty result.
+                break
+            follow = messages + [
+                {"role": "assistant", "content": text},
+                {"role": "user", "content": prompts.CONTINUE},
+            ]
+            data = self._chat(follow, num_predict=budget)
+            message = data.get("message") or {}
+            # Only the trailing side is trimmed: a continuation that resumes
+            # mid-sentence carries the space that belongs before its first word.
+            piece = (message.get("content") or "").rstrip()
+            if not piece.strip():
+                break
+            text = _join_continuation(text, piece)
+
+        return text or None
 
 
 # The name the rest of the codebase imports. `OllamaClient` stays as an alias

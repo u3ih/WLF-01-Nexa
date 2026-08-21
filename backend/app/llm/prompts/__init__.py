@@ -19,7 +19,8 @@ free to change behind it.
 from __future__ import annotations
 
 from .lang import LANG_NAME, language_name
-from .narrate import NARRATE, STRICT_RETRY, narrate_prompt, strict_retry_prompt
+from .narrate import (CONTINUE, NARRATE, STRICT_RETRY, narrate_prompt,
+                      strict_retry_prompt)
 from .payload import PAYLOAD_BUDGET, fit, humanize
 from .router import (ROUTER, TEMPORAL, TOOL_CHOICE, native_tool_schemas,
                      router_prompt, temporal_note, tool_list_text)
@@ -32,6 +33,7 @@ __all__ = [
     "TOOL_CHOICE", "ROUTER", "router_prompt", "tool_list_text",
     "native_tool_schemas", "TEMPORAL", "temporal_note",
     "NARRATE", "narrate_prompt", "STRICT_RETRY", "strict_retry_prompt",
+    "CONTINUE",
     "SMALLTALK", "smalltalk_prompt",
     "humanize", "fit", "PAYLOAD_BUDGET",
 ]

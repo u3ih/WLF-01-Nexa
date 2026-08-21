@@ -29,6 +29,12 @@ dispute deadline text when the JSON has one; never say the account is safe or
 that nothing is unusual; never claim you performed any action. If the JSON does
 not answer the question, say that the data does not contain it."""
 
+CONTINUE = """Your answer stopped at the output limit, mid-way. Continue it from
+exactly where it stopped — carry on the sentence, row or section you were in.
+Do not repeat anything already written, do not restate the question and do not
+open with a preamble. Same rules as before: only figures present in the JSON.
+Finish the answer, then stop."""
+
 STRICT_RETRY = """Your previous answer broke a hard rule ({violations}).
 Rewrite it: no absolute reassurance, no claim that the bank is acting on a
 transaction, no full card numbers, and no figure that is absent from the JSON.

@@ -50,6 +50,13 @@ class Settings(BaseSettings):
     # than quietly degrading into template answers.
     ai_retries: int = 2
     ai_retry_backoff_seconds: float = 0.75
+    # Output cap for a narrated answer. A findings report in Vietnamese runs to
+    # several sections and tables, and a cap that is too low returns a reply cut
+    # off mid-sentence — which reads as a wrong answer, not a short one.
+    ai_narrate_tokens: int = 4000
+    # When the endpoint reports it stopped because it hit that cap, the answer
+    # is asked to continue from where it stopped, this many times at most.
+    ai_continue_rounds: int = 2
 
     # Mail settings must come from .env / environment. Outbox delivery is
     # disabled so a confirmed send either reaches SMTP or fails loudly.
