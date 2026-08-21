@@ -1,5 +1,11 @@
-"""Shared fixtures. The dataset is regenerated once so the suite always runs
-against the committed generator rather than whatever is on disk."""
+"""Shared fixtures.
+
+The answer-key tests run against the generated sample, which is what
+`ground_truth.json` describes. `settings.data_dir` points at the real Wealify
+export, so those tests pin the sample directory explicitly rather than
+following the setting — otherwise changing the app's input silently changes
+what the answer key is compared against.
+"""
 
 from __future__ import annotations
 
@@ -22,19 +28,25 @@ from app.store import store              # noqa: E402
 
 TODAY = date(2026, 8, 19)
 
+# The generated sample: the only dataset `ground_truth.json` describes.
+SAMPLE_DIR = BACKEND_ROOT / "data" / "sample"
+
 
 @pytest.fixture(scope="session", autouse=True)
 def dataset() -> None:
-    if not (settings.data_dir / "ground_truth.json").exists():
+    if not (SAMPLE_DIR / "ground_truth.json").exists():
         subprocess.run([sys.executable, "-m", "data.generate"],
                        cwd=BACKEND_ROOT, check=True,
                        stdout=subprocess.DEVNULL)
+    # The API fixtures below serve whatever `settings.data_dir` points at, so
+    # the suite covers the real input too.
+    settings.data_dir = SAMPLE_DIR
     pipeline.reset_cache()
 
 
 @pytest.fixture(scope="session")
 def truth() -> dict:
-    return json.loads((settings.data_dir / "ground_truth.json").read_text())
+    return json.loads((SAMPLE_DIR / "ground_truth.json").read_text())
 
 
 @pytest.fixture(scope="session")

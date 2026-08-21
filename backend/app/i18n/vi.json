@@ -44,6 +44,7 @@
   "finding.double_fee.next_step": "Bạn tự đối chiếu với biểu phí và hỏi hỗ trợ Wealify nếu thấy chỉ nên bị tính một lần.",
   "finding.duplicate_payin.title": "Nạp trùng: {amount}",
   "finding.duplicate_payin.detail": "Ngày {occurred_on}, tài khoản nhận {count} lần {amount} từ {counterparty}, tổng {total_credited}. Hai khoản cùng số tiền, cùng ngày, cùng người gửi.",
+  "finding.duplicate_payin.wallet.detail": "Ví Wealify được ghi có {count} lần {amount} ({counterparty}), cách nhau {hours_apart} giờ ({first_time} và {last_time}), tổng {total_credited}. Hai bút toán cùng số tiền — chưa rõ đây là hai lần nhận thật hay một lần bị ghi hai lần.",
   "finding.duplicate_payin.next_step": "Bạn tự đối chiếu với bên gửi tiền và email thông báo. Nếu chỉ có một lần chuyển thật, hãy hỏi hỗ trợ Wealify trước khi tiêu khoản này.",
   "finding.transfer_not_on_card.title": "Tiền rời tài khoản nhưng chưa thấy lên thẻ: {amount}",
   "finding.transfer_not_on_card.detail": "Ngày {occurred_on}, {amount} rời tài khoản để nạp vào thẻ, nhưng sao kê thẻ không có khoản nạp nào khớp trong {searched_window_days} ngày. Lệch {amount}, chưa xác định nguyên nhân.",
@@ -111,5 +112,10 @@
   "smalltalk.greeting": "Chào bạn. Mình là Nexa, trợ lý rà soát sao kê. Bạn muốn xem gì — tổng quan, các khoản cần xác nhận, gói định kỳ, hay một giao dịch cụ thể?",
   "smalltalk.thanks": "Không có gì. Cần rà thêm gì bạn cứ nói.",
   "smalltalk.farewell": "Chào bạn nhé. Khi nào cần rà lại sao kê thì quay lại.",
-  "smalltalk.identity": "Mình là Nexa, trợ lý rà soát sao kê Wealify. Mình chỉ đọc dữ liệu: đối chiếu tài khoản, thẻ và email, chỉ ra khoản trùng, phí kép, gói định kỳ và khoản cần bạn tự xác nhận. Mình không chuyển tiền, không huỷ gói, không mở khiếu nại — quyết định luôn là của bạn."
+  "smalltalk.identity": "Mình là Nexa, trợ lý rà soát sao kê Wealify. Mình chỉ đọc dữ liệu: đối chiếu tài khoản, thẻ và email, chỉ ra khoản trùng, phí kép, gói định kỳ và khoản cần bạn tự xác nhận. Mình không chuyển tiền, không huỷ gói, không mở khiếu nại — quyết định luôn là của bạn.",
+  "status.success": "Thành công",
+  "status.pending": "Đang chờ",
+  "status.processing": "Đang xử lý",
+  "status.failed": "Thất bại",
+  "status.cancelled": "Đã huỷ"
 }

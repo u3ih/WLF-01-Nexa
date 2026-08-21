@@ -9,6 +9,7 @@ from dataclasses import dataclass
 from datetime import date
 from typing import Any
 
+from .classify import wallet_only_events
 from .email_match import EmailReconResult
 from .loader import Dataset
 from .merchants import normalize_descriptor, processor_hint, resolve
@@ -38,24 +39,27 @@ class _Charge:
     descriptor: str
     merchant_key: str
     source: SourceKind
+    currency: str = "USD"
 
 
 def _purchases(ds: Dataset) -> list[_Charge]:
     out = [
         _Charge(t.txn_id, t.when, t.amount_cents, t.description,
-                t.merchant_key or t.description, SourceKind.STATEMENT)
-        for t in ds.account if t.type is TxnType.PURCHASE
+                t.merchant_key or t.description, SourceKind.STATEMENT,
+                t.currency)
+        for t in ds.account if t.type is TxnType.PURCHASE and t.is_settled
     ]
     out += [
         _Charge(c.card_txn_id, c.when, c.amount_cents, c.merchant_raw,
-                c.merchant_key or c.merchant_raw, SourceKind.CARD)
-        for c in ds.card if c.type is CardTxnType.PURCHASE
+                c.merchant_key or c.merchant_raw, SourceKind.CARD, c.currency)
+        for c in ds.card if c.type is CardTxnType.PURCHASE and c.is_settled
     ]
     return sorted(out, key=lambda c: (c.when, c.ref))
 
 
-def purchase_p90_cents(ds: Dataset) -> int:
-    magnitudes = sorted(abs(c.amount_cents) for c in _purchases(ds))
+def purchase_p90_cents(ds: Dataset, currency: str = "USD") -> int:
+    magnitudes = sorted(abs(c.amount_cents) for c in _purchases(ds)
+                        if c.currency == currency)
     if not magnitudes:
         return 0
     index = min(len(magnitudes) - 1,
@@ -66,12 +70,13 @@ def purchase_p90_cents(ds: Dataset) -> int:
 def duplicate_charges(ds: Dataset) -> list[Finding]:
     """Same merchant, same amount, minutes apart."""
     statement_date = ds.statement_date
-    groups: dict[tuple[str, int], list[_Charge]] = defaultdict(list)
+    groups: dict[tuple[str, int, str], list[_Charge]] = defaultdict(list)
     for charge in _purchases(ds):
-        groups[(charge.merchant_key, abs(charge.amount_cents))].append(charge)
+        groups[(charge.merchant_key, abs(charge.amount_cents),
+                charge.currency)].append(charge)
 
     out: list[Finding] = []
-    for (merchant_key, amount), charges in groups.items():
+    for (merchant_key, amount, currency), charges in groups.items():
         charges.sort(key=lambda c: c.when)
         for first, second in zip(charges, charges[1:]):
             gap = (second.when - first.when).total_seconds()
@@ -84,6 +89,7 @@ def duplicate_charges(ds: Dataset) -> list[Finding]:
                     "merchant": merchant.name if merchant else None,
                     "descriptor": first.descriptor,
                     "amount_cents": amount,
+                    "currency": currency,
                     "seconds_apart": int(gap),
                     "occurred_on": first.when.date().isoformat(),
                     "first_time": first.when.isoformat(timespec="seconds"),
@@ -98,43 +104,59 @@ def duplicate_charges(ds: Dataset) -> list[Finding]:
                 amount_cents=amount,
                 confidence=0.85,
                 occurred_on=first.when.date(),
-                period_key=f"dup:{merchant_key}:{first.when:%Y-%m-%d}",
+                period_key=f"dup:{merchant_key}:{currency}:{first.when:%Y-%m-%d}",
             ))
     return out
+
+
+def _source_kind(row: Any) -> SourceKind:
+    if hasattr(row, "txn_id"):
+        return SourceKind.STATEMENT
+    if hasattr(row, "card_txn_id"):
+        return SourceKind.CARD
+    return SourceKind.WALLET
 
 
 def double_fees(ds: Dataset) -> list[Finding]:
     """The same fee, same amount, same day, more than once."""
     statement_date = ds.statement_date
-    groups: dict[tuple[str, int, date], list] = defaultdict(list)
+    groups: dict[tuple[str, int, date, str], list] = defaultdict(list)
     for t in ds.account:
-        if t.type is not TxnType.FEE:
+        if t.type is not TxnType.FEE or not t.is_settled:
             continue
         groups[(normalize_descriptor(t.description), abs(t.amount_cents),
-                t.day)].append(t)
+                t.day, t.currency)].append(t)
     for c in ds.card:
-        if c.type is not CardTxnType.FEE:
+        if c.type is not CardTxnType.FEE or not c.is_settled:
             continue
         groups[(normalize_descriptor(c.merchant_raw), abs(c.amount_cents),
-                c.day)].append(c)
+                c.day, c.currency)].append(c)
+    # A fee charged straight to the wallet appears on no other ledger, so it
+    # has to be checked here or a duplicated one is never seen.
+    for e in wallet_only_events(ds):
+        if e.note != "fee" or not e.is_settled:
+            continue
+        groups[(normalize_descriptor(e.descriptor or e.note), e.amount_cents,
+                e.day, e.currency)].append(e)
 
     out: list[Finding] = []
-    for (descriptor, amount, day), rows in sorted(groups.items()):
+    for (descriptor, amount, day, currency), rows in sorted(groups.items()):
         if len(rows) < 2:
             continue
-        refs = [getattr(r, "txn_id", None) or r.card_txn_id for r in rows]
+        refs = [getattr(r, "txn_id", None) or getattr(r, "card_txn_id", None)
+                or r.event_id for r in rows]
         out.append(make_finding(
             FindingKind.DOUBLE_FEE,
             params={
                 "descriptor": descriptor,
                 "amount_cents": amount,
+                "currency": currency,
                 "count": len(rows),
                 "total_cents": amount * len(rows),
                 "occurred_on": day.isoformat(),
             },
             sources=[
-                Source(SourceKind.STATEMENT if hasattr(r, "txn_id")
-                       else SourceKind.CARD, ref, descriptor)
+                Source(_source_kind(r), ref, descriptor)
                 for r, ref in zip(rows, refs)
             ],
             statement_date=statement_date,
@@ -142,7 +164,7 @@ def double_fees(ds: Dataset) -> list[Finding]:
             amount_cents=amount * (len(rows) - 1),
             confidence=0.85,
             occurred_on=day,
-            period_key=f"fee:{descriptor}:{day.isoformat()}",
+            period_key=f"fee:{descriptor}:{currency}:{day.isoformat()}",
         ))
     return out
 
@@ -185,8 +207,12 @@ def unknown_merchants(ds: Dataset) -> list[Finding]:
 def missing_receipts(ds: Dataset, recon: EmailReconResult) -> list[Finding]:
     """High-value purchases with no email anywhere in the mailbox."""
     statement_date = ds.statement_date
-    threshold = purchase_p90_cents(ds)
-    purchase_refs = {c.ref: c for c in _purchases(ds)}
+    purchases = _purchases(ds)
+    # One threshold per currency: a euro charge judged against a dollar
+    # percentile would flag or excuse it for the wrong reason.
+    thresholds = {c.currency: purchase_p90_cents(ds, c.currency)
+                  for c in purchases}
+    purchase_refs = {c.ref: c for c in purchases}
 
     out: list[Finding] = []
     for row in recon.rows:
@@ -194,9 +220,10 @@ def missing_receipts(ds: Dataset, recon: EmailReconResult) -> list[Finding]:
             continue
         if row.status is not EmailMatchStatus.NO_EMAIL_FOUND:
             continue
+        charge = purchase_refs[row.ref]
+        threshold = thresholds.get(charge.currency, 0)
         if abs(row.amount_cents) < threshold:
             continue
-        charge = purchase_refs[row.ref]
         merchant = resolve(charge.descriptor)
         out.append(make_finding(
             FindingKind.MISSING_EMAIL,
@@ -204,6 +231,7 @@ def missing_receipts(ds: Dataset, recon: EmailReconResult) -> list[Finding]:
                 "merchant": merchant.name if merchant else None,
                 "descriptor": charge.descriptor,
                 "amount_cents": abs(charge.amount_cents),
+                "currency": charge.currency,
                 "occurred_on": charge.when.date().isoformat(),
                 "threshold_cents": threshold,
                 "mailbox_searched": True,

@@ -85,7 +85,12 @@ def statement(lang: str = "vi", source: str = "account",
                 "type_label": t(lang, f"cashflow.{c.type.value}"),
                 "amount_cents": c.amount_cents,
                 "amount": fmt_display(c.amount_cents, lang),
-                "card": mask_card(c.card_number),
+                "card": mask_card(c.card_number) if c.card_number else None,
+                "card_code": c.card_code or None,
+                "card_name": c.card_name or None,
+                "currency": c.currency,
+                "status": c.status.value,
+                "status_label": t(lang, f"status.{c.status.value}"),
                 "mcc": c.mcc,
             }
             for c in analysis.ds.card
@@ -102,8 +107,17 @@ def statement(lang: str = "vi", source: str = "account",
                 "type": tx.type.value,
                 "type_label": t(lang, f"cashflow.{tx.type.value}"),
                 "amount_cents": tx.amount_cents,
-                "amount": fmt_display(tx.amount_cents, lang),
-                "balance_after": fmt_display(tx.balance_after_cents, lang),
+                "currency": tx.currency,
+                "amount": fmt_display(tx.amount_cents, lang, tx.currency),
+                "status": tx.status.value,
+                "status_label": t(lang, f"status.{tx.status.value}"),
+                # Not every statement states a running balance. Where it does
+                # not, the column stays empty rather than showing a zero the
+                # statement never printed.
+                "balance_after": (
+                    fmt_display(tx.balance_after_cents, lang, tx.currency)
+                    if tx.balance_after_cents is not None else None
+                ),
             }
             for tx in analysis.ds.account
         ]

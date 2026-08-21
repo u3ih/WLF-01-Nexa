@@ -44,6 +44,7 @@
   "finding.double_fee.next_step": "Compare it with the fee schedule yourself and ask Wealify support if it should only apply once.",
   "finding.duplicate_payin.title": "Duplicate deposit: {amount}",
   "finding.duplicate_payin.detail": "On {occurred_on} the account received {amount} {count} times from {counterparty}, {total_credited} in total — same amount, same day, same sender.",
+  "finding.duplicate_payin.wallet.detail": "The Wealify wallet was credited {amount} {count} times ({counterparty}), {hours_apart} hours apart ({first_time} and {last_time}), {total_credited} in total. Two entries for the same amount — whether that is two real credits or one booked twice is not something this data settles.",
   "finding.duplicate_payin.next_step": "Check with the sender and your notification emails. If only one transfer was real, ask Wealify support before spending it.",
   "finding.transfer_not_on_card.title": "Money left the account but has not appeared on the card: {amount}",
   "finding.transfer_not_on_card.detail": "On {occurred_on}, {amount} left the account to fund the card, but the card statement has no matching load within {searched_window_days} days. Gap of {amount}, cause not determined.",
@@ -111,5 +112,10 @@
   "smalltalk.greeting": "Hello. I'm Nexa, your statement review assistant. What would you like to look at — an overview, the items needing your confirmation, subscriptions, or a specific transaction?",
   "smalltalk.thanks": "You're welcome. Tell me if you want anything else checked.",
   "smalltalk.farewell": "Take care. Come back whenever you want the statement reviewed again.",
-  "smalltalk.identity": "I'm Nexa, a read-only review assistant for your Wealify statement. I reconcile the account, the card and your email receipts, and flag duplicates, double fees, subscriptions and anything that needs your confirmation. I cannot move money, cancel a plan or open a dispute — the decision is always yours."
+  "smalltalk.identity": "I'm Nexa, a read-only review assistant for your Wealify statement. I reconcile the account, the card and your email receipts, and flag duplicates, double fees, subscriptions and anything that needs your confirmation. I cannot move money, cancel a plan or open a dispute — the decision is always yours.",
+  "status.success": "Settled",
+  "status.pending": "Pending",
+  "status.processing": "Processing",
+  "status.failed": "Failed",
+  "status.cancelled": "Cancelled"
 }

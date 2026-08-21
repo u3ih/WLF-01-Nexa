@@ -22,7 +22,10 @@ class Settings(BaseSettings):
     )
 
     app_name: str = "Nexa"
-    data_dir: Path = BACKEND_ROOT / "data" / "sample"
+    data_dir: Path = BACKEND_ROOT.parent / "dataset"
+    # Which mailbox in the export to analyse ("tester", "senior", "junior").
+    # Empty picks the inbox registered against the cards.
+    mailbox: str = ""
     outbox_dir: Path = BACKEND_ROOT / "outbox"
     log_dir: Path = BACKEND_ROOT / "logs"
 
@@ -68,12 +71,32 @@ class Settings(BaseSettings):
         return self.data_dir / "account_meta.json"
 
     @property
+    def cards_path(self) -> Path:
+        return self.data_dir / "cards.csv"
+
+    @property
     def owner_email(self) -> str:
-        """The one and only address a report may ever be sent to."""
+        """The one and only address a report may ever be sent to.
+
+        Read from whichever file the active dataset states it in: the generated
+        layout puts it in `account_meta.json`, the Wealify export registers it
+        against the cards. An empty string is returned rather than a guess —
+        `mailer.assert_owner` then refuses to send at all, which is the right
+        failure for a feature that must never mail a stranger.
+        """
         try:
             return json.loads(self.meta_path.read_text())["owner_email"]
         except (OSError, KeyError, json.JSONDecodeError):
-            return ""
+            pass
+        if self.cards_path.exists():
+            # Imported here, not at module scope: the engine imports this module.
+            from .engine.loader_wlf import _owner_email, read_csv
+
+            try:
+                return _owner_email(read_csv(self.cards_path))
+            except OSError:
+                return ""
+        return ""
 
     def today(self) -> date:
         return self.today_override or date.today()

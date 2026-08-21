@@ -87,19 +87,42 @@ export function Sidebar({
           <div className="rail-group">
             <div className="rail-label">{ui(lang, "accountLabel")}</div>
             <div className="acct">
-              <div className="acct-name">{account.owner_name}</div>
+              {/* Some exports name the holder, others only register an
+                  address. Whichever is present identifies the account. */}
+              <div className="acct-name">
+                {account.owner_name || account.owner_email}
+              </div>
               <div className="acct-row">
                 <span>{ui(lang, "statement")}</span>
                 <span className="v mono">{account.statement_date}</span>
               </div>
               <div className="acct-row">
                 <span>{lang === "vi" ? "Tài khoản" : "Account"}</span>
-                <span className="v mono">{account.account_masked}</span>
+                <span className="v mono">
+                  {account.virtual_accounts?.length
+                    ? `${account.virtual_accounts.length} ${
+                        lang === "vi" ? "tài khoản nhận" : "receiving"
+                      }`
+                    : account.account_masked}
+                </span>
               </div>
               <div className="acct-row">
                 <span>{lang === "vi" ? "Thẻ" : "Card"}</span>
-                <span className="v mono">{account.card_masked}</span>
+                {/* An account can hold several cards and this export carries no
+                    PAN, so the count is the honest summary; the cards tab lists
+                    them by name and code. */}
+                <span className="v mono">
+                  {account.cards?.length
+                    ? `${account.cards.length} ${lang === "vi" ? "thẻ" : "cards"}`
+                    : account.card_masked}
+                </span>
               </div>
+              {account.currencies && account.currencies.length > 1 ? (
+                <div className="acct-row">
+                  <span>{lang === "vi" ? "Tiền tệ" : "Currencies"}</span>
+                  <span className="v mono">{account.currencies.join(" · ")}</span>
+                </div>
+              ) : null}
             </div>
           </div>
         ) : null}

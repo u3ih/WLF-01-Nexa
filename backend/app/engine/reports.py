@@ -10,7 +10,7 @@ from typing import Any
 
 from dateutil.relativedelta import relativedelta
 
-from .classify import category_breakdown, fee_cents, spend_cents
+from .classify import fee_cents, spend_cents, wallet_only_events
 from .loader import Dataset
 from .merchants import resolve
 from .models import CardTxnType, TxnType
@@ -72,51 +72,74 @@ def _in(day: date, period: Period) -> bool:
     return period.start <= day <= period.end
 
 
-def _purchase_rows(ds: Dataset, period: Period) -> list[dict[str, Any]]:
+def _counts(row: Any, period: Period, currency: str) -> bool:
+    """In this period, in this currency, and it actually moved money.
+
+    Every figure in a report is single-currency and settled-only. Mixing
+    currencies would produce a total that is not an amount, and counting a
+    declined charge would report spending that never happened.
+    """
+    return (_in(row.day, period) and row.currency == currency
+            and row.status.is_settled)
+
+
+def _purchase_rows(ds: Dataset, period: Period,
+                   currency: str = "USD") -> list[dict[str, Any]]:
     rows = [
         {
             "ref": t.txn_id, "source": "statement", "date": t.day.isoformat(),
             "descriptor": t.description, "merchant": t.merchant,
-            "amount_cents": -t.amount_cents,
+            "amount_cents": -t.amount_cents, "currency": t.currency,
         }
-        for t in ds.account if t.type is TxnType.PURCHASE and _in(t.day, period)
+        for t in ds.account
+        if t.type is TxnType.PURCHASE and _counts(t, period, currency)
     ]
     rows += [
         {
             "ref": c.card_txn_id, "source": "card", "date": c.day.isoformat(),
             "descriptor": c.merchant_raw, "merchant": c.merchant,
-            "amount_cents": -c.amount_cents,
+            "amount_cents": -c.amount_cents, "currency": c.currency,
+            "card_code": c.card_code or None,
         }
-        for c in ds.card if c.type is CardTxnType.PURCHASE and _in(c.day, period)
+        for c in ds.card
+        if c.type is CardTxnType.PURCHASE and _counts(c, period, currency)
     ]
     return sorted(rows, key=lambda r: -r["amount_cents"])
 
 
-def _fee_rows(ds: Dataset, period: Period) -> list[dict[str, Any]]:
+def _fee_rows(ds: Dataset, period: Period,
+              currency: str = "USD") -> list[dict[str, Any]]:
     grouped: dict[str, dict[str, Any]] = defaultdict(
         lambda: {"count": 0, "total_cents": 0}
     )
     for t in ds.account:
-        if t.type is TxnType.FEE and _in(t.day, period):
+        if t.type is TxnType.FEE and _counts(t, period, currency):
             g = grouped[t.description]
             g["count"] += 1
             g["total_cents"] += -t.amount_cents
     for c in ds.card:
-        if c.type is CardTxnType.FEE and _in(c.day, period):
+        if c.type is CardTxnType.FEE and _counts(c, period, currency):
             g = grouped[c.merchant_raw]
             g["count"] += 1
             g["total_cents"] += -c.amount_cents
+    # A fee charged straight to the wallet is on no other ledger.
+    for e in wallet_only_events(ds):
+        if e.note == "fee" and _counts(e, period, currency):
+            g = grouped[e.descriptor or e.note]
+            g["count"] += 1
+            g["total_cents"] += e.amount_cents
     return sorted(
         ({"descriptor": k, **v} for k, v in grouped.items()),
         key=lambda r: -r["total_cents"],
     )
 
 
-def _period_categories(ds: Dataset, period: Period) -> list[dict[str, Any]]:
+def _period_categories(ds: Dataset, period: Period,
+                       currency: str = "USD") -> list[dict[str, Any]]:
     totals: dict[str, dict[str, Any]] = defaultdict(
         lambda: {"total_cents": 0, "count": 0}
     )
-    for row in _purchase_rows(ds, period):
+    for row in _purchase_rows(ds, period, currency):
         found = resolve(row["descriptor"])
         key = found.category if found else "unknown"
         totals[key]["total_cents"] += row["amount_cents"]
@@ -127,17 +150,24 @@ def _period_categories(ds: Dataset, period: Period) -> list[dict[str, Any]]:
     )
 
 
-def _core(ds: Dataset, period: Period) -> dict[str, Any]:
+def _core(ds: Dataset, period: Period, currency: str = "USD") -> dict[str, Any]:
     return {
-        "spend_cents": spend_cents(ds, period.start, period.end),
-        "fees_cents": fee_cents(ds, period.start, period.end),
+        "currency": currency,
+        "spend_cents": spend_cents(ds, period.start, period.end, currency),
+        "fees_cents": fee_cents(ds, period.start, period.end, currency),
         "payin_cents": sum(t.amount_cents for t in ds.account
-                           if t.type is TxnType.PAYIN and _in(t.day, period)),
+                           if t.type is TxnType.PAYIN
+                           and _counts(t, period, currency)),
         "payout_cents": sum(-t.amount_cents for t in ds.account
-                            if t.type is TxnType.PAYOUT and _in(t.day, period)),
+                            if t.type is TxnType.PAYOUT
+                            and _counts(t, period, currency)),
         "transfer_to_card_cents": sum(
             -t.amount_cents for t in ds.account
-            if t.type is TxnType.TRANSFER_TO_CARD and _in(t.day, period)
+            if t.type is TxnType.TRANSFER_TO_CARD and _counts(t, period, currency)
+        ),
+        "transfer_to_wallet_cents": sum(
+            -t.amount_cents for t in ds.account
+            if t.type is TxnType.TRANSFER_TO_WALLET and _counts(t, period, currency)
         ),
         "txn_count": len([1 for t in ds.account if _in(t.day, period)])
         + len([1 for c in ds.card if _in(c.day, period)]),

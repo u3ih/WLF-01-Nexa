@@ -63,7 +63,7 @@ export function StatementView({ data }: { data: any; lang: Lang }) {
   return (
     <table>
       <thead>
-        <tr><th>#</th><th>Date</th><th>Type</th><th>Descriptor</th>
+        <tr><th>#</th><th>Date</th><th>Type</th><th>Status</th><th>Descriptor</th>
           <th className="num">Amount</th><th className="num">Balance</th></tr>
       </thead>
       <tbody>
@@ -72,10 +72,16 @@ export function StatementView({ data }: { data: any; lang: Lang }) {
             <td><span className="ref">{row.ref}</span></td>
             <td className="mono">{row.date}</td>
             <td><span className="badge badge-neutral">{row.type_label}</span></td>
+            <td>
+              {row.status && row.status !== "success" ? (
+                <span className="badge badge-neutral">{row.status_label}</span>
+              ) : null}
+            </td>
             <td>{row.merchant ?? row.descriptor}</td>
             <td className="num">{row.amount}</td>
             <td className="num" style={{ color: "var(--text-faint)" }}>
-              {row.balance_after}
+              {/* Not every statement prints a running balance. */}
+              {row.balance_after ?? "—"}
             </td>
           </tr>
         ))}

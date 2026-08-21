@@ -46,15 +46,55 @@ class Analysis:
 
     def account_profile(self) -> dict[str, Any]:
         card = self.ds.card[0].card_number if self.ds.card else ""
+        pan = card or self.ds.meta.get("card_number") or ""
         return {
             "owner_name": self.ds.meta.get("owner_name"),
             "owner_email": self.ds.owner_email,
             "account_masked": mask_account(self.ds.meta.get("account_number")),
-            "card_masked": mask_card(card or self.ds.meta.get("card_number")),
-            "card_last4": last4(card or self.ds.meta.get("card_number")),
+            "card_masked": mask_card(pan),
+            "card_last4": last4(pan),
+            # An account can hold several cards, and this export identifies them
+            # by code and nickname rather than by a PAN. Listing them lets a
+            # finding say which card it happened on without inventing digits.
+            "cards": [
+                {
+                    "code": c.code,
+                    "card_id": c.card_id,
+                    "name": c.name,
+                    "currency": c.currency,
+                    "status": c.status,
+                    "network": c.network,
+                    "expiry": c.expiry,
+                    # The export's own mask when it supplies one; otherwise a
+                    # mask of the PAN, which this export never carries.
+                    "masked": c.masked or (mask_card(c.card_number)
+                                           if c.card_number else None),
+                    "balance_cents": c.balance_cents,
+                    "total_deposit_cents": c.total_deposit_cents,
+                    "total_withdrawal_cents": c.total_withdrawal_cents,
+                }
+                for c in self.ds.cards
+            ],
+            # Receiving accounts. `has_ledger` is false when the export ships
+            # no rows for them, which is what makes account-level checks
+            # unanswerable rather than clean.
+            "virtual_accounts": [
+                {
+                    "masked": a.masked,
+                    "label": a.label,
+                    "payout_source": a.payout_source,
+                    "bank_name": a.bank_name,
+                    "currency": a.currency,
+                    "status": a.status,
+                    "total_received_cents": a.total_received_cents,
+                    "has_ledger": a.has_ledger,
+                }
+                for a in self.ds.virtual_accounts
+            ],
             "statement_date": self.ds.meta.get("statement_date"),
             "period_start": self.ds.meta.get("period_start"),
             "currency": self.ds.meta.get("currency", "USD"),
+            "currencies": self.ds.currencies,
         }
 
     def summary(self, lang: str, today: date) -> dict[str, Any]:
@@ -65,6 +105,8 @@ class Analysis:
                 "card_txns": len(self.ds.card),
                 "wallet_events": len(self.ds.wallet.events) if self.ds.wallet else 0,
                 "emails": len(self.ds.emails),
+                "cards": len(self.ds.cards),
+                "virtual_accounts": len(self.ds.virtual_accounts),
                 "findings": len(self.findings),
                 "alerts": len(self.alerts),
                 "subscriptions": len(self.subs),
@@ -74,6 +116,12 @@ class Analysis:
             "cashflow": self.cashflow["totals"],
             "wallet": self.tri.wallet,
             "sources": self.ds.source_files,
+            # What the loader had to decide about the input. Shown rather than
+            # kept in a log, because "this export has no receiving-account
+            # ledger" changes how the numbers should be read.
+            "input_notes": list(self.ds.notes),
+            "mailbox": self.ds.meta.get("mailbox"),
+            "mailboxes": self.ds.meta.get("mailboxes", {}),
             "statement_date": self.ds.meta.get("statement_date"),
             "findings": render_findings(self.findings, lang, today),
         }

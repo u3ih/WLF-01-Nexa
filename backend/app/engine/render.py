@@ -50,11 +50,18 @@ def disclaimer(lang: str) -> str:
 
 
 def _money_params(params: dict[str, Any], lang: str = "vi") -> dict[str, Any]:
-    """Add a formatted twin for every *_cents value: amount_cents -> amount."""
+    """Add a formatted twin for every *_cents value: amount_cents -> amount.
+
+    A finding that names its own currency is formatted in that currency. The ₫
+    twin only makes sense for a dollar figure — printing it beside an amount
+    that is already in đồng, or converting a euro charge as if it were USD,
+    would state a number the statement never did.
+    """
     out = dict(params)
+    currency = params.get("currency") or "USD"
     for key, value in params.items():
         if key.endswith("_cents") and isinstance(value, int):
-            out[key[: -len("_cents")]] = fmt_display(value, lang)
+            out[key[: -len("_cents")]] = fmt_display(value, lang, currency)
     return out
 
 
@@ -91,7 +98,8 @@ def render_finding(finding: Finding, lang: str, today: date) -> dict[str, Any]:
         params["cadence"] = t(lang, f"cadence.{finding.params['cadence']}")
     if finding.kind is FindingKind.DOUBLE_FEE:
         extra = finding.params["total_cents"] - finding.params["amount_cents"]
-        params["amount_extra"] = fmt_display(extra, lang)
+        params["amount_extra"] = fmt_display(
+            extra, lang, finding.params.get("currency") or "USD")
     if finding.kind is FindingKind.SUSPICIOUS_EMAIL:
         params["claimed_brand"] = (finding.params.get("claimed_brand")
                                    or t(lang, "common.unknown"))
@@ -100,7 +108,12 @@ def render_finding(finding: Finding, lang: str, today: date) -> dict[str, Any]:
             finding.params.get("claimed_brand"),
         )
 
-    detail = t(lang, f"finding.{kind}.detail", **params)
+    # A duplicated credit reads differently depending on which balance it
+    # landed in, so the wallet wording is used when the wallet is the ledger.
+    variant = ".wallet" if params.get("ledger") == "wallet" else ""
+    detail = t(lang, f"finding.{kind}{variant}.detail", **params)
+    if detail.startswith(f"finding.{kind}"):
+        detail = t(lang, f"finding.{kind}.detail", **params)
     if finding.kind is FindingKind.PRICE_INCREASE:
         suffix = ("finding.price_increase.notice_found"
                   if finding.params.get("notice_email_found")

@@ -46,6 +46,7 @@ class MatchRow:
     descriptor: str
     merchant: str | None
     amount_cents: int
+    card_code: str = ""
     status: EmailMatchStatus = EmailMatchStatus.NO_EMAIL_FOUND
     message_id: str | None = None
     email_from: str | None = None
@@ -124,10 +125,19 @@ def _domain_core(domain: str) -> str:
 
 
 def _score(descriptor: str, merchant: Merchant | None, amount_cents: int,
-           when: date, email: EmailMsg) -> tuple[float, list[str]]:
+           when: date, email: EmailMsg, ref: str = "",
+           card_code: str = "") -> tuple[float, list[str]]:
     reasons: list[str] = []
     score = 0.0
     magnitude = abs(amount_cents)
+
+    # A receipt that names the transaction is the match. Nothing inferred from
+    # amounts or dates outranks the reference the receipt itself carries, and
+    # the date window is not applied to it: a relayed message can be delivered
+    # days after the charge without that saying anything about whether it
+    # belongs to it.
+    if ref and email.txn_ref and email.txn_ref == ref:
+        return 1.0, ["txn_ref_exact"]
 
     if magnitude and magnitude in [abs(a) for a in email.amounts_cents]:
         score += 0.6
@@ -141,6 +151,9 @@ def _score(descriptor: str, merchant: Merchant | None, amount_cents: int,
         return 0.0, ["date_out_of_window"]
 
     haystack = f"{email.from_name} {email.from_addr} {email.subject} {email.body}"
+    if card_code and email.card_code and email.card_code == card_code:
+        score += 0.15
+        reasons.append("same_card")
     if merchant and email.from_domain in merchant.domains:
         score += 0.25
         reasons.append("sender_domain_known")
@@ -240,7 +253,7 @@ def reconcile(ds: Dataset) -> EmailReconResult:
         rows.append(MatchRow(
             ref=c.card_txn_id, source=SourceKind.CARD, when=c.day,
             descriptor=c.merchant_raw, merchant=c.merchant,
-            amount_cents=c.amount_cents,
+            amount_cents=c.amount_cents, card_code=c.card_code,
         ))
 
     candidates: list[tuple[float, MatchRow, EmailMsg, list[str]]] = []
@@ -249,11 +262,18 @@ def reconcile(ds: Dataset) -> EmailReconResult:
         for offset in range(-DATE_WINDOW_DAYS, DATE_WINDOW_DAYS + 1):
             by_day.setdefault(email.when.date() + timedelta(days=offset), []).append(email)
 
+    by_txn_ref: dict[str, list[EmailMsg]] = {}
+    for email in ds.emails:
+        if email.txn_ref:
+            by_txn_ref.setdefault(email.txn_ref, []).append(email)
+
     for row in rows:
         merchant = resolve(row.descriptor)
-        for email in by_day.get(row.when, []):
+        # Reference-named receipts first, then everything within the date
+        # window; `_score` decides, this only assembles the candidates.
+        for email in by_txn_ref.get(row.ref, []) + by_day.get(row.when, []):
             score, reasons = _score(row.descriptor, merchant, row.amount_cents,
-                                    row.when, email)
+                                    row.when, email, row.ref, row.card_code)
             if score >= MATCH_THRESHOLD:
                 candidates.append((score, row, email, reasons))
 
