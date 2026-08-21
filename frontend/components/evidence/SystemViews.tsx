@@ -68,7 +68,7 @@ export function StatementView({ data }: { data: any; lang: Lang }) {
       </thead>
       <tbody>
         {data.rows.map((row: any) => (
-          <tr key={row.ref}>
+          <tr key={row.ref} data-ref={row.ref}>
             <td><span className="ref">{row.ref}</span></td>
             <td className="mono">{row.date}</td>
             <td><span className="badge badge-neutral">{row.type_label}</span></td>

@@ -601,8 +601,7 @@ class AIClient:
         if retry_violations:
             messages.append({
                 "role": "user",
-                "content": prompts.STRICT_RETRY.format(
-                    violations=", ".join(retry_violations)),
+                "content": prompts.strict_retry_prompt(retry_violations),
             })
         try:
             data = self._chat(messages, num_predict=900)

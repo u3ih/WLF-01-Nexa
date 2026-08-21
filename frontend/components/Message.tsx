@@ -3,14 +3,21 @@
 import {
   Check, Copy, CornerDownRight, Info, RotateCcw, ShieldAlert, ShieldQuestion,
 } from "lucide-react";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import Markdown from "react-markdown";
 import remarkBreaks from "remark-breaks";
 import remarkGfm from "remark-gfm";
 
+import { FindingCard, labelClass } from "@/components/Badges";
+import { Ref, RefText, type OnRef } from "@/components/RefText";
 import { SAMPLE_QUESTIONS, ui } from "@/lib/i18n";
-import { toMarkdown } from "@/lib/markdown";
-import type { ChatReply, Lang } from "@/lib/types";
+import {
+  collectFindings, findingFor, parseEngineText, parseSources,
+  type EngineItem,
+} from "@/lib/engineText";
+import { isModelAuthored } from "@/lib/markdown";
+import { collectRefs, refPattern, rehypeRefs } from "@/lib/refs";
+import type { ChatReply, Finding, Lang } from "@/lib/types";
 
 const PROVENANCE: Record<string, string> = {
   llm: "prov_llm",
@@ -40,41 +47,205 @@ const FOLLOW_UP: Record<string, number> = {
   reassurance: 4,
 };
 
-const MARKDOWN_COMPONENTS = {
-  // Tables are the one thing a model can emit that is wider than the column.
-  table: (props: any) => (
-    <div className="prose-table"><table {...props} /></div>
-  ),
-  // Addresses stay text. GFM auto-links bare email addresses, and the addresses
-  // this assistant prints come out of the mailbox it is auditing — including
-  // `no-reply@netfl1x-billing.com`, from the finding that calls that sender an
-  // impersonation. Offering a click-through to an address the same sentence
-  // flags as fraudulent is the one thing this UI must not do. Nothing here ever
-  // needs to be clickable: every source is a local sample file.
-  a: (props: any) => <>{props.children}</>,
-};
+/* ------------------------------------------------------------ model prose */
 
-function Prose({ text, source }: { text: string; source: string | undefined }) {
+function markdownComponents(onRef: OnRef, refTitle: string) {
+  return {
+    // Tables are the one thing a model can emit that is wider than the column.
+    table: (props: any) => (
+      <div className="prose-table"><table {...props} /></div>
+    ),
+    // Addresses stay text. GFM auto-links bare email addresses, and the
+    // addresses this assistant prints come out of the mailbox it is auditing —
+    // including `no-reply@netfl1x-billing.com`, from the finding that calls
+    // that sender an impersonation. Offering a click-through to an address the
+    // same sentence flags as fraudulent is the one thing this UI must not do.
+    a: (props: any) => <>{props.children}</>,
+    // Transaction references are the exception, and they are not links: the
+    // rehype pass below marks only the references the tool result contains, and
+    // the control they become opens a local panel, never a network request.
+    span: ({ node, ...props }: any) => (
+      props["data-ref"]
+        ? <Ref value={props["data-ref"]} onRef={onRef} title={refTitle} />
+        : <span {...props} />
+    ),
+  };
+}
+
+/* ----------------------------------------------------------- engine prose */
+
+function EngineItemCard({ item, findings, deadlines, labelKeys, lang, onRef,
+                          pattern, refTitle }: {
+  item: EngineItem;
+  findings: Finding[];
+  deadlines: Set<string>;
+  labelKeys: Record<string, string>;
+  lang: Lang;
+  onRef: OnRef;
+  pattern: RegExp | null;
+  refTitle: string;
+}) {
+  // A bullet the engine rendered from a finding has the whole finding sitting
+  // in the tool result beside it — verdict, deadline, references and all. Draw
+  // that, not the flattened text, so a chat answer and the evidence panel show
+  // the same card.
+  const finding = findingFor(item, findings);
+  if (finding) {
+    return <FindingCard finding={finding} lang={lang} onRef={onRef}
+                        refTitle={refTitle} />;
+  }
+
+  const sources = item.sources ? parseSources(item.sources) : [];
   return (
-    <div className="prose">
-      <Markdown
-        remarkPlugins={[remarkGfm, remarkBreaks]}
-        components={MARKDOWN_COMPONENTS}
-      >
-        {toMarkdown(text, source)}
-      </Markdown>
+    <article className="answer-item">
+      <header className="answer-head">
+        {item.label ? (
+          <span className={labelClass(labelKeys[item.label])}>
+            <span className="badge-dot" />
+            {item.label}
+          </span>
+        ) : null}
+        <span className="answer-title">
+          <RefText text={item.title} pattern={pattern} onRef={onRef}
+                   title={refTitle} />
+        </span>
+      </header>
+      {item.detail ? (
+        <p className="answer-detail">
+          <RefText text={item.detail} pattern={pattern} onRef={onRef}
+                   title={refTitle} />
+        </p>
+      ) : null}
+      {item.meta.map((line, index) => (
+        <p key={index}
+           className={deadlines.has(line) ? "finding-deadline" : "answer-meta"}>
+          <RefText text={line} pattern={pattern} onRef={onRef} title={refTitle} />
+        </p>
+      ))}
+      {sources.length ? (
+        <p className="answer-sources">
+          <span className="k">{ui(lang, "sources")}</span>
+          {sources.map((source, index) => (
+            <span className="chip" key={`${source.ref}-${index}`}>
+              {source.kind ? <span className="k">{source.kind}</span> : null}
+              <Ref value={source.ref} onRef={onRef} title={refTitle} />
+            </span>
+          ))}
+        </p>
+      ) : null}
+      {item.next ? (
+        <p className="finding-next">
+          <strong>{ui(lang, "nextStep")}: </strong>
+          <RefText text={item.next} pattern={pattern} onRef={onRef}
+                   title={refTitle} />
+        </p>
+      ) : null}
+    </article>
+  );
+}
+
+/** An answer the engine wrote, drawn from its own line grammar.
+ *
+ *  Text goes in as text — never through the markdown parser. Merchant
+ *  descriptors are copied verbatim from the statement and contain asterisks
+ *  (`PP*ZTRDNG LLC 8552`), and two of them in a paragraph pair up into emphasis
+ *  and silently rewrite the descriptor.
+ */
+function EngineAnswer({ text, reply, lang, onRef, pattern, refTitle }: {
+  text: string;
+  reply: ChatReply | undefined;
+  lang: Lang;
+  onRef: OnRef;
+  pattern: RegExp | null;
+  refTitle: string;
+}) {
+  const blocks = useMemo(() => parseEngineText(text), [text]);
+  const findings = useMemo(() => collectFindings(reply?.data), [reply?.data]);
+  const deadlines = useMemo(
+    () => new Set(findings.map((f) => f.dispute?.text).filter(Boolean) as string[]),
+    [findings],
+  );
+  // The verdict is printed in the user's language; its colour is keyed on the
+  // code behind it, which the reply carries alongside.
+  const labelKeys = useMemo(() => {
+    const out: Record<string, string> = {};
+    for (const [key, text_] of Object.entries(reply?.labels ?? {})) out[text_] = key;
+    return out;
+  }, [reply?.labels]);
+
+  return (
+    <div className="answer">
+      {blocks.map((block, index) => {
+        if (block.kind === "para") {
+          return (
+            <p className="answer-para" key={index}>
+              {block.lines.map((line, position) => (
+                <span key={position}>
+                  {position > 0 ? <br /> : null}
+                  <RefText text={line} pattern={pattern} onRef={onRef}
+                           title={refTitle} />
+                </span>
+              ))}
+            </p>
+          );
+        }
+        // Single-line bullets are a list; bullets carrying a verdict, a
+        // deadline and a next step are cards. Runs keep the two apart without
+        // reordering anything.
+        const runs: { simple: boolean; items: EngineItem[] }[] = [];
+        for (const item of block.items) {
+          const simple = !item.label && !item.detail && !item.meta.length
+            && !item.sources && !item.next;
+          const last = runs[runs.length - 1];
+          if (last && last.simple === simple) last.items.push(item);
+          else runs.push({ simple, items: [item] });
+        }
+        return (
+          <div key={index}>
+            {runs.map((run, position) => run.simple ? (
+              <ul className="answer-list" key={position}>
+                {run.items.map((item, row) => (
+                  <li key={row}>
+                    <RefText text={item.title} pattern={pattern} onRef={onRef}
+                             title={refTitle} />
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <div className="answer-cards" key={position}>
+                {run.items.map((item, row) => (
+                  <EngineItemCard
+                    key={row}
+                    item={item}
+                    findings={findings}
+                    deadlines={deadlines}
+                    labelKeys={labelKeys}
+                    lang={lang}
+                    onRef={onRef}
+                    pattern={pattern}
+                    refTitle={refTitle}
+                  />
+                ))}
+              </div>
+            ))}
+          </div>
+        );
+      })}
     </div>
   );
 }
 
+/* ---------------------------------------------------------------- the turn */
+
 export function AssistantTurn({
-  lang, text, reply, onAsk, onRetry,
+  lang, text, reply, onAsk, onRetry, onRef,
 }: {
   lang: Lang;
   text: string;
   reply?: ChatReply;
   onAsk: (question: string) => void;
   onRetry?: () => void;
+  onRef?: (ref: string, tool: string | null) => void;
 }) {
   const [metaOpen, setMetaOpen] = useState(false);
   const [copied, setCopied] = useState(false);
@@ -86,6 +257,15 @@ export function AssistantTurn({
       setTimeout(() => setCopied(false), 1600);
     } catch { /* clipboard denied — nothing useful to say about it */ }
   }
+
+  // Only references the tool result actually contains become controls, so a
+  // reference the model mistyped stays inert text.
+  const pattern = useMemo(
+    () => refPattern(collectRefs(reply?.data)), [reply?.data],
+  );
+  const tool = reply?.tool ?? null;
+  const openRef: OnRef = onRef ? (ref: string) => onRef(ref, tool) : undefined;
+  const refTitle = ui(lang, "openRef");
 
   // Read from guardrail.blocked, not from refused: the reassurance intent is a
   // soft block that answers with label counts, so it reports refused === false
@@ -99,7 +279,20 @@ export function AssistantTurn({
     ? SAMPLE_QUESTIONS[lang][FOLLOW_UP[intent]] : null;
   const rejected = reply?.checks?.ungrounded_numbers ?? [];
 
-  const body = <Prose text={text} source={reply?.source} />;
+  const body = isModelAuthored(reply?.source) ? (
+    <div className="prose">
+      <Markdown
+        remarkPlugins={[remarkGfm, remarkBreaks]}
+        rehypePlugins={[rehypeRefs(pattern)]}
+        components={markdownComponents(openRef, refTitle)}
+      >
+        {text}
+      </Markdown>
+    </div>
+  ) : (
+    <EngineAnswer text={text} reply={reply} lang={lang} onRef={openRef}
+                  pattern={pattern} refTitle={refTitle} />
+  );
 
   return (
     <div className="ai-body">
