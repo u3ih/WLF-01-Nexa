@@ -5,8 +5,8 @@ import {
 } from "lucide-react";
 
 import { BrandMark } from "@/components/BrandMark";
-import { ALL_QUESTIONS, ui } from "@/lib/i18n";
-import type { Lang, Summary } from "@/lib/types";
+import { ALL_QUESTIONS, MOCK_CONVERSATIONS, ui } from "@/lib/i18n";
+import type { ChatConversation, Lang, Summary } from "@/lib/types";
 
 export type ThemePref = "system" | "light" | "dark";
 
@@ -18,7 +18,7 @@ const THEME_KEY = {
 
 export function Sidebar({
   lang, onLang, theme, onTheme, summary, health, open, onHide,
-  onAsk, onNewChat, onEmailReport, busy, busyDraft,
+  onAsk, onNewChat, onEmailReport, busy, busyDraft, onOpenConversation, selectedConversationId, conversations
 }: {
   lang: Lang;
   onLang: (lang: Lang) => void;
@@ -35,10 +35,12 @@ export function Sidebar({
   onEmailReport: () => void;
   busy: boolean;
   busyDraft: boolean;
+  onOpenConversation: (conversationId: string) => void;
+  selectedConversationId: string | null;
+  conversations: ChatConversation[];
 }) {
   const account = summary?.account;
   const ThemeIcon = THEME_ICON[theme];
-
   return (
     <aside
       className="rail"
@@ -54,7 +56,7 @@ export function Sidebar({
           </span>
         </div>
         <button className="icon-btn" onClick={onHide} title={ui(lang, "hideRail")}
-                aria-label={ui(lang, "hideRail")}>
+          aria-label={ui(lang, "hideRail")}>
           <PanelLeft size={18} />
         </button>
       </div>
@@ -65,24 +67,30 @@ export function Sidebar({
       </button>
 
       <div className="rail-scroll">
-        {/* One unlabelled list: the three refusal probes sit among the ordinary
-            questions, because a product does not advertise what it will decline. */}
         <div className="rail-group">
-          <div className="rail-label">{ui(lang, "suggestions")}</div>
-          {ALL_QUESTIONS[lang].map((question) => (
-            <button
-              className="rail-item"
-              key={question}
-              onClick={() => onAsk(question)}
-              disabled={busy}
-              title={question}
-            >
-              <MessageSquare size={15} />
-              <span className="rail-item-text">{question}</span>
-            </button>
-          ))}
-        </div>
+          <div className="rail-label">Lịch sử</div>
+          {conversations.map((conversation) => {
+            const isActive =
+              selectedConversationId === conversation.id;
 
+            return (
+              <button
+                key={conversation.id}
+                className="rail-item"
+                data-active={isActive}
+                disabled={busy}
+                onClick={() => onOpenConversation(conversation.id)}
+                title={conversation.title}
+              >
+                <MessageSquare size={15} />
+
+                <span className="rail-item-text">
+                  {conversation.title}
+                </span>
+              </button>
+            );
+          })}
+        </div>
         {account ? (
           <div className="rail-group">
             <div className="rail-label">{ui(lang, "accountLabel")}</div>

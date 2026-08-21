@@ -77,3 +77,17 @@ export interface Summary {
   disclaimer: string;
   fx: { vnd_rate: number; vnd_enabled: boolean; note: string };
 }
+export interface ChatMessage {
+  id: string;
+  role: "user" | "assistant";
+  content: string;
+  createdAt: string;
+}
+
+export interface ChatConversation {
+  id: string;
+  title: string;
+  createdAt: string;
+  updatedAt: string;
+  messages: ChatMessage[];
+}

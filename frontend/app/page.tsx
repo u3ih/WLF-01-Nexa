@@ -8,20 +8,20 @@ import { DraftModal } from "@/components/DraftModal";
 import { Evidence } from "@/components/evidence/Evidence";
 import { Sidebar, type ThemePref } from "@/components/Sidebar";
 import { api } from "@/lib/api";
-import { ui } from "@/lib/i18n";
-import type { ChatReply, Lang, Summary } from "@/lib/types";
+import { createMockConversation, MOCK_CONVERSATIONS, ui } from "@/lib/i18n";
+import type { ChatConversation, ChatReply, Lang, Summary } from "@/lib/types";
 
 // Kept in step with the rail's breakpoint in globals.css: below this the rail
 // is an overlay, so opening one covers the conversation.
 const NARROW = "(max-width: 900px)";
 const THEME_KEY = "nexa-theme";
+const CONVERSATIONS_KEY = "nexa-mock-conversations";
 
 function applyTheme(choice: ThemePref) {
   const root = document.documentElement;
   if (choice === "system") root.removeAttribute("data-theme");
   else root.setAttribute("data-theme", choice);
 }
-
 export default function Page() {
   const [lang, setLang] = useState<Lang>("vi");
   const [theme, setTheme] = useState<ThemePref>("system");
@@ -117,11 +117,95 @@ export default function Page() {
     if (railOpen !== false && window.matchMedia(NARROW).matches) setRailOpen(false);
   }
 
+  function handleConversationChange(
+    nextConversation: ChatConversation,
+  ) {
+    setCurrentConversation(nextConversation);
+
+    setSelectedConversationId(nextConversation.id);
+
+    setConversations((previous) => {
+      const exists = previous.some(
+        (item) => item.id === nextConversation.id,
+      );
+
+      if (!exists) {
+        return [nextConversation, ...previous];
+      }
+
+      return previous.map((item) =>
+        item.id === nextConversation.id
+          ? nextConversation
+          : item,
+      );
+    });
+  }
+
   // Below 1280px the drawer covers the conversation, so a question asked from
   // inside it would send the answer somewhere the user cannot see.
   function askFromDrawer(question: string) {
     chat.current?.ask(question);
     if (window.matchMedia("(max-width: 1279px)").matches) setDrawerOpen(false);
+  }
+
+  const [conversations, setConversations] = useState<ChatConversation[]>(() => {
+    if (typeof window === "undefined") {
+      return MOCK_CONVERSATIONS;
+    }
+
+    try {
+      const stored = localStorage.getItem(CONVERSATIONS_KEY);
+
+      if (!stored) {
+        return MOCK_CONVERSATIONS;
+      }
+
+      const parsed = JSON.parse(stored);
+
+      return Array.isArray(parsed)
+        ? parsed
+        : MOCK_CONVERSATIONS;
+    } catch {
+      return MOCK_CONVERSATIONS;
+    }
+  });
+
+  useEffect(() => {
+    try {
+      localStorage.setItem(
+        CONVERSATIONS_KEY,
+        JSON.stringify(conversations),
+      );
+    } catch {
+    }
+  }, [conversations]);
+
+  const [currentConversation, setCurrentConversation] = useState<ChatConversation | null>(null);
+
+  const [selectedConversationId, setSelectedConversationId] = useState<string | null>(null);
+  function handleNewChat() {
+    const conversation = createMockConversation();
+
+    setConversations((previous) => [
+      conversation,
+      ...previous,
+    ]);
+
+    setCurrentConversation(conversation);
+    setSelectedConversationId(conversation.id);
+
+    chat.current?.reset();
+  }
+
+  function handleOpenConversation(id: string) {
+    const conversation = conversations.find(
+      (item) => item.id === id,
+    );
+
+    if (!conversation) return;
+
+    setCurrentConversation(conversation);
+    setSelectedConversationId(id);
   }
 
   return (
@@ -136,10 +220,13 @@ export default function Page() {
         open={railOpen}
         onHide={() => setRailOpen(false)}
         onAsk={askFromRail}
-        onNewChat={() => chat.current?.reset()}
+        onNewChat={handleNewChat}
+        selectedConversationId={selectedConversationId}
+        conversations={conversations}
         onEmailReport={requestDraft}
         busy={chatBusy}
         busyDraft={busyDraft}
+        onOpenConversation={handleOpenConversation}
       />
       <button
         className="scrim scrim-rail"
@@ -185,6 +272,8 @@ export default function Page() {
             disclaimer={summary?.disclaimer ?? ""}
             onReply={handleReply}
             onBusyChange={setChatBusy}
+            conversation={currentConversation}
+            onConversationChange={handleConversationChange}
           />
         </div>
 

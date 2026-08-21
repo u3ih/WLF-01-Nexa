@@ -10,7 +10,7 @@ import {
 import { AssistantTurn } from "@/components/Message";
 import { api } from "@/lib/api";
 import { SAMPLE_QUESTIONS, ui } from "@/lib/i18n";
-import type { ChatReply, Lang } from "@/lib/types";
+import type { ChatConversation, ChatReply, Lang } from "@/lib/types";
 
 interface Turn {
   role: "user" | "assistant";
@@ -37,8 +37,10 @@ export const ChatPane = forwardRef<ChatHandle, {
   disclaimer: string;
   onReply: (reply: ChatReply) => void;
   onBusyChange: (busy: boolean) => void;
+  conversation: ChatConversation | null;
+  onConversationChange?: (conversation: ChatConversation) => void;
 }>(function ChatPane(
-  { lang, ownerName, disclaimer, onReply, onBusyChange }, ref,
+  { lang, ownerName, disclaimer, onReply, onBusyChange, conversation, onConversationChange }, ref,
 ) {
   const [turns, setTurns] = useState<Turn[]>([]);
   const [draft, setDraft] = useState("");
@@ -53,7 +55,6 @@ export const ChatPane = forwardRef<ChatHandle, {
   const composing = useRef(false);
   // ask() is reachable from the sidebar, so it must not close over stale state.
   const busyRef = useRef(false);
-
   useEffect(() => {
     // Not on the empty state: scrolling to the bottom there would push the
     // greeting and the suggestion cards off the top of the screen.
@@ -87,17 +88,91 @@ export const ChatPane = forwardRef<ChatHandle, {
     busyRef.current = true;
     setError(null);
     setDraft("");
-    setTurns((previous) => [...previous, { role: "user", text }]);
     setBusy(true);
+
+    let activeConversation = conversation;
+
+    // Chưa có conversation => tạo conversation mới
+    if (!activeConversation) {
+      const now = new Date().toISOString();
+
+      activeConversation = {
+        id: `conv-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+        title: text,
+        createdAt: now,
+        updatedAt: now,
+        messages: [
+          {
+            id: `msg-${Date.now()}`,
+            role: "user",
+            content: text,
+            createdAt: now,
+          },
+        ],
+      };
+    } else {
+      // Đã có conversation => append câu hỏi
+      activeConversation = {
+        ...activeConversation,
+        updatedAt: new Date().toISOString(),
+        messages: [
+          ...activeConversation.messages,
+          {
+            id: `msg-${Date.now()}`,
+            role: "user",
+            content: text,
+            createdAt: new Date().toISOString(),
+          },
+        ],
+      };
+    }
+
+    // Update UI ngay lập tức
+    setTurns(
+      activeConversation.messages.map((message) => ({
+        role: message.role,
+        text: message.content,
+      })),
+    );
+
+    onConversationChange?.(activeConversation);
+
     try {
       const reply = await api.chat(text, lang);
+
+      const assistantMessage = {
+        id: `msg-${Date.now()}`,
+        role: "assistant" as const,
+        content: reply.answer,
+        createdAt: new Date().toISOString(),
+      };
+
+      activeConversation = {
+        ...activeConversation,
+        updatedAt: new Date().toISOString(),
+        messages: [
+          ...activeConversation.messages,
+          assistantMessage,
+        ],
+      };
+
       setTurns((previous) => [
         ...previous,
-        { role: "assistant", text: reply.answer, reply },
+        {
+          role: "assistant",
+          text: reply.answer,
+          reply,
+        },
       ]);
+
+      onConversationChange?.(activeConversation);
       onReply(reply);
     } catch (exception) {
-      setError(exception instanceof Error ? exception.message : String(exception));
+      setError(
+        exception instanceof Error
+          ? exception.message
+          : String(exception),
+      );
     } finally {
       busyRef.current = false;
       setBusy(false);
@@ -122,20 +197,40 @@ export const ChatPane = forwardRef<ChatHandle, {
     },
   }));
 
+  useEffect(() => {
+    if (!conversation) {
+      setTurns([]);
+      return;
+    }
+
+    setTurns(
+      conversation.messages.map((message) => ({
+        role: message.role,
+        text: message.content,
+      })),
+    );
+
+    setDraft("");
+    setError(null);
+  }, [conversation]);
+
   return (
     <>
       <div className="thread" ref={threadRef}>
         <div className="thread-inner">
-          {turns.length === 0 ? (
+          {turns.length === 0 && !conversation ? (
             <div className="hero">
               <h1 className="hero-title">
                 {ui(lang, "greeting")}
                 {ownerName ? ` ${titleCase(ownerName)}` : ""}
               </h1>
+
               <p className="hero-sub">{ui(lang, "heroSub")}</p>
+
               <div className="suggest-grid">
                 {SAMPLE_QUESTIONS[lang].slice(0, 4).map((question, index) => {
                   const Icon = SUGGEST_ICONS[index];
+
                   return (
                     <button
                       className="suggest"
@@ -144,7 +239,9 @@ export const ChatPane = forwardRef<ChatHandle, {
                       disabled={busy}
                     >
                       <span>{question}</span>
-                      <span className="suggest-icon"><Icon size={15} /></span>
+                      <span className="suggest-icon">
+                        <Icon size={15} />
+                      </span>
                     </button>
                   );
                 })}
@@ -168,7 +265,8 @@ export const ChatPane = forwardRef<ChatHandle, {
                   onRetry={() => retry(index)}
                 />
               </div>
-            ))}
+            ),
+          )}
 
           {busy ? (
             <div className="turn turn-ai">
@@ -210,8 +308,7 @@ export const ChatPane = forwardRef<ChatHandle, {
               onKeyDown={(event) => {
                 if (event.key !== "Enter" || event.shiftKey) return;
                 // keyCode 229 is the pre-standard signal for the same thing.
-                if (composing.current || event.nativeEvent.isComposing
-                    || event.keyCode === 229) {
+                if (composing.current || event.nativeEvent.isComposing || event.keyCode === 229) {
                   return;
                 }
                 event.preventDefault();
