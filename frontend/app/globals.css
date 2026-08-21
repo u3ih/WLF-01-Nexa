@@ -857,6 +857,24 @@ code,
   background: var(--bg);
 }
 
+/* `.prose` breaks long words so a raw URL cannot push the column wider than the
+   pane. Inherited into a cell that rule prices every column at one character
+   wide, and auto table layout takes it: an amount arrives stacked one digit per
+   line. Cells wrap between words only — a column is then never narrower than
+   its longest word, so `$13,034.00` and `(USD)` stay whole. Notes still wrap,
+   and a single word too long for the pane still breaks rather than overflow. */
+.prose-table th,
+.prose-table td {
+  word-break: normal;
+  overflow-wrap: break-word;
+  hyphens: none;
+}
+
+/* A cell the renderer found to hold one bare amount carries `.num` and reads
+   like the evidence tables: right-aligned, tabular, one line. That rule lives
+   with the other table styles below, and sits later in the file, so its
+   `nowrap` wins over the wrapping this block sets for prose cells. */
+
 /* ------------------------------------------------------ engine-written answer
 
    A deterministic answer is a list whose whole point is that some rows need the

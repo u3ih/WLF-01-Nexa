@@ -20,7 +20,13 @@ from .config import settings
 from .engine import pipeline, reports
 from .engine.mask import scrub_text
 from .engine.models import Label, fmt_display
-from .engine.render import disclaimer, render_findings, t
+from .engine.render import (
+    bucket_scope_note,
+    disclaimer,
+    excluded_lines,
+    render_findings,
+    t,
+)
 from .store import store
 
 
@@ -49,7 +55,7 @@ def build_report_body(lang: str, period_kind: str = "month",
     today = today or settings.today()
     analysis = pipeline.cached()
     report = reports.build(analysis.ds, period_kind, period_key,
-                           analysis.subs_forecast)
+                           analysis.subs_forecast, analysis.fx)
     profile = analysis.account_profile()
     findings = render_findings(analysis.alerts, lang, today)
 
@@ -70,15 +76,27 @@ def build_report_body(lang: str, period_kind: str = "month",
         "fees_cents": "cashflow.fee",
         "payout_cents": "cashflow.payout",
         "transfer_to_card_cents": "cashflow.transfer_to_card",
+        # Money off a card and back into the wallet. Not one of the brief's
+        # five, but it is $500 in August alone and had no line of its own.
+        "transfer_to_wallet_cents": "cashflow.transfer_to_wallet",
     }
+    excluded = report.get("excluded", {})
     for key, catalog_key in overview_keys.items():
-        lines.append(f"   - {t(lang, catalog_key)}: {fmt_display(totals[key], lang)}")
+        lines.append(f"   - {t(lang, catalog_key)}: "
+                     f"{fmt_display(totals[key], lang)}"
+                     f"{bucket_scope_note(key, excluded, lang)}")
     comparison = report["comparison"]["spend"]
     if comparison["percent"] is not None:
         arrow = "+" if comparison["delta_cents"] > 0 else ""
         lines.append(f"   - vs {report['comparison']['period_key']}: "
                      f"{arrow}{fmt_display(comparison['delta_cents'], lang)} "
                      f"({arrow}{comparison['percent']}%)")
+    # A $0.00 in the block above may mean "none" or may mean "none in USD".
+    # The difference belongs in the email, not only in the API payload.
+    caveats = excluded_lines(excluded, lang)
+    if caveats:
+        lines.append(f"   {t(lang, 'excluded.head')}:")
+        lines += [f"     · {line}" for line in caveats]
     lines.append("")
 
     lines.append("2) " + ("3 khoản chi lớn nhất" if lang == "vi"

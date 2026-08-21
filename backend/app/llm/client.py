@@ -33,8 +33,9 @@ from typing import Any
 import httpx
 
 from ..config import settings
+from ..engine import reports
 from . import prompts, smalltalk
-from .tools import ALLOWED_ARGS, TOOLS
+from .tools import ALLOWED_ARGS, TOOLS, data_coverage
 
 JSON_BLOCK = re.compile(r"\{.*\}", re.S)
 STATUS_TTL_SECONDS = 30.0
@@ -60,6 +61,15 @@ KEYWORD_ROUTES: list[tuple[str, str]] = [
     (r"chưa (thấy )?lên thẻ|chưa vào thẻ|rời tài khoản|số dư ví|ví.{0,10}lệch|"
      r"nạp trùng|wallet|not on (the )?card|duplicate deposit|three source|3 nguồn",
      "get_tri_source"),
+    # Task 4 asks four things in one breath: the recurring plans, the plan they
+    # forgot to cancel, the duplicated charge and the descriptor they cannot
+    # read. One findings call carries all four; the subscription route below
+    # answers only the first and reports the rest as "not in this data".
+    (r"(quên|chưa)\s*(hu[ỷy])|zombie|forg(et|ot|otten).{0,14}cancel|"
+     r"(?=.*(gói|định kỳ|đăng ký|thuê bao|subscription|recurring))"
+     r"(?=.*(trùng|khoản lạ|giao dịch lạ|bất thường|duplicate|unusual|"
+     r"unknown|anomal))",
+     "get_findings:zombie_review"),
     (r"gói|định kỳ|đăng ký|thuê bao|tăng giá|subscription|recurring|price "
      r"(increase|rise|went up)", "list_subscriptions"),
     # Impersonation wording ahead of the generic email route: the same tool
@@ -92,12 +102,50 @@ CHAT_ONLY = "chat_only"
 # Argument presets for question shapes where a narrower result reads better.
 ARG_PRESETS: dict[str, dict[str, Any]] = {
     "duplicates": {"kind": "duplicate_charge,double_fee,duplicate_payin"},
+    # The whole of task 4 in one result: what recurs, what is still charging
+    # with nothing to show for it, what got billed twice, and what the
+    # descriptor actually means.
+    # alerts_only would drop recurring_subscription, which is the half of the
+    # question that asks what recurs at all. per_kind keeps one facet from
+    # eating the prompt budget the other facets need.
+    # The kind order is the priority order: one facet of the question each,
+    # then the rest, so a trim eats the afterthoughts rather than the plans.
+    "zombie_review": {"kind": "recurring_subscription,forgotten_subscription,"
+                              "duplicate_charge,unknown_merchant,"
+                              "price_increase,charged_after_cancel,"
+                              "duplicate_payin,double_fee,"
+                              "suspected_duplicate,free_trial_converted,"
+                              "off_hours_txn",
+                      "alerts_only": False, "per_kind": 2},
 }
 
 AMOUNT_IN_TEXT = re.compile(r"(?<![\d.])(\d{1,6}[.,]\d{2})(?![\d])")
-PERIOD_KEY = re.compile(r"(20\d{2})[-/](0?[1-9]|1[0-2])|(20\d{2})-?Q([1-4])|(20\d{2})",
-                        re.I)
 REF_IN_TEXT = re.compile(r"\b((?:ACC|CRD)-\d{3,5})\b", re.I)
+
+# Period phrasings a person actually types. The model resolves these when one is
+# reachable; these patterns are the offline fallback, and the shape check on
+# what the model returned.
+MONTH_ISO = re.compile(r"\b(20\d{2})[-/](1[0-2]|0?[1-9])\b")
+QUARTER_ISO = re.compile(r"\b(20\d{2})[-\s]?Q([1-4])\b", re.I)
+YEAR_ISO = re.compile(r"\b(20\d{2})\b")
+# "tháng 7/2026", "T7/2026", "7/2026" — the year is stated, so no default is
+# needed. Ordered before the bare-month pattern, which would drop it.
+MONTH_WITH_YEAR = re.compile(
+    r"\b(?:th[áa]ng|month|t)?\s*(1[0-2]|0?[1-9])\s*[/-]\s*(20\d{2})\b", re.I)
+MONTH_VI = re.compile(r"\bth[áa]ng\s*(1[0-2]|0?[1-9])\b|\bt(1[0-2]|[1-9])\b", re.I)
+# The preposition group is what makes "may" usable: bare "may" is the English
+# verb far more often than the month, so it counts only when a year or a
+# preposition marks it as a date.
+MONTH_EN = re.compile(
+    r"\b(in|for|of|during)?\s*(january|february|march|april|may|june|july|"
+    r"august|september|october|november|december|jan|feb|mar|apr|jun|jul|aug|"
+    r"sept|sep|oct|nov|dec)\b\.?\s*(20\d{2})?", re.I)
+QUARTER_TEXT = re.compile(r"\b(?:qu[ýy]|quarter|q)\s*([1-4])\b(?:\D{0,10}(20\d{2}))?",
+                          re.I)
+WHOLE_YEAR = re.compile(r"n[ăa]m nay|c[ải] n[ăa]m|n[ăa]m\s*20\d{2}|this year|"
+                        r"whole year|full year|year\s*20\d{2}", re.I)
+MONTH_ORDER = ["jan", "feb", "mar", "apr", "may", "jun",
+               "jul", "aug", "sep", "oct", "nov", "dec"]
 
 # URL shapes that only an OpenAI-compatible endpoint has. Ollama exposes its own
 # API under /api/… with no version segment, so these never collide with it.
@@ -151,6 +199,77 @@ def keyword_route(question: str) -> ToolCall:
     return ToolCall(DEFAULT_TOOL, {}, "keyword")
 
 
+def data_year() -> int:
+    """The year the loaded export ends in.
+
+    A month named without one — "tháng 7" — has to resolve against the data,
+    not against the wall clock: the two disagree the moment the sample export
+    stops being this year's.
+    """
+    try:
+        return int(data_coverage()["latest_month"][:4])
+    except Exception:                                   # noqa: BLE001
+        return settings.today().year
+
+
+def period_from_text(question: str,
+                     default_year: int | None = None) -> tuple[str, str | None]:
+    """The period a question names: ('month'|'quarter'|'year', key or None).
+
+    Only the wording is read here. `None` means the question named no period,
+    which the report tool then reads as its latest month.
+    """
+    year = default_year or data_year()
+
+    iso_quarter = QUARTER_ISO.search(question)
+    if iso_quarter:
+        return "quarter", f"{iso_quarter.group(1)}-Q{iso_quarter.group(2)}"
+    iso_month = MONTH_ISO.search(question)
+    if iso_month:
+        return "month", f"{iso_month.group(1)}-{int(iso_month.group(2)):02d}"
+    with_year = MONTH_WITH_YEAR.search(question)
+    if with_year:
+        return "month", f"{with_year.group(2)}-{int(with_year.group(1)):02d}"
+
+    # A year stated anywhere else in the sentence still belongs to the month or
+    # quarter named in it: "tháng 12 năm 2025" puts the two in separate words.
+    loose = YEAR_ISO.search(question)
+    stated = loose.group(1) if loose else None
+
+    quarter = QUARTER_TEXT.search(question)
+    if quarter:
+        return "quarter", f"{quarter.group(2) or stated or year}-Q{quarter.group(1)}"
+
+    vi_month = MONTH_VI.search(question)
+    if vi_month:
+        month = int(vi_month.group(1) or vi_month.group(2))
+        return "month", f"{stated or year}-{month:02d}"
+    en_month = MONTH_EN.search(question)
+    if en_month:
+        name = en_month.group(2).lower()[:3]
+        # "may" without a year or a preposition is the verb, not the month.
+        if name != "may" or en_month.group(3) or en_month.group(1):
+            return "month", (f"{en_month.group(3) or stated or year}"
+                             f"-{MONTH_ORDER.index(name) + 1:02d}")
+
+    if WHOLE_YEAR.search(question):
+        return "year", stated or str(year)
+    if stated:
+        return "year", stated
+    return "month", None
+
+
+def valid_period_key(key: str) -> bool:
+    """Whether `reports.parse_period_key` can read this key.
+
+    A key it cannot read is not an error there — it silently falls back to the
+    latest period, which is exactly the failure this whole path exists to stop.
+    So an unreadable key is rejected here, where something else can supply one.
+    """
+    return bool(MONTH_ISO.fullmatch(key) or QUARTER_ISO.fullmatch(key)
+                or YEAR_ISO.fullmatch(key))
+
+
 def extract_args(question: str) -> dict[str, Any]:
     """Pull an amount, a reference, a period or a merchant out of the question."""
     args: dict[str, Any] = {}
@@ -161,17 +280,16 @@ def extract_args(question: str) -> dict[str, Any]:
     if amount:
         args["amount"] = float(amount.group(1).replace(",", "."))
     lowered = question.lower()
-    if re.search(r"quý|quarter", lowered):
-        args["period"] = "quarter"
-    elif re.search(r"năm nay|cả năm|this year|year", lowered):
-        args["period"] = "year"
-    else:
-        args["period"] = "month"
-    period = PERIOD_KEY.search(question)
-    if period and period.group(1) and period.group(2):
-        args["key"] = f"{period.group(1)}-{int(period.group(2)):02d}"
-    elif period and period.group(3) and period.group(4):
-        args["key"] = f"{period.group(3)}-Q{period.group(4)}"
+    kind, key = period_from_text(question)
+    args["period"] = kind
+    if key:
+        args["key"] = key
+        # The same period as a date range, for the tools that take one. A
+        # listing asked for "in July" that quietly spans every month is the
+        # same failure as a report that quietly covers the wrong one.
+        bounds = reports.parse_period_key(kind, key, settings.today())
+        args["date_from"] = bounds.start.isoformat()
+        args["date_to"] = bounds.end.isoformat()
     for merchant in ("netflix", "spotify", "chegg", "apple", "icloud",
                      "t-mobile", "tmobile"):
         if merchant in lowered:
@@ -250,7 +368,7 @@ class OllamaBackend:
         if tools:
             payload["tools"] = tools
         try:
-            return _request("POST", "/api/chat", payload)
+            return self._normalise(_request("POST", "/api/chat", payload))
         except httpx.HTTPStatusError as exc:
             if exc.response.status_code != 400:
                 raise
@@ -258,7 +376,18 @@ class OllamaBackend:
                 raise ToolsUnsupported(_error_text(exc)) from exc
             # Older Ollama builds, or non-thinking models, reject "think".
             payload.pop("think", None)
-            return _request("POST", "/api/chat", payload)
+            return self._normalise(_request("POST", "/api/chat", payload))
+
+    @staticmethod
+    def _normalise(data: dict[str, Any]) -> dict[str, Any]:
+        """Carry the stop reason alongside the message.
+
+        Ollama names it `done_reason`, and "length" there means the same thing
+        as OpenAI's "length": the answer was cut off at the cap, not finished.
+        """
+        message = dict(data.get("message") or {})
+        message["finish_reason"] = data.get("done_reason") or ""
+        return {**data, "message": message}
 
 
 class OpenAIBackend:
@@ -341,7 +470,27 @@ class OpenAIBackend:
                 "arguments": function.get("arguments") or {},
             }})
         return {"message": {"content": message.get("content") or "",
-                            "tool_calls": calls}}
+                            "tool_calls": calls,
+                            # "length" means the cap stopped the answer. The
+                            # narrator reads this to continue instead of
+                            # returning a reply cut off mid-sentence.
+                            "finish_reason": (choices[0].get("finish_reason")
+                                              if choices else "") or ""}}
+
+
+def _join_continuation(head: str, tail: str) -> str:
+    """Stitch a continued answer back to the part that was cut off.
+
+    Where the cap fell decides the seam. After a finished sentence or table row
+    the continuation is a new block, so it gets a blank line. Cut mid-sentence —
+    or mid-row, or mid-word — it is the rest of that line and must not have a
+    line break pushed into it, or the table breaks and the sentence reads as two.
+    """
+    if not head:
+        return tail.strip()
+    if head[-1] in ".!?:;\n" or head.endswith("|"):
+        return f"{head}\n\n{tail.lstrip()}"
+    return head + tail
 
 
 def _error_text(exc: httpx.HTTPStatusError) -> str:
@@ -499,76 +648,125 @@ class AIClient:
     # -- routing ----------------------------------------------------------
 
     def route(self, question: str, lang: str, labels: dict[str, str]) -> ToolCall:
-        """Keyword-first, model-second.
+        """Model-first, keyword table second.
 
-        The keyword table is exact for the phrasings this dataset is built
-        around, and it costs nothing. The model is asked only when the keywords
-        are inconclusive, which also keeps a turn down to a single model call.
+        The table reads words; only the model reads meaning, and the difference
+        surfaced as a wrong answer rather than a wrong route. "Đọc & phân loại
+        sao kê … trong tháng 7" matched the report pattern, so the model was
+        never asked — and "tháng 7", which no pattern carried, was dropped. The
+        report then covered the latest month and the reply said July was
+        missing from a dataset that holds it.
+
+        The table is now what answers when there is no model to ask, and the
+        arguments it reads out of the question still fill anything the model
+        left unset.
         """
         status = self.status()
         fallback = keyword_route(question)
-        if fallback.name != DEFAULT_TOOL:
-            return fallback
         if not status.available:
             # No model to read the meaning, so the phrase list is all we have.
             # It is deliberately narrow: it only fires on a bare opener.
             if smalltalk.classify(question):
                 return ToolCall(CHAT_ONLY, {}, "keyword")
             return fallback
+        try:
+            chosen = self._route_with_model(question, lang, labels, fallback)
+        except Exception:                               # noqa: BLE001
+            return fallback
+        # get_overview is the catch-all the model reaches for when the question
+        # names several things at once, and it carries counts rather than rows —
+        # so the reply says "this data has no detail" about detail we hold. A
+        # named tool from the table beats it, same reasoning as _no_tool_chosen.
+        if (chosen and chosen.name == DEFAULT_TOOL
+                and fallback.name != DEFAULT_TOOL):
+            return fallback
+        return chosen or fallback
+
+    def _route_with_model(self, question: str, lang: str,
+                          labels: dict[str, str],
+                          fallback: ToolCall) -> ToolCall | None:
+        """Ask the model which tool answers this. None means it did not say."""
+        status = self.status()
+        if status.mode == "native_tools":
+            data = self._chat(
+                [
+                    {"role": "system",
+                     "content": prompts.system_prompt(lang, labels)
+                     + "\n\n" + prompts.TOOL_CHOICE
+                     + "\n\n" + prompts.temporal_note()},
+                    {"role": "user", "content": question},
+                ],
+                tools=prompts.native_tool_schemas(),
+                num_predict=300,
+            )
+            calls = (data.get("message") or {}).get("tool_calls") or []
+            if not calls:
+                return self._no_tool_chosen("native_tools", fallback)
+            function = calls[0].get("function", {})
+            name = function.get("name", "")
+            raw_args = function.get("arguments") or {}
+            if isinstance(raw_args, str):
+                raw_args = json.loads(raw_args or "{}")
+            if name in TOOLS:
+                return ToolCall(name, self._merge_args(name, raw_args, question),
+                                "native_tools")
+            return None
 
         messages = [
             {"role": "system", "content": prompts.system_prompt(lang, labels)},
             {"role": "user", "content": prompts.router_prompt(question)},
         ]
-        try:
-            if status.mode == "native_tools":
-                data = self._chat(
-                    [
-                        {"role": "system",
-                         "content": prompts.system_prompt(lang, labels)
-                         + "\n\n" + prompts.TOOL_CHOICE},
-                        {"role": "user", "content": question},
-                    ],
-                    tools=prompts.native_tool_schemas(),
-                    num_predict=300,
-                )
-                calls = (data.get("message") or {}).get("tool_calls") or []
-                if not calls:
-                    # The keyword table already had no opinion, and the model —
-                    # holding the full tool list — chose not to use any of them.
-                    # Two independent "not a data question" signals is enough.
-                    return ToolCall(CHAT_ONLY, {}, "native_tools")
-                if calls:
-                    function = calls[0].get("function", {})
-                    name = function.get("name", "")
-                    raw_args = function.get("arguments") or {}
-                    if isinstance(raw_args, str):
-                        raw_args = json.loads(raw_args or "{}")
-                    if name in TOOLS:
-                        allowed = ALLOWED_ARGS.get(name, set())
-                        args = {k: v for k, v in raw_args.items() if k in allowed}
-                        return ToolCall(name, args, "native_tools")
-                return fallback
+        data = self._chat(messages, num_predict=200)
+        content = (data.get("message") or {}).get("content", "")
+        block = JSON_BLOCK.search(content or "")
+        if block:
+            parsed = json.loads(block.group(0))
+            name = parsed.get("tool", "")
+            if name == CHAT_ONLY:
+                return self._no_tool_chosen("json_router", fallback)
+            if name in TOOLS:
+                return ToolCall(name,
+                                self._merge_args(name, parsed.get("args") or {},
+                                                 question),
+                                "json_router")
+        return None
 
-            data = self._chat(messages, num_predict=200)
-            content = (data.get("message") or {}).get("content", "")
-            block = JSON_BLOCK.search(content or "")
-            if block:
-                parsed = json.loads(block.group(0))
-                name = parsed.get("tool", "")
-                if name == CHAT_ONLY:
-                    return ToolCall(CHAT_ONLY, {}, "json_router")
-                if name in TOOLS:
-                    allowed = ALLOWED_ARGS.get(name, set())
-                    raw_args = parsed.get("args") or {}
-                    args = {k: v for k, v in raw_args.items() if k in allowed}
-                    # keep any period/amount the question itself states
-                    for key, value in fallback.args.items():
-                        args.setdefault(key, value)
-                    return ToolCall(name, args, "json_router")
-        except Exception:                               # noqa: BLE001
+    @staticmethod
+    def _no_tool_chosen(mode: str, fallback: ToolCall) -> ToolCall:
+        """The model read the message as needing no statement data.
+
+        Now that the model is asked first, that judgement arrives for real
+        questions too. When the keyword table names a specific tool, the table
+        wins: answering "how much did I spend in July" as chit-chat is the
+        worse of the two failures.
+        """
+        if fallback.name != DEFAULT_TOOL:
             return fallback
-        return fallback
+        return ToolCall(CHAT_ONLY, {}, mode)
+
+    @staticmethod
+    def _merge_args(tool: str, raw: dict[str, Any],
+                    question: str) -> dict[str, Any]:
+        """The model's arguments, filtered, shape-checked and topped up.
+
+        The model owns the period it resolved from the wording — that is the
+        whole reason it is asked. What the question states literally still fills
+        anything the model left out, and a period key in a shape the engine
+        cannot parse is dropped, so the shape read from the question takes over
+        rather than being overridden by nonsense.
+
+        The top-up is read from the question rather than from the keyword
+        fallback: the fallback's arguments were filtered for the tool *it*
+        chose, so a period would go missing whenever the two disagree.
+        """
+        allowed = ALLOWED_ARGS.get(tool, set())
+        args = {k: v for k, v in raw.items() if k in allowed and v not in (None, "")}
+        if args.get("key") and not valid_period_key(str(args["key"]).strip()):
+            args.pop("key")
+        for name, value in extract_args(question).items():
+            if name in allowed:
+                args.setdefault(name, value)
+        return args
 
     # -- narration --------------------------------------------------------
 
@@ -604,10 +802,45 @@ class AIClient:
                 "content": prompts.strict_retry_prompt(retry_violations),
             })
         try:
-            data = self._chat(messages, num_predict=900)
-            return ((data.get("message") or {}).get("content") or "").strip() or None
+            return self._narrate_whole(messages)
         except Exception:                               # noqa: BLE001
             return None
+
+    def _narrate_whole(self, messages: list[dict[str, Any]]) -> str | None:
+        """The narrated answer, continued if the cap cut it off.
+
+        A findings answer is several sections and tables long, and an endpoint
+        that hits `max_tokens` returns what it had so far with no error — the
+        reply simply stops mid-sentence. That reads as a wrong answer, so the
+        stop reason is checked and the model is asked to carry on from where it
+        stopped, up to `ai_continue_rounds` times.
+        """
+        budget = settings.ai_narrate_tokens
+        data = self._chat(messages, num_predict=budget)
+        message = data.get("message") or {}
+        text = (message.get("content") or "").strip()
+
+        for _ in range(max(0, settings.ai_continue_rounds)):
+            if str(message.get("finish_reason") or "").lower() != "length":
+                break
+            if not text:
+                # Nothing came back to continue from; a further round would
+                # only repeat the same empty result.
+                break
+            follow = messages + [
+                {"role": "assistant", "content": text},
+                {"role": "user", "content": prompts.CONTINUE},
+            ]
+            data = self._chat(follow, num_predict=budget)
+            message = data.get("message") or {}
+            # Only the trailing side is trimmed: a continuation that resumes
+            # mid-sentence carries the space that belongs before its first word.
+            piece = (message.get("content") or "").rstrip()
+            if not piece.strip():
+                break
+            text = _join_continuation(text, piece)
+
+        return text or None
 
 
 # The name the rest of the codebase imports. `OllamaClient` stays as an alias

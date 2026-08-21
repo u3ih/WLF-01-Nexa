@@ -50,6 +50,13 @@ class Settings(BaseSettings):
     # than quietly degrading into template answers.
     ai_retries: int = 2
     ai_retry_backoff_seconds: float = 0.75
+    # Output cap for a narrated answer. A findings report in Vietnamese runs to
+    # several sections and tables, and a cap that is too low returns a reply cut
+    # off mid-sentence — which reads as a wrong answer, not a short one.
+    ai_narrate_tokens: int = 4000
+    # When the endpoint reports it stopped because it hit that cap, the answer
+    # is asked to continue from where it stopped, this many times at most.
+    ai_continue_rounds: int = 2
 
     # Mail settings must come from .env / environment. Outbox delivery is
     # disabled so a confirmed send either reaches SMTP or fails loudly.
@@ -90,6 +97,16 @@ class Settings(BaseSettings):
     yopmail_limit: int = 0
     yopmail_delay_ms: int = 800
     yopmail_require_unlocked: bool = True
+
+    # Exchange rates. The export prices some rows in EUR and supplies no rate,
+    # so without this the report can only leave those amounts out. Fetched
+    # daily; the engine itself never reaches the network.
+    fx_enabled: bool = True
+    fx_hour: int = 6
+    fx_minute: int = 30
+    # Run once at startup so a fresh install is not blind until the first
+    # scheduled fetch. Skipped when rates already cover today.
+    fx_backfill_on_start: bool = True
 
     cors_origins: list[str] = Field(default_factory=lambda: [
         "http://localhost:3000", "http://127.0.0.1:3000",

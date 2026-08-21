@@ -147,6 +147,75 @@ class Store:
             rows = c.execute("SELECT fingerprint FROM flags").fetchall()
         return {r["fingerprint"] for r in rows}
 
+    # -- fx rates ---------------------------------------------------------
+
+    def upsert_fx_quotes(self, quotes: Any) -> int:
+        """Store published rates, overwriting a day we already hold.
+
+        Upsert rather than insert-if-absent: the ECB occasionally revises a
+        published figure, and keeping the first value we happened to see would
+        leave a known-wrong rate in place for good. Returns the number written.
+        """
+        rows = [q for q in quotes if not getattr(q, "inverted", False)]
+        # An inverted quote is a reading of a stored series, not an observation
+        # of its own. Writing it would create a second row that must agree with
+        # the first for ever, and silently disagree the moment one is revised.
+        if not rows:
+            return 0
+        with self.conn() as c:
+            with c.cursor() as cur:
+                cur.executemany(
+                    """
+                    INSERT INTO fx_rates (base, quote, quoted_on, rate, source)
+                    VALUES (%s, %s, %s, %s, %s)
+                    ON CONFLICT (base, quote, quoted_on) DO UPDATE
+                        SET rate = EXCLUDED.rate,
+                            source = EXCLUDED.source,
+                            fetched_at = now()
+                    """,
+                    [(q.base, q.quote, q.quoted_on, str(q.rate), q.source)
+                     for q in rows],
+                )
+        return len(rows)
+
+    def fx_quotes(self, since: date | None = None) -> list[dict[str, Any]]:
+        """Every stored rate, newest publication first."""
+        sql = ("SELECT base, quote, quoted_on, rate, source FROM fx_rates"
+               " {where} ORDER BY quoted_on DESC, base, quote")
+        with self.conn() as c:
+            if since is None:
+                return c.execute(sql.format(where="")).fetchall()
+            return c.execute(sql.format(where="WHERE quoted_on >= %s"),
+                             (since,)).fetchall()
+
+    def fx_latest_quoted_on(self, base: str | None = None,
+                            quote: str | None = None) -> date | None:
+        """The most recent publication held, for deciding where to resume."""
+        clauses, params = [], []
+        if base:
+            clauses.append("base = %s")
+            params.append(base)
+        if quote:
+            clauses.append("quote = %s")
+            params.append(quote)
+        where = f"WHERE {' AND '.join(clauses)}" if clauses else ""
+        with self.conn() as c:
+            row = c.execute(
+                f"SELECT max(quoted_on) AS latest FROM fx_rates {where}",
+                tuple(params),
+            ).fetchone()
+        return row["latest"] if row else None
+
+    def fx_coverage(self) -> list[dict[str, Any]]:
+        """Per pair: how many days are held and the span they cover."""
+        with self.conn() as c:
+            return c.execute(
+                "SELECT base, quote, count(*) AS days,"
+                " min(quoted_on) AS first_quoted_on,"
+                " max(quoted_on) AS last_quoted_on, max(fetched_at) AS fetched_at"
+                " FROM fx_rates GROUP BY base, quote ORDER BY base, quote"
+            ).fetchall()
+
     # -- audit journal ----------------------------------------------------
 
     def log(self, event: str, *, fingerprint: str | None = None,

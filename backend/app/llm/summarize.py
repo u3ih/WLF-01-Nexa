@@ -16,7 +16,7 @@ from __future__ import annotations
 from typing import Any
 
 from ..engine.models import fmt_display
-from ..engine.render import t
+from ..engine.render import bucket_scope_note, excluded_lines, t
 
 BULLET = "• "
 
@@ -168,12 +168,34 @@ def summarize(tool: str, result: dict[str, Any], lang: str) -> str:
         comparison = result["comparison"]["spend"]
         lines = [t(lang, "summary.report.head", label=period["label"],
                    start=period["start"], end=period["end"])]
-        for key, cents in (("purchase", totals["spend_cents"]),
-                           ("fee", totals["fees_cents"]),
-                           ("payin", totals["payin_cents"]),
-                           ("payout", totals["payout_cents"])):
+        # Said before the figures, not after them. A month the export does not
+        # reach reports zeros in every bucket, and a reader who has already read
+        # five "$0.00" lines has been told they spent nothing.
+        coverage = result.get("coverage") or {}
+        if coverage and not coverage.get("has_data"):
+            lines.append(BULLET + t(lang, "summary.report.no_data",
+                                    label=period["label"],
+                                    first=coverage["first_day"],
+                                    last=coverage["last_day"]))
+        elif coverage.get("partial"):
+            lines.append(BULLET + t(lang, "summary.report.partial",
+                                    first=coverage["first_day"],
+                                    last=coverage["last_day"]))
+        excluded = result.get("excluded", {})
+        for key, bucket in (("purchase", "spend_cents"),
+                            ("fee", "fees_cents"),
+                            ("payin", "payin_cents"),
+                            ("payout", "payout_cents"),
+                            ("transfer_to_card", "transfer_to_card_cents")):
+            # The scope note goes on the figure's own line. A "$0.00" that is
+            # only explained six bullets later has already been read as "none".
             lines.append(f"{BULLET}{t(lang, 'cashflow.' + key)}: "
-                         f"{fmt_display(cents, lang)}")
+                         f"{fmt_display(totals[bucket], lang)}"
+                         f"{bucket_scope_note(bucket, excluded, lang)}")
+        # Printed with the totals, never apart from them: a zero above without
+        # this line beside it is the answer the user reads as "none at all".
+        for caveat in excluded_lines(excluded, lang):
+            lines.append(f"{BULLET}{caveat}")
         if comparison.get("percent") is not None:
             lines.append(BULLET + t(
                 lang, "summary.report.comparison",

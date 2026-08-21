@@ -37,6 +37,52 @@ def _trim_finding(item: dict[str, Any]) -> dict[str, Any]:
     return {k: v for k, v in item.items() if k != "params"}
 
 
+def _month_keys(first: str, last: str) -> list[str]:
+    year, month = int(first[:4]), int(first[5:7])
+    end = (int(last[:4]), int(last[5:7]))
+    out: list[str] = []
+    while (year, month) <= end:
+        out.append(f"{year:04d}-{month:02d}")
+        year, month = (year + 1, 1) if month == 12 else (year, month + 1)
+    return out
+
+
+def data_coverage() -> dict[str, Any]:
+    """The window the loaded export actually covers, plus its month keys.
+
+    Both the router and the narrator need it. "tháng 7" carries no year, so
+    something has to supply one, and defaulting to the wall-clock year would
+    ask for a period the export does not contain. A report for a month outside
+    the export has to say so, too: zeros read as "you spent nothing".
+    """
+    ds = pipeline.cached().ds
+    last = ds.meta.get("statement_date") or ds.statement_date.isoformat()
+    first = ds.meta.get("period_start") or last
+    return {
+        "first_day": first[:10],
+        "last_day": last[:10],
+        "months": _month_keys(first, last),
+        "latest_month": last[:7],
+    }
+
+
+def _period_coverage(period: dict[str, Any]) -> dict[str, Any]:
+    """Where the requested period sits relative to the data we hold.
+
+    ISO dates compare as strings, so the overlap test needs no parsing.
+    """
+    cover = data_coverage()
+    overlaps = (period["start"] <= cover["last_day"]
+                and period["end"] >= cover["first_day"])
+    return {
+        **cover,
+        "requested": period["key"],
+        "has_data": overlaps,
+        "partial": overlaps and (period["start"] < cover["first_day"]
+                                 or period["end"] > cover["last_day"]),
+    }
+
+
 # ------------------------------------------------------------------- tools
 
 def get_overview(lang: str = "vi") -> dict[str, Any]:
@@ -96,19 +142,49 @@ def list_subscriptions(lang: str = "vi") -> dict[str, Any]:
     }
 
 
+def _balance_by_kind(pool: list[Any], per_kind: int,
+                     order: list[str] | None = None) -> list[Any]:
+    """At most `per_kind` per kind, then dealt round-robin across the kinds.
+
+    The prompt budget drops rows from the tail. Without the interleave a
+    question that asks about several kinds at once gets a prefix filled by
+    whichever kind happens to be the most numerous — 66 off-hours charges bury
+    the one forgotten subscription the question was really about.
+
+    `order` is the order the kinds were asked for, so the first round deals the
+    caller's priorities and a later trim eats the afterthoughts.
+    """
+    buckets: dict[str, list[Any]] = {k: [] for k in (order or [])}
+    for finding in pool:
+        bucket = buckets.setdefault(finding.kind.value, [])
+        if len(bucket) < per_kind:
+            bucket.append(finding)
+    out: list[Any] = []
+    for round_index in range(per_kind):
+        for bucket in buckets.values():
+            if round_index < len(bucket):
+                out.append(bucket[round_index])
+    return out
+
+
 def get_findings(lang: str = "vi", kind: str | None = None,
-                 label: str | None = None, alerts_only: bool = True
-                 ) -> dict[str, Any]:
+                 label: str | None = None, alerts_only: bool = True,
+                 per_kind: int | None = None) -> dict[str, Any]:
     """Flagged items with their three-tier label, sources and 60-day deadline."""
     analysis = pipeline.cached()
     pool = analysis.alerts if alerts_only else analysis.findings
-    if kind:
-        wanted = {k.strip() for k in str(kind).split(",") if k.strip()}
-        pool = [f for f in pool if f.kind.value in wanted]
+    wanted = [k.strip() for k in str(kind or "").split(",") if k.strip()]
+    if wanted:
+        pool = [f for f in pool if f.kind.value in set(wanted)]
     if label:
         pool = [f for f in pool if f.label.value == label]
+    total = len(pool)
+    if per_kind:
+        pool = _balance_by_kind(pool, int(per_kind), wanted)
     return {
-        "count": len(pool),
+        # `count` stays the number that matched, not the number shown, so a
+        # capped result still reports the real size.
+        "count": total,
         "labels": {
             "recurring_confirmed": t(lang, "labels.recurring_confirmed"),
             "needs_your_confirmation": t(lang, "labels.needs_your_confirmation"),
@@ -214,12 +290,17 @@ def get_report(lang: str = "vi", period: str = "month",
     analysis = pipeline.cached()
     if period not in reports.PERIODS:
         period = "month"
-    report = reports.build(analysis.ds, period, key, analysis.subs_forecast)
+    report = reports.build(analysis.ds, period, key, analysis.subs_forecast,
+                           analysis.fx)
     report["categories"] = [
         {**row, "label": t(lang, f"category.{row['category']}")}
         for row in report["categories"]
     ]
     report["trend"] = reports.monthly_series(analysis.ds, 12)
+    # Which period was actually asked for, against what the export holds. A
+    # month outside the export produces a report of zeros, and a zero with no
+    # note beside it reads as an answer.
+    report["coverage"] = _period_coverage(report["period"])
     return report
 
 
@@ -497,6 +578,12 @@ SPECS: list[dict[str, Any]] = [
                     "wallet_balance_mismatch, price_increase",
             "label": "optional label filter: needs_your_confirmation, "
                      "insufficient_data, recurring_confirmed",
+            "alerts_only": "true by default. Pass false to include "
+                           "recurring_subscription, which is a plan listing "
+                           "rather than an alert",
+            "per_kind": "optional cap per kind, dealt round-robin. Use when "
+                        "the question asks about several kinds at once so one "
+                        "noisy kind cannot crowd out the others",
         },
     },
     {
@@ -525,7 +612,10 @@ SPECS: list[dict[str, Any]] = [
                        "previous one.",
         "parameters": {
             "period": "month, quarter or year",
-            "key": "optional period key such as 2026-07, 2026-Q3 or 2026",
+            "key": "period key such as 2026-07, 2026-Q3 or 2026. Always pass "
+                   "it when the user names a period at all, resolving their "
+                   "wording against the time context given to you. Omitting "
+                   "it silently reports the latest month instead.",
         },
     },
     {
@@ -586,7 +676,7 @@ SPECS: list[dict[str, Any]] = [
 ]
 
 ALLOWED_ARGS = {
-    "get_findings": {"kind", "label", "alerts_only"},
+    "get_findings": {"kind", "label", "alerts_only", "per_kind"},
     "get_email_recon": {"ref", "status", "limit"},
     "get_report": {"period", "key"},
     "explain_charge": {"ref", "amount", "descriptor"},

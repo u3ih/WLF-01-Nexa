@@ -24,9 +24,13 @@ from pathlib import Path
 import pytest
 
 from app.engine import pipeline
-from app.engine.classify import fee_cents
+from app.engine.classify import fee_cents, wallet_only_events
 from app.engine.merchants import RULES
+from app.engine.models import CardTxnType
+from app.engine.render import bucket_scope_note, excluded_lines, t
+from app.engine.reports import BUCKET_KEYS
 from app.llm.guardrails import BlockedIntent, classify_intent
+from app.mailer import build_report_body
 
 BACKEND_ROOT = Path(__file__).resolve().parent.parent
 EXPORT_DIR = BACKEND_ROOT.parent / "dataset"
@@ -139,16 +143,34 @@ class TestFiveCashFlows:
     def test_fees_are_separated_and_agree_with_the_fee_findings(self, analysis):
         """*phí* — a `double_fee` finding and a $0 fee total cannot both hold.
 
-        The anomaly pass flags WLF15-CD-0216/0217 as the same fee charged twice,
-        so at least those cents are fees; `fee_cents` nonetheless returns 0
-        because no card row carries `fee_cents` (the export writes
-        `NaN undefined` in the column, which the loader correctly reads as
-        absent). The fee a finding can see must be a fee the total counts.
+        Asserted in the finding's own currency, not in USD. Every fee in this
+        export is one of the 22 EUR FX-fee lines, and the only USD fee is the
+        $2.25 on `WCW082126621016`, which is still pending. `exchange_rate`
+        reads `NaN = 1 USD` on every row, so there is no rate to restate the
+        EUR fees with: demanding `fee_cents(..., "USD") > 0` would demand the
+        engine invent one.
+
+        What the requirement actually forbids is a fee vanishing. So the total
+        in the finding's currency must count it, and `excluded` must carry it
+        into a USD report — a bare "$0.00 in fees" reads as "you paid none".
         """
         fee_findings = [f for f in analysis.findings
                         if "fee" in f.kind.value]
         assert fee_findings, "expected the seeded double-fee anomaly"
-        assert fee_cents(analysis.ds, YEAR_START, YEAR_END, "USD") > 0
+        for finding in fee_findings:
+            currency = finding.params["currency"]
+            total = fee_cents(analysis.ds, YEAR_START, YEAR_END, currency)
+            assert total >= finding.params["total_cents"], (
+                f"{finding.kind.value} sees {finding.params['total_cents']} "
+                f"{currency} of fees the total does not count"
+            )
+
+        report = pipeline.report_for(analysis, "month", "2026-06")
+        assert report["totals"]["fees_cents"] == 0, "the seeded pair is EUR"
+        hidden = {row["currency"]: row["fees_cents"]
+                  for row in report["excluded"]["other_currencies"]}
+        assert hidden.get("EUR", 0) > 0, \
+            "a USD report showing $0.00 must still disclose the EUR fees"
 
     def test_the_five_buckets_are_not_all_collapsed_onto_one(self, analysis):
         """The brief asks for a separation, so at most one bucket may be empty.
@@ -161,6 +183,163 @@ class TestFiveCashFlows:
                    "payout_cents", "transfer_to_card_cents")
         populated = [b for b in buckets if totals[b] != 0]
         assert len(populated) >= 4, f"only {populated} carry a figure"
+
+    def test_the_monthly_report_agrees_with_the_whole_period_classification(
+            self, analysis):
+        """`reports._core` and `classify._totals` must not drift apart again.
+
+        They were separate implementations of the same five buckets, and only
+        one of them was ever fixed. Summing the months has to reproduce the
+        dataset-wide figure, or the report and the cash-flow table are telling
+        the user two different stories about the same ledger.
+        """
+        months = [f"2026-{m:02d}" for m in range(1, 13)]
+        for bucket in ("payin_cents", "payout_cents", "spend_cents"):
+            monthly = sum(pipeline.report_for(analysis, "month", key)
+                          ["totals"][bucket] for key in months)
+            assert monthly == analysis.cashflow["totals"][bucket], \
+                f"{bucket}: months sum to {monthly}"
+
+    def test_card_withdrawals_leave_the_platform_like_any_payout(self,
+                                                                 analysis):
+        """`CardTxnType.WITHDRAW` belonged to no bucket at all.
+
+        $250 came off a card on 2026-08-15 and appeared in no total: not spend,
+        not payout, not a transfer. Money cannot leave without being reported.
+        """
+        withdrawals = [c for c in analysis.ds.card
+                       if c.type is CardTxnType.WITHDRAW and c.is_settled]
+        assert withdrawals, "expected the seeded card withdrawal"
+        august = pipeline.report_for(analysis, "month", "2026-08")["totals"]
+        wallet_side = sum(e.amount_cents for e in wallet_only_events(analysis.ds)
+                          if e.note == "payout" and e.is_settled
+                          and e.currency == "USD"
+                          and e.day.strftime("%Y-%m") == "2026-08")
+        assert august["payout_cents"] == wallet_side + sum(
+            abs(c.amount_cents) for c in withdrawals
+            if c.day.strftime("%Y-%m") == "2026-08")
+
+    def test_wallet_top_ups_from_a_card_are_a_transfer_not_a_payin(self,
+                                                                   analysis):
+        """`card_to_wallet` had no bucket either, so $500 simply vanished.
+
+        It is not a payin: the money never came from outside, it came off the
+        user's own card. Filing it as one would inflate *tiền vào* with the
+        user's own balance moving between two of their own pockets.
+        """
+        august = pipeline.report_for(analysis, "month", "2026-08")["totals"]
+        assert august["transfer_to_wallet_cents"] == 50000
+        payins = [e for e in wallet_only_events(analysis.ds)
+                  if e.note == "payin" and e.is_settled
+                  and e.day.strftime("%Y-%m") == "2026-08"]
+        assert august["payin_cents"] == sum(e.amount_cents for e in payins)
+
+    def test_the_transfer_gap_between_the_two_ledgers_stays_visible(self,
+                                                                    analysis):
+        """The wallet says it sent more to cards than the cards received.
+
+        $15,686.02 out against $13,034.00 in. Reporting either figure alone as
+        *chuyển sang thẻ* hides the difference, which is the part with findings
+        attached to it.
+        """
+        totals = analysis.cashflow["totals"]
+        assert totals["transfer_to_card_sent_cents"] > \
+            totals["transfer_to_card_cents"]
+        assert totals["transfer_to_card_gap_cents"] == \
+            totals["transfer_to_card_sent_cents"] - \
+            totals["transfer_to_card_cents"]
+
+
+class TestNothingIsDroppedSilently:
+    """A single-currency, settled-only report has to say what it set aside."""
+
+    def test_a_usd_report_discloses_the_currencies_it_left_out(self, analysis):
+        """August spent €57.54 that a USD-only report shows nowhere."""
+        excluded = pipeline.report_for(analysis, "month", "2026-08")["excluded"]
+        assert excluded["reporting_currency"] == "USD"
+        eur = next(row for row in excluded["other_currencies"]
+                   if row["currency"] == "EUR")
+        assert eur["spend_cents"] == 5754
+
+    def test_unsettled_rows_are_listed_rather_than_just_omitted(self, analysis):
+        """Correctly excluded from the totals, still owed to the user."""
+        excluded = pipeline.report_for(analysis, "month", "2026-08")["excluded"]
+        refs = {row["ref"]: row for row in excluded["unsettled"]}
+        assert refs["WCW082126621016"]["in_flight"] is True
+        assert refs["WCW082126621016"]["amount_cents"] == 75000
+
+    @pytest.mark.parametrize("lang", ["vi", "en"])
+    def test_the_caveat_renders_in_both_languages(self, analysis, lang):
+        """August: "Phí: $0.00" beside €0.58 of fees and $768.93 in flight.
+
+        The zero and the caveat have to travel together, so the sentence is
+        rendered from the same `excluded` block every consumer prints, in
+        whichever language the totals beside it are in.
+        """
+        report = pipeline.report_for(analysis, "month", "2026-08")
+        lines = excluded_lines(report["excluded"], lang)
+        assert any("EUR" in line and "0.58" in line for line in lines)
+        assert any("768.93" in line for line in lines)
+
+    def test_the_emailed_report_prints_the_caveat(self, analysis, monkeypatch):
+        """A caveat only the API payload carries is a caveat nobody reads.
+
+        `build_report_body` reads `pipeline.cached()`, which the session fixture
+        points at `data/sample` — a dataset that excludes nothing, so it cannot
+        show whether the wiring works. Pointed at this export instead, where
+        August hides €0.58 of fees behind a "$0.00".
+        """
+        monkeypatch.setattr(pipeline, "cached", lambda *a, **k: analysis)
+        caveats = excluded_lines(
+            pipeline.report_for(analysis, "month", "2026-08")["excluded"], "vi")
+        assert caveats, "August excludes both a currency and two pending rows"
+        body = build_report_body("vi", "month", "2026-08")["body"]
+        assert t("vi", "excluded.head") in body
+        for line in caveats:
+            assert line in body
+
+    def test_a_zero_carries_its_scope_on_its_own_line(self, analysis):
+        """"Phí: $0.00" and "phí €0.58" in one report is a contradiction.
+
+        Both are true — the first is USD-only — but the zero is read six lines
+        before the explanation, and by then the user has concluded there were no
+        fees. The currencies a bucket does not cover belong beside the bucket.
+        """
+        report = pipeline.report_for(analysis, "month", "2026-08")
+        excluded = report["excluded"]
+        assert report["totals"]["fees_cents"] == 0
+        assert "0.58" in bucket_scope_note("fees_cents", excluded, "vi")
+        assert "57.54" in bucket_scope_note("spend_cents", excluded, "vi")
+        # A bucket with nothing hidden behind it stays unannotated, or the note
+        # becomes noise and stops meaning anything where it does matter.
+        assert bucket_scope_note("payin_cents", excluded, "vi") == ""
+
+    def test_every_bucket_is_tracked_per_currency_not_just_spend_and_fees(
+            self, analysis):
+        """A EUR payin would have hidden behind "Tiền vào: $0.00" too.
+
+        `excluded` originally carried only spend and fees, so the other four
+        buckets had no way to declare a currency they did not cover.
+        """
+        excluded = pipeline.report_for(analysis, "month", "2026-08")["excluded"]
+        eur = next(row for row in excluded["other_currencies"]
+                   if row["currency"] == "EUR")
+        for bucket in BUCKET_KEYS:
+            assert bucket in eur, f"{bucket} cannot declare what it left out"
+
+    def test_the_transaction_count_is_counted_like_the_money(self, analysis):
+        """`txn_count` read two ledgers while the totals summed three.
+
+        It also ignored the currency and settlement filters every figure beside
+        it applies, so it reported rows the report had deliberately excluded.
+        """
+        report = pipeline.report_for(analysis, "month", "2026-08")
+        totals = report["totals"]
+        assert totals["txn_count"] < totals["all_txn_count"]
+        assert (totals["all_txn_count"] - totals["txn_count"]
+                == len(report["excluded"]["unsettled"])
+                + sum(row["txn_count"]
+                      for row in report["excluded"]["other_currencies"]))
 
 
 # ---------------------------------------- requirement 1: user-visible labels

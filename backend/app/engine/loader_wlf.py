@@ -32,7 +32,13 @@ Five things about this export need saying before the code makes sense.
    (`49,7` is forty-nine seventy), while transactions use a decimal point and
    thousands commas (`1,936.92 USD`).
 
-5. **The mailbox is a relay.** Every message was delivered by the sandbox
+5. **The wallet is credited only in USD but debited in EUR too.** The 22
+   FX-fee lines are EUR and nothing ever funds the wallet in EUR, so the ledger
+   implies a EUR balance that cannot exist. No exchange rate is supplied to
+   restate them, so they are kept as written and the gap is reported by
+   `unfunded_currency_notes` rather than converted at a guessed rate.
+
+6. **The mailbox is a relay.** Every message was delivered by the sandbox
    address `no-reply@wealify.com`; the sender the user is asked to trust —
    including the look-alike ones — is written in the body after
    `Người gửi gốc (CSV)`. Look-alike detection reads that, not the envelope.
@@ -568,6 +574,9 @@ def load_transactions(rows: list[dict[str, Any]],
             status=status,
             target_card_code=(code if note == "transfer_to_card" else ""),
             counterparty=_counterparty(reference),
+            # The wallet rows carry the same `fee` column as the card rows, and
+            # one of them fills it in. Dropping it lost a real charge.
+            fee_cents=_money(row.get("fee")),
         ))
 
     notes = [UNKNOWN_STATUS_NOTE.format(value=v) for v in sorted(unknown_status)]
@@ -583,13 +592,52 @@ def load_transactions(rows: list[dict[str, Any]],
     )
 
 
+WALLET_CURRENCY = "USD"
+
+
+def unfunded_currency_notes(events: list[WalletEvent],
+                            wallet_currency: str) -> list[str]:
+    """Report wallet balances the export cannot account for.
+
+    22 FX-fee lines carry `currency=EUR`, and the ledger holds no EUR credit
+    and no EUR opening balance, so reading them literally leaves the wallet
+    with -13.85 EUR it was never funded with. Something is missing: either the
+    EUR funding rows, or the conversion that turned these into the USD the
+    wallet actually paid.
+
+    Which one is not knowable from this export. `exchange_rate` reads
+    `NaN = 1 USD` on every row, so re-denominating the fees to USD would mean
+    asserting a 1:1 rate that nothing supports — the totals would gain a
+    figure that only looks more complete than the data behind it.
+
+    So the rows are left exactly as the export wrote them and the gap is
+    stated. `reports._excluded` is what stops that becoming a silent "$0.00 in
+    fees" for a user who did pay some.
+    """
+    funded = {e.currency for e in events if e.kind == "credit"}
+    funded.add(wallet_currency)
+    unfunded: dict[str, int] = {}
+    for event in events:
+        if event.currency in funded:
+            continue
+        unfunded[event.currency] = unfunded.get(event.currency, 0) + 1
+    return [
+        f"{TXN_CSV}: {count} wallet debit(s) are denominated in {code}, which "
+        f"this ledger is never credited in — the {code} funding rows are "
+        f"missing from the export, and no exchange rate is supplied to restate "
+        f"them in {wallet_currency}, so they are reported in {code} and left "
+        f"out of {wallet_currency} totals rather than converted at a guess"
+        for code, count in sorted(unfunded.items())
+    ]
+
+
 def build_wallet(parsed: _TxnFile, wallet_id: str) -> Wallet | None:
     if not parsed.wallet_events:
         return None
     first = min(e.when for e in parsed.wallet_events).date()
     return Wallet(
         wallet_id=wallet_id,
-        currency="USD",
+        currency=WALLET_CURRENCY,
         opening_balance_cents=parsed.opening_cents,
         opening_date=parsed.opening_day or first,
         # The export states no closing balance. Left unknown so the engine
@@ -826,8 +874,9 @@ def load_export_dataset(data_dir: Path, mailbox: str | None = None) -> Dataset:
     accounts = load_virtual_accounts(read_csv(data_dir / ACCOUNTS_CSV))
     txn_rows = read_csv(data_dir / TXN_CSV)
     parsed = load_transactions(txn_rows, cards)
-    wallet = build_wallet(parsed, wallet_id="WLF15-WALLET")
     notes = list(parsed.notes)
+    notes += unfunded_currency_notes(parsed.wallet_events, WALLET_CURRENCY)
+    wallet = build_wallet(parsed, wallet_id="WLF15-WALLET")
 
     # Taken from the raw rows, not from the parsed objects: the opening-balance
     # row is consumed into the wallet's opening figure and keeps no event of

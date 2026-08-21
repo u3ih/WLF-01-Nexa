@@ -4,16 +4,21 @@ a full account number, or anything CVV-shaped."""
 from __future__ import annotations
 
 import json
+import re
 
 import pytest
 
 from app.config import settings
-from app.engine.mask import has_unmasked_pan
+from app.engine.mask import has_unmasked_pan, scrub_text
 from app.store import store
 from conftest import requires_db
 
 ACCOUNT_NUMBER = "8830041926390"
 CARD_NUMBER = "4157889923144821"
+
+# A field name, not a substring: the journal legitimately carries the guardrail
+# label "unmasked_card_number", which is a report of a leak rather than one.
+LEAKY_FIELD = re.compile(r"(?<![a-z_])(cvv|cvc|security_code|card_number)(?![a-z_])")
 
 GET_ENDPOINTS = [
     "/api/health", "/api/summary", "/api/cashflow", "/api/subscriptions",
@@ -32,8 +37,8 @@ def test_endpoints_never_leak_raw_identifiers(client, path):
     body = response.text
     assert ACCOUNT_NUMBER not in body, path
     assert CARD_NUMBER not in body, path
-    for token in ("cvv", "cvc", "security_code", "card_number"):
-        assert token not in body.lower(), f"{path} exposes {token}"
+    leaked = LEAKY_FIELD.search(body.lower())
+    assert not leaked, f"{path} exposes {leaked.group(0) if leaked else ''}"
 
 
 def test_card_rows_show_only_the_last_four(client):
@@ -67,6 +72,28 @@ def test_audit_export_is_masked(client, db_ready):
         body = client.get(f"/api/audit/export?format={fmt}").text
         assert ACCOUNT_NUMBER not in body
         assert CARD_NUMBER not in body
+
+
+@pytest.mark.parametrize("text", [
+    "WCW082126621016", "TW082026186228", "WLF15-CD-0091",
+])
+def test_transaction_references_are_not_read_as_card_numbers(text):
+    """A reference whose tail is 12+ digits is not a PAN.
+
+    Treating one as a leak made the output guardrail reject a correct answer,
+    fall back to the template, and spend three model calls doing it.
+    """
+    assert not has_unmasked_pan(text)
+    assert scrub_text(text) == text
+
+
+@pytest.mark.parametrize("text", [
+    CARD_NUMBER, ACCOUNT_NUMBER, "4111 1111 1111 1111",
+    "4111-1111-1111-1111", f"Thẻ: {CARD_NUMBER}",
+])
+def test_a_bare_card_or_account_number_is_still_caught(text):
+    assert has_unmasked_pan(text)
+    assert text not in scrub_text(text)
 
 
 def test_no_cvv_field_exists_anywhere_in_the_models():
