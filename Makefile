@@ -5,7 +5,7 @@ PY := backend/.venv/bin/python
 .PHONY: help setup seed migrate import-dataset dev run test smoke build deploy deploy-down deploy-logs purge stop
 
 help:
-	@echo "make setup       install deps, start Postgres, generate sample data"
+	@echo "make setup       install deps, start Postgres, create DB, migrate, import data"
 	@echo "make dev         run backend (reload) + frontend on :8000 / :3000"
 	@echo "make run         run both in production mode"
 	@echo "make seed        regenerate the sample dataset and answer key"

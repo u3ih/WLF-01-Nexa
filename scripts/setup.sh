@@ -26,15 +26,36 @@ backend/.venv/bin/pip install -q --upgrade pip
 backend/.venv/bin/pip install -q -r backend/requirements.txt
 
 say "postgres"
+POSTGRES_READY=0
 if command -v docker >/dev/null && docker info >/dev/null 2>&1; then
   docker compose up -d postgres >/dev/null
   for _ in $(seq 1 40); do
-    if docker compose exec -T postgres pg_isready -U nexa -d nexa >/dev/null 2>&1; then
+    # Probe the default `postgres` database first: `nexa` may be the database
+    # we still need to create in an older volume.
+    if docker compose exec -T postgres pg_isready -U nexa -d postgres >/dev/null 2>&1; then
+      POSTGRES_READY=1
       say "postgres ready on localhost:55432"
       break
     fi
     sleep 1
   done
+  if [ "$POSTGRES_READY" = "1" ]; then
+    # POSTGRES_DB is only applied when the Postgres volume is initialized for
+    # the first time. Older volumes may contain the `nexa` role but not the
+    # application database, so reconcile that state explicitly.
+    DB_EXISTS=$(docker compose exec -T postgres psql -U nexa -d postgres \
+      -tAc "SELECT 1 FROM pg_database WHERE datname = 'nexa'" \
+      | tr -d '[:space:]')
+    if [ "$DB_EXISTS" != "1" ]; then
+      say "creating database nexa in the existing Postgres volume"
+      docker compose exec -T postgres createdb -U nexa nexa
+    fi
+
+    say "database migrations"
+    ./scripts/migrate.sh
+  else
+    warn "Postgres did not become ready — database setup skipped"
+  fi
 else
   warn "docker is not running — start Postgres yourself and set NEXA_DATABASE_URL"
 fi
@@ -44,6 +65,11 @@ if [ ! -f backend/data/sample/ground_truth.json ]; then
   (cd backend && .venv/bin/python -m data.generate)
 else
   say "sample data already present (make seed to regenerate)"
+fi
+
+if [ "$POSTGRES_READY" = "1" ]; then
+  say "dataset import"
+  ./scripts/import_dataset.sh
 fi
 
 say "frontend: npm install"
