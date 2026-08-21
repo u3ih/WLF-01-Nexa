@@ -1,12 +1,13 @@
 "use client";
 
 import {
-  Languages, Mail, MessageSquare, Monitor, Moon, PanelLeft, Plus, Sun,
+  Clock, Languages, Mail, MessageSquare, Monitor, Moon, PanelLeft, Plus, Sun, Trash2,
 } from "lucide-react";
+import { useState } from "react";
 
 import { BrandMark } from "@/components/BrandMark";
 import { ALL_QUESTIONS, ui } from "@/lib/i18n";
-import type { Lang, Summary } from "@/lib/types";
+import type { ChatSession, Lang, Summary } from "@/lib/types";
 
 export type ThemePref = "system" | "light" | "dark";
 
@@ -16,9 +17,22 @@ const THEME_KEY = {
   system: "theme_system", light: "theme_light", dark: "theme_dark",
 } as const;
 
+function timeAgo(dateStr: string, lang: Lang): string {
+  const date = new Date(dateStr);
+  const now = new Date();
+  const diffMs = now.getTime() - date.getTime();
+  const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+
+  if (diffDays === 0) return ui(lang, "today");
+  if (diffDays === 1) return ui(lang, "yesterday");
+  if (diffDays < 7) return ui(lang, "thisWeek");
+  return ui(lang, "earlier");
+}
+
 export function Sidebar({
   lang, onLang, theme, onTheme, summary, health, open, onHide,
   onAsk, onNewChat, onEmailReport, busy, busyDraft,
+  history, activeSessionId, onSelectHistory, onDeleteHistory, onShowHistoryModal,
 }: {
   lang: Lang;
   onLang: (lang: Lang) => void;
@@ -35,9 +49,16 @@ export function Sidebar({
   onEmailReport: () => void;
   busy: boolean;
   busyDraft: boolean;
+  history: ChatSession[];
+  activeSessionId: number | null;
+  onSelectHistory: (session: ChatSession) => void;
+  onDeleteHistory: (id: number) => void;
+  onShowHistoryModal: () => void;
 }) {
   const account = summary?.account;
   const ThemeIcon = THEME_ICON[theme];
+  const [historyOpen, setHistoryOpen] = useState(true);
+  const [confirmDeleteId, setConfirmDeleteId] = useState<number | null>(null);
 
   return (
     <aside
@@ -65,6 +86,78 @@ export function Sidebar({
       </button>
 
       <div className="rail-scroll">
+        {/* Chat History Section */}
+        <div className="rail-group">
+          <div className="rail-label rail-label-click"
+               onClick={() => setHistoryOpen(!historyOpen)}
+               role="button" tabIndex={0}
+               onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") setHistoryOpen(!historyOpen); }}>
+            <span>{ui(lang, "history")}</span>
+            <span className={`rail-chevron ${historyOpen ? "open" : ""}`}>&#9662;</span>
+          </div>
+          {historyOpen && (
+            <>
+              {history.length === 0 ? (
+                <div className="rail-empty">{ui(lang, "historyEmpty")}</div>
+              ) : (
+                <>
+                {history.slice(0, 8).map((session) => (
+                  <div
+                    key={session.id}
+                    className={`rail-item rail-history-item ${activeSessionId === session.id ? "active" : ""}`}
+                    onClick={() => onSelectHistory(session)}
+                    role="button" tabIndex={0}
+                    onKeyDown={(e) => { if (e.key === "Enter") onSelectHistory(session); }}
+                  >
+                    <Clock size={15} className="rail-history-icon" />
+                    <span className="rail-item-text rail-history-text">
+                      <span className="rail-history-title">{session.title || ui(lang, "newChat")}</span>
+                      <span className="rail-history-time">{timeAgo(session.updated_at, lang)}</span>
+                    </span>
+                    {confirmDeleteId === session.id ? (
+                      <button
+                        className="rail-history-delete confirm"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onDeleteHistory(session.id);
+                          setConfirmDeleteId(null);
+                        }}
+                        title={ui(lang, "deleteConfirm")}
+                        aria-label={ui(lang, "deleteConfirm")}
+                      >
+                        {ui(lang, "deleteHistory")}
+                      </button>
+                    ) : (
+                      <button
+                        className="rail-history-delete"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setConfirmDeleteId(session.id);
+                        }}
+                        title={ui(lang, "deleteHistory")}
+                        aria-label={ui(lang, "deleteHistory")}
+                      >
+                        <Trash2 size={13} />
+                      </button>
+                    )}
+                  </div>
+                ))}
+                {history.length > 8 && (
+                  <button
+                    className="rail-item rail-view-all"
+                    onClick={onShowHistoryModal}
+                  >
+                    <span className="rail-item-text">
+                      {lang === "vi" ? "Xem tất cả..." : "View all..."}
+                    </span>
+                  </button>
+                )}
+                </>
+              )}
+            </>
+          )}
+        </div>
+
         {/* One unlabelled list: the three refusal probes sit among the ordinary
             questions, because a product does not advertise what it will decline. */}
         <div className="rail-group">

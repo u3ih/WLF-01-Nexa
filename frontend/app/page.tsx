@@ -6,11 +6,12 @@ import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react
 import { ChatPane, type ChatHandle } from "@/components/ChatPane";
 import { DraftModal } from "@/components/DraftModal";
 import { Evidence } from "@/components/evidence/Evidence";
+import { HistoryModal } from "@/components/HistoryModal";
 import { Sidebar, type ThemePref } from "@/components/Sidebar";
 import { api } from "@/lib/api";
 import { ui } from "@/lib/i18n";
 import { viewForTool, type RefFocus } from "@/lib/refs";
-import type { ChatReply, Lang, Summary } from "@/lib/types";
+import type { ChatReply, ChatSession, Lang, Summary } from "@/lib/types";
 
 // Kept in step with the rail's breakpoint in globals.css: below this the rail
 // is an overlay, so opening one covers the conversation.
@@ -42,6 +43,58 @@ export default function Page() {
   const [drawerMounted, setDrawerMounted] = useState(false);
   const [focus, setFocus] = useState<RefFocus | null>(null);
   const chat = useRef<ChatHandle>(null);
+  const [historyModalOpen, setHistoryModalOpen] = useState(false);
+
+  // -- Chat history state -------------------------------------------------
+  const [history, setHistory] = useState<ChatSession[]>([]);
+  const [activeSessionId, setActiveSessionId] = useState<number | null>(null);
+  const [currentSessionId, setCurrentSessionId] = useState<number | null>(null);
+
+  // Load history on mount
+  useEffect(() => {
+    api.listHistory().then(setHistory).catch(() => { });
+  }, []);
+
+  // Refresh history after a new chat or change
+  function refreshHistory() {
+    api.listHistory().then(setHistory).catch(() => { });
+  }
+
+  function handleSelectHistory(session: ChatSession) {
+    setActiveSessionId(session.id);
+    api.getHistory(session.id).then((full) => {
+      chat.current?.loadTurns(full.messages);
+      setCurrentSessionId(session.id);
+    }).catch(() => { });
+  }
+
+  async function handleDeleteHistory(id: number) {
+    try {
+      await api.deleteHistory(id);
+      if (activeSessionId === id) {
+        setActiveSessionId(null);
+        setCurrentSessionId(null);
+        chat.current?.reset();
+      }
+      refreshHistory();
+    } catch { /* ignore */ }
+  }
+
+  async function saveCurrentChat() {
+    const turns = chat.current?.getTurns();
+    if (!turns || turns.length === 0) return;
+    const title = turns.find((t) => t.role === "user")?.text?.slice(0, 80) || "";
+    try {
+      if (currentSessionId) {
+        await api.updateHistory(currentSessionId, { messages: turns });
+      } else {
+        const created = await api.createHistory(title, lang, turns);
+        setCurrentSessionId(created.id);
+        setActiveSessionId(created.id);
+      }
+      refreshHistory();
+    } catch { /* ignore */ }
+  }
 
   // The inline script in layout.tsx already put the stored choice on <html>
   // before paint. This re-applies it because React Strict Mode remounts once in
@@ -93,6 +146,8 @@ export default function Page() {
       setDraft({ ...reply.data, body: reply.data.body_preview });
     }
     setRefreshToken((value) => value + 1);
+    // Save chat after each turn
+    setTimeout(saveCurrentChat, 100);
   }
 
   /** A reference in an answer opens the evidence view that lists it. The panel
@@ -147,10 +202,19 @@ export default function Page() {
         open={railOpen}
         onHide={() => setRailOpen(false)}
         onAsk={askFromRail}
-        onNewChat={() => chat.current?.reset()}
+        onNewChat={() => {
+          chat.current?.reset();
+          setActiveSessionId(null);
+          setCurrentSessionId(null);
+        }}
         onEmailReport={requestDraft}
         busy={chatBusy}
         busyDraft={busyDraft}
+        history={history}
+        activeSessionId={activeSessionId}
+        onSelectHistory={handleSelectHistory}
+        onDeleteHistory={handleDeleteHistory}
+        onShowHistoryModal={() => setHistoryModalOpen(true)}
       />
       <button
         className="scrim scrim-rail"
@@ -242,6 +306,19 @@ export default function Page() {
 
       {draft ? (
         <DraftModal lang={lang} draft={draft} onClose={() => setDraft(null)} />
+      ) : null}
+
+      {historyModalOpen ? (
+        <HistoryModal
+          lang={lang}
+          history={history}
+          onSelect={handleSelectHistory}
+          onDelete={(id) => {
+            handleDeleteHistory(id);
+            refreshHistory();
+          }}
+          onClose={() => setHistoryModalOpen(false)}
+        />
       ) : null}
     </div>
   );
