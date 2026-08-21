@@ -11,12 +11,15 @@ from __future__ import annotations
 import re
 from enum import Enum
 
+from .detect import requested_lang
+
 
 class SmallTalk(str, Enum):
     GREETING = "greeting"
     THANKS = "thanks"
     FAREWELL = "farewell"
     IDENTITY = "identity"
+    LANGUAGE = "language"
 
 
 # Anchored and length-capped on purpose: "chào bạn, tôi tiêu bao nhiêu tháng
@@ -44,12 +47,30 @@ PATTERNS: list[tuple[SmallTalk, re.Pattern[str]]] = [
 ]
 
 MAX_CHARS = 40
+# "Từ giờ hãy trả lời bằng tiếng Anh nhé" asks for nothing but a language, and
+# it does not fit in 40 characters. It gets its own cap so a language request
+# carrying a real question — "trả lời tiếng Anh, tháng này tôi tiêu bao nhiêu"
+# — still routes to a tool rather than being answered as chit-chat.
+LANG_MAX_CHARS = 70
+
+# Words that mean the message is asking for statement data as well as a
+# language, so it must not be treated as pure conversation.
+DATA_WORDS = re.compile(
+    r"(bao nhiêu|tiêu|chi|giao dịch|khoản|gói|đăng ký|phí|hoá đơn|hóa đơn|"
+    r"sao kê|tổng|thẻ|tài khoản|email|thư|tháng|tuần|how much|spend|spent|"
+    r"transaction|charge|subscription|fee|invoice|statement|total|card|"
+    r"account|month|week|show|list)", re.I)
 
 
 def classify(question: str) -> SmallTalk | None:
     """The small-talk kind, or None when this is a real question."""
     text = (question or "").strip()
-    if not text or len(text) > MAX_CHARS:
+    if not text:
+        return None
+    if (len(text) <= LANG_MAX_CHARS and requested_lang(text)
+            and not DATA_WORDS.search(text)):
+        return SmallTalk.LANGUAGE
+    if len(text) > MAX_CHARS:
         return None
     for kind, pattern in PATTERNS:
         if pattern.match(text):

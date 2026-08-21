@@ -156,6 +156,7 @@
   "smalltalk.greeting": "Hello. I'm Nexa, your statement review assistant. What would you like to look at — an overview, the items needing your confirmation, subscriptions, or a specific transaction?",
   "smalltalk.thanks": "You're welcome. Tell me if you want anything else checked.",
   "smalltalk.farewell": "Take care. Come back whenever you want the statement reviewed again.",
+  "smalltalk.language": "Of course — I'll answer in English from here on. What would you like to look at: an overview, the items needing your confirmation, or a specific transaction?",
   "smalltalk.identity": "I'm Nexa, a read-only review assistant for your Wealify statement. I reconcile the account, the card and your email receipts, and flag duplicates, double fees, subscriptions and anything that needs your confirmation. I cannot move money, cancel a plan or open a dispute — the decision is always yours.",
   "status.success": "Settled",
   "status.pending": "Pending",

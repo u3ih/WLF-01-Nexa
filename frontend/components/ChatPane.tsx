@@ -55,6 +55,11 @@ export const ChatPane = forwardRef<ChatHandle, {
   // handle is callable from outside, so neither can rely on the `turns` a
   // render happened to capture.
   const turnsRef = useRef<Turn[]>([]);
+  // A language the user asked for ("từ giờ trả lời bằng tiếng Anh"). The chat
+  // endpoint holds no session, so the request only survives the turn if it is
+  // remembered here and sent back with everything that follows. A ref, not
+  // state: ask() reads it across an await and from outside this render.
+  const replyLang = useRef<Lang | null>(null);
   // Bumped every time the thread is replaced — a new chat, or another session
   // opened. An answer that arrives after that was asked in a conversation the
   // user has left: showing it would put it under the wrong thread, and the
@@ -72,6 +77,8 @@ export const ChatPane = forwardRef<ChatHandle, {
    *  rather than landing in whatever is on screen by then. */
   function replaceThread(next: Turn[]) {
     epoch.current += 1;
+    // The language request belonged to the conversation being left.
+    replyLang.current = null;
     applyTurns(next);
     setError(null);
     // The request that was pending belongs to the previous thread and can no
@@ -90,6 +97,10 @@ export const ChatPane = forwardRef<ChatHandle, {
   }, [turns, busy]);
 
   useEffect(() => { onBusyChange(busy); }, [busy, onBusyChange]);
+
+  // Using the toggle is itself a language choice, and the newer one wins: a
+  // request made three questions ago must not override the switch just made.
+  useEffect(() => { replyLang.current = null; }, [lang]);
 
   // Grow the box with the question instead of scrolling a two-line window.
   // Measured twice on purpose: on the first commit the stylesheet is not
@@ -119,8 +130,11 @@ export const ChatPane = forwardRef<ChatHandle, {
     applyTurns([...turnsRef.current, { role: "user", text }]);
     setBusy(true);
     try {
-      const reply = await api.chat(text, lang);
+      const reply = await api.chat(text, lang, replyLang.current);
       if (asked !== epoch.current) return;
+      // Null means nobody has asked for a language yet, so a turn that carries
+      // nothing must not erase a request made earlier.
+      if (reply.reply_lang) replyLang.current = reply.reply_lang;
       const next: Turn[] = [
         ...turnsRef.current,
         { role: "assistant", text: reply.answer, reply },

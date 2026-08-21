@@ -62,7 +62,13 @@ export interface ChatReply {
   routed_by?: string;
   source: string;
   refused: boolean;
+  /** The language the answer is written in — detected from the question, so it
+   *  can differ from the UI toggle in `ui_lang`. */
   lang: Lang;
+  ui_lang?: Lang;
+  /** Set once the user has asked for a language; send it back with the next
+   *  question so the request outlives the turn it was made in. */
+  reply_lang?: Lang | null;
   disclaimer: string;
   labels: Record<string, string>;
   guardrail: {

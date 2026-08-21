@@ -156,6 +156,7 @@
   "smalltalk.greeting": "Chào bạn. Mình là Nexa, trợ lý rà soát sao kê. Bạn muốn xem gì — tổng quan, các khoản cần xác nhận, gói định kỳ, hay một giao dịch cụ thể?",
   "smalltalk.thanks": "Không có gì. Cần rà thêm gì bạn cứ nói.",
   "smalltalk.farewell": "Chào bạn nhé. Khi nào cần rà lại sao kê thì quay lại.",
+  "smalltalk.language": "Được, từ giờ mình trả lời bằng tiếng Việt. Bạn muốn xem gì: tổng quan, các khoản cần bạn xác nhận, hay một giao dịch cụ thể?",
   "smalltalk.identity": "Mình là Nexa, trợ lý rà soát sao kê Wealify. Mình chỉ đọc dữ liệu: đối chiếu tài khoản, thẻ và email, chỉ ra khoản trùng, phí kép, gói định kỳ và khoản cần bạn tự xác nhận. Mình không chuyển tiền, không huỷ gói, không mở khiếu nại — quyết định luôn là của bạn.",
   "status.success": "Thành công",
   "status.pending": "Đang chờ",
