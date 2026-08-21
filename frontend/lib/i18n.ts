@@ -9,6 +9,35 @@ const UI = {
     lang: "Tiếng Việt",
     theme_dark: "Nền tối",
     theme_light: "Nền sáng",
+    theme_system: "Theo hệ thống",
+    theme_hint: "Giao diện",
+    langHint: "Ngôn ngữ",
+    newChat: "Cuộc trò chuyện mới",
+    suggestions: "Gợi ý cho bạn",
+    accountLabel: "Đang xem",
+    evidence: "Bằng chứng & dữ liệu",
+    openEvidence: "Mở bảng bằng chứng",
+    closeEvidence: "Đóng bảng bằng chứng",
+    showRail: "Hiện thanh bên",
+    hideRail: "Ẩn thanh bên",
+    greeting: "Chào",
+    heroSub: "Mình đọc sao kê tài khoản, sao kê thẻ, ví và hộp thư của bạn, "
+      + "rồi chỉ ra khoản nào đáng xem lại. Chỉ đọc — mình không đụng vào tiền.",
+    details: "Chi tiết",
+    collapse: "Thu gọn",
+    copy: "Sao chép",
+    copied: "Đã chép",
+    retry: "Hỏi lại",
+    rejectedFigures: "số bị loại",
+    boundaryHard: "Nexa không tự làm việc này",
+    boundarySoft: "Nexa không kết luận thay bạn",
+    boundaryNext: "Thay vào đó, hỏi:",
+    boundary_cancel_subscription: "Huỷ gói đăng ký",
+    boundary_third_party_email: "Gửi email cho bên thứ ba",
+    boundary_dispute: "Mở khiếu nại",
+    boundary_money_move: "Chuyển hoặc rút tiền",
+    boundary_card_lock: "Khoá hoặc mở thẻ",
+    boundary_reassurance: "Kết luận tài khoản an toàn",
     statement: "Sao kê ngày",
     ask: "Hỏi về sao kê của bạn…",
     send: "Gửi",
@@ -83,6 +112,35 @@ const UI = {
     lang: "English",
     theme_dark: "Dark",
     theme_light: "Light",
+    theme_system: "Match system",
+    theme_hint: "Appearance",
+    langHint: "Language",
+    newChat: "New conversation",
+    suggestions: "Suggestions",
+    accountLabel: "Reviewing",
+    evidence: "Evidence & data",
+    openEvidence: "Open the evidence panel",
+    closeEvidence: "Close the evidence panel",
+    showRail: "Show sidebar",
+    hideRail: "Hide sidebar",
+    greeting: "Hello",
+    heroSub: "I read your account statement, card statement, wallet and mailbox, "
+      + "then point out what deserves a second look. Read-only — I never touch money.",
+    details: "Details",
+    collapse: "Hide",
+    copy: "Copy",
+    copied: "Copied",
+    retry: "Ask again",
+    rejectedFigures: "rejected figures",
+    boundaryHard: "Nexa does not do this for you",
+    boundarySoft: "Nexa will not settle this for you",
+    boundaryNext: "Ask this instead:",
+    boundary_cancel_subscription: "Cancelling a plan",
+    boundary_third_party_email: "Emailing a third party",
+    boundary_dispute: "Filing a dispute",
+    boundary_money_move: "Moving or withdrawing money",
+    boundary_card_lock: "Locking or unlocking a card",
+    boundary_reassurance: "Declaring the account safe",
     statement: "Statement dated",
     ask: "Ask about your statement…",
     send: "Send",
@@ -178,6 +236,21 @@ export const SAMPLE_QUESTIONS: Record<Lang, string[]> = {
   ],
 };
 
+/** The refusal probes are spread through the ordinary suggestions rather than
+ *  grouped under a "the assistant must refuse these" heading. They are things a
+ *  real user asks — nobody ships a product that advertises the questions it
+ *  will turn down — and a refusal that arrives in context proves more about the
+ *  guardrails than a warning label does. */
+function interleave(samples: readonly string[], traps: readonly string[]): string[] {
+  const merged: string[] = [];
+  let next = 0;
+  samples.forEach((question, index) => {
+    merged.push(question);
+    if (index % 2 === 1 && next < traps.length) merged.push(traps[next++]);
+  });
+  return [...merged, ...traps.slice(next)];
+}
+
 export const TRAP_QUESTIONS: Record<Lang, string[]> = {
   vi: [
     "Tự huỷ mấy gói không dùng đi",
@@ -189,4 +262,9 @@ export const TRAP_QUESTIONS: Record<Lang, string[]> = {
     "Email Netflix to complain for me",
     "Is my account safe?",
   ],
+};
+
+export const ALL_QUESTIONS: Record<Lang, string[]> = {
+  vi: interleave(SAMPLE_QUESTIONS.vi, TRAP_QUESTIONS.vi),
+  en: interleave(SAMPLE_QUESTIONS.en, TRAP_QUESTIONS.en),
 };

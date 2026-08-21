@@ -1,27 +1,61 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { PanelLeft, Table2, X } from "lucide-react";
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 
-import { ChatPane } from "@/components/ChatPane";
+import { ChatPane, type ChatHandle } from "@/components/ChatPane";
 import { DraftModal } from "@/components/DraftModal";
 import { Evidence } from "@/components/Evidence";
+import { Sidebar, type ThemePref } from "@/components/Sidebar";
 import { api } from "@/lib/api";
 import { ui } from "@/lib/i18n";
 import type { ChatReply, Lang, Summary } from "@/lib/types";
 
+// Kept in step with the rail's breakpoint in globals.css: below this the rail
+// is an overlay, so opening one covers the conversation.
+const NARROW = "(max-width: 900px)";
+const THEME_KEY = "nexa-theme";
+
+function applyTheme(choice: ThemePref) {
+  const root = document.documentElement;
+  if (choice === "system") root.removeAttribute("data-theme");
+  else root.setAttribute("data-theme", choice);
+}
+
 export default function Page() {
   const [lang, setLang] = useState<Lang>("vi");
-  const [theme, setTheme] = useState<"dark" | "light">("dark");
+  const [theme, setTheme] = useState<ThemePref>("system");
   const [summary, setSummary] = useState<Summary | null>(null);
   const [health, setHealth] = useState<any>(null);
   const [error, setError] = useState<string | null>(null);
   const [refreshToken, setRefreshToken] = useState(0);
   const [draft, setDraft] = useState<any>(null);
   const [busyDraft, setBusyDraft] = useState(false);
+  const [chatBusy, setChatBusy] = useState(false);
+  // null = "not chosen yet", which CSS reads as open on desktop and closed on a
+  // phone. Picking a boolean here would need the viewport width during SSR.
+  const [railOpen, setRailOpen] = useState<boolean | null>(null);
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  const chat = useRef<ChatHandle>(null);
 
-  useEffect(() => {
-    document.documentElement.dataset.theme = theme;
-  }, [theme]);
+  // The inline script in layout.tsx already put the stored choice on <html>
+  // before paint. This re-applies it because React Strict Mode remounts once in
+  // development and resets the attributes on <html>, dropping what the script
+  // set; before paint rather than after, so the reset never becomes a flash.
+  useLayoutEffect(() => {
+    let stored: string | null = null;
+    try { stored = localStorage.getItem(THEME_KEY); } catch { /* private mode */ }
+    const choice: ThemePref =
+      stored === "light" || stored === "dark" ? stored : "system";
+    applyTheme(choice);
+    setTheme(choice);
+  }, []);
+
+  function chooseTheme(next: ThemePref) {
+    setTheme(next);
+    applyTheme(next);
+    try { localStorage.setItem(THEME_KEY, next); } catch { /* private mode */ }
+  }
 
   useEffect(() => {
     document.documentElement.lang = lang;
@@ -63,85 +97,113 @@ export default function Page() {
     }
   }
 
-  const account = summary?.account;
+  // While the choice is still null the rail is open on a desktop and closed on
+  // a phone, so which way this toggles can only be settled at click time.
+  function toggleRail() {
+    setRailOpen(railOpen === null
+      ? window.matchMedia(NARROW).matches
+      : !railOpen);
+  }
+
+  function askFromRail(question: string) {
+    chat.current?.ask(question);
+    if (railOpen !== false && window.matchMedia(NARROW).matches) setRailOpen(false);
+  }
 
   return (
-    <div className="shell">
-      {/* Mandated notice: always visible, no dismiss control. */}
-      <div className="disclaimer">
-        <strong>{ui(lang, "disclaimerLabel")}</strong>
-        <span>{summary?.disclaimer ?? ""}</span>
+    <div className="app">
+      <Sidebar
+        lang={lang}
+        onLang={setLang}
+        theme={theme}
+        onTheme={chooseTheme}
+        summary={summary}
+        health={health}
+        open={railOpen}
+        onHide={() => setRailOpen(false)}
+        onAsk={askFromRail}
+        onNewChat={() => chat.current?.reset()}
+        onEmailReport={requestDraft}
+        busy={chatBusy}
+        busyDraft={busyDraft}
+      />
+      <button
+        className="scrim scrim-rail"
+        onClick={() => setRailOpen(false)}
+        aria-label={ui(lang, "hideRail")}
+      />
+
+      <div className="workspace">
+        <div className="conversation">
+          <header className="convo-head">
+            <button
+              className="icon-btn rail-toggle"
+              onClick={toggleRail}
+              // CSS hides this button whenever the rail is on screen, so from
+              // the reader's side it only ever means "show".
+              title={ui(lang, "showRail")}
+              aria-label={ui(lang, "showRail")}
+            >
+              <PanelLeft size={18} />
+            </button>
+            <div className="convo-title">
+              <span>{ui(lang, "tagline")}</span>
+            </div>
+            <button
+              className="icon-btn"
+              onClick={() => setDrawerOpen(!drawerOpen)}
+              aria-pressed={drawerOpen}
+              title={ui(lang, drawerOpen ? "closeEvidence" : "openEvidence")}
+              aria-label={ui(lang, drawerOpen ? "closeEvidence" : "openEvidence")}
+            >
+              <Table2 size={18} />
+            </button>
+          </header>
+
+          {error ? <p className="err" style={{ padding: "8px 16px" }}>{error}</p> : null}
+
+          <ChatPane
+            ref={chat}
+            lang={lang}
+            ownerName={summary?.account?.owner_name}
+            disclaimer={summary?.disclaimer ?? ""}
+            fxNote={summary?.fx?.note}
+            onReply={handleReply}
+            onBusyChange={setChatBusy}
+          />
+        </div>
+
+        {drawerOpen ? (
+          <>
+            <button
+              className="scrim scrim-drawer"
+              onClick={() => setDrawerOpen(false)}
+              aria-label={ui(lang, "closeEvidence")}
+            />
+            <section className="drawer">
+              <div className="drawer-head">
+                <span className="drawer-title">{ui(lang, "evidence")}</span>
+                <button
+                  className="icon-btn"
+                  onClick={() => setDrawerOpen(false)}
+                  title={ui(lang, "closeEvidence")}
+                  aria-label={ui(lang, "closeEvidence")}
+                >
+                  <X size={18} />
+                </button>
+              </div>
+              <div className="drawer-body">
+                <Evidence
+                  lang={lang}
+                  summary={summary}
+                  refreshToken={refreshToken}
+                  onScan={() => setRefreshToken((value) => value + 1)}
+                />
+              </div>
+            </section>
+          </>
+        ) : null}
       </div>
-
-      <header className="topbar">
-        <div className="brand">
-          <span className="brand-mark">N</span>
-          <span>
-            <div className="brand-name">Nexa</div>
-            <div className="brand-sub">{ui(lang, "tagline")}</div>
-          </span>
-        </div>
-
-        <div className="topbar-meta">
-          {account ? (
-            <>
-              <span className="chip">
-                <span className="k">{account.owner_name}</span>
-                <span className="v mono">{account.account_masked}</span>
-                <span className="v mono">{account.card_masked}</span>
-              </span>
-              <span className="chip">
-                <span className="k">{ui(lang, "statement")}</span>
-                <span className="v mono">{account.statement_date}</span>
-              </span>
-            </>
-          ) : null}
-          <span className="chip" title={health?.llm?.detail}>
-            <span className="k">{ui(lang, "model")}</span>
-            <span className="v mono">
-              {health?.llm?.available ? health.llm.model : ui(lang, "offline")}
-            </span>
-          </span>
-          <button className="btn btn-sm" onClick={requestDraft} disabled={busyDraft}>
-            {ui(lang, "emailReport")}
-          </button>
-          <button
-            className="btn btn-sm"
-            onClick={() => setLang(lang === "vi" ? "en" : "vi")}
-          >
-            {lang === "vi" ? "EN" : "VI"}
-          </button>
-          <button
-            className="btn btn-sm btn-ghost"
-            onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-          >
-            {theme === "dark" ? ui(lang, "theme_light") : ui(lang, "theme_dark")}
-          </button>
-        </div>
-      </header>
-
-      {error ? <p className="err" style={{ padding: "8px 16px" }}>{error}</p> : null}
-
-      <main className="main">
-        <ChatPane lang={lang} onReply={handleReply} />
-        <Evidence
-          lang={lang}
-          summary={summary}
-          refreshToken={refreshToken}
-          onScan={() => setRefreshToken((value) => value + 1)}
-        />
-      </main>
-
-      <footer className="footer">
-        <div>{summary?.fx?.note}</div>
-        <div style={{ marginTop: 4 }}>
-          {summary
-            ? `${summary.counts.account_txns} + ${summary.counts.card_txns} `
-              + `rows · ${summary.counts.emails} emails · `
-              + `${summary.counts.findings} findings · sample data only`
-            : ""}
-        </div>
-      </footer>
 
       {draft ? (
         <DraftModal lang={lang} draft={draft} onClose={() => setDraft(null)} />

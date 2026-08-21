@@ -1,9 +1,15 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import {
+  ArrowUp, CreditCard, Receipt, RefreshCcw, Search,
+} from "lucide-react";
+import {
+  forwardRef, useEffect, useImperativeHandle, useRef, useState,
+} from "react";
 
+import { AssistantTurn } from "@/components/Message";
 import { api } from "@/lib/api";
-import { SAMPLE_QUESTIONS, TRAP_QUESTIONS, ui } from "@/lib/i18n";
+import { SAMPLE_QUESTIONS, ui } from "@/lib/i18n";
 import type { ChatReply, Lang } from "@/lib/types";
 
 interface Turn {
@@ -12,42 +18,75 @@ interface Turn {
   reply?: ChatReply;
 }
 
-const PROVENANCE: Record<string, string> = {
-  llm: "prov_llm",
-  llm_retry: "prov_llm_retry",
-  deterministic: "prov_deterministic",
-  deterministic_fallback: "prov_deterministic_fallback",
-  llm_unavailable: "prov_llm_unavailable",
-  llm_error: "prov_llm_error",
-  smalltalk_canned: "prov_smalltalk_canned",
-  guardrail: "prov_guardrail",
-};
+export interface ChatHandle {
+  ask: (question: string) => void;
+  reset: () => void;
+}
 
-export function ChatPane({
-  lang,
-  onReply,
-}: {
+const SUGGEST_ICONS = [Receipt, Search, CreditCard, RefreshCcw];
+
+/** "MINH ANH NGUYEN" reads as shouting in a greeting. */
+function titleCase(name: string): string {
+  return name.toLocaleLowerCase().replace(/(^|\s)(\p{L})/gu,
+    (_, gap: string, letter: string) => gap + letter.toLocaleUpperCase());
+}
+
+export const ChatPane = forwardRef<ChatHandle, {
   lang: Lang;
+  ownerName: string | undefined;
+  disclaimer: string;
+  fxNote: string | undefined;
   onReply: (reply: ChatReply) => void;
-}) {
+  onBusyChange: (busy: boolean) => void;
+}>(function ChatPane(
+  { lang, ownerName, disclaimer, fxNote, onReply, onBusyChange }, ref,
+) {
   const [turns, setTurns] = useState<Turn[]>([]);
   const [draft, setDraft] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const logRef = useRef<HTMLDivElement>(null);
+  const [noticeOpen, setNoticeOpen] = useState(false);
+  const threadRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLTextAreaElement>(null);
   // Vietnamese input goes through an IME. Enter pressed mid-composition is the
   // IME committing a syllable, not the user sending: submitting there clears
   // the box, and the composition that lands afterwards types the syllable back
   // into the empty box. Track composition and let the IME finish first.
   const composing = useRef(false);
+  // ask() is reachable from the sidebar, so it must not close over stale state.
+  const busyRef = useRef(false);
 
   useEffect(() => {
-    logRef.current?.scrollTo({ top: logRef.current.scrollHeight, behavior: "smooth" });
+    // Not on the empty state: scrolling to the bottom there would push the
+    // greeting and the suggestion cards off the top of the screen.
+    if (turns.length === 0) return;
+    threadRef.current?.scrollTo({
+      top: threadRef.current.scrollHeight, behavior: "smooth",
+    });
   }, [turns, busy]);
+
+  useEffect(() => { onBusyChange(busy); }, [busy, onBusyChange]);
+
+  // Grow the box with the question instead of scrolling a two-line window.
+  // Measured twice on purpose: on the first commit the stylesheet is not
+  // necessarily applied yet, and scrollHeight read against an unstyled box
+  // reports the 180px cap. The extra frame re-measures once styling has landed.
+  useEffect(() => {
+    const element = inputRef.current;
+    if (!element) return;
+    const fit = () => {
+      element.style.height = "auto";
+      element.style.height = `${Math.min(element.scrollHeight, 180)}px`;
+    };
+    fit();
+    const frame = requestAnimationFrame(fit);
+    return () => cancelAnimationFrame(frame);
+  }, [draft]);
 
   async function ask(question: string) {
     const text = question.trim();
-    if (!text || busy) return;
+    if (!text || busyRef.current) return;
+    busyRef.current = true;
     setError(null);
     setDraft("");
     setTurns((previous) => [...previous, { role: "user", text }]);
@@ -62,137 +101,158 @@ export function ChatPane({
     } catch (exception) {
       setError(exception instanceof Error ? exception.message : String(exception));
     } finally {
+      busyRef.current = false;
       setBusy(false);
     }
   }
 
+  /** Drops the answer and re-sends the question above it, so "ask again" leaves
+   *  one exchange rather than stacking a near-duplicate underneath. */
+  function retry(index: number) {
+    const question = turns[index - 1];
+    if (!question || question.role !== "user" || busyRef.current) return;
+    setTurns((previous) => previous.slice(0, index - 1));
+    ask(question.text);
+  }
+
+  useImperativeHandle(ref, () => ({
+    ask,
+    reset: () => {
+      setTurns([]);
+      setDraft("");
+      setError(null);
+    },
+  }));
+
+  // The mandated notice never leaves the screen; the rest of it is one click
+  // away rather than a permanent banner across the top of the product.
+  const cut = disclaimer.indexOf(". ");
+  const noticeLead = cut > 0 ? disclaimer.slice(0, cut + 1) : disclaimer;
+  const noticeRest = cut > 0 ? disclaimer.slice(cut + 1).trim() : "";
+
   return (
-    <section className="card chat">
-      <div className="card-head">
-        <span className="card-title">Nexa</span>
-        <span className="badge badge-neutral">{ui(lang, "readOnly")}</span>
-      </div>
-
-      <div className="chat-log" ref={logRef}>
-        {turns.length === 0 ? (
-          <p className="empty">{ui(lang, "ask")}</p>
-        ) : null}
-
-        {turns.map((turn, index) => (
-          <div
-            className={turn.role === "user" ? "msg msg-user" : "msg"}
-            key={index}
-          >
-            <div className="bubble">{turn.text}</div>
-            {turn.reply ? (
-              <div className="msg-meta">
-                {turn.reply.refused ? (
-                  <span className="badge badge-confirm">
-                    {ui(lang, "prov_guardrail")}
-                  </span>
-                ) : null}
-                <span className="chip">
-                  <span className="k">{ui(lang, "provenance")}</span>
-                  <span className="v">
-                    {ui(lang, (PROVENANCE[turn.reply.source] ?? "prov_deterministic") as never)}
-                  </span>
-                </span>
-                {turn.reply.tool ? (
-                  <span className="chip">
-                    <span className="k">tool</span>
-                    <span className="v mono">{turn.reply.tool}</span>
-                  </span>
-                ) : null}
-                {turn.reply.checks?.ungrounded_numbers?.length ? (
-                  <span className="badge badge-nodata" title="Figures the model
-                    produced that were not in the engine output were rejected.">
-                    rejected: {turn.reply.checks.ungrounded_numbers.join(", ")}
-                  </span>
-                ) : null}
+    <>
+      <div className="thread" ref={threadRef}>
+        <div className="thread-inner">
+          {turns.length === 0 ? (
+            <div className="hero">
+              <h1 className="hero-title">
+                {ui(lang, "greeting")}
+                {ownerName ? ` ${titleCase(ownerName)}` : ""}
+              </h1>
+              <p className="hero-sub">{ui(lang, "heroSub")}</p>
+              <div className="suggest-grid">
+                {SAMPLE_QUESTIONS[lang].slice(0, 4).map((question, index) => {
+                  const Icon = SUGGEST_ICONS[index];
+                  return (
+                    <button
+                      className="suggest"
+                      key={question}
+                      onClick={() => ask(question)}
+                      disabled={busy}
+                    >
+                      <span>{question}</span>
+                      <span className="suggest-icon"><Icon size={15} /></span>
+                    </button>
+                  );
+                })}
               </div>
-            ) : null}
-          </div>
-        ))}
-
-        {busy ? (
-          <div className="msg">
-            <div className="bubble">
-              <span className="spinner" /> {ui(lang, "sending")}…
             </div>
+          ) : null}
+
+          {turns.map((turn, index) =>
+            turn.role === "user" ? (
+              <div className="turn turn-user" key={index}>
+                <div className="bubble">{turn.text}</div>
+              </div>
+            ) : (
+              <div className="turn turn-ai" key={index}>
+                <span className="ai-mark">N</span>
+                <AssistantTurn
+                  lang={lang}
+                  text={turn.text}
+                  reply={turn.reply}
+                  onAsk={ask}
+                  onRetry={() => retry(index)}
+                />
+              </div>
+            ))}
+
+          {busy ? (
+            <div className="turn turn-ai">
+              <span className="ai-mark">N</span>
+              <div className="ai-body">
+                <div className="thinking">
+                  <span className="spinner" /> {ui(lang, "sending")}…
+                </div>
+              </div>
+            </div>
+          ) : null}
+          {error ? <p className="err">{error}</p> : null}
+        </div>
+      </div>
+
+      <div className="composer-wrap">
+        <div className="composer-inner">
+          <div className="composer">
+            <textarea
+              ref={inputRef}
+              rows={1}
+              value={draft}
+              placeholder={ui(lang, "ask")}
+              onChange={(event) => setDraft(event.target.value)}
+              onCompositionStart={() => {
+                composing.current = true;
+              }}
+              onBlur={() => {
+                // compositionend cannot be relied on if focus leaves mid-syllable,
+                // and a flag stuck at true would swallow Enter for good.
+                composing.current = false;
+              }}
+              onCompositionEnd={(event) => {
+                composing.current = false;
+                // The value that lands with the composition is authoritative:
+                // React's onChange for it can arrive after this event.
+                setDraft((event.target as HTMLTextAreaElement).value);
+              }}
+              onKeyDown={(event) => {
+                if (event.key !== "Enter" || event.shiftKey) return;
+                // keyCode 229 is the pre-standard signal for the same thing.
+                if (composing.current || event.nativeEvent.isComposing
+                    || event.keyCode === 229) {
+                  return;
+                }
+                event.preventDefault();
+                ask(draft);
+              }}
+            />
+            <button
+              className="send"
+              onClick={() => ask(draft)}
+              disabled={busy || !draft.trim()}
+              title={ui(lang, "send")}
+              aria-label={ui(lang, "send")}
+            >
+              {busy ? <span className="spinner" /> : <ArrowUp size={19} />}
+            </button>
           </div>
-        ) : null}
-        {error ? <p className="err">{error}</p> : null}
-      </div>
 
-      <div className="quick">
-        <span className="chip">
-          <span className="k">{ui(lang, "quickTitle")}</span>
-        </span>
-        {SAMPLE_QUESTIONS[lang].map((question) => (
-          <button
-            className="btn btn-sm"
-            key={question}
-            onClick={() => ask(question)}
-            disabled={busy}
-          >
-            {question.length > 46 ? `${question.slice(0, 46)}…` : question}
-          </button>
-        ))}
+          <p className="notice">
+            <strong>{ui(lang, "disclaimerLabel")}</strong> {noticeLead}
+            {noticeRest || fxNote ? (
+              <button className="notice-more" onClick={() => setNoticeOpen(!noticeOpen)}>
+                {noticeOpen ? ui(lang, "collapse") : ui(lang, "details")}
+              </button>
+            ) : null}
+          </p>
+          {noticeOpen ? (
+            <p className="notice notice-full">
+              {noticeRest}
+              {fxNote ? <><br />{fxNote}</> : null}
+            </p>
+          ) : null}
+        </div>
       </div>
-      <div className="quick">
-        <span className="chip">
-          <span className="k">{ui(lang, "trapTitle")}</span>
-        </span>
-        {TRAP_QUESTIONS[lang].map((question) => (
-          <button
-            className="btn btn-sm quick-trap"
-            key={question}
-            onClick={() => ask(question)}
-            disabled={busy}
-          >
-            {question}
-          </button>
-        ))}
-      </div>
-
-      <div className="chat-input">
-        <textarea
-          value={draft}
-          placeholder={ui(lang, "ask")}
-          onChange={(event) => setDraft(event.target.value)}
-          onCompositionStart={() => {
-            composing.current = true;
-          }}
-          onBlur={() => {
-            // compositionend cannot be relied on if focus leaves mid-syllable,
-            // and a flag stuck at true would swallow Enter for good.
-            composing.current = false;
-          }}
-          onCompositionEnd={(event) => {
-            composing.current = false;
-            // The value that lands with the composition is authoritative:
-            // React's onChange for it can arrive after this event.
-            setDraft((event.target as HTMLTextAreaElement).value);
-          }}
-          onKeyDown={(event) => {
-            if (event.key !== "Enter" || event.shiftKey) return;
-            // keyCode 229 is the pre-standard signal for the same thing.
-            if (composing.current || event.nativeEvent.isComposing
-                || event.keyCode === 229) {
-              return;
-            }
-            event.preventDefault();
-            ask(draft);
-          }}
-        />
-        <button
-          className="btn btn-primary"
-          onClick={() => ask(draft)}
-          disabled={busy || !draft.trim()}
-        >
-          {busy ? ui(lang, "sending") : ui(lang, "send")}
-        </button>
-      </div>
-    </section>
+    </>
   );
-}
+});
