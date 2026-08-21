@@ -146,13 +146,24 @@ def summarize(tool: str, result: dict[str, Any], lang: str) -> str:
                   f"card transfers matched a card load, "
                   f"{summary['not_on_card']} not on the card.")]
         if wallet:
-            lines.append((f"Ví: sổ ví cộng ra {fmt_display(wallet['computed_cents'], lang)}, "
-                          f"ví báo {fmt_display(wallet['reported_cents'], lang)} — lệch "
-                          f"{fmt_display(abs(wallet['gap_cents']), lang)}."
-                          if vi else
-                          f"Wallet: ledger totals {fmt_display(wallet['computed_cents'], lang)}, "
-                          f"wallet reports {fmt_display(wallet['reported_cents'], lang)} — gap "
-                          f"{fmt_display(abs(wallet['gap_cents']), lang)}."))
+            computed = fmt_display(wallet["computed_cents"], lang)
+            # No reported closing balance -> no gap to state. Saying so beats
+            # printing a figure the statement never gave.
+            if wallet.get("reported_cents") is None:
+                lines.append((f"Ví: sổ ví cộng ra {computed}; ví không báo số dư "
+                              f"chốt nên chưa thể kết luận có lệch hay không."
+                              if vi else
+                              f"Wallet: ledger totals {computed}; the wallet "
+                              f"reports no closing balance, so no gap can be "
+                              f"asserted."))
+            else:
+                reported = fmt_display(wallet["reported_cents"], lang)
+                gap = fmt_display(abs(wallet["gap_cents"]), lang)
+                lines.append((f"Ví: sổ ví cộng ra {computed}, ví báo {reported} "
+                              f"— lệch {gap}."
+                              if vi else
+                              f"Wallet: ledger totals {computed}, wallet reports "
+                              f"{reported} — gap {gap}."))
         if result.get("findings"):
             lines.append("")
             lines += _finding_lines(result["findings"], lang)
