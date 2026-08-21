@@ -24,7 +24,7 @@ STATEMENT_DATE = date(2026, 8, 5)
 PERIOD_START = date(2025, 7, 1)
 
 OWNER_NAME = "MINH ANH NGUYEN"
-OWNER_EMAIL = "minhanh.demo@example.com"
+OWNER_EMAIL = "vaithieu0605@gmail.com"
 ACCOUNT_NUMBER = "8830041926390"      # synthetic
 CARD_NUMBER = "4157889923144821"      # synthetic, never displayed unmasked
 WALLET_ID = "WLT-DEMO-4471"

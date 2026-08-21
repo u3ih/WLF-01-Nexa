@@ -1,8 +1,8 @@
 """Nexa backend — WLF-01 statement review assistant.
 
 Read-only by construction: no route in this application can move money, cancel
-a subscription, open a dispute or lock a card, and the only outbound email goes
-to the account owner after an explicit confirmation.
+a subscription, open a dispute or lock a card, and report email goes to the
+configured notification address after an explicit confirmation.
 """
 
 from __future__ import annotations

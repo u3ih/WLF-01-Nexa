@@ -58,5 +58,7 @@ export const api = {
       confirmed: true,
       recipient,
     }),
+  testSmtp: (lang: Lang, recipient?: string) =>
+    post<any>("/api/report/smtp-test", { lang, recipient }),
   purge: () => post<any>("/api/audit/purge", {}),
 };

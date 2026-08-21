@@ -6,8 +6,7 @@ import { api } from "@/lib/api";
 import { ui } from "@/lib/i18n";
 import type { Lang } from "@/lib/types";
 
-/** Draft -> confirm -> send. The recipient field is fixed to the account owner
- *  and is not editable, because the backend refuses any other address. */
+/** Draft -> confirm -> send. The recipient is fixed by backend configuration. */
 export function DraftModal({
   lang, draft, onClose,
 }: {

@@ -1,10 +1,11 @@
 """Report drafting and self-notification.
 
 Two hard rules live here, enforced in code rather than in a prompt:
-  1. a report can only ever be addressed to the account owner's own address;
-  2. nothing is sent until the user confirms a specific draft token.
+  1. report emails always go to the configured notification address;
+  2. report emails are sent only after the user confirms a specific draft token.
 Letters aimed at a merchant or the bank are produced as drafts only — this
-module has no code path that sends them.
+module has no code path that sends them. The SMTP test path sends only a small
+configuration check to the same notification address.
 """
 
 from __future__ import annotations
@@ -12,8 +13,7 @@ from __future__ import annotations
 import secrets
 from datetime import date, datetime
 from email.message import EmailMessage
-from email.utils import format_datetime
-from pathlib import Path
+from email.utils import format_datetime, make_msgid
 from typing import Any
 
 from .config import settings
@@ -24,25 +24,23 @@ from .engine.render import disclaimer, render_findings, t
 from .store import store
 
 
-class OwnerOnlyError(PermissionError):
-    """Raised when anything tries to send to an address that is not the owner."""
-
-
 class DraftError(ValueError):
     pass
 
 
-def assert_owner(recipient: str) -> str:
-    owner = (settings.owner_email or "").strip().lower()
-    target = (recipient or "").strip().lower()
-    if not owner:
-        raise OwnerOnlyError("no owner address is configured")
-    if target != owner:
-        raise OwnerOnlyError(
-            f"refused: reports may only be sent to the account owner "
-            f"({owner}); requested {target or 'empty address'}"
-        )
-    return owner
+class MailConfigError(RuntimeError):
+    pass
+
+
+class MailDeliveryError(RuntimeError):
+    pass
+
+
+def mail_recipient() -> str:
+    target = (settings.mail_to or "").strip().lower()
+    if not target:
+        raise MailConfigError("missing mail recipient; set NEXA_MAIL_TO")
+    return target
 
 
 def build_report_body(lang: str, period_kind: str = "month",
@@ -139,72 +137,117 @@ def create_draft(lang: str = "vi", period_kind: str = "month",
                  period_key: str | None = None,
                  recipient: str | None = None) -> dict[str, Any]:
     """Prepare a report and park it. Nothing is sent by this call."""
-    owner = assert_owner(recipient or settings.owner_email)
+    target = mail_recipient()
     content = build_report_body(lang, period_kind, period_key)
     token = secrets.token_urlsafe(24)
     draft_id = store.create_draft(
-        recipient=owner, subject=content["subject"], body=content["body"],
+        recipient=target, subject=content["subject"], body=content["body"],
         period_key=content["period_key"], lang=lang, token=token,
-        delivery=settings.mail_mode,
+        delivery="smtp",
     )
-    store.log("report_draft_created", reason=f"draft {draft_id} for {owner}",
+    store.log("report_draft_created", reason=f"draft {draft_id} for {target}",
               detail={"period": content["period_key"], "lang": lang,
-                      "delivery": settings.mail_mode})
+                      "delivery": "smtp"})
     return {
         "draft_id": draft_id,
         "confirm_token": token,
-        "recipient": owner,
+        "recipient": target,
         "subject": content["subject"],
         "body": content["body"],
         "period_key": content["period_key"],
         "period_label": content["period_label"],
         "counts": content["counts"],
-        "confirm_prompt": t(lang, "mail.confirm_prompt", owner_email=owner),
+        "confirm_prompt": t(lang, "mail.confirm_prompt", owner_email=target),
         "requires_confirmation": True,
         "sent": False,
     }
 
 
-def _write_outbox(recipient: str, subject: str, body: str,
-                  when: date) -> Path:
+def _smtp_sender() -> str:
+    return (
+        settings.smtp_from
+        or settings.smtp_user
+        or "nexa@localhost"
+    )
+
+
+def _require_smtp_config() -> None:
+    if settings.mail_mode != "smtp":
+        raise MailConfigError(
+            "outbox delivery is disabled; set NEXA_MAIL_MODE=smtp"
+        )
+    mail_recipient()
+    if not settings.smtp_host.strip():
+        raise MailConfigError("missing SMTP host; set NEXA_SMTP_HOST")
+    if settings.smtp_port <= 0:
+        raise MailConfigError("invalid SMTP port; set NEXA_SMTP_PORT")
+    if settings.smtp_user and not settings.smtp_password:
+        raise MailConfigError("missing SMTP password; set NEXA_SMTP_PASSWORD")
+
+
+def _build_message(recipient: str, subject: str, body: str) -> EmailMessage:
     msg = EmailMessage()
-    msg["From"] = "nexa@localhost"
+    msg["From"] = _smtp_sender()
     msg["To"] = recipient
     msg["Subject"] = subject
     msg["Date"] = format_datetime(datetime.now().astimezone())
-    msg["X-Nexa-Delivery"] = "outbox"
+    msg["Message-ID"] = make_msgid(domain="nexa.local")
+    msg["X-Nexa-Delivery"] = "smtp"
     msg.set_content(body)
-    settings.outbox_dir.mkdir(parents=True, exist_ok=True)
-    path = settings.outbox_dir / f"{when.isoformat()}-{secrets.token_hex(4)}.eml"
-    path.write_bytes(msg.as_bytes())
-    return path
+    return msg
 
 
 def _send_smtp(recipient: str, subject: str, body: str) -> None:
     import smtplib
 
-    msg = EmailMessage()
-    msg["From"] = settings.smtp_user or "nexa@localhost"
-    msg["To"] = recipient
-    msg["Subject"] = subject
-    msg.set_content(body)
-    with smtplib.SMTP(settings.smtp_host, settings.smtp_port, timeout=20) as smtp:
-        smtp.starttls()
-        if settings.smtp_user:
-            smtp.login(settings.smtp_user, settings.smtp_password)
-        smtp.send_message(msg)
+    _require_smtp_config()
+    msg = _build_message(recipient, subject, body)
+    smtp_class = smtplib.SMTP_SSL if settings.smtp_ssl else smtplib.SMTP
+    try:
+        with smtp_class(
+            settings.smtp_host,
+            settings.smtp_port,
+            timeout=settings.smtp_timeout_seconds,
+        ) as smtp:
+            if settings.smtp_starttls and not settings.smtp_ssl:
+                smtp.starttls()
+            if settings.smtp_user:
+                smtp.login(settings.smtp_user, settings.smtp_password)
+            smtp.send_message(msg)
+    except (OSError, smtplib.SMTPException) as exc:
+        raise MailDeliveryError(f"SMTP delivery failed: {exc}") from exc
+
+
+def send_smtp_test(recipient: str | None = None, lang: str = "vi") -> dict[str, Any]:
+    target = mail_recipient()
+    _require_smtp_config()
+    subject = "Nexa SMTP test"
+    body = (
+        "Nexa SMTP configuration test.\n\n"
+        "If you received this email, the SMTP connection is working."
+    )
+    _send_smtp(target, subject, body)
+    try:
+        store.log(
+            "smtp_test_sent",
+            reason=f"SMTP test sent to {target}",
+            detail={"host": settings.smtp_host, "port": settings.smtp_port},
+        )
+    except Exception:                                  # noqa: BLE001
+        pass
+    return {
+        "recipient": target,
+        "delivery": "smtp",
+        "smtp_host": settings.smtp_host,
+        "smtp_port": settings.smtp_port,
+        "message": "SMTP test email sent",
+        "sent": True,
+    }
 
 
 def send_confirmed(token: str, recipient: str | None = None,
                    lang: str = "vi") -> dict[str, Any]:
-    """Send a specific confirmed draft — owner address only, one use only.
-
-    The recipient is checked FIRST, before the token is even looked up, so a
-    request aimed at a third party is always refused as such and never leaks
-    whether the token happened to be valid.
-    """
-    if recipient is not None:
-        assert_owner(recipient)
+    """Send a specific confirmed draft to NEXA_MAIL_TO, one use only."""
 
     draft = store.draft_by_token(token)
     if draft is None:
@@ -212,28 +255,21 @@ def send_confirmed(token: str, recipient: str | None = None,
     if draft["status"] != "draft":
         raise DraftError(f"draft {draft['id']} was already {draft['status']}")
 
-    owner = assert_owner(recipient or draft["recipient"])
-    if draft["recipient"].strip().lower() != owner:
-        raise OwnerOnlyError("the stored draft is addressed elsewhere")
+    target = mail_recipient()
 
-    path: Path | None = None
-    if settings.mail_mode == "smtp" and settings.smtp_host:
-        _send_smtp(owner, draft["subject"], draft["body"])
-        delivery = "smtp"
-    else:
-        path = _write_outbox(owner, draft["subject"], draft["body"],
-                             settings.today())
-        delivery = "outbox"
+    _require_smtp_config()
+    _send_smtp(target, draft["subject"], draft["body"])
+    delivery = "smtp"
 
-    store.mark_draft_sent(draft["id"], str(path) if path else None)
-    store.log("report_sent", reason=f"draft {draft['id']} sent to {owner}",
-              detail={"delivery": delivery, "file": str(path) if path else None})
+    store.mark_draft_sent(draft["id"], None)
+    store.log("report_sent", reason=f"draft {draft['id']} sent to {target}",
+              detail={"delivery": delivery, "file": None})
     return {
         "draft_id": draft["id"],
-        "recipient": owner,
+        "recipient": target,
         "delivery": delivery,
-        "file": str(path) if path else None,
-        "message": t(lang, "mail.sent", owner_email=owner),
+        "file": None,
+        "message": t(lang, "mail.sent", owner_email=target),
         "sent": True,
     }
 

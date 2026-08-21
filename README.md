@@ -86,7 +86,7 @@ amount 46 days apart, a two-charge merchant, a different fee on the same day).
 | Rule | How it is guaranteed |
 |---|---|
 | No action on money | No cancel / dispute / transfer / freeze function exists anywhere. The model's whole capability surface is 14 read-only tools. |
-| Email only to you | `POST /api/report/send` checks the recipient against the owner address and returns **403** for anything else, then requires a single-use confirmation token. |
+| Email destination | `POST /api/report/send` ignores request recipients and sends only to `NEXA_MAIL_TO`, then requires a single-use confirmation token. |
 | Third-party letters | Produced as drafts for you to send. There is no sending code path for them. |
 | No invented figures | The engine computes every number; the model only narrates. Any amount, ₫ figure or transaction reference in a reply that is absent from the tool result is rejected, retried once, then replaced by the engine's own wording. |
 | No blanket reassurance | Replies are filtered for "your account is safe", "nothing unusual", "the bank is investigating" and similar, in both languages. |
@@ -124,8 +124,23 @@ footer and on `/api/health`.
 ## Configuration
 
 Copy `.env.example` to `.env` (setup does this for you). Nothing secret is
-committed; `.env` is git-ignored, and `NEXA_MAIL_MODE=outbox` — the default —
-writes report emails to `backend/outbox/*.eml` so the demo needs no SMTP account.
+committed and `.env` is git-ignored. Confirmed report emails are sent through
+SMTP only; outbox delivery is disabled and a missing SMTP host returns an error
+instead of writing `backend/outbox/*.eml`.
+
+```bash
+NEXA_MAIL_MODE=smtp
+NEXA_MAIL_TO=vaithieu0605@gmail.com
+NEXA_SMTP_HOST=smtp.example.com
+NEXA_SMTP_PORT=587
+NEXA_SMTP_USER=nexa@example.com
+NEXA_SMTP_PASSWORD=...
+NEXA_SMTP_FROM=nexa@example.com
+NEXA_SMTP_STARTTLS=true
+```
+
+Use `POST /api/report/smtp-test` to send a small test email to `NEXA_MAIL_TO`
+before sending a report.
 
 ## After the contest
 

@@ -41,12 +41,18 @@ class Settings(BaseSettings):
     ai_retries: int = 2
     ai_retry_backoff_seconds: float = 0.75
 
-    # Mail: "outbox" writes .eml files locally (no network, the demo default).
-    mail_mode: str = "outbox"
-    smtp_host: str = ""
-    smtp_port: int = 587
-    smtp_user: str = ""
-    smtp_password: str = ""
+    # Mail settings must come from .env / environment. Outbox delivery is
+    # disabled so a confirmed send either reaches SMTP or fails loudly.
+    mail_mode: str
+    mail_to: str
+    smtp_host: str
+    smtp_port: int
+    smtp_user: str
+    smtp_password: str
+    smtp_from: str
+    smtp_starttls: bool
+    smtp_ssl: bool
+    smtp_timeout_seconds: float
 
     # Overriding "today" keeps dispute-deadline countdowns deterministic in tests.
     today_override: date | None = None
