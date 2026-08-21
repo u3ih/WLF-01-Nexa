@@ -27,6 +27,7 @@ def all_periods(lang: str = "vi") -> dict[str, Any]:
     """Month, quarter and year in one call — used by the report tab."""
     lang = normalise_lang(lang)
     analysis = pipeline.cached()
-    data = reports_engine.all_periods(analysis.ds, analysis.subs_forecast)
+    data = reports_engine.all_periods(analysis.ds, analysis.subs_forecast,
+                                      analysis.fx)
     data["trend"] = reports_engine.monthly_series(analysis.ds, 12)
     return to_dollars(data, lang)

@@ -5,19 +5,33 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
     PIP_DISABLE_PIP_VERSION_CHECK=1
 
-WORKDIR /app
+WORKDIR /app/backend
 
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends curl \
+    && apt-get install -y --no-install-recommends curl nodejs npm chromium \
     && rm -rf /var/lib/apt/lists/*
 
-COPY requirements.txt ./
+COPY backend/requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY app ./app
-COPY data ./data
-COPY pytest.ini ./
-COPY tests ./tests
+COPY backend/app ./app
+COPY backend/data ./data
+COPY migrations ../migrations
+COPY backend/pytest.ini ./
+COPY backend/tests ./tests
+COPY dataset ../dataset
+
+# The application scheduler invokes this scraper directly; no host crontab is
+# needed. Install only the runtime JS dependencies and keep the output volume
+# outside the image.
+COPY scripts/yopmail_scraper/package*.json ../scripts/yopmail_scraper/
+RUN cd ../scripts/yopmail_scraper \
+    && PUPPETEER_SKIP_DOWNLOAD=true npm ci --omit=dev --no-audit --no-fund
+COPY scripts/yopmail_scraper/scrape_full.js ../scripts/yopmail_scraper/
+ENV NEXA_YOPMAIL_SCRAPER_DIR=/app/scripts/yopmail_scraper \
+    NEXA_YOPMAIL_DATASET_DIR=/app/dataset \
+    NEXA_YOPMAIL_NODE=node \
+    PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium
 
 # The sample dataset is generated at build time so the image is self-contained.
 RUN python -m data.generate

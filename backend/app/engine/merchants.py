@@ -20,6 +20,11 @@ PREFIX_HINTS: dict[str, str] = {
     "TST*": "toast",
     "SP ": "shopify",
     "WL *": "wealify",
+    # Merchant-of-record resellers: the line names the reseller, not the seller.
+    "PADDLE.NET*": "paddle",
+    "PADDLE *": "paddle",
+    "FS *": "fastspring",
+    "FSPRG.COM": "fastspring",
 }
 
 
@@ -80,19 +85,103 @@ RULES: list[Rule] = [
           ("amazon.com",), "merchant.amazon"),
     # Wealify's own internal lines
     _rule(r"^TRANSFER TO CARD", "wealify_transfer", "Wealify card transfer",
-          "transfer", ("wealify.example.com",)),
+          "transfer", ("wealify.com", "wealify.example.com")),
     _rule(r"^WEALIFY ACCOUNT FUNDING", "wealify_load", "Wealify card load",
-          "transfer", ("wealify.example.com",)),
+          "transfer", ("wealify.com", "wealify.example.com")),
     _rule(r"^MONTHLY ACCOUNT SERVICE FEE", "wealify_monthly_fee",
-          "Wealify monthly account fee", "fee", ("wealify.example.com",),
+          "Wealify monthly account fee", "fee", ("wealify.com", "wealify.example.com"),
           "merchant.monthly_fee"),
     _rule(r"^WIRE TRANSFER FEE", "wire_fee", "Wire transfer fee", "fee",
-          ("wealify.example.com",), "merchant.wire_fee"),
+          ("wealify.com", "wealify.example.com"), "merchant.wire_fee"),
     _rule(r"^ATM WITHDRAWAL FEE", "atm_fee", "ATM withdrawal fee", "fee",
-          ("wealify.example.com",)),
+          ("wealify.com", "wealify.example.com")),
     _rule(r"^OUTGOING WIRE", "wire_out", "Outgoing wire transfer", "transfer"),
     _rule(r"^ACH CREDIT|^UPWORK", "upwork", "Upwork payout", "income",
           ("upwork.com",)),
+
+    # ---------------------------------------------------------------- SaaS
+    # Descriptors reach us in two shapes: the raw form the card network prints
+    # ("PADDLE.NET* NOTION") and the friendly form the Wealify ledger prints
+    # ("Namecheap"). Each rule has to answer to both.
+    _rule(r"NOTION", "notion", "Notion", "subscription", ("notion.so",
+          "paddle.com"), "merchant.paddle_prefix"),
+    _rule(r"^ADOBE|CREATIVE CLD", "adobe", "Adobe Creative Cloud",
+          "subscription", ("adobe.com",)),
+    _rule(r"^CANVA", "canva", "Canva Pro", "subscription", ("canva.com",)),
+    _rule(r"^NORDVPN", "nordvpn", "NordVPN", "subscription", ("nordvpn.com",)),
+    _rule(r"^OPENAI|CHATGPT", "openai", "OpenAI ChatGPT", "subscription",
+          ("openai.com",)),
+    _rule(r"^FIGMA", "figma", "Figma", "subscription", ("figma.com",)),
+    _rule(r"^CLOUDWAYS", "cloudways", "Cloudways hosting", "hosting",
+          ("cloudways.com",)),
+    _rule(r"^VULTR", "vultr", "Vultr Cloud", "hosting", ("vultr.com",)),
+    _rule(r"^NAMECHEAP", "namecheap", "Namecheap", "hosting",
+          ("namecheap.com",)),
+    # YouTube Premium before Google Ads: both descriptors start "GOOGLE *".
+    _rule(r"^GOOGLE \*?\s?YOUTUBE|^YOUTUBE", "youtube_premium",
+          "YouTube Premium", "subscription", ("google.com", "youtube.com")),
+
+    # ------------------------------------------------------------ advertising
+    _rule(r"^GOOGLE \*?\s?ADS|^GOOGLE ADS", "google_ads", "Google Ads",
+          "advertising", ("google.com",)),
+    _rule(r"^FACEBOOK ADS|^FB ADS|^META ADS|^FACEBK", "facebook_ads",
+          "Facebook Ads", "advertising",
+          ("facebook.com", "facebookmail.com", "meta.com", "fb.com")),
+
+    # ------------------------------------------- marketplaces & travel (APAC)
+    _rule(r"^SHOPEE", "shopee", "Shopee", "retail", ("shopee.com",
+          "shopee.vn")),
+    _rule(r"^LAZADA", "lazada", "Lazada", "retail", ("lazada.com",
+          "lazada.vn")),
+    _rule(r"^ALIEXPRESS", "aliexpress", "AliExpress", "retail",
+          ("aliexpress.com",)),
+    _rule(r"^BOOKING\.COM|^BOOKING ", "booking", "Booking.com", "travel",
+          ("booking.com",)),
+    _rule(r"^GRAB", "grab", "Grab", "transport", ("grab.com",)),
+    _rule(r"THE COFFEE HOUSE", "thecoffeehouse", "The Coffee House", "dining",
+          ("thecoffeehouse.com",), "merchant.square_prefix"),
+    _rule(r"^STEAMGAMES|^STEAM\b|^VALVE", "steam", "Steam", "entertainment",
+          ("steampowered.com", "steamgames.com")),
+
+    # Bare "Apple"/"Amazon" as the Wealify ledger writes them. Kept after the
+    # more specific APPLE.COM/BILL and AMZN MKTP rules above so a subscription
+    # line is still read as a subscription.
+    _rule(r"^APPLE", "apple", "Apple", "retail", ("apple.com",)),
+    _rule(r"^AMAZON|^AMZN", "amazon", "Amazon", "retail", ("amazon.com",)),
+    _rule(r"^PAYPAL$|^PAYPAL PAYOUT|^PAYPAL TRANSFER", "paypal_payout",
+          "PayPal payout", "income", ("paypal.com",)),
+    _rule(r"^PAYONEER", "payoneer", "Payoneer payout", "income",
+          ("payoneer.com",)),
+    _rule(r"^ETSY", "etsy", "Etsy payout", "income", ("etsy.com",)),
+    _rule(r"^PINGPONG", "pingpong", "PingPong payout", "income",
+          ("pingpongx.com", "pingpongpay.com")),
+
+    # ------------------------------------------------- Wealify internal lines
+    # These are movements between the user's own balances, not spending. They
+    # are resolved so the cash-flow table can name them, and carry the
+    # "transfer" category so `spend_cents` never counts them.
+    _rule(r"^TOP-?UP FROM WALLET|^NAP VAO THE|^NẠP VÀO THẺ",
+          "wealify_card_load", "Nạp tiền vào thẻ", "transfer",
+          ("wealify.com", "wealify.example.com")),
+    _rule(r"^NẠP TIỀN VÀO VÍ|^NAP TIEN VAO VI", "wealify_wallet_load",
+          "Nạp tiền vào ví", "transfer", ("wealify.com", "wealify.example.com")),
+    _rule(r"^NHẬN & CHUYỂN VỀ VÍ|^CHUYỂN VỀ VÍ",
+          "wealify_wallet_credit", "Tiền về ví Wealify", "transfer",
+          ("wealify.com", "wealify.example.com")),
+    _rule(r"^RÚT VỀ NGÂN HÀNG|^WITHDRAW TO BANK|^RUT VE NGAN HANG",
+          "wealify_bank_withdrawal", "Rút về ngân hàng", "transfer",
+          ("wealify.com", "wealify.example.com")),
+    _rule(r"^NẠP THẺ|^TOP-?UP DECLINED", "wealify_card_topup",
+          "Nạp thẻ", "transfer", ("wealify.com", "wealify.example.com")),
+    _rule(r"^SỐ DƯ ĐẦU KỲ", "wealify_opening_balance",
+          "Số dư đầu kỳ", "transfer", ("wealify.com", "wealify.example.com")),
+    # The issuer itself. Registered so a genuine Wealify notice is not reported
+    # as a look-alike -- and so a message *claiming* to be Wealify from any
+    # other domain still is.
+    _rule(r"^WEALIFY", "wealify", "Wealify", "issuer",
+          ("wealify.com", "wealify.example.com")),
+    _rule(r"^FX FEE$|^PHÍ CHUYỂN ĐỔI$", "fx_fee",
+          "Phí chuyển đổi tiền tệ", "fee", ("wealify.com", "wealify.example.com")),
 ]
 
 TRAILING_NOISE = re.compile(
@@ -105,10 +194,30 @@ TRAILING_NOISE = re.compile(
     r")+$"
 )
 
+# A trailing note the ledger appends to a line -- "(DUPLICATE)", "(USD)",
+# "(VC04)". It qualifies the entry, it is not part of the merchant, and two
+# lines that differ only by such a note describe the same thing.
+TRAILING_ANNOTATION = re.compile(r"\s*\([^()]*\)\s*$")
+
+# Wording the statement puts *in front of* the merchant. Stripping it lets one
+# merchant rule serve the purchase, its subscription line and its FX fee, and
+# lets a duplicated fee group with the fee it duplicates.
+LEADING_QUALIFIERS = re.compile(
+    r"^(SUBSCRIPTION|RECURRING|FX FEE FOR|FOREIGN TRANSACTION FEE FOR"
+    r"|CONVERSION FEE FOR|PHI CHUYEN DOI CHO)\s+",
+    re.I,
+)
+
 
 def normalize_descriptor(descriptor: str) -> str:
     """Collapse a raw descriptor to a comparable form (used for grouping)."""
     text = re.sub(r"\s+", " ", descriptor).strip().upper()
+    text = LEADING_QUALIFIERS.sub("", text).strip()
+    while True:
+        stripped = TRAILING_ANNOTATION.sub("", text).strip()
+        if stripped == text or not stripped:
+            break
+        text = stripped
     return TRAILING_NOISE.sub("", text).strip()
 
 

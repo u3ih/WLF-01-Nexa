@@ -116,7 +116,7 @@ export function ReportView({ data, lang }: { data: any; lang: Lang }) {
       <table>
         <tbody>
           {data.top_purchases.map((row: any) => (
-            <tr key={row.ref}>
+            <tr key={row.ref} data-ref={row.ref}>
               <td className="mono">{row.date}</td>
               <td>{row.merchant ?? row.descriptor}</td>
               <td className="num">{row.amount}</td>

@@ -10,7 +10,12 @@ from __future__ import annotations
 import re
 
 DIGITS = re.compile(r"\d")
-LONG_DIGIT_RUN = re.compile(r"(?<!\d)\d(?:[ -]?\d){11,18}(?!\d)")
+# A card number stands on its own; the digit tail of an alphanumeric reference
+# (WCW082126621016, TW082026186228) does not. Excluding letters at both ends
+# keeps those references intact -- otherwise the output guardrail reads one as
+# a leaked PAN and throws away a correct answer.
+LONG_DIGIT_RUN = re.compile(
+    r"(?<![0-9A-Za-z])\d(?:[ -]?\d){11,18}(?![0-9A-Za-z])")
 
 
 def mask_card(card_number: str | None) -> str:

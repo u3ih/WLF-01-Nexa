@@ -25,10 +25,11 @@ and the theme rationale. Useful for the slide deck and the video script.
         └───────────────┬──────────────────────────────────────────────────────┘
                         │
         ┌───────────────▼─────────┐        ┌──────────────────────────────────┐
-        │ Postgres                │        │ Ollama (optional, local)         │
-        │ flags · journal ·       │        │ tier 1 native tools              │
-        │ reminders · drafts      │        │ tier 2 JSON router               │
-        │ (never money)           │        │ tier 3 not needed — engine only  │
+        │ Postgres                │        │ model: Ollama, or any            │
+        │ flags · journal ·       │        │ OpenAI-compatible endpoint       │
+        │ reminders · drafts      │        │ tier 1 native tools              │
+        │ (never money)           │        │ tier 2 JSON router               │
+        │                         │        │ tier 3 not needed — engine only  │
         └─────────────────────────┘        └──────────────────────────────────┘
 ```
 

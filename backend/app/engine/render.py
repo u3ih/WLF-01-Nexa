@@ -49,16 +49,114 @@ def disclaimer(lang: str) -> str:
     return catalog(lang)["disclaimer"]
 
 
+def bucket_scope_note(bucket: str, excluded: dict[str, Any], lang: str) -> str:
+    """The caveat that belongs on the same line as the figure, not below it.
+
+    August reported "Phí: $0.00" and, six lines later, "phí €0.58". Both true —
+    the first is USD-only — but a reader meets the zero long before the
+    explanation and has already concluded there were no fees. So the currencies
+    this bucket does not cover are named where the zero is.
+    """
+    reporting = excluded.get("reporting_currency", "USD")
+    amounts = []
+    for row in excluded.get("other_currencies", []):
+        if not row.get(bucket):
+            continue
+        native = fmt_money(row[bucket], row["currency"])
+        converted = (row.get("converted") or {}).get(bucket)
+        if not converted:
+            amounts.append(native)
+            continue
+        # The equivalent is offered, never substituted: the charge happened in
+        # its own currency and that is the figure the statement will show.
+        amounts.append(t(lang, "excluded.bucket_converted", native=native,
+                         converted=fmt_money(converted, reporting)))
+    if not amounts:
+        return ""
+    return t(lang, "excluded.bucket_other", amounts=", ".join(amounts))
+
+
+def excluded_lines(excluded: dict[str, Any], lang: str) -> list[str]:
+    """Say what a single-currency, settled-only report set aside.
+
+    Without this the report shows "Phí: $0.00" for a month that carried €0.58
+    of fees and a $750 withdrawal still in flight, and a zero with no caveat
+    beside it does not read as "in this currency, so far" — it reads as
+    "nothing happened". Every caller that prints the totals prints these too.
+    """
+    reporting = excluded.get("reporting_currency", "USD")
+    lines: list[str] = []
+    for row in excluded.get("other_currencies", []):
+        code = row["currency"]
+        converted = row.get("converted")
+        common = {
+            "count": row["txn_count"], "currency": code, "reporting": reporting,
+            "spend": fmt_money(row["spend_cents"], code),
+            "fees": fmt_money(row["fees_cents"], code),
+        }
+        if converted:
+            # Two wordings, because the reason the amounts sit outside the
+            # totals differs: with a rate they are excluded because the report
+            # is single-currency; without one, because nothing says what they
+            # are worth. Reusing one sentence would make the second claim while
+            # the equivalent is printed right beside it.
+            lines.append(t(
+                lang, "excluded.other_currency_converted", **common,
+                converted_spend=fmt_money(converted["spend_cents"], reporting),
+                converted_fees=fmt_money(converted["fees_cents"], reporting),
+            ))
+        else:
+            lines.append(t(lang, "excluded.other_currency", **common))
+    for row in excluded.get("other_currencies", []):
+        converted = row.get("converted")
+        if not converted or not converted.get("rates_used"):
+            continue
+        rates = converted["rates_used"]
+        first, last = rates[0], rates[-1]
+        lines.append(t(
+            lang, "excluded.rate_basis", currency=row["currency"],
+            reporting=reporting, source=first["source"].upper(),
+            rate=first["rate"] if len(rates) == 1
+            else f"{first['rate']}–{last['rate']}",
+            quoted_on=first["quoted_on"] if len(rates) == 1
+            else f"{first['quoted_on']} → {last['quoted_on']}",
+        ))
+        if not converted.get("complete"):
+            lines.append(t(lang, "excluded.rate_partial",
+                           count=converted.get("missing_rows", 0)))
+    unsettled = excluded.get("unsettled", [])
+    if unsettled:
+        # Summed per currency for the same reason every other total is: the
+        # list can hold a EUR row and a USD row, and one number over both
+        # would not be an amount.
+        per_currency: dict[str, int] = {}
+        for row in unsettled:
+            per_currency[row["currency"]] = (
+                per_currency.get(row["currency"], 0) + row["amount_cents"])
+        total = ", ".join(fmt_money(cents, code)
+                          for code, cents in sorted(per_currency.items()))
+        lines.append(t(lang, "excluded.unsettled",
+                       count=len(unsettled), total=total))
+    return lines
+
+
 def _money_params(params: dict[str, Any], lang: str = "vi") -> dict[str, Any]:
-    """Add a formatted twin for every *_cents value: amount_cents -> amount."""
+    """Add a formatted twin for every *_cents value: amount_cents -> amount.
+
+    A finding that names its own currency is formatted in that currency. The ₫
+    twin only makes sense for a dollar figure — printing it beside an amount
+    that is already in đồng, or converting a euro charge as if it were USD,
+    would state a number the statement never did.
+    """
     out = dict(params)
+    currency = params.get("currency") or "USD"
     for key, value in params.items():
         if key.endswith("_cents") and isinstance(value, int):
-            out[key[: -len("_cents")]] = fmt_display(value, lang)
+            out[key[: -len("_cents")]] = fmt_display(value, lang, currency)
     return out
 
 
-def _reasons_text(lang: str, reasons: list[str], brand: str | None) -> str:
+def reasons_text(lang: str, reasons: list[str], brand: str | None) -> str:
     rendered = [
         t(lang, f"email_reason.{code}", brand=brand or t(lang, "common.unknown"))
         for code in reasons
@@ -91,16 +189,22 @@ def render_finding(finding: Finding, lang: str, today: date) -> dict[str, Any]:
         params["cadence"] = t(lang, f"cadence.{finding.params['cadence']}")
     if finding.kind is FindingKind.DOUBLE_FEE:
         extra = finding.params["total_cents"] - finding.params["amount_cents"]
-        params["amount_extra"] = fmt_display(extra, lang)
+        params["amount_extra"] = fmt_display(
+            extra, lang, finding.params.get("currency") or "USD")
     if finding.kind is FindingKind.SUSPICIOUS_EMAIL:
         params["claimed_brand"] = (finding.params.get("claimed_brand")
                                    or t(lang, "common.unknown"))
-        params["reasons"] = _reasons_text(
+        params["reasons"] = reasons_text(
             lang, finding.params.get("reasons", []),
             finding.params.get("claimed_brand"),
         )
 
-    detail = t(lang, f"finding.{kind}.detail", **params)
+    # A duplicated credit reads differently depending on which balance it
+    # landed in, so the wallet wording is used when the wallet is the ledger.
+    variant = ".wallet" if params.get("ledger") == "wallet" else ""
+    detail = t(lang, f"finding.{kind}{variant}.detail", **params)
+    if detail.startswith(f"finding.{kind}"):
+        detail = t(lang, f"finding.{kind}.detail", **params)
     if finding.kind is FindingKind.PRICE_INCREASE:
         suffix = ("finding.price_increase.notice_found"
                   if finding.params.get("notice_email_found")

@@ -1,0 +1,8 @@
+card_id;card_name;last4;card_number_masked;expiry_date;status;balance;currency;total_deposit;total_withdrawal;purpose;email;phone;card_network;created_at
+CARD_0007;Zenith New;7;**** **** **** 0007;29/12/26;Active;0;USD;0;0;Zenith new;wealifytester@yopmail.com;912345678;VISA Platinum Business;14/8/26 14:00
+CARD_0006;Volcano Trial;6;**** **** **** 0006;29/12/26;Cancelled;84,19;USD;243,95;159,76;Volcano trial;wealifytester@yopmail.com;912345678;VISA Platinum Business;1/5/26 14:00
+CARD_0004;Volcano EU;4;**** **** **** 0004;29/12/26;Active;116,86;USD;1617,02;1186,31;Volcano eu;wealifytester@yopmail.com;912345678;VISA Platinum Business;12/4/26 14:00
+CARD_0003;Zenith Main;3;**** **** **** 0003;29/12/26;Active;1167,86;USD;4422,58;3850,72;Zenith main;wealifytester@yopmail.com;912345678;VISA Platinum Business;8/3/26 14:00
+CARD_0002;Volcano Subs;2;**** **** **** 0002;29/12/26;Active;355,72;USD;3712,38;3279,23;Volcano subs;wealifytester@yopmail.com;912345678;VISA Platinum Business;16/2/26 14:00
+CARD_0001;Volcano Ads;1;**** **** **** 0001;29/12/26;Active;96,33;USD;4825,98;5173,86;Volcano ads;wealifytester@yopmail.com;912345678;VISA Platinum Business;16/2/26 14:00
+CARD_0005;Zenith Old;5;**** **** **** 0005;29/12/26;Frozen;2;USD;49,7;47,7;Zenith old;wealifytester@yopmail.com;912345678;VISA Platinum Business;16/2/26 14:00

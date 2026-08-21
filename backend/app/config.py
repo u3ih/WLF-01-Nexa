@@ -22,7 +22,10 @@ class Settings(BaseSettings):
     )
 
     app_name: str = "Nexa"
-    data_dir: Path = BACKEND_ROOT / "data" / "sample"
+    data_dir: Path = BACKEND_ROOT.parent / "dataset"
+    # Which mailbox in the export to analyse ("tester", "senior", "junior").
+    # Empty picks the inbox registered against the cards.
+    mailbox: str = ""
     outbox_dir: Path = BACKEND_ROOT / "outbox"
     log_dir: Path = BACKEND_ROOT / "logs"
 
@@ -30,6 +33,16 @@ class Settings(BaseSettings):
 
     ai_url: str = "http://localhost:11434"
     ai_model: str = "gemma4:latest"
+    # Which transport talks to the model: "ollama", "openai" (any
+    # OpenAI-compatible endpoint), or "auto" — decided from the URL shape and
+    # whether a key is configured, then confirmed by probing.
+    ai_provider: str = "auto"
+    # Hosted endpoints need a bearer token. It lives in the environment only;
+    # nothing here is ever committed, logged or sent to the browser.
+    ai_api_key: str = ""
+    # "auto" assumes an OpenAI-compatible endpoint can call tools and drops to
+    # JSON routing if it rejects the schema. "true"/"false" force the tier.
+    ai_native_tools: str = "auto"
     offline_mode: bool = False
     llm_timeout_seconds: float = 120.0
     # This is an AI product: the model is expected to be up. Transport
@@ -37,13 +50,26 @@ class Settings(BaseSettings):
     # than quietly degrading into template answers.
     ai_retries: int = 2
     ai_retry_backoff_seconds: float = 0.75
+    # Output cap for a narrated answer. A findings report in Vietnamese runs to
+    # several sections and tables, and a cap that is too low returns a reply cut
+    # off mid-sentence — which reads as a wrong answer, not a short one.
+    ai_narrate_tokens: int = 4000
+    # When the endpoint reports it stopped because it hit that cap, the answer
+    # is asked to continue from where it stopped, this many times at most.
+    ai_continue_rounds: int = 2
 
-    # Mail: "outbox" writes .eml files locally (no network, the demo default).
-    mail_mode: str = "outbox"
-    smtp_host: str = ""
-    smtp_port: int = 587
-    smtp_user: str = ""
-    smtp_password: str = ""
+    # Mail settings must come from .env / environment. Outbox delivery is
+    # disabled so a confirmed send either reaches SMTP or fails loudly.
+    mail_mode: str
+    mail_to: str
+    smtp_host: str
+    smtp_port: int
+    smtp_user: str
+    smtp_password: str
+    smtp_from: str
+    smtp_starttls: bool
+    smtp_ssl: bool
+    smtp_timeout_seconds: float
 
     # Overriding "today" keeps dispute-deadline countdowns deterministic in tests.
     today_override: date | None = None
@@ -59,6 +85,29 @@ class Settings(BaseSettings):
     scheduler_enabled: bool = True
     scan_hour: int = 7
 
+    # YOPmail ingestion runs inside this application process. APScheduler
+    # launches the Node scraper from the backend, without machine crontab.
+    yopmail_enabled: bool = True
+    yopmail_users: str = "wealifytester,wealifyjunior,wealifysenior"
+    yopmail_mailboxes: str = "tester,junior,senior"
+    yopmail_interval_minutes: int = 5
+    yopmail_node: str = "node"
+    yopmail_scraper_dir: Path = BACKEND_ROOT.parent / "scripts" / "yopmail_scraper"
+    yopmail_dataset_dir: Path = BACKEND_ROOT.parent / "dataset"
+    yopmail_limit: int = 0
+    yopmail_delay_ms: int = 800
+    yopmail_require_unlocked: bool = True
+
+    # Exchange rates. The export prices some rows in EUR and supplies no rate,
+    # so without this the report can only leave those amounts out. Fetched
+    # daily; the engine itself never reaches the network.
+    fx_enabled: bool = True
+    fx_hour: int = 6
+    fx_minute: int = 30
+    # Run once at startup so a fresh install is not blind until the first
+    # scheduled fetch. Skipped when rates already cover today.
+    fx_backfill_on_start: bool = True
+
     cors_origins: list[str] = Field(default_factory=lambda: [
         "http://localhost:3000", "http://127.0.0.1:3000",
     ])
@@ -68,12 +117,32 @@ class Settings(BaseSettings):
         return self.data_dir / "account_meta.json"
 
     @property
+    def cards_path(self) -> Path:
+        return self.data_dir / "cards.csv"
+
+    @property
     def owner_email(self) -> str:
-        """The one and only address a report may ever be sent to."""
+        """The one and only address a report may ever be sent to.
+
+        Read from whichever file the active dataset states it in: the generated
+        layout puts it in `account_meta.json`, the Wealify export registers it
+        against the cards. An empty string is returned rather than a guess —
+        `mailer.assert_owner` then refuses to send at all, which is the right
+        failure for a feature that must never mail a stranger.
+        """
         try:
             return json.loads(self.meta_path.read_text())["owner_email"]
         except (OSError, KeyError, json.JSONDecodeError):
-            return ""
+            pass
+        if self.cards_path.exists():
+            # Imported here, not at module scope: the engine imports this module.
+            from .engine.loader_wlf import _owner_email, read_csv
+
+            try:
+                return _owner_email(read_csv(self.cards_path))
+            except OSError:
+                return ""
+        return ""
 
     def today(self) -> date:
         return self.today_override or date.today()

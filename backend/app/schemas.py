@@ -8,6 +8,9 @@ from pydantic import BaseModel, Field
 class ChatRequest(BaseModel):
     question: str = Field(min_length=1, max_length=2000)
     lang: str = "vi"
+    # The language the user asked to be answered in on an earlier turn. The
+    # endpoint holds no session, so the client hands it back each time.
+    reply_lang: str | None = None
 
 
 class DraftRequest(BaseModel):
@@ -18,12 +21,30 @@ class DraftRequest(BaseModel):
 
 class SendRequest(BaseModel):
     confirm_token: str = Field(min_length=8, max_length=128)
-    # Optional and checked against the owner address; anything else is refused.
+    # Kept for backwards compatibility; delivery always uses NEXA_MAIL_TO.
     recipient: str | None = None
     lang: str = "vi"
     confirmed: bool = False
 
 
+class SmtpTestRequest(BaseModel):
+    # Kept for backwards compatibility; delivery always uses NEXA_MAIL_TO.
+    recipient: str | None = None
+    lang: str = "vi"
+
+
 class ScanRequest(BaseModel):
     lang: str = "vi"
     trigger: str = "manual"
+
+
+class ChatSessionCreateRequest(BaseModel):
+    title: str = ""
+    lang: str = "vi"
+    messages: list[dict] = []
+
+
+class ChatSessionUpdateRequest(BaseModel):
+    title: str | None = None
+    messages: list[dict] | None = None
+    lang: str | None = None

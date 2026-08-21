@@ -1,0 +1,32 @@
+{
+  "name": "wealify_scraper",
+  "version": "1.0.0",
+  "description": "Automated crawler for Wealify transactions and sidebar details",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "scrape": "node index.js",
+    "scrape:cards": "node scrape_cards.js",
+    "scrape:cards:headless": "node scrape_cards.js --headless true",
+    "scrape:va": "node scrape_va.js",
+    "scrape:va:headless": "node scrape_va.js --headless true",
+    "scrape:tx": "node index.js",
+    "scrape:headless": "node index.js --headless true",
+    "scrape:full": "node index.js --full-drawer true"
+  },
+  "keywords": [
+    "wealify",
+    "scraper",
+    "puppeteer",
+    "transactions",
+    "crawler"
+  ],
+  "author": "Nexa Team",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "puppeteer": "^22.0.0",
+    "puppeteer-extra": "^3.3.6",
+    "puppeteer-extra-plugin-stealth": "^2.11.2"
+  }
+}

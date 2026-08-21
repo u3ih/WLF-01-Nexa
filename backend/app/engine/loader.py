@@ -13,8 +13,11 @@ from email.parser import BytesParser
 from email.utils import parsedate_to_datetime
 from pathlib import Path
 
+from ..config import settings
 from .merchants import merchant_key, resolve
 from .models import (
+    Card,
+    VirtualAccount,
     CardTxn,
     CardTxnType,
     EmailMsg,
@@ -25,7 +28,22 @@ from .models import (
     parse_money,
 )
 
-MONEY_IN_TEXT = re.compile(r"\$\s?([\d,]+\.\d{2})")
+# "$19.95", but also "19.95 USD" / "192.52 EUR" — a receipt written for a
+# non-US reader often puts the code after the figure and no symbol in front.
+MONEY_IN_TEXT = re.compile(
+    r"\$\s?(?P<sym>[\d,]+\.\d{2})"
+    r"|(?P<num>[\d,]+\.\d{2})\s?(?P<code>USD|EUR|GBP)\b"
+)
+
+
+def money_in_text(text: str) -> list[int]:
+    """Every money figure in a body, in cents, in the order it appears."""
+    out: list[int] = []
+    for m in MONEY_IN_TEXT.finditer(text):
+        raw = m.group("sym") or m.group("num")
+        if raw:
+            out.append(parse_money(raw))
+    return out
 
 
 @dataclass
@@ -35,6 +53,18 @@ class Dataset:
     card: list[CardTxn] = field(default_factory=list)
     wallet: Wallet | None = None
     emails: list[EmailMsg] = field(default_factory=list)
+    # Cards on the account. A statement can cover several, and a finding has to
+    # be able to say which one it happened on.
+    cards: list[Card] = field(default_factory=list)
+    # Receiving accounts. Present as entities even when the export ships no
+    # transaction rows for them — the gap is then stated, not hidden.
+    virtual_accounts: list[VirtualAccount] = field(default_factory=list)
+    # Mailboxes the export contained, beyond the owner's. Kept addressable so
+    # a different inbox can be analysed without reloading.
+    mailboxes: dict[str, list[EmailMsg]] = field(default_factory=dict)
+    # Anything about the input worth telling the user: a file skipped, a column
+    # that held a placeholder, a ledger the export did not include.
+    notes: list[str] = field(default_factory=list)
     source_files: dict[str, str] = field(default_factory=dict)
 
     @property
@@ -44,6 +74,23 @@ class Dataset:
     @property
     def owner_email(self) -> str:
         return self.meta.get("owner_email", "")
+
+    def card_by_code(self, code: str) -> Card | None:
+        return next((c for c in self.cards if c.code == code), None)
+
+    def card_by_name(self, name: str) -> Card | None:
+        return next((c for c in self.cards if c.name == name), None)
+
+    def account_by_number(self, number: str) -> VirtualAccount | None:
+        return next((a for a in self.virtual_accounts
+                     if a.account_number == number), None)
+
+    @property
+    def currencies(self) -> list[str]:
+        seen = {t.currency for t in self.account} | {c.currency for c in self.card}
+        if self.wallet:
+            seen |= {e.currency for e in self.wallet.events}
+        return sorted(seen) or ["USD"]
 
 
 def _attach_merchant_txn(txn: Txn) -> Txn:
@@ -197,9 +244,7 @@ def load_mailbox(directory: Path) -> list[EmailMsg]:
         else:
             body = msg.get_content()
         subject = msg.get("Subject", "")
-        amounts = [
-            parse_money(a) for a in MONEY_IN_TEXT.findall(f"{subject}\n{body}")
-        ]
+        amounts = money_in_text(f"{subject}\n{body}")
         out.append(
             EmailMsg(
                 message_id=msg.get("Message-ID", path.name),
@@ -220,6 +265,18 @@ def load_mailbox(directory: Path) -> list[EmailMsg]:
 # ------------------------------------------------------------------ full dataset
 
 def load_dataset(data_dir: Path, use_pdf: bool = False) -> Dataset:
+    """Load whichever sample layout `data_dir` holds.
+
+    Two exist: the Wealify CSV export (`cards.csv` and friends) and the
+    generated layout (`account_meta.json` plus CSVs and an `.eml` mailbox).
+    The directory is inspected rather than configured, so pointing the app at
+    either one is all it takes.
+    """
+    if (data_dir / "cards.csv").exists():
+        from .loader_wlf import load_export_dataset
+
+        return load_export_dataset(data_dir, mailbox=settings.mailbox or None)
+
     meta = json.loads((data_dir / "account_meta.json").read_text())
     account_csv = data_dir / "account_statement.csv"
     account_pdf = data_dir / "account_statement.pdf"

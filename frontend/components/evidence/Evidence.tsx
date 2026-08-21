@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 import { LabelBadge } from "@/components/Badges";
 import { AlertsView } from "@/components/evidence/AlertsView";
@@ -14,13 +14,11 @@ import {
 } from "@/components/evidence/SystemViews";
 import { api } from "@/lib/api";
 import { ui } from "@/lib/i18n";
+import type { EvidenceView, RefFocus } from "@/lib/refs";
 import type { Lang, Summary } from "@/lib/types";
 
-type ViewId =
-  | "findings" | "cashflow" | "report" | "subs"
-  | "email" | "tri"
-  | "reminders" | "journal" | "statement"
-  | "boundaries";
+/** The data views, plus the one panel that describes the code instead. */
+type ViewId = EvidenceView | "boundaries";
 
 /** Nine sibling tabs gave the eye nothing to latch onto. Grouping asks one
  *  question first — alerts, money, proof, plumbing, or what it refuses — and
@@ -47,10 +45,11 @@ const VIEW_LABEL: Record<ViewId, string> = {
 };
 
 export function Evidence({
-  lang, summary, refreshToken, onScan, onAsk,
+  lang, summary, focus, refreshToken, onScan, onAsk,
 }: {
   lang: Lang;
   summary: Summary | null;
+  focus: RefFocus | null;
   refreshToken: number;
   onScan: (result: any) => void;
   onAsk: (question: string) => void;
@@ -62,6 +61,7 @@ export function Evidence({
   const [period, setPeriod] = useState<"month" | "quarter" | "year">("month");
   const [scanning, setScanning] = useState(false);
   const [scanResult, setScanResult] = useState<any>(null);
+  const bodyRef = useRef<HTMLDivElement>(null);
 
   const load = useCallback(async (which: ViewId) => {
     // The safety panel describes the code rather than the dataset.
@@ -90,6 +90,24 @@ export function Evidence({
   }, [lang, period]);
 
   useEffect(() => { load(view); }, [view, load, refreshToken]);
+
+  useEffect(() => { if (focus) setView(focus.view); }, [focus]);
+
+  // Reached through the DOM on purpose. The row lives in whichever of the nine
+  // views is mounted, and threading one string plus a scroll callback through
+  // all of them would be a wider change than the one query the panel that owns
+  // the scroll container can make itself. `current` is in the dependency list
+  // so this re-runs once the view's data has actually landed.
+  useEffect(() => {
+    const body = bodyRef.current;
+    if (!body || !focus || view !== focus.view) return;
+    body.querySelectorAll(".row-focus")
+      .forEach((node) => node.classList.remove("row-focus"));
+    const target = body.querySelector(`[data-ref~="${CSS.escape(focus.ref)}"]`);
+    if (!target) return;
+    target.classList.add("row-focus");
+    target.scrollIntoView({ block: "center", behavior: "smooth" });
+  }, [focus, view, data]);
 
   async function runScan() {
     setScanning(true);
@@ -204,7 +222,7 @@ export function Evidence({
         </div>
       </div>
 
-      <div className="card-body">
+      <div className="card-body" ref={bodyRef}>
         {error ? <p className="err">{error}</p> : null}
         {scanResult ? (
           <p className="chip" style={{ marginBottom: 10 }}>

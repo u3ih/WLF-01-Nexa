@@ -1,8 +1,8 @@
 """The assistant's entire capability surface.
 
 Every tool here is read-only. There is deliberately no tool that cancels a
-plan, opens a dispute, moves money, locks a card or emails a third party — so
-no prompt, however phrased, can reach one.
+plan, opens a dispute, moves money or locks a card, so no prompt, however
+phrased, can reach one.
 
 The one tool that can cause an outward action (`draft_report_email`) only
 creates a draft and returns a confirmation token; sending is a separate,
@@ -18,9 +18,9 @@ from ..config import settings
 from ..engine import pipeline, reports
 from ..engine.dedupe import audit_to_json
 from ..engine.mask import mask_card, scrub_text
-from ..engine.models import CardTxnType, TxnType, fmt_display
+from ..engine.models import CardTxnType, EmailMatchStatus, TxnType, fmt_display
 from ..engine.merchants import processor_hint, resolve
-from ..engine.render import render_finding, render_findings, t
+from ..engine.render import reasons_text, render_finding, render_findings, t
 from ..mailer import cancellation_guide, create_draft
 from ..monitor import reminder_list, run_scan
 from ..store import store
@@ -35,6 +35,52 @@ def _today() -> date:
 def _trim_finding(item: dict[str, Any]) -> dict[str, Any]:
     """Drop the raw params before handing a finding to the model."""
     return {k: v for k, v in item.items() if k != "params"}
+
+
+def _month_keys(first: str, last: str) -> list[str]:
+    year, month = int(first[:4]), int(first[5:7])
+    end = (int(last[:4]), int(last[5:7]))
+    out: list[str] = []
+    while (year, month) <= end:
+        out.append(f"{year:04d}-{month:02d}")
+        year, month = (year + 1, 1) if month == 12 else (year, month + 1)
+    return out
+
+
+def data_coverage() -> dict[str, Any]:
+    """The window the loaded export actually covers, plus its month keys.
+
+    Both the router and the narrator need it. "tháng 7" carries no year, so
+    something has to supply one, and defaulting to the wall-clock year would
+    ask for a period the export does not contain. A report for a month outside
+    the export has to say so, too: zeros read as "you spent nothing".
+    """
+    ds = pipeline.cached().ds
+    last = ds.meta.get("statement_date") or ds.statement_date.isoformat()
+    first = ds.meta.get("period_start") or last
+    return {
+        "first_day": first[:10],
+        "last_day": last[:10],
+        "months": _month_keys(first, last),
+        "latest_month": last[:7],
+    }
+
+
+def _period_coverage(period: dict[str, Any]) -> dict[str, Any]:
+    """Where the requested period sits relative to the data we hold.
+
+    ISO dates compare as strings, so the overlap test needs no parsing.
+    """
+    cover = data_coverage()
+    overlaps = (period["start"] <= cover["last_day"]
+                and period["end"] >= cover["first_day"])
+    return {
+        **cover,
+        "requested": period["key"],
+        "has_data": overlaps,
+        "partial": overlaps and (period["start"] < cover["first_day"]
+                                 or period["end"] > cover["last_day"]),
+    }
 
 
 # ------------------------------------------------------------------- tools
@@ -96,19 +142,49 @@ def list_subscriptions(lang: str = "vi") -> dict[str, Any]:
     }
 
 
+def _balance_by_kind(pool: list[Any], per_kind: int,
+                     order: list[str] | None = None) -> list[Any]:
+    """At most `per_kind` per kind, then dealt round-robin across the kinds.
+
+    The prompt budget drops rows from the tail. Without the interleave a
+    question that asks about several kinds at once gets a prefix filled by
+    whichever kind happens to be the most numerous — 66 off-hours charges bury
+    the one forgotten subscription the question was really about.
+
+    `order` is the order the kinds were asked for, so the first round deals the
+    caller's priorities and a later trim eats the afterthoughts.
+    """
+    buckets: dict[str, list[Any]] = {k: [] for k in (order or [])}
+    for finding in pool:
+        bucket = buckets.setdefault(finding.kind.value, [])
+        if len(bucket) < per_kind:
+            bucket.append(finding)
+    out: list[Any] = []
+    for round_index in range(per_kind):
+        for bucket in buckets.values():
+            if round_index < len(bucket):
+                out.append(bucket[round_index])
+    return out
+
+
 def get_findings(lang: str = "vi", kind: str | None = None,
-                 label: str | None = None, alerts_only: bool = True
-                 ) -> dict[str, Any]:
+                 label: str | None = None, alerts_only: bool = True,
+                 per_kind: int | None = None) -> dict[str, Any]:
     """Flagged items with their three-tier label, sources and 60-day deadline."""
     analysis = pipeline.cached()
     pool = analysis.alerts if alerts_only else analysis.findings
-    if kind:
-        wanted = {k.strip() for k in str(kind).split(",") if k.strip()}
-        pool = [f for f in pool if f.kind.value in wanted]
+    wanted = [k.strip() for k in str(kind or "").split(",") if k.strip()]
+    if wanted:
+        pool = [f for f in pool if f.kind.value in set(wanted)]
     if label:
         pool = [f for f in pool if f.label.value == label]
+    total = len(pool)
+    if per_kind:
+        pool = _balance_by_kind(pool, int(per_kind), wanted)
     return {
-        "count": len(pool),
+        # `count` stays the number that matched, not the number shown, so a
+        # capped result still reports the real size.
+        "count": total,
         "labels": {
             "recurring_confirmed": t(lang, "labels.recurring_confirmed"),
             "needs_your_confirmation": t(lang, "labels.needs_your_confirmation"),
@@ -122,16 +198,33 @@ def get_findings(lang: str = "vi", kind: str | None = None,
 def get_email_recon(lang: str = "vi", ref: str | None = None,
                     status: str | None = None, limit: int = MAX_ROWS
                     ) -> dict[str, Any]:
-    """Transaction <-> email table: matched / no_email_found / email_suspicious."""
+    """Transaction <-> email table (matched / no_email_found /
+    email_suspicious) plus every look-alike sender found in the mailbox.
+
+    The suspicious senders are returned in full, never only counted: an
+    impersonation email that matches no transaction has no row in the table,
+    so a count on its own would leave the one thing the user asked about
+    unanswerable.
+    """
     analysis = pipeline.cached()
     rows = analysis.recon.rows
     if ref:
         rows = [r for r in rows if r.ref == ref]
     if status:
         rows = [r for r in rows if r.status.value == status]
+    # A matched, clean row raises no question. When the table is longer than
+    # what is handed over, the unexplained rows go first, so truncation cannot
+    # hide the very rows the question is about.
+    ordered = sorted(rows, key=lambda r: (r.status is EmailMatchStatus.MATCHED,
+                                          r.when, r.ref))
+    shown = ordered[:limit]
+    suspicious = analysis.recon.suspicious
+    if ref:
+        suspicious = [s for s in suspicious if s.matched_txn_ref == ref]
     return {
         "total_rows": len(analysis.recon.rows),
-        "shown": min(len(rows), limit),
+        "shown": len(shown),
+        "truncated": len(rows) > len(shown),
         "summary": {
             "matched": analysis.recon.matched_count,
             "no_email_found": analysis.recon.missing_count,
@@ -152,7 +245,23 @@ def get_email_recon(lang: str = "vi", ref: str | None = None,
                 "message_id": r.message_id,
                 "match_score": r.score,
             }
-            for r in rows[:limit]
+            for r in shown
+        ],
+        "suspicious": [
+            {
+                "message_id": s.message_id,
+                "date": s.when.isoformat(),
+                "from_name": s.from_name,
+                "from_addr": s.from_addr,
+                "reply_to": s.reply_to,
+                "subject": scrub_text(s.subject),
+                "claimed_brand": s.claimed_brand,
+                "amounts": [fmt_display(a, lang) for a in s.amounts_cents],
+                "reasons": s.reasons,
+                "reasons_text": reasons_text(lang, s.reasons, s.claimed_brand),
+                "matched_txn_ref": s.matched_txn_ref,
+            }
+            for s in suspicious
         ],
     }
 
@@ -181,13 +290,57 @@ def get_report(lang: str = "vi", period: str = "month",
     analysis = pipeline.cached()
     if period not in reports.PERIODS:
         period = "month"
-    report = reports.build(analysis.ds, period, key, analysis.subs_forecast)
+    report = reports.build(analysis.ds, period, key, analysis.subs_forecast,
+                           analysis.fx)
     report["categories"] = [
         {**row, "label": t(lang, f"category.{row['category']}")}
         for row in report["categories"]
     ]
     report["trend"] = reports.monthly_series(analysis.ds, 12)
+    # Which period was actually asked for, against what the export holds. A
+    # month outside the export produces a report of zeros, and a zero with no
+    # note beside it reads as an answer.
+    report["coverage"] = _period_coverage(report["period"])
     return report
+
+
+def _ledger_rows(analysis: Any) -> list[dict[str, Any]]:
+    """Every transaction the export holds, flattened into one row shape.
+
+    All three ledgers, not two. The Wealify export files wallet top-ups and
+    payouts under `source_type = Ví`, so they land in `ds.wallet.events` rather
+    than in `ds.account` or `ds.card` — 168 of the 412 rows in this export. A
+    lookup that reads only the statement and the card ledger answers "there is
+    no transaction with that reference" about a reference the user is reading
+    off their own statement.
+    """
+    rows: list[dict[str, Any]] = []
+    for txn in analysis.ds.account:
+        rows.append({
+            "ref": txn.txn_id, "source": "statement", "when": txn.when,
+            "descriptor": txn.description, "amount_cents": txn.amount_cents,
+            "type": txn.type.value, "merchant": txn.merchant,
+        })
+    for card in analysis.ds.card:
+        rows.append({
+            "ref": card.card_txn_id, "source": "card", "when": card.when,
+            "descriptor": card.merchant_raw, "amount_cents": card.amount_cents,
+            "type": card.type.value, "merchant": card.merchant,
+            "card": mask_card(card.card_number),
+        })
+    wallet = analysis.ds.wallet
+    for event in (wallet.events if wallet else []):
+        rows.append({
+            "ref": event.event_id, "source": "wallet", "when": event.when,
+            "descriptor": event.descriptor,
+            # `signed_cents` and not `amount_cents`: the wallet stores a
+            # magnitude with the direction in `kind`, and an unsigned debit
+            # would be counted as money coming in.
+            "amount_cents": event.signed_cents,
+            "type": event.note, "merchant": event.counterparty or None,
+            "currency": event.currency,
+        })
+    return rows
 
 
 def explain_charge(lang: str = "vi", ref: str | None = None,
@@ -197,21 +350,7 @@ def explain_charge(lang: str = "vi", ref: str | None = None,
     and any finding attached to it."""
     analysis = pipeline.cached()
     target_cents = int(round(amount * 100)) if amount is not None else None
-    candidates: list[dict[str, Any]] = []
-
-    for txn in analysis.ds.account:
-        candidates.append({
-            "ref": txn.txn_id, "source": "statement", "when": txn.when,
-            "descriptor": txn.description, "amount_cents": txn.amount_cents,
-            "type": txn.type.value, "merchant": txn.merchant,
-        })
-    for card in analysis.ds.card:
-        candidates.append({
-            "ref": card.card_txn_id, "source": "card", "when": card.when,
-            "descriptor": card.merchant_raw, "amount_cents": card.amount_cents,
-            "type": card.type.value, "merchant": card.merchant,
-            "card": mask_card(card.card_number),
-        })
+    candidates = _ledger_rows(analysis)
 
     def matches(row: dict[str, Any]) -> bool:
         if ref and row["ref"].upper() == ref.upper():
@@ -277,20 +416,17 @@ def search_transactions(lang: str = "vi", query: str | None = None,
                         limit: int = MAX_ROWS) -> dict[str, Any]:
     """Filter the statements. Read-only listing, newest first."""
     analysis = pipeline.cached()
-    rows: list[dict[str, Any]] = []
-    for txn in analysis.ds.account:
-        rows.append({"ref": txn.txn_id, "source": "statement", "when": txn.when,
-                     "descriptor": txn.description, "merchant": txn.merchant,
-                     "amount_cents": txn.amount_cents, "type": txn.type.value})
-    for card in analysis.ds.card:
-        rows.append({"ref": card.card_txn_id, "source": "card", "when": card.when,
-                     "descriptor": card.merchant_raw, "merchant": card.merchant,
-                     "amount_cents": card.amount_cents, "type": card.type.value})
+    rows = _ledger_rows(analysis)
 
     def keep(row: dict[str, Any]) -> bool:
         if query:
             needle = query.upper()
-            haystack = f"{row['descriptor']} {row['merchant'] or ''}".upper()
+            # The reference belongs in the haystack: "tìm giao dịch có mã
+            # TW082026786190" is a search, so it routes here rather than to
+            # explain_charge, and a descriptor-only match answers a question
+            # about an existing transaction with "0 found".
+            haystack = (f"{row['ref']} {row['descriptor']} "
+                        f"{row['merchant'] or ''}").upper()
             if needle not in haystack:
                 return False
         if min_amount is not None and abs(row["amount_cents"]) < min_amount * 100:
@@ -344,7 +480,7 @@ def run_monitor_scan(lang: str = "vi") -> dict[str, Any]:
 
 def draft_report_email(lang: str = "vi", period: str = "month",
                        key: str | None = None) -> dict[str, Any]:
-    """Prepare a report addressed to the account owner. Sends nothing."""
+    """Prepare a report addressed to the configured mail recipient. Sends nothing."""
     draft = create_draft(lang=lang, period_kind=period, period_key=key)
     return {
         "draft_id": draft["draft_id"],
@@ -464,12 +600,22 @@ SPECS: list[dict[str, Any]] = [
                     "wallet_balance_mismatch, price_increase",
             "label": "optional label filter: needs_your_confirmation, "
                      "insufficient_data, recurring_confirmed",
+            "alerts_only": "true by default. Pass false to include "
+                           "recurring_subscription, which is a plan listing "
+                           "rather than an alert",
+            "per_kind": "optional cap per kind, dealt round-robin. Use when "
+                        "the question asks about several kinds at once so one "
+                        "noisy kind cannot crowd out the others",
         },
     },
     {
         "name": "get_email_recon",
-        "description": "Transaction-to-email table. Use when the user asks "
-                       "whether a charge has a matching receipt or email.",
+        "description": "Transaction-to-email table, plus the full list of "
+                       "emails whose sender impersonates a brand (phishing "
+                       "look-alikes) with the reasons for each. Use when the "
+                       "user asks whether a charge has a matching receipt or "
+                       "email, or asks about suspicious / fake / phishing "
+                       "emails.",
         "parameters": {
             "ref": "optional transaction reference",
             "status": "optional: matched, no_email_found, email_suspicious",
@@ -488,7 +634,10 @@ SPECS: list[dict[str, Any]] = [
                        "previous one.",
         "parameters": {
             "period": "month, quarter or year",
-            "key": "optional period key such as 2026-07, 2026-Q3 or 2026",
+            "key": "period key such as 2026-07, 2026-Q3 or 2026. Always pass "
+                   "it when the user names a period at all, resolving their "
+                   "wording against the time context given to you. Omitting "
+                   "it silently reports the latest month instead.",
         },
     },
     {
@@ -507,7 +656,9 @@ SPECS: list[dict[str, Any]] = [
         "description": "Filter transactions by text, minimum amount, date range "
                        "or flow type.",
         "parameters": {
-            "query": "optional text to search in the descriptor",
+            "query": "optional text to search in the transaction reference, "
+                     "the descriptor or the merchant name. Pass a reference "
+                     "such as TW082026786190 or WLF15-CD-0001 here verbatim",
             "min_amount": "optional minimum amount as a number",
             "date_from": "optional ISO date",
             "date_to": "optional ISO date",
@@ -527,8 +678,9 @@ SPECS: list[dict[str, Any]] = [
     },
     {
         "name": "draft_report_email",
-        "description": "Prepare a report email addressed to the account owner "
-                       "and return it for confirmation. It does NOT send.",
+        "description": "Prepare a report email addressed to the configured "
+                       "mail recipient and return it for confirmation. It "
+                       "does NOT send.",
         "parameters": {
             "period": "month, quarter or year",
             "key": "optional period key",
@@ -548,7 +700,7 @@ SPECS: list[dict[str, Any]] = [
 ]
 
 ALLOWED_ARGS = {
-    "get_findings": {"kind", "label", "alerts_only"},
+    "get_findings": {"kind", "label", "alerts_only", "per_kind"},
     "get_email_recon": {"ref", "status", "limit"},
     "get_report": {"period", "key"},
     "explain_charge": {"ref", "amount", "descriptor"},

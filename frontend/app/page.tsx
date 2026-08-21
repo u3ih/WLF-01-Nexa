@@ -6,10 +6,12 @@ import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react
 import { ChatPane, type ChatHandle } from "@/components/ChatPane";
 import { DraftModal } from "@/components/DraftModal";
 import { Evidence } from "@/components/evidence/Evidence";
+import { HistoryModal } from "@/components/HistoryModal";
 import { Sidebar, type ThemePref } from "@/components/Sidebar";
 import { api } from "@/lib/api";
 import { ui } from "@/lib/i18n";
-import type { ChatReply, Lang, Summary } from "@/lib/types";
+import { viewForTool, type RefFocus } from "@/lib/refs";
+import type { ChatReply, ChatSession, Lang, Summary, Turn } from "@/lib/types";
 
 // Kept in step with the rail's breakpoint in globals.css: below this the rail
 // is an overlay, so opening one covers the conversation.
@@ -39,7 +41,97 @@ export default function Page() {
   // Mounted on first open and kept from then on, so closing animates too. It
   // starts unmounted so the evidence endpoints are not called on page load.
   const [drawerMounted, setDrawerMounted] = useState(false);
+  const [focus, setFocus] = useState<RefFocus | null>(null);
   const chat = useRef<ChatHandle>(null);
+  const [historyModalOpen, setHistoryModalOpen] = useState(false);
+
+  // -- Chat history state -------------------------------------------------
+  const [history, setHistory] = useState<ChatSession[]>([]);
+  const [sessionId, setSessionId] = useState<number | null>(null);
+  // The conversation the chat pane is holding, as an object that is *replaced*
+  // on every switch. A save runs from a callback that was created before the
+  // switch, and it captures this object rather than reading the id at the time
+  // it runs — so it writes to the session its answer was asked in and cannot be
+  // redirected into whichever session the user has opened since. Reading a
+  // plain id here is what let one conversation overwrite another.
+  const open = useRef<{ id: number | null }>({ id: null });
+  // Loading a session is a round trip. This says which click is the live one,
+  // so a slower earlier load cannot land on top of a later choice.
+  const loadGen = useRef(0);
+  // Saves run one at a time: two answers landing together would otherwise both
+  // see "no session yet" and each create a row for the same conversation.
+  const saveChain = useRef<Promise<void>>(Promise.resolve());
+
+  const refreshHistory = useCallback(() => {
+    api.listHistory().then(setHistory).catch(() => { });
+  }, []);
+
+  useEffect(() => { refreshHistory(); }, [refreshHistory]);
+
+  /** Points the pane at another conversation. `turns` of null means a blank
+   *  one. The pointer and the thread move together, which is what keeps a save
+   *  and the turns it is saving talking about the same session. */
+  function switchTo(id: number | null, turns: Turn[] | null) {
+    loadGen.current += 1;
+    open.current = { id };
+    setSessionId(id);
+    if (turns === null) chat.current?.reset();
+    else chat.current?.loadTurns(turns);
+  }
+
+  function startNewChat() {
+    switchTo(null, null);
+  }
+
+  async function handleSelectHistory(session: ChatSession) {
+    const gen = ++loadGen.current;
+    try {
+      const full = await api.getHistory(session.id);
+      // Superseded by a later click, or by "new chat", while this was loading.
+      if (gen !== loadGen.current) return;
+      switchTo(session.id, full.messages ?? []);
+      setError(null);
+    } catch (exception) {
+      // Silence here read as "clicking the session does nothing".
+      setError(exception instanceof Error ? exception.message : String(exception));
+    }
+  }
+
+  async function handleDeleteHistory(id: number) {
+    // Detach first. If this is the open conversation, a save firing afterwards
+    // would try to write to a row that is going away: that write fails, and
+    // every turn since would then be stored nowhere.
+    if (open.current.id === id) switchTo(null, null);
+    try {
+      await api.deleteHistory(id);
+    } catch { /* a row already gone is the outcome asked for */ }
+    refreshHistory();
+  }
+
+  /** Persists the conversation an answer landed in. The turns are passed in
+   *  rather than read back from the pane, so this cannot pick up a thread the
+   *  user switched to while the answer was in flight. */
+  function saveCurrentChat(turns: Turn[]) {
+    if (turns.length === 0) return;
+    const target = open.current;
+    saveChain.current = saveChain.current.then(async () => {
+      try {
+        if (target.id !== null) {
+          await api.updateHistory(target.id, { messages: turns, lang });
+        } else {
+          const title =
+            turns.find((t) => t.role === "user")?.text?.slice(0, 80) || "";
+          const created = await api.createHistory(title, lang, turns);
+          // Recorded on the captured object, so a save queued behind this one
+          // updates the new row instead of creating a second one for the same
+          // conversation — and so a switch in between leaves it alone.
+          target.id = created.id;
+          if (target === open.current) setSessionId(created.id);
+        }
+      } catch { /* history is a convenience; a failed save must not break chat */ }
+      refreshHistory();
+    });
+  }
 
   // The inline script in layout.tsx already put the stored choice on <html>
   // before paint. This re-applies it because React Strict Mode remounts once in
@@ -86,11 +178,21 @@ export default function Page() {
 
   // A chat turn that produced a draft opens the confirmation dialog, so the
   // "email me the report" flow always passes through an explicit confirmation.
-  function handleReply(reply: ChatReply) {
+  function handleReply(reply: ChatReply, turns: Turn[]) {
     if (reply.tool === "draft_report_email" && reply.data?.confirm_token) {
       setDraft({ ...reply.data, body: reply.data.body_preview });
     }
     setRefreshToken((value) => value + 1);
+    saveCurrentChat(turns);
+  }
+
+  /** A reference in an answer opens the evidence view that lists it. The panel
+   *  is the only place the underlying row exists — nothing here leaves the app. */
+  function showRef(ref: string, tool: string | null) {
+    setDrawerOpen(true);
+    setFocus((previous) => ({
+      ref, view: viewForTool(tool), seq: (previous?.seq ?? 0) + 1,
+    }));
   }
 
   async function requestDraft() {
@@ -136,10 +238,15 @@ export default function Page() {
         open={railOpen}
         onHide={() => setRailOpen(false)}
         onAsk={askFromRail}
-        onNewChat={() => chat.current?.reset()}
+        onNewChat={startNewChat}
         onEmailReport={requestDraft}
         busy={chatBusy}
         busyDraft={busyDraft}
+        history={history}
+        activeSessionId={sessionId}
+        onSelectHistory={handleSelectHistory}
+        onDeleteHistory={handleDeleteHistory}
+        onShowHistoryModal={() => setHistoryModalOpen(true)}
       />
       <button
         className="scrim scrim-rail"
@@ -185,6 +292,7 @@ export default function Page() {
             disclaimer={summary?.disclaimer ?? ""}
             onReply={handleReply}
             onBusyChange={setChatBusy}
+            onRef={showRef}
           />
         </div>
 
@@ -217,6 +325,7 @@ export default function Page() {
                 <Evidence
                   lang={lang}
                   summary={summary}
+                  focus={focus}
                   refreshToken={refreshToken}
                   onScan={() => setRefreshToken((value) => value + 1)}
                   onAsk={askFromDrawer}
@@ -229,6 +338,16 @@ export default function Page() {
 
       {draft ? (
         <DraftModal lang={lang} draft={draft} onClose={() => setDraft(null)} />
+      ) : null}
+
+      {historyModalOpen ? (
+        <HistoryModal
+          lang={lang}
+          history={history}
+          onSelect={handleSelectHistory}
+          onDelete={handleDeleteHistory}
+          onClose={() => setHistoryModalOpen(false)}
+        />
       ) : null}
     </div>
   );

@@ -1,8 +1,8 @@
-"""Postgres-backed application state.
+"""Postgres-backed application state and migration entry point.
 
-Only four things are persisted, and none of them is money: the flag journal,
-the fingerprints used to avoid repeating an alert, deadline reminders, and
-report drafts awaiting the user's confirmation.
+The financial dataset is created by ``data.import_dataset``.  This store keeps
+the analysis state and delegates schema ownership to versioned SQL migrations
+so a fresh database and an existing installation use the same schema.
 """
 
 from __future__ import annotations
@@ -17,79 +17,6 @@ from psycopg.rows import dict_row
 from psycopg_pool import ConnectionPool
 
 from .config import settings
-
-SCHEMA = """
-CREATE TABLE IF NOT EXISTS scans (
-    id              BIGSERIAL PRIMARY KEY,
-    started_at      TIMESTAMPTZ NOT NULL DEFAULT now(),
-    finished_at     TIMESTAMPTZ,
-    trigger         TEXT NOT NULL DEFAULT 'manual',
-    new_count       INTEGER NOT NULL DEFAULT 0,
-    suppressed_count INTEGER NOT NULL DEFAULT 0
-);
-
-CREATE TABLE IF NOT EXISTS flags (
-    fingerprint     TEXT PRIMARY KEY,
-    kind            TEXT NOT NULL,
-    label           TEXT NOT NULL,
-    confidence      NUMERIC(4,2) NOT NULL,
-    amount_cents    BIGINT NOT NULL DEFAULT 0,
-    txn_ids         JSONB NOT NULL DEFAULT '[]'::jsonb,
-    period_key      TEXT NOT NULL DEFAULT '',
-    occurred_on     DATE,
-    statement_date  DATE,
-    dispute_deadline DATE,
-    params          JSONB NOT NULL DEFAULT '{}'::jsonb,
-    sources         JSONB NOT NULL DEFAULT '[]'::jsonb,
-    first_seen_at   TIMESTAMPTZ NOT NULL DEFAULT now(),
-    last_seen_at    TIMESTAMPTZ NOT NULL DEFAULT now(),
-    seen_count      INTEGER NOT NULL DEFAULT 1,
-    first_scan_id   BIGINT REFERENCES scans(id)
-);
-
-CREATE TABLE IF NOT EXISTS audit_log (
-    id              BIGSERIAL PRIMARY KEY,
-    logged_at       TIMESTAMPTZ NOT NULL DEFAULT now(),
-    event           TEXT NOT NULL,
-    fingerprint     TEXT,
-    kind            TEXT,
-    label           TEXT,
-    confidence      NUMERIC(4,2),
-    reason          TEXT NOT NULL DEFAULT '',
-    detail          JSONB NOT NULL DEFAULT '{}'::jsonb
-);
-
-CREATE TABLE IF NOT EXISTS reminders (
-    id              BIGSERIAL PRIMARY KEY,
-    fingerprint     TEXT NOT NULL REFERENCES flags(fingerprint) ON DELETE CASCADE,
-    due_date        DATE NOT NULL,
-    kind            TEXT NOT NULL,
-    title           TEXT NOT NULL,
-    status          TEXT NOT NULL DEFAULT 'open',
-    created_at      TIMESTAMPTZ NOT NULL DEFAULT now(),
-    UNIQUE (fingerprint, due_date)
-);
-
-CREATE TABLE IF NOT EXISTS report_drafts (
-    id              BIGSERIAL PRIMARY KEY,
-    created_at      TIMESTAMPTZ NOT NULL DEFAULT now(),
-    recipient       TEXT NOT NULL,
-    subject         TEXT NOT NULL,
-    body            TEXT NOT NULL,
-    period_key      TEXT NOT NULL DEFAULT '',
-    lang            TEXT NOT NULL DEFAULT 'vi',
-    confirm_token   TEXT NOT NULL UNIQUE,
-    status          TEXT NOT NULL DEFAULT 'draft',
-    confirmed_at    TIMESTAMPTZ,
-    sent_at         TIMESTAMPTZ,
-    delivery        TEXT NOT NULL DEFAULT 'outbox',
-    file_path       TEXT
-);
-
-CREATE INDEX IF NOT EXISTS flags_kind_idx ON flags (kind);
-CREATE INDEX IF NOT EXISTS audit_log_fingerprint_idx ON audit_log (fingerprint);
-CREATE INDEX IF NOT EXISTS reminders_due_idx ON reminders (due_date, status);
-"""
 
 
 class Store:
@@ -118,8 +45,9 @@ class Store:
 
     def init_schema(self) -> bool:
         try:
-            with self.conn() as c:
-                c.execute(SCHEMA)
+            from .db.migrations import apply_migrations
+
+            apply_migrations(self.dsn)
             self._ready = True
             self.last_error = None
         except Exception as exc:                       # noqa: BLE001
@@ -150,6 +78,8 @@ class Store:
                 "reminders": c.execute("SELECT count(*) AS n FROM reminders")
                 .fetchone()["n"],
                 "scans": c.execute("SELECT count(*) AS n FROM scans").fetchone()["n"],
+                "chat_sessions": c.execute("SELECT count(*) AS n FROM chat_sessions")
+                .fetchone()["n"],
             }
 
     # -- scans ------------------------------------------------------------
@@ -216,6 +146,75 @@ class Store:
         with self.conn() as c:
             rows = c.execute("SELECT fingerprint FROM flags").fetchall()
         return {r["fingerprint"] for r in rows}
+
+    # -- fx rates ---------------------------------------------------------
+
+    def upsert_fx_quotes(self, quotes: Any) -> int:
+        """Store published rates, overwriting a day we already hold.
+
+        Upsert rather than insert-if-absent: the ECB occasionally revises a
+        published figure, and keeping the first value we happened to see would
+        leave a known-wrong rate in place for good. Returns the number written.
+        """
+        rows = [q for q in quotes if not getattr(q, "inverted", False)]
+        # An inverted quote is a reading of a stored series, not an observation
+        # of its own. Writing it would create a second row that must agree with
+        # the first for ever, and silently disagree the moment one is revised.
+        if not rows:
+            return 0
+        with self.conn() as c:
+            with c.cursor() as cur:
+                cur.executemany(
+                    """
+                    INSERT INTO fx_rates (base, quote, quoted_on, rate, source)
+                    VALUES (%s, %s, %s, %s, %s)
+                    ON CONFLICT (base, quote, quoted_on) DO UPDATE
+                        SET rate = EXCLUDED.rate,
+                            source = EXCLUDED.source,
+                            fetched_at = now()
+                    """,
+                    [(q.base, q.quote, q.quoted_on, str(q.rate), q.source)
+                     for q in rows],
+                )
+        return len(rows)
+
+    def fx_quotes(self, since: date | None = None) -> list[dict[str, Any]]:
+        """Every stored rate, newest publication first."""
+        sql = ("SELECT base, quote, quoted_on, rate, source FROM fx_rates"
+               " {where} ORDER BY quoted_on DESC, base, quote")
+        with self.conn() as c:
+            if since is None:
+                return c.execute(sql.format(where="")).fetchall()
+            return c.execute(sql.format(where="WHERE quoted_on >= %s"),
+                             (since,)).fetchall()
+
+    def fx_latest_quoted_on(self, base: str | None = None,
+                            quote: str | None = None) -> date | None:
+        """The most recent publication held, for deciding where to resume."""
+        clauses, params = [], []
+        if base:
+            clauses.append("base = %s")
+            params.append(base)
+        if quote:
+            clauses.append("quote = %s")
+            params.append(quote)
+        where = f"WHERE {' AND '.join(clauses)}" if clauses else ""
+        with self.conn() as c:
+            row = c.execute(
+                f"SELECT max(quoted_on) AS latest FROM fx_rates {where}",
+                tuple(params),
+            ).fetchone()
+        return row["latest"] if row else None
+
+    def fx_coverage(self) -> list[dict[str, Any]]:
+        """Per pair: how many days are held and the span they cover."""
+        with self.conn() as c:
+            return c.execute(
+                "SELECT base, quote, count(*) AS days,"
+                " min(quoted_on) AS first_quoted_on,"
+                " max(quoted_on) AS last_quoted_on, max(fetched_at) AS fetched_at"
+                " FROM fx_rates GROUP BY base, quote ORDER BY base, quote"
+            ).fetchall()
 
     # -- audit journal ----------------------------------------------------
 
@@ -291,6 +290,86 @@ class Store:
                 (file_path, draft_id),
             )
 
+    # -- chat history ----------------------------------------------------
+
+    def create_chat_session(self, title: str, lang: str,
+                            messages: list[dict]) -> int | None:
+        with self.conn() as c:
+            row = c.execute(
+                "INSERT INTO chat_sessions (title, lang, messages)"
+                " VALUES (%s, %s, %s) RETURNING id",
+                (title, lang, json.dumps(messages, default=str)),
+            ).fetchone()
+            return row["id"] if row else None
+
+    def list_chat_sessions(self, limit: int = 50) -> list[dict]:
+        """The sessions, newest first, without their turns.
+
+        ``messages`` holds every answer together with the evidence behind it,
+        so returning it for the whole list would ship megabytes to draw a
+        sidebar.  The two things the list actually shows — how many questions
+        were asked and what the first one was — are derived here instead.
+        """
+        with self.conn() as c:
+            return c.execute(
+                "SELECT s.id, s.title, s.created_at, s.updated_at, s.lang,"
+                " (SELECT count(*) FROM jsonb_array_elements(s.messages) m"
+                "   WHERE m->>'role' = 'user') AS message_count,"
+                # WITH ORDINALITY because the preview has to be the *first*
+                # question asked, and a bare function scan is not ordered by
+                # anything the planner is obliged to keep.
+                " (SELECT t.m->>'text'"
+                "   FROM jsonb_array_elements(s.messages) WITH ORDINALITY"
+                "     AS t(m, ord)"
+                "   WHERE t.m->>'role' = 'user'"
+                "   ORDER BY t.ord LIMIT 1) AS preview"
+                " FROM chat_sessions s"
+                " ORDER BY s.updated_at DESC LIMIT %s",
+                (limit,),
+            ).fetchall()
+
+    def get_chat_session(self, session_id: int) -> dict | None:
+        with self.conn() as c:
+            return c.execute(
+                "SELECT * FROM chat_sessions WHERE id = %s",
+                (session_id,),
+            ).fetchone()
+
+    def update_chat_session(self, session_id: int, *,
+                            title: str | None = None,
+                            messages: list[dict] | None = None,
+                            lang: str | None = None) -> bool:
+        parts: list[str] = []
+        params: list = []
+        if title is not None:
+            parts.append("title = %s")
+            params.append(title)
+        if messages is not None:
+            parts.append("messages = %s")
+            params.append(json.dumps(messages, default=str))
+        if lang is not None:
+            parts.append("lang = %s")
+            params.append(lang)
+        if not parts:
+            return False
+        parts.append("updated_at = now()")
+        params.append(session_id)
+        with self.conn() as c:
+            row = c.execute(
+                f"UPDATE chat_sessions SET {', '.join(parts)}"
+                " WHERE id = %s RETURNING id",
+                params,
+            ).fetchone()
+            return row is not None
+
+    def delete_chat_session(self, session_id: int) -> bool:
+        with self.conn() as c:
+            row = c.execute(
+                "DELETE FROM chat_sessions WHERE id = %s RETURNING id",
+                (session_id,),
+            ).fetchone()
+            return row is not None
+
     # -- housekeeping -----------------------------------------------------
 
     def purge(self) -> dict[str, int]:
@@ -298,7 +377,7 @@ class Store:
         with self.conn() as c:
             before = self.counts()
             c.execute("TRUNCATE reminders, audit_log, flags, report_drafts,"
-                      " scans RESTART IDENTITY CASCADE")
+                      " scans, chat_sessions RESTART IDENTITY CASCADE")
         return before
 
 

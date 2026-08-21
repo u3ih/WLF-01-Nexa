@@ -2,13 +2,15 @@
 SHELL := /bin/bash
 PY := backend/.venv/bin/python
 
-.PHONY: help setup seed dev run test smoke build deploy deploy-down deploy-logs purge stop
+.PHONY: help setup seed migrate import-dataset dev run test smoke build deploy deploy-down deploy-logs purge stop
 
 help:
-	@echo "make setup       install deps, start Postgres, generate sample data"
+	@echo "make setup       install deps, start Postgres, create DB, migrate, import data"
 	@echo "make dev         run backend (reload) + frontend on :8000 / :3000"
 	@echo "make run         run both in production mode"
 	@echo "make seed        regenerate the sample dataset and answer key"
+	@echo "make migrate     apply versioned Postgres migrations"
+	@echo "make import-dataset  import dataset/*.csv into Postgres"
 	@echo "make test        run the test suite (engine, guardrails, dedupe, masking)"
 	@echo "make smoke       curl the running stack and check the safety rules"
 	@echo "make deploy      build and run everything in Docker"
@@ -19,6 +21,12 @@ setup:
 
 seed:
 	cd backend && ../$(PY) -m data.generate
+
+migrate:
+	./scripts/migrate.sh
+
+import-dataset: migrate
+	./scripts/import_dataset.sh
 
 dev:
 	./scripts/run.sh dev

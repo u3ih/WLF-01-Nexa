@@ -19,11 +19,18 @@ if command -v docker >/dev/null && docker info >/dev/null 2>&1; then
   docker compose up -d postgres >/dev/null 2>&1 || true
 fi
 
-if command -v ollama >/dev/null && ! curl -sf http://localhost:11434/api/tags >/dev/null 2>&1; then
-  say "starting ollama serve in the background"
-  (ollama serve >/dev/null 2>&1 &)
-  sleep 2
-fi
+# Only worth starting when the configured endpoint IS a local Ollama. A hosted
+# OpenAI-compatible URL needs nothing started here.
+AI_URL="$(grep -E '^NEXA_AI_URL=' .env 2>/dev/null | tail -1 | cut -d= -f2-)"
+case "${AI_URL:-http://localhost:11434}" in
+  *localhost:11434*|*127.0.0.1:11434*|*host.docker.internal:11434*)
+    if command -v ollama >/dev/null && ! curl -sf http://localhost:11434/api/tags >/dev/null 2>&1; then
+      say "starting ollama serve in the background"
+      (ollama serve >/dev/null 2>&1 &)
+      sleep 2
+    fi
+    ;;
+esac
 
 pids=()
 cleanup() {
