@@ -9,6 +9,7 @@ import { Evidence } from "@/components/evidence/Evidence";
 import { Sidebar, type ThemePref } from "@/components/Sidebar";
 import { api } from "@/lib/api";
 import { ui } from "@/lib/i18n";
+import { viewForTool, type RefFocus } from "@/lib/refs";
 import type { ChatReply, Lang, Summary } from "@/lib/types";
 
 // Kept in step with the rail's breakpoint in globals.css: below this the rail
@@ -39,6 +40,7 @@ export default function Page() {
   // Mounted on first open and kept from then on, so closing animates too. It
   // starts unmounted so the evidence endpoints are not called on page load.
   const [drawerMounted, setDrawerMounted] = useState(false);
+  const [focus, setFocus] = useState<RefFocus | null>(null);
   const chat = useRef<ChatHandle>(null);
 
   // The inline script in layout.tsx already put the stored choice on <html>
@@ -91,6 +93,15 @@ export default function Page() {
       setDraft({ ...reply.data, body: reply.data.body_preview });
     }
     setRefreshToken((value) => value + 1);
+  }
+
+  /** A reference in an answer opens the evidence view that lists it. The panel
+   *  is the only place the underlying row exists — nothing here leaves the app. */
+  function showRef(ref: string, tool: string | null) {
+    setDrawerOpen(true);
+    setFocus((previous) => ({
+      ref, view: viewForTool(tool), seq: (previous?.seq ?? 0) + 1,
+    }));
   }
 
   async function requestDraft() {
@@ -185,6 +196,7 @@ export default function Page() {
             disclaimer={summary?.disclaimer ?? ""}
             onReply={handleReply}
             onBusyChange={setChatBusy}
+            onRef={showRef}
           />
         </div>
 
@@ -217,6 +229,7 @@ export default function Page() {
                 <Evidence
                   lang={lang}
                   summary={summary}
+                  focus={focus}
                   refreshToken={refreshToken}
                   onScan={() => setRefreshToken((value) => value + 1)}
                   onAsk={askFromDrawer}
