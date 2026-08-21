@@ -43,12 +43,22 @@ npm run scrape:headers
 
 ---
 
-## 4. Chạy bên trong ứng dụng và ghi vào Postgres
+## 4. Chạy bên trong ứng dụng và cập nhật dataset
 
 Backend tự đăng ký job APScheduler theo cấu hình `NEXA_YOPMAIL_*`, không cần
-crontab của hệ điều hành. Job chạy full scraper headless rồi import
-`emails_full.json` vào bảng `emails`; dữ liệu gốc được lưu trong
-`dataset_imports`, `dataset_files` và `dataset_rows`.
+crontab của hệ điều hành. Job chạy full scraper headless rồi cập nhật file
+`dataset/email_<mailbox>.csv`. Giai đoạn này chưa chạy migration và chưa ghi
+Postgres.
+
+Sau khi apply thành công, backend tự xóa JSON/CSV/report/HTML trung gian trong
+`scripts/yopmail_scraper/output`; nếu crawl lỗi, output được giữ lại để debug.
+
+Trước mỗi lần ghi, job tạo một backup timestamped ngay cạnh file dataset và
+giữ lại mặc định. Nếu cần phục hồi:
+
+```bash
+cp dataset/email_tester.csv.backup-<timestamp> dataset/email_tester.csv
+```
 
 Chạy ngay qua API:
 
@@ -56,17 +66,17 @@ Chạy ngay qua API:
 curl -X POST http://localhost:8000/api/monitor/yopmail
 ```
 
-Mặc định job chạy lúc `07:10`. Có thể đổi trong `.env`, ví dụ:
+Mặc định job chạy mỗi `5 phút`. Có thể đổi trong `.env`, ví dụ:
 
 ```env
 NEXA_YOPMAIL_ENABLED=true
-NEXA_YOPMAIL_USER=wealifytester
-NEXA_YOPMAIL_MAILBOX=tester
-NEXA_YOPMAIL_HOUR=7
-NEXA_YOPMAIL_MINUTE=10
+NEXA_YOPMAIL_USERS=wealifytester,wealifyjunior,wealifysenior
+NEXA_YOPMAIL_MAILBOXES=tester,junior,senior
+NEXA_YOPMAIL_INTERVAL_MINUTES=5
+NEXA_YOPMAIL_DATASET_DIR=./dataset
 ```
 
-Nếu YOPmail yêu cầu reCAPTCHA, job sẽ dừng trước bước import để không ghi
+Nếu YOPmail yêu cầu reCAPTCHA, job sẽ dừng trước bước cập nhật dataset để không ghi
 nội dung không đầy đủ.
 
 ## 📂 5. Cấu trúc dữ liệu đầu ra

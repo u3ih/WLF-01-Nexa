@@ -1,15 +1,17 @@
-"""Run the YOPmail scraper and importer from the application scheduler."""
+"""Run the YOPmail scraper and update the CSV dataset from the scheduler."""
 
 from __future__ import annotations
 
-import json
 import logging
 import subprocess
-import sys
 from threading import Lock
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from typing import Any
 
+from data.apply_yopmail import apply_yopmail
+
 from .config import BACKEND_ROOT, settings
+from .engine import pipeline
 
 log = logging.getLogger("nexa.yopmail")
 _job_lock = Lock()
@@ -45,8 +47,67 @@ def _run(command: list[str], *, cwd, timeout: float) -> subprocess.CompletedProc
     return result
 
 
+def _targets() -> list[tuple[str, str]]:
+    users = [item.strip() for item in settings.yopmail_users.split(",") if item.strip()]
+    mailboxes = [item.strip() for item in settings.yopmail_mailboxes.split(",") if item.strip()]
+    if not users or len(users) != len(mailboxes):
+        raise YopmailJobError(
+            "NEXA_YOPMAIL_USERS and NEXA_YOPMAIL_MAILBOXES must have the same "
+            "number of comma-separated entries"
+        )
+    return list(zip(users, mailboxes))
+
+
+def _cleanup_output(output_dir) -> None:
+    """Remove HTML and other transient scraper artifacts after a success."""
+    html_files = list(output_dir.rglob("*.html"))
+    for html_file in html_files:
+        html_file.unlink(missing_ok=True)
+    log.info("removed %d temporary HTML files from %s", len(html_files), output_dir)
+
+    # These files are also intermediate; the durable result is the dataset CSV.
+    for name in ("emails_full.json", "emails_full.csv", "full_report.md"):
+        (output_dir / name).unlink(missing_ok=True)
+    for directory in sorted(
+        (path for path in output_dir.rglob("*") if path.is_dir()),
+        reverse=True,
+    ):
+        try:
+            directory.rmdir()
+        except OSError:
+            pass
+    try:
+        output_dir.rmdir()
+    except OSError:
+        pass
+
+
+def _run_one(user: str, mailbox: str, scraper_dir, dataset_dir) -> dict[str, Any]:
+    output_dir = scraper_dir / "output" / user
+    output_dir.mkdir(parents=True, exist_ok=True)
+    json_path = output_dir / "emails_full.json"
+    scraper_command = [
+        settings.yopmail_node, "scrape_full.js",
+        "--user", user,
+        "--output", str(output_dir),
+        "--limit", str(settings.yopmail_limit),
+        "--delay", str(settings.yopmail_delay_ms),
+        "--headless", "true",
+        "--require-unlocked", str(settings.yopmail_require_unlocked).lower(),
+    ]
+    _run(scraper_command, cwd=scraper_dir, timeout=3600.0)
+    if not json_path.is_file():
+        raise YopmailJobError(f"scraper did not produce {json_path}")
+    counts = apply_yopmail(json_path, dataset_dir, mailbox)
+    # The dataset is the durable output. Keep scraper artifacts only when a
+    # run fails, so a successful five-minute cycle does not accumulate JSON,
+    # reports and hundreds of HTML files.
+    _cleanup_output(output_dir)
+    return {"user": user, "mailbox": mailbox, "dataset": counts}
+
+
 def run_yopmail_job(trigger: str = "schedule") -> dict[str, Any]:
-    """Scrape one inbox and upsert its records into Postgres."""
+    """Scrape all configured inboxes concurrently and update the dataset."""
     if not _job_lock.acquire(blocking=False):
         raise YopmailJobBusy("another YOPmail job is already running")
 
@@ -58,40 +119,38 @@ def run_yopmail_job(trigger: str = "schedule") -> dict[str, Any]:
         if not scraper_dir.is_dir():
             raise YopmailJobError(f"scraper directory not found: {scraper_dir}")
 
-        output_dir = scraper_dir / "output" / settings.yopmail_user
-        output_dir.mkdir(parents=True, exist_ok=True)
-        json_path = output_dir / "emails_full.json"
-        scraper_command = [
-            settings.yopmail_node, "scrape_full.js",
-            "--user", settings.yopmail_user,
-            "--output", str(output_dir),
-            "--limit", str(settings.yopmail_limit),
-            "--delay", str(settings.yopmail_delay_ms),
-            "--headless", "true",
-            "--require-unlocked", str(settings.yopmail_require_unlocked).lower(),
-        ]
-        _run(scraper_command, cwd=scraper_dir, timeout=3600.0)
+        dataset_dir = settings.yopmail_dataset_dir
+        if not dataset_dir.is_absolute():
+            dataset_dir = BACKEND_ROOT.parent / dataset_dir
+        dataset_dir = dataset_dir.resolve()
+        targets = _targets()
+        results: list[dict[str, Any]] = []
+        errors: list[dict[str, str]] = []
+        with ThreadPoolExecutor(max_workers=len(targets), thread_name_prefix="yopmail") as pool:
+            futures = {
+                pool.submit(_run_one, user, mailbox, scraper_dir, dataset_dir): (user, mailbox)
+                for user, mailbox in targets
+            }
+            for future in as_completed(futures):
+                user, mailbox = futures[future]
+                try:
+                    results.append(future.result())
+                except Exception as exc:  # noqa: BLE001
+                    log.exception("YOPmail mailbox failed: %s", user)
+                    errors.append({"user": user, "mailbox": mailbox, "error": str(exc)})
 
-        if not json_path.is_file():
-            raise YopmailJobError(f"scraper did not produce {json_path}")
-
-        importer_command = [
-            sys.executable, "-m", "data.import_yopmail",
-            "--input", str(json_path),
-            "--html-root", str(output_dir),
-            "--mailbox", settings.yopmail_mailbox,
-        ]
-        imported = _run(importer_command, cwd=BACKEND_ROOT, timeout=120.0)
-        try:
-            counts = json.loads(imported.stdout)
-        except json.JSONDecodeError as exc:
-            raise YopmailJobError("importer returned invalid JSON") from exc
+        if results:
+            pipeline.reset_cache()
+        if errors and not results:
+            raise YopmailJobError(
+                "all YOPmail mailboxes failed: "
+                + "; ".join(f"{item['user']}: {item['error']}" for item in errors)
+            )
 
         result = {
             "trigger": trigger,
-            "user": settings.yopmail_user,
-            "mailbox": settings.yopmail_mailbox,
-            "counts": counts,
+            "results": sorted(results, key=lambda item: item["mailbox"]),
+            "errors": sorted(errors, key=lambda item: item["mailbox"]),
         }
         log.info("YOPmail job completed: %s", result)
         return result

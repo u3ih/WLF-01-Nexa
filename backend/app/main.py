@@ -73,8 +73,9 @@ async def lifespan(app: FastAPI):
                 )
             if settings.yopmail_enabled:
                 scheduler.add_job(
-                    run_yopmail_job, "cron", hour=settings.yopmail_hour,
-                    minute=settings.yopmail_minute, id="yopmail-ingest",
+                    run_yopmail_job, "interval",
+                    minutes=settings.yopmail_interval_minutes,
+                    id="yopmail-ingest",
                     max_instances=1, coalesce=True,
                 )
             scheduler.start()
@@ -82,8 +83,8 @@ async def lifespan(app: FastAPI):
                 log.info("daily monitoring scan scheduled at %02d:00",
                          settings.scan_hour)
             if settings.yopmail_enabled:
-                log.info("YOPmail ingestion scheduled at %02d:%02d",
-                         settings.yopmail_hour, settings.yopmail_minute)
+                log.info("YOPmail ingestion scheduled every %d minutes",
+                         settings.yopmail_interval_minutes)
         except Exception as exc:                        # noqa: BLE001
             log.warning("scheduler not started: %s", exc)
 
