@@ -3,7 +3,7 @@
 import {
   Clock, Languages, Mail, MessageSquare, Monitor, Moon, PanelLeft, Plus, Sun, Trash2,
 } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { BrandMark } from "@/components/BrandMark";
 import { ALL_QUESTIONS, ui } from "@/lib/i18n";
@@ -59,6 +59,18 @@ export function Sidebar({
   const ThemeIcon = THEME_ICON[theme];
   const [historyOpen, setHistoryOpen] = useState(true);
   const [confirmDeleteId, setConfirmDeleteId] = useState<number | null>(null);
+  const [systemDark, setSystemDark] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(prefers-color-scheme: dark)");
+    setSystemDark(mq.matches);
+    const handler = (e: MediaQueryListEvent) => setSystemDark(e.matches);
+    mq.addEventListener("change", handler);
+    return () => mq.removeEventListener("change", handler);
+  }, []);
+
+  const isDark = theme === "dark" || (theme === "system" && systemDark);
+  const logoSrc = isDark ? "/images/dark-logo.png" : "/images/logo.png";
 
   return (
     <aside
@@ -68,7 +80,7 @@ export function Sidebar({
     >
       <div className="rail-top">
         <div className="brand">
-          <img src="/images/logo.png" className="brand-image" alt="Nexa Logo" />
+          <img src={logoSrc} className="brand-image" alt="Nexa Logo" />
         </div>
         <button className="icon-btn" onClick={onHide} title={ui(lang, "hideRail")}
           aria-label={ui(lang, "hideRail")}>
