@@ -1,0 +1,2586 @@
+[
+  {
+    "index": 1,
+    "id": "e_ZwLjBQVjZGRlZQH1ZQNjAmL4AwZ5ZN==",
+    "inbox": "wealifytester@yopmail.com",
+    "from": "[Khẩn] Xác minh tài khoản của bạn trong 24h",
+    "subject": "[Khẩn] Xác minh tài khoản của bạn trong 24h",
+    "date": "Wealify <no-reply@wealify.com>",
+    "timestamp": "18:20",
+    "page": 1,
+    "body_text": "Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).\n\nNgười gửi gốc (CSV): Wealify Security <no-reply@wea1ify-support.com>\nEmail id: EM-0129\nThời điểm CSV: 2026-08-10 08:12\n\nBấm link xác minh nếu không tài khoản sẽ bị khoá\n\nYêu cầu xác minh khẩn\n\nTài khoản của bạn sẽ bị khoá nếu không xác minh trong 24 giờ.\n\nBấm vào đây để xác minh ngay",
+    "body_html_file": "html/mail_001_e_ZwLjBQVjZGRlZQH1ZQNjAmL4AwZ5ZN.html",
+    "extracted_links": [
+      "https://wea1ify-support.com/verify?ref=EM-0129"
+    ],
+    "extracted_codes": [
+      "0129",
+      "2026"
+    ],
+    "scraped_at": "2026-08-21T04:25:06.367Z"
+  },
+  {
+    "index": 2,
+    "id": "e_ZwLjBQVjZGRlZQHkZQNjAmL4AGHmAN==",
+    "inbox": "wealifytester@yopmail.com",
+    "from": "Order confirmation - Shopee",
+    "subject": "Order confirmation - Shopee",
+    "date": "Wealify <no-reply@wealify.com>",
+    "timestamp": "18:20",
+    "page": 1,
+    "body_text": "Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).\n\nNgười gửi gốc (CSV): noreply@shopee.com\nEmail id: EM-0128\nThời điểm CSV: 2026-04-24 15:27\n\nThanks\n\nGiao dịch thẻ\n\nCSV id: CD-0201\nWealify order_no: WLF15-CD-0201\nThẻ: VC04\nLoại: purchase\nMerchant: SHOPEE *ORDER\nSố tiền: 192.52 EUR (~207.92 USD)\nTrạng thái CSV: success\nMô tả: Shopee",
+    "body_html_file": "html/mail_002_e_ZwLjBQVjZGRlZQHkZQNjAmL4AGHmAN.html",
+    "extracted_links": [],
+    "extracted_codes": [
+      "0128",
+      "2026",
+      "0201"
+    ],
+    "scraped_at": "2026-08-21T04:25:07.075Z"
+  },
+  {
+    "index": 3,
+    "id": "e_ZwLjBQVjZGRlZQD4ZQNjAmL4AGNjBN==",
+    "inbox": "wealifytester@yopmail.com",
+    "from": "Order confirmation - Shopee",
+    "subject": "Order confirmation - Shopee",
+    "date": "Wealify <no-reply@wealify.com>",
+    "timestamp": "18:20",
+    "page": 1,
+    "body_text": "Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).\n\nNgười gửi gốc (CSV): noreply@shopee.com\nEmail id: EM-0127\nThời điểm CSV: 2026-07-30 12:18\n\nThanks\n\nGiao dịch thẻ\n\nCSV id: CD-0199\nWealify order_no: WLF15-CD-0199\nThẻ: VC04\nLoại: purchase\nMerchant: SHOPEE *ORDER\nSố tiền: 45.24 EUR (~48.86 USD)\nTrạng thái CSV: success\nMô tả: Shopee",
+    "body_html_file": "html/mail_003_e_ZwLjBQVjZGRlZQD4ZQNjAmL4AGNjBN.html",
+    "extracted_links": [],
+    "extracted_codes": [
+      "0127",
+      "2026",
+      "0199"
+    ],
+    "scraped_at": "2026-08-21T04:25:07.781Z"
+  },
+  {
+    "index": 4,
+    "id": "e_ZwLjBQVjZGRlZQD2ZQNjAmL4AQH4ZD==",
+    "inbox": "wealifytester@yopmail.com",
+    "from": "Order confirmation - The Coffee House",
+    "subject": "Order confirmation - The Coffee House",
+    "date": "Wealify <no-reply@wealify.com>",
+    "timestamp": "18:20",
+    "page": 1,
+    "body_text": "Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).\n\nNgười gửi gốc (CSV): noreply@the.com\nEmail id: EM-0126\nThời điểm CSV: 2026-07-20 00:44\n\nThanks\n\nGiao dịch thẻ\n\nCSV id: CD-0197\nWealify order_no: WLF15-CD-0197\nThẻ: VC04\nLoại: purchase\nMerchant: SQ *THE COFFEE HOUSE\nSố tiền: 27.99 EUR (~30.23 USD)\nTrạng thái CSV: success\nMô tả: The Coffee House",
+    "body_html_file": "html/mail_004_e_ZwLjBQVjZGRlZQD2ZQNjAmL4AQH4ZD.html",
+    "extracted_links": [],
+    "extracted_codes": [
+      "0126",
+      "2026",
+      "0197"
+    ],
+    "scraped_at": "2026-08-21T04:25:08.489Z"
+  },
+  {
+    "index": 5,
+    "id": "e_ZwLjBQVjZGRkZmV3ZQNjAmH5ZmL0ZD==",
+    "inbox": "wealifytester@yopmail.com",
+    "from": "Order confirmation - Grab",
+    "subject": "Order confirmation - Grab",
+    "date": "Wealify <no-reply@wealify.com>",
+    "timestamp": "18:13",
+    "page": 1,
+    "body_text": "Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).\n\nNgười gửi gốc (CSV): noreply@grab.com\nEmail id: EM-0124\nThời điểm CSV: 2026-03-31 22:01\n\nThanks\n\nGiao dịch thẻ\n\nCSV id: CD-0187\nWealify order_no: WLF15-CD-0187\nThẻ: VC02\nLoại: purchase\nMerchant: GRAB* RIDE HCM\nSố tiền: 17.73 USD (~17.73 USD)\nTrạng thái CSV: success\nMô tả: Grab",
+    "body_html_file": "html/mail_005_e_ZwLjBQVjZGRkZmV3ZQNjAmH5ZmL0ZD.html",
+    "extracted_links": [],
+    "extracted_codes": [
+      "0124",
+      "2026",
+      "0187"
+    ],
+    "scraped_at": "2026-08-21T04:25:09.199Z"
+  },
+  {
+    "index": 6,
+    "id": "e_ZwLjBQVjZGRkZmVmZQNjAmH5ZmN5AN==",
+    "inbox": "wealifytester@yopmail.com",
+    "from": "Order confirmation - Vultr",
+    "subject": "Order confirmation - Vultr",
+    "date": "Wealify <no-reply@wealify.com>",
+    "timestamp": "18:13",
+    "page": 1,
+    "body_text": "Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).\n\nNgười gửi gốc (CSV): noreply@vultr.com\nEmail id: EM-0123\nThời điểm CSV: 2026-03-15 23:02\n\nThanks\n\nGiao dịch thẻ\n\nCSV id: CD-0183\nWealify order_no: WLF15-CD-0183\nThẻ: VC04\nLoại: purchase\nMerchant: VULTR.COM* CLOUD\nSố tiền: 15.89 EUR (~17.16 USD)\nTrạng thái CSV: success\nMô tả: Vultr",
+    "body_html_file": "html/mail_006_e_ZwLjBQVjZGRkZmVmZQNjAmH5ZmN5AN.html",
+    "extracted_links": [],
+    "extracted_codes": [
+      "0123",
+      "2026",
+      "0183"
+    ],
+    "scraped_at": "2026-08-21T04:25:09.905Z"
+  },
+  {
+    "index": 7,
+    "id": "e_ZwLjBQVjZGRkZmVjZQNjAmH5ZwH2Aj==",
+    "inbox": "wealifytester@yopmail.com",
+    "from": "Order confirmation - Namecheap",
+    "subject": "Order confirmation - Namecheap",
+    "date": "Wealify <no-reply@wealify.com>",
+    "timestamp": "18:13",
+    "page": 1,
+    "body_text": "Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).\n\nNgười gửi gốc (CSV): noreply@namecheap.com\nEmail id: EM-0122\nThời điểm CSV: 2026-04-30 15:47\n\nThanks\n\nGiao dịch thẻ\n\nCSV id: CD-0177\nWealify order_no: WLF15-CD-0177\nThẻ: VC04\nLoại: purchase\nMerchant: NAMECHEAP* DOMAIN\nSố tiền: 54.74 EUR (~59.12 USD)\nTrạng thái CSV: success\nMô tả: Namecheap",
+    "body_html_file": "html/mail_007_e_ZwLjBQVjZGRkZmVjZQNjAmH5ZwH2Aj.html",
+    "extracted_links": [],
+    "extracted_codes": [
+      "0122",
+      "2026",
+      "0177"
+    ],
+    "scraped_at": "2026-08-21T04:25:10.612Z"
+  },
+  {
+    "index": 8,
+    "id": "e_ZwLjBQVjZGRkZmR3ZQNjAmH5ZwRjAj==",
+    "inbox": "wealifytester@yopmail.com",
+    "from": "Order confirmation - Apple",
+    "subject": "Order confirmation - Apple",
+    "date": "Wealify <no-reply@wealify.com>",
+    "timestamp": "18:13",
+    "page": 1,
+    "body_text": "Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).\n\nNgười gửi gốc (CSV): noreply@apple.com\nEmail id: EM-0121\nThời điểm CSV: 2026-05-26 02:02\n\nThanks\n\nGiao dịch thẻ\n\nCSV id: CD-0175\nWealify order_no: WLF15-CD-0175\nThẻ: VC02\nLoại: purchase\nMerchant: APPLE.COM/BILL\nSố tiền: 64.69 USD (~64.69 USD)\nTrạng thái CSV: success\nMô tả: Apple",
+    "body_html_file": "html/mail_008_e_ZwLjBQVjZGRkZmR3ZQNjAmH5ZwRjAj.html",
+    "extracted_links": [],
+    "extracted_codes": [
+      "0121",
+      "2026",
+      "0175"
+    ],
+    "scraped_at": "2026-08-21T04:25:11.323Z"
+  },
+  {
+    "index": 9,
+    "id": "e_ZwLjBQVjZGRkZmR1ZQNjAmH5ZGp2AN==",
+    "inbox": "wealifytester@yopmail.com",
+    "from": "Order confirmation - Apple",
+    "subject": "Order confirmation - Apple",
+    "date": "Wealify <no-reply@wealify.com>",
+    "timestamp": "18:13",
+    "page": 1,
+    "body_text": "Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).\n\nNgười gửi gốc (CSV): noreply@apple.com\nEmail id: EM-0121\nThời điểm CSV: 2026-05-26 02:02\n\nThanks\n\nGiao dịch thẻ\n\nCSV id: CD-0175\nWealify order_no: WLF15-CD-0175\nThẻ: VC02\nLoại: purchase\nMerchant: APPLE.COM/BILL\nSố tiền: 64.69 USD (~64.69 USD)\nTrạng thái CSV: success\nMô tả: Apple",
+    "body_html_file": "html/mail_009_e_ZwLjBQVjZGRkZmR1ZQNjAmH5ZGp2AN.html",
+    "extracted_links": [],
+    "extracted_codes": [
+      "0121",
+      "2026",
+      "0175"
+    ],
+    "scraped_at": "2026-08-21T04:25:12.032Z"
+  },
+  {
+    "index": 10,
+    "id": "e_ZwLjBQVjZGRkZmRmZQNjAmH5ZGZ0Zj==",
+    "inbox": "wealifytester@yopmail.com",
+    "from": "Order confirmation - Vultr",
+    "subject": "Order confirmation - Vultr",
+    "date": "Wealify <no-reply@wealify.com>",
+    "timestamp": "18:13",
+    "page": 1,
+    "body_text": "Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).\n\nNgười gửi gốc (CSV): noreply@vultr.com\nEmail id: EM-0119\nThời điểm CSV: 2026-07-27 05:03\n\nThanks\n\nGiao dịch thẻ\n\nCSV id: CD-0163\nWealify order_no: WLF15-CD-0163\nThẻ: VC02\nLoại: purchase\nMerchant: VULTR.COM* CLOUD\nSố tiền: 52.98 USD (~52.98 USD)\nTrạng thái CSV: success\nMô tả: Vultr",
+    "body_html_file": "html/mail_010_e_ZwLjBQVjZGRkZmRmZQNjAmH5ZGZ0Zj.html",
+    "extracted_links": [],
+    "extracted_codes": [
+      "0119",
+      "2026",
+      "0163"
+    ],
+    "scraped_at": "2026-08-21T04:25:12.740Z"
+  },
+  {
+    "index": 11,
+    "id": "e_ZwLjBQVjZGRkZmRjZQNjAmH5ZQtkZN==",
+    "inbox": "wealifytester@yopmail.com",
+    "from": "Order confirmation - Shopee",
+    "subject": "Order confirmation - Shopee",
+    "date": "Wealify <no-reply@wealify.com>",
+    "timestamp": "18:13",
+    "page": 1,
+    "body_text": "Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).\n\nNgười gửi gốc (CSV): noreply@shopee.com\nEmail id: EM-0118\nThời điểm CSV: 2026-08-04 08:06\n\nThanks\n\nGiao dịch thẻ\n\nCSV id: CD-0162\nWealify order_no: WLF15-CD-0162\nThẻ: VC01\nLoại: purchase\nMerchant: SHOPEE *ORDER\nSố tiền: 150.23 USD (~150.23 USD)\nTrạng thái CSV: success\nMô tả: Shopee",
+    "body_html_file": "html/mail_011_e_ZwLjBQVjZGRkZmRjZQNjAmH5ZQtkZN.html",
+    "extracted_links": [],
+    "extracted_codes": [
+      "0118",
+      "2026",
+      "0162"
+    ],
+    "scraped_at": "2026-08-21T04:25:13.447Z"
+  },
+  {
+    "index": 12,
+    "id": "e_ZwLjBQVjZGRkZmN4ZQNjAmH5ZQZ2AD==",
+    "inbox": "wealifytester@yopmail.com",
+    "from": "Order confirmation - Shopee",
+    "subject": "Order confirmation - Shopee",
+    "date": "Wealify <no-reply@wealify.com>",
+    "timestamp": "18:13",
+    "page": 1,
+    "body_text": "Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).\n\nNgười gửi gốc (CSV): noreply@shopee.com\nEmail id: EM-0117\nThời điểm CSV: 2026-04-18 06:57\n\nThanks\n\nGiao dịch thẻ\n\nCSV id: CD-0156\nWealify order_no: WLF15-CD-0156\nThẻ: VC02\nLoại: purchase\nMerchant: SHOPEE *ORDER\nSố tiền: 65.7 USD (~65.7 USD)\nTrạng thái CSV: success\nMô tả: Shopee",
+    "body_html_file": "html/mail_012_e_ZwLjBQVjZGRkZmN4ZQNjAmH5ZQZ2AD.html",
+    "extracted_links": [],
+    "extracted_codes": [
+      "0117",
+      "2026",
+      "0156"
+    ],
+    "scraped_at": "2026-08-21T04:25:14.157Z"
+  },
+  {
+    "index": 13,
+    "id": "e_ZwLjBQVjZGRkZmN0ZQNjAmH4BGH1Aj==",
+    "inbox": "wealifytester@yopmail.com",
+    "from": "Order confirmation - Apple",
+    "subject": "Order confirmation - Apple",
+    "date": "Wealify <no-reply@wealify.com>",
+    "timestamp": "18:13",
+    "page": 1,
+    "body_text": "Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).\n\nNgười gửi gốc (CSV): noreply@apple.com\nEmail id: EM-0116\nThời điểm CSV: 2026-04-08 11:31\n\nThanks\n\nGiao dịch thẻ\n\nCSV id: CD-0154\nWealify order_no: WLF15-CD-0154\nThẻ: VC03\nLoại: purchase\nMerchant: APPLE.COM/BILL\nSố tiền: 45.51 USD (~45.51 USD)\nTrạng thái CSV: success\nMô tả: Apple",
+    "body_html_file": "html/mail_013_e_ZwLjBQVjZGRkZmN0ZQNjAmH4BGH1Aj.html",
+    "extracted_links": [],
+    "extracted_codes": [
+      "0116",
+      "2026",
+      "0154"
+    ],
+    "scraped_at": "2026-08-21T04:25:14.867Z"
+  },
+  {
+    "index": 14,
+    "id": "e_ZwLjBQVjZGRkZmNkZQNjAmH4BQp1Aj==",
+    "inbox": "wealifytester@yopmail.com",
+    "from": "Order confirmation - Vultr",
+    "subject": "Order confirmation - Vultr",
+    "date": "Wealify <no-reply@wealify.com>",
+    "timestamp": "18:13",
+    "page": 1,
+    "body_text": "Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).\n\nNgười gửi gốc (CSV): noreply@vultr.com\nEmail id: EM-0115\nThời điểm CSV: 2026-04-22 01:14\n\nThanks\n\nGiao dịch thẻ\n\nCSV id: CD-0153\nWealify order_no: WLF15-CD-0153\nThẻ: VC03\nLoại: purchase\nMerchant: VULTR.COM* CLOUD\nSố tiền: 8.75 USD (~8.75 USD)\nTrạng thái CSV: success\nMô tả: Vultr",
+    "body_html_file": "html/mail_014_e_ZwLjBQVjZGRkZmNkZQNjAmH4BQp1Aj.html",
+    "extracted_links": [],
+    "extracted_codes": [
+      "0115",
+      "2026",
+      "0153"
+    ],
+    "scraped_at": "2026-08-21T04:25:15.575Z"
+  },
+  {
+    "index": 15,
+    "id": "e_ZwLjBQVjZGRkZwH5ZQNjAmH4Amx4ZD==",
+    "inbox": "wealifytester@yopmail.com",
+    "from": "Order confirmation - Amazon",
+    "subject": "Order confirmation - Amazon",
+    "date": "Wealify <no-reply@wealify.com>",
+    "timestamp": "18:12",
+    "page": 1,
+    "body_text": "Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).\n\nNgười gửi gốc (CSV): noreply@amazon.com\nEmail id: EM-0114\nThời điểm CSV: 2026-04-15 14:37\n\nThanks\n\nGiao dịch thẻ\n\nCSV id: CD-0151\nWealify order_no: WLF15-CD-0151\nThẻ: VC02\nLoại: purchase\nMerchant: AMZN Mktp US*2K9\nSố tiền: 32.66 USD (~32.66 USD)\nTrạng thái CSV: success\nMô tả: Amazon",
+    "body_html_file": "html/mail_015_e_ZwLjBQVjZGRkZwH5ZQNjAmH4Amx4ZD.html",
+    "extracted_links": [],
+    "extracted_codes": [
+      "0114",
+      "2026",
+      "0151"
+    ],
+    "scraped_at": "2026-08-21T04:25:16.282Z"
+  },
+  {
+    "index": 16,
+    "id": "e_ZwLjBQVjZGRkZwH2ZQNjAmH4AmZkZD==",
+    "inbox": "wealifytester@yopmail.com",
+    "from": "Order confirmation - AliExpress",
+    "subject": "Order confirmation - AliExpress",
+    "date": "Wealify <no-reply@wealify.com>",
+    "timestamp": "18:12",
+    "page": 2,
+    "body_text": "Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).\n\nNgười gửi gốc (CSV): noreply@aliexpress.com\nEmail id: EM-0113\nThời điểm CSV: 2026-06-23 05:41\n\nThanks\n\nGiao dịch thẻ\n\nCSV id: CD-0150\nWealify order_no: WLF15-CD-0150\nThẻ: VC02\nLoại: purchase\nMerchant: ALIEXPRESS.COM\nSố tiền: 24.61 USD (~24.61 USD)\nTrạng thái CSV: success\nMô tả: AliExpress",
+    "body_html_file": "html/mail_016_e_ZwLjBQVjZGRkZwH2ZQNjAmH4AmZkZD.html",
+    "extracted_links": [],
+    "extracted_codes": [
+      "0113",
+      "2026",
+      "0150"
+    ],
+    "scraped_at": "2026-08-21T04:25:16.989Z"
+  },
+  {
+    "index": 17,
+    "id": "e_ZwLjBQVjZGRkZwHmZQNjAmH4AwH3BD==",
+    "inbox": "wealifytester@yopmail.com",
+    "from": "Order confirmation - Booking.com",
+    "subject": "Order confirmation - Booking.com",
+    "date": "Wealify <no-reply@wealify.com>",
+    "timestamp": "18:12",
+    "page": 2,
+    "body_text": "Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).\n\nNgười gửi gốc (CSV): noreply@booking.com.com\nEmail id: EM-0112\nThời điểm CSV: 2026-07-01 12:51\n\nThanks\n\nGiao dịch thẻ\n\nCSV id: CD-0146\nWealify order_no: WLF15-CD-0146\nThẻ: VC01\nLoại: purchase\nMerchant: BOOKING.COM 9931\nSố tiền: 588.8 USD (~588.8 USD)\nTrạng thái CSV: success\nMô tả: Booking.com",
+    "body_html_file": "html/mail_017_e_ZwLjBQVjZGRkZwHmZQNjAmH4AwH3BD.html",
+    "extracted_links": [],
+    "extracted_codes": [
+      "0112",
+      "2026",
+      "0146",
+      "9931"
+    ],
+    "scraped_at": "2026-08-21T04:25:17.697Z"
+  },
+  {
+    "index": 18,
+    "id": "e_ZwLjBQVjZGRkZwR3ZQNjAmH3BGD1BN==",
+    "inbox": "wealifytester@yopmail.com",
+    "from": "Order confirmation - Shopee",
+    "subject": "Order confirmation - Shopee",
+    "date": "Wealify <no-reply@wealify.com>",
+    "timestamp": "18:12",
+    "page": 2,
+    "body_text": "Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).\n\nNgười gửi gốc (CSV): noreply@shopee.com\nEmail id: EM-0111\nThời điểm CSV: 2026-05-02 14:19\n\nThanks\n\nGiao dịch thẻ\n\nCSV id: CD-0141\nWealify order_no: WLF15-CD-0141\nThẻ: VC01\nLoại: purchase\nMerchant: SHOPEE *ORDER\nSố tiền: 37.36 USD (~37.36 USD)\nTrạng thái CSV: success\nMô tả: Shopee",
+    "body_html_file": "html/mail_018_e_ZwLjBQVjZGRkZwR3ZQNjAmH3BGD1BN.html",
+    "extracted_links": [],
+    "extracted_codes": [
+      "0111",
+      "2026",
+      "0141"
+    ],
+    "scraped_at": "2026-08-21T04:25:18.406Z"
+  },
+  {
+    "index": 19,
+    "id": "e_ZwLjBQVjZGRkZwR1ZQNjAmH3BGNjZj==",
+    "inbox": "wealifytester@yopmail.com",
+    "from": "Order confirmation - The Coffee House",
+    "subject": "Order confirmation - The Coffee House",
+    "date": "Wealify <no-reply@wealify.com>",
+    "timestamp": "18:12",
+    "page": 2,
+    "body_text": "Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).\n\nNgười gửi gốc (CSV): noreply@the.com\nEmail id: EM-0110\nThời điểm CSV: 2026-06-19 19:15\n\nThanks\n\nGiao dịch thẻ\n\nCSV id: CD-0139\nWealify order_no: WLF15-CD-0139\nThẻ: VC03\nLoại: purchase\nMerchant: SQ *THE COFFEE HOUSE\nSố tiền: 30.55 USD (~30.55 USD)\nTrạng thái CSV: success\nMô tả: The Coffee House",
+    "body_html_file": "html/mail_019_e_ZwLjBQVjZGRkZwR1ZQNjAmH3BGNjZj.html",
+    "extracted_links": [],
+    "extracted_codes": [
+      "0110",
+      "2026",
+      "0139"
+    ],
+    "scraped_at": "2026-08-21T04:25:19.113Z"
+  },
+  {
+    "index": 20,
+    "id": "e_ZwLjBQVjZGRkZwRmZQNjAmH3BQH2Zt==",
+    "inbox": "wealifytester@yopmail.com",
+    "from": "Order confirmation - The Coffee House",
+    "subject": "Order confirmation - The Coffee House",
+    "date": "Wealify <no-reply@wealify.com>",
+    "timestamp": "18:12",
+    "page": 2,
+    "body_text": "Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).\n\nNgười gửi gốc (CSV): noreply@the.com\nEmail id: EM-0110\nThời điểm CSV: 2026-06-19 19:15\n\nThanks\n\nGiao dịch thẻ\n\nCSV id: CD-0139\nWealify order_no: WLF15-CD-0139\nThẻ: VC03\nLoại: purchase\nMerchant: SQ *THE COFFEE HOUSE\nSố tiền: 30.55 USD (~30.55 USD)\nTrạng thái CSV: success\nMô tả: The Coffee House",
+    "body_html_file": "html/mail_020_e_ZwLjBQVjZGRkZwRmZQNjAmH3BQH2Zt.html",
+    "extracted_links": [],
+    "extracted_codes": [
+      "0110",
+      "2026",
+      "0139"
+    ],
+    "scraped_at": "2026-08-21T04:25:19.819Z"
+  },
+  {
+    "index": 21,
+    "id": "e_ZwLjBQVjZGRkZwRjZQNjAmH3BQN4Aj==",
+    "inbox": "wealifytester@yopmail.com",
+    "from": "Order confirmation - Shopee",
+    "subject": "Order confirmation - Shopee",
+    "date": "Wealify <no-reply@wealify.com>",
+    "timestamp": "18:12",
+    "page": 2,
+    "body_text": "Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).\n\nNgười gửi gốc (CSV): noreply@shopee.com\nEmail id: EM-0108\nThời điểm CSV: 2026-04-14 16:18\n\nThanks\n\nGiao dịch thẻ\n\nCSV id: CD-0135\nWealify order_no: WLF15-CD-0135\nThẻ: VC04\nLoại: purchase\nMerchant: SHOPEE *ORDER\nSố tiền: 184.04 EUR (~198.76 USD)\nTrạng thái CSV: success\nMô tả: Shopee",
+    "body_html_file": "html/mail_021_e_ZwLjBQVjZGRkZwRjZQNjAmH3BQN4Aj.html",
+    "extracted_links": [],
+    "extracted_codes": [
+      "0108",
+      "2026",
+      "0135"
+    ],
+    "scraped_at": "2026-08-21T04:25:20.528Z"
+  },
+  {
+    "index": 22,
+    "id": "e_ZwLjBQVjZGRkZwRjZQNjAmH3AmxlAj==",
+    "inbox": "wealifytester@yopmail.com",
+    "from": "Order confirmation - Uber",
+    "subject": "Order confirmation - Uber",
+    "date": "Wealify <no-reply@wealify.com>",
+    "timestamp": "18:12",
+    "page": 2,
+    "body_text": "Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).\n\nNgười gửi gốc (CSV): noreply@uber.com\nEmail id: EM-0105\nThời điểm CSV: 2026-07-28 08:52\n\nThanks\n\nGiao dịch thẻ\n\nCSV id: CD-0123\nWealify order_no: WLF15-CD-0123\nThẻ: VC01\nLoại: purchase\nMerchant: UBER *EATS\nSố tiền: 27.27 USD (~27.27 USD)\nTrạng thái CSV: success\nMô tả: Uber",
+    "body_html_file": "html/mail_022_e_ZwLjBQVjZGRkZwRjZQNjAmH3AmxlAj.html",
+    "extracted_links": [],
+    "extracted_codes": [
+      "0105",
+      "2026",
+      "0123"
+    ],
+    "scraped_at": "2026-08-21T04:25:21.237Z"
+  },
+  {
+    "index": 23,
+    "id": "e_ZwLjBQVjZGRkZwN4ZQNjAmH3AmH3BN==",
+    "inbox": "wealifytester@yopmail.com",
+    "from": "Order confirmation - Booking.com",
+    "subject": "Order confirmation - Booking.com",
+    "date": "Wealify <no-reply@wealify.com>",
+    "timestamp": "18:12",
+    "page": 2,
+    "body_text": "Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).\n\nNgười gửi gốc (CSV): noreply@booking.com.com\nEmail id: EM-0107\nThời điểm CSV: 2026-06-14 18:15\n\nThanks\n\nGiao dịch thẻ\n\nCSV id: CD-0128\nWealify order_no: WLF15-CD-0128\nThẻ: VC01\nLoại: purchase\nMerchant: BOOKING.COM 9931\nSố tiền: 480.85 USD (~480.85 USD)\nTrạng thái CSV: success\nMô tả: Booking.com",
+    "body_html_file": "html/mail_023_e_ZwLjBQVjZGRkZwN4ZQNjAmH3AmH3BN.html",
+    "extracted_links": [],
+    "extracted_codes": [
+      "0107",
+      "2026",
+      "0128",
+      "9931"
+    ],
+    "scraped_at": "2026-08-21T04:25:21.946Z"
+  },
+  {
+    "index": 24,
+    "id": "e_ZwLjBQVjZGRkZwN2ZQNjAmH3AmR4ZD==",
+    "inbox": "wealifytester@yopmail.com",
+    "from": "Order confirmation - Booking.com",
+    "subject": "Order confirmation - Booking.com",
+    "date": "Wealify <no-reply@wealify.com>",
+    "timestamp": "18:12",
+    "page": 2,
+    "body_text": "Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).\n\nNgười gửi gốc (CSV): noreply@booking.com.com\nEmail id: EM-0106\nThời điểm CSV: 2026-04-05 23:54\n\nThanks\n\nGiao dịch thẻ\n\nCSV id: CD-0124\nWealify order_no: WLF15-CD-0124\nThẻ: VC02\nLoại: purchase\nMerchant: BOOKING.COM 9931\nSố tiền: 70.36 USD (~70.36 USD)\nTrạng thái CSV: success\nMô tả: Booking.com",
+    "body_html_file": "html/mail_024_e_ZwLjBQVjZGRkZwN2ZQNjAmH3AmR4ZD.html",
+    "extracted_links": [],
+    "extracted_codes": [
+      "0106",
+      "2026",
+      "0124",
+      "9931"
+    ],
+    "scraped_at": "2026-08-21T04:25:22.655Z"
+  },
+  {
+    "index": 25,
+    "id": "e_ZwLjBQVjZGRkZwNkZQNjAmH3AwR2ZN==",
+    "inbox": "wealifytester@yopmail.com",
+    "from": "Order confirmation - Amazon",
+    "subject": "Order confirmation - Amazon",
+    "date": "Wealify <no-reply@wealify.com>",
+    "timestamp": "18:12",
+    "page": 2,
+    "body_text": "Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).\n\nNgười gửi gốc (CSV): noreply@amazon.com\nEmail id: EM-0104\nThời điểm CSV: 2026-08-03 02:53\n\nThanks\n\nGiao dịch thẻ\n\nCSV id: CD-0118\nWealify order_no: WLF15-CD-0118\nThẻ: VC02\nLoại: purchase\nMerchant: AMZN Mktp US*2K9\nSố tiền: 145.34 USD (~145.34 USD)\nTrạng thái CSV: success\nMô tả: Amazon",
+    "body_html_file": "html/mail_025_e_ZwLjBQVjZGRkZwNkZQNjAmH3AwR2ZN.html",
+    "extracted_links": [],
+    "extracted_codes": [
+      "0104",
+      "2026",
+      "0118"
+    ],
+    "scraped_at": "2026-08-21T04:25:23.363Z"
+  },
+  {
+    "index": 26,
+    "id": "e_ZwLjBQVjZGRkZGH5ZQNjAmH3AGplAt==",
+    "inbox": "wealifytester@yopmail.com",
+    "from": "Order confirmation - AliExpress",
+    "subject": "Order confirmation - AliExpress",
+    "date": "Wealify <no-reply@wealify.com>",
+    "timestamp": "18:11",
+    "page": 2,
+    "body_text": "Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).\n\nNgười gửi gốc (CSV): noreply@aliexpress.com\nEmail id: EM-0103\nThời điểm CSV: 2026-05-16 20:37\n\nThanks\n\nGiao dịch thẻ\n\nCSV id: CD-0116\nWealify order_no: WLF15-CD-0116\nThẻ: VC01\nLoại: purchase\nMerchant: ALIEXPRESS.COM\nSố tiền: 92.36 USD (~92.36 USD)\nTrạng thái CSV: success\nMô tả: AliExpress",
+    "body_html_file": "html/mail_026_e_ZwLjBQVjZGRkZGH5ZQNjAmH3AGplAt.html",
+    "extracted_links": [],
+    "extracted_codes": [
+      "0103",
+      "2026",
+      "0116"
+    ],
+    "scraped_at": "2026-08-21T04:25:24.070Z"
+  },
+  {
+    "index": 27,
+    "id": "e_ZwLjBQVjZGRkZGH2ZQNjAmH3AGV0AN==",
+    "inbox": "wealifytester@yopmail.com",
+    "from": "Order confirmation - Uber",
+    "subject": "Order confirmation - Uber",
+    "date": "Wealify <no-reply@wealify.com>",
+    "timestamp": "18:11",
+    "page": 2,
+    "body_text": "Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).\n\nNgười gửi gốc (CSV): noreply@uber.com\nEmail id: EM-0102\nThời điểm CSV: 2026-04-27 13:31\n\nThanks\n\nGiao dịch thẻ\n\nCSV id: CD-0111\nWealify order_no: WLF15-CD-0111\nThẻ: VC01\nLoại: purchase\nMerchant: UBER *EATS\nSố tiền: 5.61 USD (~5.61 USD)\nTrạng thái CSV: success\nMô tả: Uber",
+    "body_html_file": "html/mail_027_e_ZwLjBQVjZGRkZGH2ZQNjAmH3AGV0AN.html",
+    "extracted_links": [],
+    "extracted_codes": [
+      "0102",
+      "2026",
+      "0111"
+    ],
+    "scraped_at": "2026-08-21T04:25:24.778Z"
+  },
+  {
+    "index": 28,
+    "id": "e_ZwLjBQVjZGRkZGHmZQNjAmH3AQHlAt==",
+    "inbox": "wealifytester@yopmail.com",
+    "from": "Order confirmation - Grab",
+    "subject": "Order confirmation - Grab",
+    "date": "Wealify <no-reply@wealify.com>",
+    "timestamp": "18:11",
+    "page": 2,
+    "body_text": "Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).\n\nNgười gửi gốc (CSV): noreply@grab.com\nEmail id: EM-0101\nThời điểm CSV: 2026-04-09 14:09\n\nThanks\n\nGiao dịch thẻ\n\nCSV id: CD-0110\nWealify order_no: WLF15-CD-0110\nThẻ: VC01\nLoại: purchase\nMerchant: GRAB* RIDE HCM\nSố tiền: 6.54 USD (~6.54 USD)\nTrạng thái CSV: success\nMô tả: Grab",
+    "body_html_file": "html/mail_028_e_ZwLjBQVjZGRkZGHmZQNjAmH3AQHlAt.html",
+    "extracted_links": [],
+    "extracted_codes": [
+      "0101",
+      "2026",
+      "0110"
+    ],
+    "scraped_at": "2026-08-21T04:25:25.486Z"
+  },
+  {
+    "index": 29,
+    "id": "e_ZwLjBQVjZGRkZGHjZQNjAmH3Zmx3Aj==",
+    "inbox": "wealifytester@yopmail.com",
+    "from": "Order confirmation - Apple",
+    "subject": "Order confirmation - Apple",
+    "date": "Wealify <no-reply@wealify.com>",
+    "timestamp": "18:11",
+    "page": 2,
+    "body_text": "Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).\n\nNgười gửi gốc (CSV): noreply@apple.com\nEmail id: EM-0100\nThời điểm CSV: 2026-07-02 19:15\n\nThanks\n\nGiao dịch thẻ\n\nCSV id: CD-0109\nWealify order_no: WLF15-CD-0109\nThẻ: VC01\nLoại: purchase\nMerchant: APPLE.COM/BILL\nSố tiền: 29.25 USD (~29.25 USD)\nTrạng thái CSV: success\nMô tả: Apple",
+    "body_html_file": "html/mail_029_e_ZwLjBQVjZGRkZGHjZQNjAmH3Zmx3Aj.html",
+    "extracted_links": [],
+    "extracted_codes": [
+      "0100",
+      "2026",
+      "0109"
+    ],
+    "scraped_at": "2026-08-21T04:25:26.195Z"
+  },
+  {
+    "index": 30,
+    "id": "e_ZwLjBQVjZGRkZGD3ZQNjAmH3ZmD2ZD==",
+    "inbox": "wealifytester@yopmail.com",
+    "from": "Order confirmation - Grab",
+    "subject": "Order confirmation - Grab",
+    "date": "Wealify <no-reply@wealify.com>",
+    "timestamp": "18:11",
+    "page": 2,
+    "body_text": "Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).\n\nNgười gửi gốc (CSV): noreply@grab.com\nEmail id: EM-0099\nThời điểm CSV: 2026-03-28 08:54\n\nThanks\n\nGiao dịch thẻ\n\nCSV id: CD-0108\nWealify order_no: WLF15-CD-0108\nThẻ: VC01\nLoại: purchase\nMerchant: GRAB* RIDE HCM\nSố tiền: 17.29 USD (~17.29 USD)\nTrạng thái CSV: success\nMô tả: Grab",
+    "body_html_file": "html/mail_030_e_ZwLjBQVjZGRkZGD3ZQNjAmH3ZmD2ZD.html",
+    "extracted_links": [],
+    "extracted_codes": [
+      "0099",
+      "2026",
+      "0108"
+    ],
+    "scraped_at": "2026-08-21T04:25:26.905Z"
+  },
+  {
+    "index": 31,
+    "id": "e_ZwLjBQVjZGRkZGD1ZQNjAmH3ZmNkBD==",
+    "inbox": "wealifytester@yopmail.com",
+    "from": "Order confirmation - Grab",
+    "subject": "Order confirmation - Grab",
+    "date": "Wealify <no-reply@wealify.com>",
+    "timestamp": "18:11",
+    "page": 3,
+    "body_text": "Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).\n\nNgười gửi gốc (CSV): noreply@grab.com\nEmail id: EM-0099\nThời điểm CSV: 2026-03-28 08:54\n\nThanks\n\nGiao dịch thẻ\n\nCSV id: CD-0108\nWealify order_no: WLF15-CD-0108\nThẻ: VC01\nLoại: purchase\nMerchant: GRAB* RIDE HCM\nSố tiền: 17.29 USD (~17.29 USD)\nTrạng thái CSV: success\nMô tả: Grab",
+    "body_html_file": "html/mail_031_e_ZwLjBQVjZGRkZGD1ZQNjAmH3ZmNkBD.html",
+    "extracted_links": [],
+    "extracted_codes": [
+      "0099",
+      "2026",
+      "0108"
+    ],
+    "scraped_at": "2026-08-21T04:25:27.613Z"
+  },
+  {
+    "index": 32,
+    "id": "e_ZwLjBQVjZGRkZGN4ZQNjAmH2AGD1Aj==",
+    "inbox": "wealifytester@yopmail.com",
+    "from": "Order confirmation - Grab",
+    "subject": "Order confirmation - Grab",
+    "date": "Wealify <no-reply@wealify.com>",
+    "timestamp": "18:11",
+    "page": 3,
+    "body_text": "Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).\n\nNgười gửi gốc (CSV): noreply@grab.com\nEmail id: EM-0097\nThời điểm CSV: 2026-06-04 22:42\n\nThanks\n\nGiao dịch thẻ\n\nCSV id: CD-0102\nWealify order_no: WLF15-CD-0102\nThẻ: VC03\nLoại: purchase\nMerchant: GRAB* RIDE HCM\nSố tiền: 20.92 USD (~20.92 USD)\nTrạng thái CSV: success\nMô tả: Grab",
+    "body_html_file": "html/mail_032_e_ZwLjBQVjZGRkZGN4ZQNjAmH2AGD1Aj.html",
+    "extracted_links": [],
+    "extracted_codes": [
+      "0097",
+      "2026",
+      "0102"
+    ],
+    "scraped_at": "2026-08-21T04:25:28.320Z"
+  },
+  {
+    "index": 33,
+    "id": "e_ZwLjBQVjZGRkZGN1ZQNjAmH2AQt2BN==",
+    "inbox": "wealifytester@yopmail.com",
+    "from": "Order confirmation - Namecheap",
+    "subject": "Order confirmation - Namecheap",
+    "date": "Wealify <no-reply@wealify.com>",
+    "timestamp": "18:11",
+    "page": 3,
+    "body_text": "Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).\n\nNgười gửi gốc (CSV): noreply@namecheap.com\nEmail id: EM-0096\nThời điểm CSV: 2026-07-31 19:40\n\nThanks\n\nGiao dịch thẻ\n\nCSV id: CD-0100\nWealify order_no: WLF15-CD-0100\nThẻ: VC01\nLoại: purchase\nMerchant: NAMECHEAP* DOMAIN\nSố tiền: 27.71 USD (~27.71 USD)\nTrạng thái CSV: success\nMô tả: Namecheap",
+    "body_html_file": "html/mail_033_e_ZwLjBQVjZGRkZGN1ZQNjAmH2AQt2BN.html",
+    "extracted_links": [],
+    "extracted_codes": [
+      "0096",
+      "2026",
+      "0100"
+    ],
+    "scraped_at": "2026-08-21T04:25:29.029Z"
+  },
+  {
+    "index": 34,
+    "id": "e_ZwLjBQVjZGRkZGNmZQNjAmH2AQZ2BN==",
+    "inbox": "wealifytester@yopmail.com",
+    "from": "Order confirmation - Shopee",
+    "subject": "Order confirmation - Shopee",
+    "date": "Wealify <no-reply@wealify.com>",
+    "timestamp": "18:11",
+    "page": 3,
+    "body_text": "Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).\n\nNgười gửi gốc (CSV): noreply@shopee.com\nEmail id: EM-0095\nThời điểm CSV: 2026-03-26 14:10\n\nThanks\n\nGiao dịch thẻ\n\nCSV id: CD-0099\nWealify order_no: WLF15-CD-0099\nThẻ: VC03\nLoại: purchase\nMerchant: SHOPEE *ORDER\nSố tiền: 15.84 USD (~15.84 USD)\nTrạng thái CSV: success\nMô tả: Shopee",
+    "body_html_file": "html/mail_034_e_ZwLjBQVjZGRkZGNmZQNjAmH2AQZ2BN.html",
+    "extracted_links": [],
+    "extracted_codes": [
+      "0095",
+      "2026",
+      "0099"
+    ],
+    "scraped_at": "2026-08-21T04:25:29.736Z"
+  },
+  {
+    "index": 35,
+    "id": "e_ZwLjBQVjZGRkZGNkZQNjAmH2ZmL2Aj==",
+    "inbox": "wealifytester@yopmail.com",
+    "from": "Order confirmation - Amazon",
+    "subject": "Order confirmation - Amazon",
+    "date": "Wealify <no-reply@wealify.com>",
+    "timestamp": "18:11",
+    "page": 3,
+    "body_text": "Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).\n\nNgười gửi gốc (CSV): noreply@amazon.com\nEmail id: EM-0094\nThời điểm CSV: 2026-06-25 15:17\n\nThanks\n\nGiao dịch thẻ\n\nCSV id: CD-0093\nWealify order_no: WLF15-CD-0093\nThẻ: VC01\nLoại: purchase\nMerchant: AMZN Mktp US*2K9\nSố tiền: 66.22 USD (~66.22 USD)\nTrạng thái CSV: success\nMô tả: Amazon",
+    "body_html_file": "html/mail_035_e_ZwLjBQVjZGRkZGNkZQNjAmH2ZmL2Aj.html",
+    "extracted_links": [],
+    "extracted_codes": [
+      "0094",
+      "2026",
+      "0093"
+    ],
+    "scraped_at": "2026-08-21T04:25:30.441Z"
+  },
+  {
+    "index": 36,
+    "id": "e_ZwLjBQVjZGRkZQH5ZQNjAmH2ZmR5Aj==",
+    "inbox": "wealifytester@yopmail.com",
+    "from": "Order confirmation - Namecheap",
+    "subject": "Order confirmation - Namecheap",
+    "date": "Wealify <no-reply@wealify.com>",
+    "timestamp": "18:10",
+    "page": 3,
+    "body_text": "Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).\n\nNgười gửi gốc (CSV): noreply@namecheap.com\nEmail id: EM-0093\nThời điểm CSV: 2026-08-14 07:24\n\nThanks\n\nGiao dịch thẻ\n\nCSV id: CD-0087\nWealify order_no: WLF15-CD-0087\nThẻ: VC01\nLoại: purchase\nMerchant: NAMECHEAP* DOMAIN\nSố tiền: 56.85 USD (~56.85 USD)\nTrạng thái CSV: success\nMô tả: Namecheap",
+    "body_html_file": "html/mail_036_e_ZwLjBQVjZGRkZQH5ZQNjAmH2ZmR5Aj.html",
+    "extracted_links": [],
+    "extracted_codes": [
+      "0093",
+      "2026",
+      "0087"
+    ],
+    "scraped_at": "2026-08-21T04:25:31.147Z"
+  },
+  {
+    "index": 37,
+    "id": "e_ZwLjBQVjZGRkZQH3ZQNjAmH2ZwxmAj==",
+    "inbox": "wealifytester@yopmail.com",
+    "from": "Order confirmation - Steam",
+    "subject": "Order confirmation - Steam",
+    "date": "Wealify <no-reply@wealify.com>",
+    "timestamp": "18:10",
+    "page": 3,
+    "body_text": "Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).\n\nNgười gửi gốc (CSV): noreply@steam.com\nEmail id: EM-0092\nThời điểm CSV: 2026-06-15 00:50\n\nThanks\n\nGiao dịch thẻ\n\nCSV id: CD-0076\nWealify order_no: WLF15-CD-0076\nThẻ: VC03\nLoại: purchase\nMerchant: STEAMGAMES.COM\nSố tiền: 31.33 USD (~31.33 USD)\nTrạng thái CSV: success\nMô tả: Steam",
+    "body_html_file": "html/mail_037_e_ZwLjBQVjZGRkZQH3ZQNjAmH2ZwxmAj.html",
+    "extracted_links": [],
+    "extracted_codes": [
+      "0092",
+      "2026",
+      "0076"
+    ],
+    "scraped_at": "2026-08-21T04:25:31.856Z"
+  },
+  {
+    "index": 38,
+    "id": "e_ZwLjBQVjZGRkZQHmZQNjAmH2ZwRjAj==",
+    "inbox": "wealifytester@yopmail.com",
+    "from": "Order confirmation - Google Ads",
+    "subject": "Order confirmation - Google Ads",
+    "date": "Wealify <no-reply@wealify.com>",
+    "timestamp": "18:10",
+    "page": 3,
+    "body_text": "Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).\n\nNgười gửi gốc (CSV): noreply@google.com\nEmail id: EM-0091\nThời điểm CSV: 2026-04-03 19:41\n\nThanks\n\nGiao dịch thẻ\n\nCSV id: CD-0075\nWealify order_no: WLF15-CD-0075\nThẻ: VC02\nLoại: purchase\nMerchant: GOOGLE *ADS 8842\nSố tiền: 104.79 USD (~104.79 USD)\nTrạng thái CSV: success\nMô tả: Google Ads",
+    "body_html_file": "html/mail_038_e_ZwLjBQVjZGRkZQHmZQNjAmH2ZwRjAj.html",
+    "extracted_links": [],
+    "extracted_codes": [
+      "0091",
+      "2026",
+      "0075",
+      "8842"
+    ],
+    "scraped_at": "2026-08-21T04:25:32.563Z"
+  },
+  {
+    "index": 39,
+    "id": "e_ZwLjBQVjZGRkZQHjZQNjAmH2ZGV5AN==",
+    "inbox": "wealifytester@yopmail.com",
+    "from": "Order confirmation - Uber",
+    "subject": "Order confirmation - Uber",
+    "date": "Wealify <no-reply@wealify.com>",
+    "timestamp": "18:10",
+    "page": 3,
+    "body_text": "Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).\n\nNgười gửi gốc (CSV): noreply@uber.com\nEmail id: EM-0090\nThời điểm CSV: 2026-04-04 06:54\n\nThanks\n\nGiao dịch thẻ\n\nCSV id: CD-0070\nWealify order_no: WLF15-CD-0070\nThẻ: VC01\nLoại: purchase\nMerchant: UBER *EATS\nSố tiền: 30.2 USD (~30.2 USD)\nTrạng thái CSV: success\nMô tả: Uber",
+    "body_html_file": "html/mail_039_e_ZwLjBQVjZGRkZQHjZQNjAmH2ZGV5AN.html",
+    "extracted_links": [],
+    "extracted_codes": [
+      "0090",
+      "2026",
+      "0070"
+    ],
+    "scraped_at": "2026-08-21T04:25:33.271Z"
+  },
+  {
+    "index": 40,
+    "id": "e_ZwLjBQVjZGRkZQD4ZQNjAmH2ZQpjAt==",
+    "inbox": "wealifytester@yopmail.com",
+    "from": "Order confirmation - Namecheap",
+    "subject": "Order confirmation - Namecheap",
+    "date": "Wealify <no-reply@wealify.com>",
+    "timestamp": "18:10",
+    "page": 3,
+    "body_text": "Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).\n\nNgười gửi gốc (CSV): noreply@namecheap.com\nEmail id: EM-0089\nThời điểm CSV: 2026-04-03 17:07\n\nThanks\n\nGiao dịch thẻ\n\nCSV id: CD-0069\nWealify order_no: WLF15-CD-0069\nThẻ: VC01\nLoại: purchase\nMerchant: NAMECHEAP* DOMAIN\nSố tiền: 53.2 USD (~53.2 USD)\nTrạng thái CSV: success\nMô tả: Namecheap",
+    "body_html_file": "html/mail_040_e_ZwLjBQVjZGRkZQD4ZQNjAmH2ZQpjAt.html",
+    "extracted_links": [],
+    "extracted_codes": [
+      "0089",
+      "2026",
+      "0069"
+    ],
+    "scraped_at": "2026-08-21T04:25:33.979Z"
+  },
+  {
+    "index": 41,
+    "id": "e_ZwLjBQVjZGRkZQD1ZQNjAmH2ZQN1ZD==",
+    "inbox": "wealifytester@yopmail.com",
+    "from": "Your receipt from NORDVPN",
+    "subject": "Your receipt from NORDVPN",
+    "date": "Wealify <no-reply@wealify.com>",
+    "timestamp": "18:10",
+    "page": 3,
+    "body_text": "Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).\n\nNgười gửi gốc (CSV): receipts@nordvpn.com\nEmail id: EM-0088\nThời điểm CSV: 2026-07-28 12:58\n\nAmount 3.99\n\nGiao dịch thẻ\n\nCSV id: CD-0062\nWealify order_no: WLF15-CD-0062\nThẻ: VC01\nLoại: purchase\nMerchant: NORDVPN *MONTHLY\nSố tiền: 3.99 USD (~3.99 USD)\nTrạng thái CSV: success\nMô tả: Subscription NORDVPN *MONTHLY",
+    "body_html_file": "html/mail_041_e_ZwLjBQVjZGRkZQD1ZQNjAmH2ZQN1ZD.html",
+    "extracted_links": [],
+    "extracted_codes": [
+      "0088",
+      "2026",
+      "0062"
+    ],
+    "scraped_at": "2026-08-21T04:25:34.687Z"
+  },
+  {
+    "index": 42,
+    "id": "e_ZwLjBQVjZGRkZQDkZQNjAmH1BGR0Zt==",
+    "inbox": "wealifytester@yopmail.com",
+    "from": "Your receipt from NORDVPN",
+    "subject": "Your receipt from NORDVPN",
+    "date": "Wealify <no-reply@wealify.com>",
+    "timestamp": "18:10",
+    "page": 3,
+    "body_text": "Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).\n\nNgười gửi gốc (CSV): receipts@nordvpn.com\nEmail id: EM-0087\nThời điểm CSV: 2026-06-28 16:41\n\nAmount 3.99\n\nGiao dịch thẻ\n\nCSV id: CD-0061\nWealify order_no: WLF15-CD-0061\nThẻ: VC01\nLoại: purchase\nMerchant: NORDVPN *MONTHLY\nSố tiền: 3.99 USD (~3.99 USD)\nTrạng thái CSV: success\nMô tả: Subscription NORDVPN *MONTHLY",
+    "body_html_file": "html/mail_042_e_ZwLjBQVjZGRkZQDkZQNjAmH1BGR0Zt.html",
+    "extracted_links": [],
+    "extracted_codes": [
+      "0087",
+      "2026",
+      "0061"
+    ],
+    "scraped_at": "2026-08-21T04:25:35.393Z"
+  },
+  {
+    "index": 43,
+    "id": "e_ZwLjBQVjZGRkZQZ4ZQNjAmH1BQH3BD==",
+    "inbox": "wealifytester@yopmail.com",
+    "from": "Your receipt from NORDVPN",
+    "subject": "Your receipt from NORDVPN",
+    "date": "Wealify <no-reply@wealify.com>",
+    "timestamp": "18:10",
+    "page": 3,
+    "body_text": "Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).\n\nNgười gửi gốc (CSV): receipts@nordvpn.com\nEmail id: EM-0086\nThời điểm CSV: 2026-05-28 17:45\n\nAmount 3.99\n\nGiao dịch thẻ\n\nCSV id: CD-0060\nWealify order_no: WLF15-CD-0060\nThẻ: VC01\nLoại: purchase\nMerchant: NORDVPN *MONTHLY\nSố tiền: 3.99 USD (~3.99 USD)\nTrạng thái CSV: success\nMô tả: Subscription NORDVPN *MONTHLY",
+    "body_html_file": "html/mail_043_e_ZwLjBQVjZGRkZQZ4ZQNjAmH1BQH3BD.html",
+    "extracted_links": [],
+    "extracted_codes": [
+      "0086",
+      "2026",
+      "0060"
+    ],
+    "scraped_at": "2026-08-21T04:25:36.099Z"
+  },
+  {
+    "index": 44,
+    "id": "e_ZwLjBQVjZGRkZQZ3ZQNjAmH1BQR5Zt==",
+    "inbox": "wealifytester@yopmail.com",
+    "from": "Your receipt from NORDVPN",
+    "subject": "Your receipt from NORDVPN",
+    "date": "Wealify <no-reply@wealify.com>",
+    "timestamp": "18:10",
+    "page": 3,
+    "body_text": "Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).\n\nNgười gửi gốc (CSV): receipts@nordvpn.com\nEmail id: EM-0085\nThời điểm CSV: 2026-04-28 17:35\n\nAmount 3.99\n\nGiao dịch thẻ\n\nCSV id: CD-0059\nWealify order_no: WLF15-CD-0059\nThẻ: VC01\nLoại: purchase\nMerchant: NORDVPN *MONTHLY\nSố tiền: 3.99 USD (~3.99 USD)\nTrạng thái CSV: success\nMô tả: Subscription NORDVPN *MONTHLY",
+    "body_html_file": "html/mail_044_e_ZwLjBQVjZGRkZQZ3ZQNjAmH1BQR5Zt.html",
+    "extracted_links": [],
+    "extracted_codes": [
+      "0085",
+      "2026",
+      "0059"
+    ],
+    "scraped_at": "2026-08-21T04:25:36.806Z"
+  },
+  {
+    "index": 45,
+    "id": "e_ZwLjBQVjZGRkZQZ1ZQNjAmH1Amp4Aj==",
+    "inbox": "wealifytester@yopmail.com",
+    "from": "Your receipt from NORDVPN",
+    "subject": "Your receipt from NORDVPN",
+    "date": "Wealify <no-reply@wealify.com>",
+    "timestamp": "18:10",
+    "page": 3,
+    "body_text": "Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).\n\nNgười gửi gốc (CSV): receipts@nordvpn.com\nEmail id: EM-0084\nThời điểm CSV: 2026-03-28 18:58\n\nAmount 3.99\n\nGiao dịch thẻ\n\nCSV id: CD-0058\nWealify order_no: WLF15-CD-0058\nThẻ: VC01\nLoại: purchase\nMerchant: NORDVPN *MONTHLY\nSố tiền: 3.99 USD (~3.99 USD)\nTrạng thái CSV: success\nMô tả: Subscription NORDVPN *MONTHLY",
+    "body_html_file": "html/mail_045_e_ZwLjBQVjZGRkZQZ1ZQNjAmH1Amp4Aj.html",
+    "extracted_links": [],
+    "extracted_codes": [
+      "0084",
+      "2026",
+      "0058"
+    ],
+    "scraped_at": "2026-08-21T04:25:37.513Z"
+  },
+  {
+    "index": 46,
+    "id": "e_ZwLjBQVjZGRkZQZlZQNjAmH1AwtmBD==",
+    "inbox": "wealifytester@yopmail.com",
+    "from": "Your receipt from NORDVPN",
+    "subject": "Your receipt from NORDVPN",
+    "date": "Wealify <no-reply@wealify.com>",
+    "timestamp": "18:10",
+    "page": 4,
+    "body_text": "Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).\n\nNgười gửi gốc (CSV): receipts@nordvpn.com\nEmail id: EM-0083\nThời điểm CSV: 2026-02-28 15:26\n\nAmount 3.99\n\nGiao dịch thẻ\n\nCSV id: CD-0057\nWealify order_no: WLF15-CD-0057\nThẻ: VC01\nLoại: purchase\nMerchant: NORDVPN *MONTHLY\nSố tiền: 3.99 USD (~3.99 USD)\nTrạng thái CSV: success\nMô tả: Subscription NORDVPN *MONTHLY",
+    "body_html_file": "html/mail_046_e_ZwLjBQVjZGRkZQZlZQNjAmH1AwtmBD.html",
+    "extracted_links": [],
+    "extracted_codes": [
+      "0083",
+      "2026",
+      "0057"
+    ],
+    "scraped_at": "2026-08-21T04:25:38.222Z"
+  },
+  {
+    "index": 47,
+    "id": "e_ZwLjBQVjZGRkZQV5ZQNjAmH1AwV0Zt==",
+    "inbox": "wealifytester@yopmail.com",
+    "from": "Your receipt from CLOUDWAYS HOSTING",
+    "subject": "Your receipt from CLOUDWAYS HOSTING",
+    "date": "Wealify <no-reply@wealify.com>",
+    "timestamp": "18:10",
+    "page": 4,
+    "body_text": "Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).\n\nNgười gửi gốc (CSV): receipts@cloudways.com\nEmail id: EM-0082\nThời điểm CSV: 2026-07-27 17:53\n\nAmount 16.00\n\nGiao dịch thẻ\n\nCSV id: CD-0056\nWealify order_no: WLF15-CD-0056\nThẻ: VC02\nLoại: purchase\nMerchant: CLOUDWAYS HOSTING\nSố tiền: 16.0 USD (~16.0 USD)\nTrạng thái CSV: success\nMô tả: Subscription CLOUDWAYS HOSTING",
+    "body_html_file": "html/mail_047_e_ZwLjBQVjZGRkZQV5ZQNjAmH1AwV0Zt.html",
+    "extracted_links": [],
+    "extracted_codes": [
+      "0082",
+      "2026",
+      "0056"
+    ],
+    "scraped_at": "2026-08-21T04:25:38.930Z"
+  },
+  {
+    "index": 48,
+    "id": "e_ZwLjBQVjZGRkZQV3ZQNjAmH1AGHjZj==",
+    "inbox": "wealifytester@yopmail.com",
+    "from": "Your receipt from CLOUDWAYS HOSTING",
+    "subject": "Your receipt from CLOUDWAYS HOSTING",
+    "date": "Wealify <no-reply@wealify.com>",
+    "timestamp": "18:10",
+    "page": 4,
+    "body_text": "Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).\n\nNgười gửi gốc (CSV): receipts@cloudways.com\nEmail id: EM-0081\nThời điểm CSV: 2026-06-27 10:43\n\nAmount 16.00\n\nGiao dịch thẻ\n\nCSV id: CD-0055\nWealify order_no: WLF15-CD-0055\nThẻ: VC02\nLoại: purchase\nMerchant: CLOUDWAYS HOSTING\nSố tiền: 16.0 USD (~16.0 USD)\nTrạng thái CSV: success\nMô tả: Subscription CLOUDWAYS HOSTING",
+    "body_html_file": "html/mail_048_e_ZwLjBQVjZGRkZQV3ZQNjAmH1AGHjZj.html",
+    "extracted_links": [],
+    "extracted_codes": [
+      "0081",
+      "2026",
+      "0055"
+    ],
+    "scraped_at": "2026-08-21T04:25:39.639Z"
+  },
+  {
+    "index": 49,
+    "id": "e_ZwLjBQVjZGRkZQV0ZQNjAmH1AQt3Zj==",
+    "inbox": "wealifytester@yopmail.com",
+    "from": "Your receipt from CLOUDWAYS HOSTING",
+    "subject": "Your receipt from CLOUDWAYS HOSTING",
+    "date": "Wealify <no-reply@wealify.com>",
+    "timestamp": "18:10",
+    "page": 4,
+    "body_text": "Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).\n\nNgười gửi gốc (CSV): receipts@cloudways.com\nEmail id: EM-0080\nThời điểm CSV: 2026-05-27 16:32\n\nAmount 16.00\n\nGiao dịch thẻ\n\nCSV id: CD-0054\nWealify order_no: WLF15-CD-0054\nThẻ: VC02\nLoại: purchase\nMerchant: CLOUDWAYS HOSTING\nSố tiền: 16.0 USD (~16.0 USD)\nTrạng thái CSV: success\nMô tả: Subscription CLOUDWAYS HOSTING",
+    "body_html_file": "html/mail_049_e_ZwLjBQVjZGRkZQV0ZQNjAmH1AQt3Zj.html",
+    "extracted_links": [],
+    "extracted_codes": [
+      "0080",
+      "2026",
+      "0054"
+    ],
+    "scraped_at": "2026-08-21T04:25:40.345Z"
+  },
+  {
+    "index": 50,
+    "id": "e_ZwLjBQVjZGRkZQVkZQNjAmH1AQVjAj==",
+    "inbox": "wealifytester@yopmail.com",
+    "from": "Your receipt from CLOUDWAYS HOSTING",
+    "subject": "Your receipt from CLOUDWAYS HOSTING",
+    "date": "Wealify <no-reply@wealify.com>",
+    "timestamp": "18:10",
+    "page": 4,
+    "body_text": "Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).\n\nNgười gửi gốc (CSV): receipts@cloudways.com\nEmail id: EM-0079\nThời điểm CSV: 2026-04-27 17:36\n\nAmount 16.00\n\nGiao dịch thẻ\n\nCSV id: CD-0053\nWealify order_no: WLF15-CD-0053\nThẻ: VC02\nLoại: purchase\nMerchant: CLOUDWAYS HOSTING\nSố tiền: 16.0 USD (~16.0 USD)\nTrạng thái CSV: success\nMô tả: Subscription CLOUDWAYS HOSTING",
+    "body_html_file": "html/mail_050_e_ZwLjBQVjZGRkZQVkZQNjAmH1AQVjAj.html",
+    "extracted_links": [],
+    "extracted_codes": [
+      "0079",
+      "2026",
+      "0053"
+    ],
+    "scraped_at": "2026-08-21T04:25:41.052Z"
+  },
+  {
+    "index": 51,
+    "id": "e_ZwLjBQVjZGRjBGH3ZQNjAmH0BQD1Aj==",
+    "inbox": "wealifytester@yopmail.com",
+    "from": "Your receipt from CLOUDWAYS HOSTING",
+    "subject": "Your receipt from CLOUDWAYS HOSTING",
+    "date": "Wealify <no-reply@wealify.com>",
+    "timestamp": "18:09",
+    "page": 4,
+    "body_text": "Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).\n\nNgười gửi gốc (CSV): receipts@cloudways.com\nEmail id: EM-0078\nThời điểm CSV: 2026-03-27 13:41\n\nAmount 16.00\n\nGiao dịch thẻ\n\nCSV id: CD-0052\nWealify order_no: WLF15-CD-0052\nThẻ: VC02\nLoại: purchase\nMerchant: CLOUDWAYS HOSTING\nSố tiền: 16.0 USD (~16.0 USD)\nTrạng thái CSV: success\nMô tả: Subscription CLOUDWAYS HOSTING",
+    "body_html_file": "html/mail_051_e_ZwLjBQVjZGRjBGH3ZQNjAmH0BQD1Aj.html",
+    "extracted_links": [],
+    "extracted_codes": [
+      "0078",
+      "2026",
+      "0052"
+    ],
+    "scraped_at": "2026-08-21T04:25:41.757Z"
+  },
+  {
+    "index": 52,
+    "id": "e_ZwLjBQVjZGRjBGH0ZQNjAmH0Amx5Aj==",
+    "inbox": "wealifytester@yopmail.com",
+    "from": "Your receipt from CLOUDWAYS HOSTING",
+    "subject": "Your receipt from CLOUDWAYS HOSTING",
+    "date": "Wealify <no-reply@wealify.com>",
+    "timestamp": "18:09",
+    "page": 4,
+    "body_text": "Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).\n\nNgười gửi gốc (CSV): receipts@cloudways.com\nEmail id: EM-0077\nThời điểm CSV: 2026-02-27 18:30\n\nAmount 16.00\n\nGiao dịch thẻ\n\nCSV id: CD-0051\nWealify order_no: WLF15-CD-0051\nThẻ: VC02\nLoại: purchase\nMerchant: CLOUDWAYS HOSTING\nSố tiền: 16.0 USD (~16.0 USD)\nTrạng thái CSV: success\nMô tả: Subscription CLOUDWAYS HOSTING",
+    "body_html_file": "html/mail_052_e_ZwLjBQVjZGRjBGH0ZQNjAmH0Amx5Aj.html",
+    "extracted_links": [],
+    "extracted_codes": [
+      "0077",
+      "2026",
+      "0051"
+    ],
+    "scraped_at": "2026-08-21T04:25:42.463Z"
+  },
+  {
+    "index": 53,
+    "id": "e_ZwLjBQVjZGRjBGHkZQNjAmH0AmZ5AN==",
+    "inbox": "wealifytester@yopmail.com",
+    "from": "Your receipt from FIGMA.COM",
+    "subject": "Your receipt from FIGMA.COM",
+    "date": "Wealify <no-reply@wealify.com>",
+    "timestamp": "18:09",
+    "page": 4,
+    "body_text": "Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).\n\nNgười gửi gốc (CSV): receipts@figma.com\nEmail id: EM-0076\nThời điểm CSV: 2026-07-24 10:48\n\nAmount 15.00\n\nGiao dịch thẻ\n\nCSV id: CD-0050\nWealify order_no: WLF15-CD-0050\nThẻ: VC03\nLoại: purchase\nMerchant: FIGMA.COM\nSố tiền: 15.0 USD (~15.0 USD)\nTrạng thái CSV: success\nMô tả: Subscription FIGMA.COM",
+    "body_html_file": "html/mail_053_e_ZwLjBQVjZGRjBGHkZQNjAmH0AmZ5AN.html",
+    "extracted_links": [],
+    "extracted_codes": [
+      "0076",
+      "2026",
+      "0050"
+    ],
+    "scraped_at": "2026-08-21T04:25:43.169Z"
+  },
+  {
+    "index": 54,
+    "id": "e_ZwLjBQVjZGRjBGD5ZQNjAmH0AwtlAD==",
+    "inbox": "wealifytester@yopmail.com",
+    "from": "Your receipt from FIGMA.COM",
+    "subject": "Your receipt from FIGMA.COM",
+    "date": "Wealify <no-reply@wealify.com>",
+    "timestamp": "18:09",
+    "page": 4,
+    "body_text": "Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).\n\nNgười gửi gốc (CSV): receipts@figma.com\nEmail id: EM-0075\nThời điểm CSV: 2026-06-24 10:49\n\nAmount 15.00\n\nGiao dịch thẻ\n\nCSV id: CD-0049\nWealify order_no: WLF15-CD-0049\nThẻ: VC03\nLoại: purchase\nMerchant: FIGMA.COM\nSố tiền: 15.0 USD (~15.0 USD)\nTrạng thái CSV: success\nMô tả: Subscription FIGMA.COM",
+    "body_html_file": "html/mail_054_e_ZwLjBQVjZGRjBGD5ZQNjAmH0AwtlAD.html",
+    "extracted_links": [],
+    "extracted_codes": [
+      "0075",
+      "2026",
+      "0049"
+    ],
+    "scraped_at": "2026-08-21T04:25:43.875Z"
+  },
+  {
+    "index": 55,
+    "id": "e_ZwLjBQVjZGRjBGD3ZQNjAmH0AwDlBD==",
+    "inbox": "wealifytester@yopmail.com",
+    "from": "Your receipt from FIGMA.COM",
+    "subject": "Your receipt from FIGMA.COM",
+    "date": "Wealify <no-reply@wealify.com>",
+    "timestamp": "18:09",
+    "page": 4,
+    "body_text": "Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).\n\nNgười gửi gốc (CSV): receipts@figma.com\nEmail id: EM-0074\nThời điểm CSV: 2026-05-24 21:06\n\nAmount 15.00\n\nGiao dịch thẻ\n\nCSV id: CD-0048\nWealify order_no: WLF15-CD-0048\nThẻ: VC03\nLoại: purchase\nMerchant: FIGMA.COM\nSố tiền: 15.0 USD (~15.0 USD)\nTrạng thái CSV: success\nMô tả: Subscription FIGMA.COM",
+    "body_html_file": "html/mail_055_e_ZwLjBQVjZGRjBGD3ZQNjAmH0AwDlBD.html",
+    "extracted_links": [],
+    "extracted_codes": [
+      "0074",
+      "2026",
+      "0048"
+    ],
+    "scraped_at": "2026-08-21T04:25:44.583Z"
+  },
+  {
+    "index": 56,
+    "id": "e_ZwLjBQVjZGRjBGD1ZQNjAmH0AGx2Zt==",
+    "inbox": "wealifytester@yopmail.com",
+    "from": "Your receipt from FIGMA.COM",
+    "subject": "Your receipt from FIGMA.COM",
+    "date": "Wealify <no-reply@wealify.com>",
+    "timestamp": "18:09",
+    "page": 4,
+    "body_text": "Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).\n\nNgười gửi gốc (CSV): receipts@figma.com\nEmail id: EM-0073\nThời điểm CSV: 2026-04-24 15:21\n\nAmount 15.00\n\nGiao dịch thẻ\n\nCSV id: CD-0047\nWealify order_no: WLF15-CD-0047\nThẻ: VC03\nLoại: purchase\nMerchant: FIGMA.COM\nSố tiền: 15.0 USD (~15.0 USD)\nTrạng thái CSV: success\nMô tả: Subscription FIGMA.COM",
+    "body_html_file": "html/mail_056_e_ZwLjBQVjZGRjBGD1ZQNjAmH0AGx2Zt.html",
+    "extracted_links": [],
+    "extracted_codes": [
+      "0073",
+      "2026",
+      "0047"
+    ],
+    "scraped_at": "2026-08-21T04:25:45.292Z"
+  },
+  {
+    "index": 57,
+    "id": "e_ZwLjBQVjZGRjBGDmZQNjAmH0AGH5At==",
+    "inbox": "wealifytester@yopmail.com",
+    "from": "Your receipt from FIGMA.COM",
+    "subject": "Your receipt from FIGMA.COM",
+    "date": "Wealify <no-reply@wealify.com>",
+    "timestamp": "18:09",
+    "page": 4,
+    "body_text": "Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).\n\nNgười gửi gốc (CSV): receipts@figma.com\nEmail id: EM-0072\nThời điểm CSV: 2026-03-24 14:30\n\nAmount 15.00\n\nGiao dịch thẻ\n\nCSV id: CD-0046\nWealify order_no: WLF15-CD-0046\nThẻ: VC03\nLoại: purchase\nMerchant: FIGMA.COM\nSố tiền: 15.0 USD (~15.0 USD)\nTrạng thái CSV: success\nMô tả: Subscription FIGMA.COM",
+    "body_html_file": "html/mail_057_e_ZwLjBQVjZGRjBGDmZQNjAmH0AGH5At.html",
+    "extracted_links": [],
+    "extracted_codes": [
+      "0072",
+      "2026",
+      "0046"
+    ],
+    "scraped_at": "2026-08-21T04:25:45.999Z"
+  },
+  {
+    "index": 58,
+    "id": "e_ZwLjBQVjZGRjBGDkZQNjAmH0AGRjAt==",
+    "inbox": "wealifytester@yopmail.com",
+    "from": "Your receipt from FIGMA.COM",
+    "subject": "Your receipt from FIGMA.COM",
+    "date": "Wealify <no-reply@wealify.com>",
+    "timestamp": "18:09",
+    "page": 4,
+    "body_text": "Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).\n\nNgười gửi gốc (CSV): receipts@figma.com\nEmail id: EM-0071\nThời điểm CSV: 2026-02-24 12:36\n\nAmount 15.00\n\nGiao dịch thẻ\n\nCSV id: CD-0045\nWealify order_no: WLF15-CD-0045\nThẻ: VC03\nLoại: purchase\nMerchant: FIGMA.COM\nSố tiền: 15.0 USD (~15.0 USD)\nTrạng thái CSV: success\nMô tả: Subscription FIGMA.COM",
+    "body_html_file": "html/mail_058_e_ZwLjBQVjZGRjBGDkZQNjAmH0AGRjAt.html",
+    "extracted_links": [],
+    "extracted_codes": [
+      "0071",
+      "2026",
+      "0045"
+    ],
+    "scraped_at": "2026-08-21T04:25:46.706Z"
+  },
+  {
+    "index": 59,
+    "id": "e_ZwLjBQVjZGRjBGZ5ZQNjAmH0AQp2Zt==",
+    "inbox": "wealifytester@yopmail.com",
+    "from": "Your receipt from CANVA",
+    "subject": "Your receipt from CANVA",
+    "date": "Wealify <no-reply@wealify.com>",
+    "timestamp": "18:09",
+    "page": 4,
+    "body_text": "Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).\n\nNgười gửi gốc (CSV): receipts@canva.com\nEmail id: EM-0070\nThời điểm CSV: 2026-07-21 15:15\n\nAmount 12.99\n\nGiao dịch thẻ\n\nCSV id: CD-0044\nWealify order_no: WLF15-CD-0044\nThẻ: VC01\nLoại: purchase\nMerchant: CANVA* PRO MONTHLY\nSố tiền: 12.99 USD (~12.99 USD)\nTrạng thái CSV: success\nMô tả: Subscription CANVA* PRO MONTHLY",
+    "body_html_file": "html/mail_059_e_ZwLjBQVjZGRjBGZ5ZQNjAmH0AQp2Zt.html",
+    "extracted_links": [],
+    "extracted_codes": [
+      "0070",
+      "2026",
+      "0044"
+    ],
+    "scraped_at": "2026-08-21T04:25:47.413Z"
+  },
+  {
+    "index": 60,
+    "id": "e_ZwLjBQVjZGRjBGZ1ZQNjAmH0Zmt3ZN==",
+    "inbox": "wealifytester@yopmail.com",
+    "from": "Your receipt from CANVA",
+    "subject": "Your receipt from CANVA",
+    "date": "Wealify <no-reply@wealify.com>",
+    "timestamp": "18:09",
+    "page": 4,
+    "body_text": "Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).\n\nNgười gửi gốc (CSV): receipts@canva.com\nEmail id: EM-0069\nThời điểm CSV: 2026-06-21 13:57\n\nAmount 12.99\n\nGiao dịch thẻ\n\nCSV id: CD-0043\nWealify order_no: WLF15-CD-0043\nThẻ: VC01\nLoại: purchase\nMerchant: CANVA* PRO MONTHLY\nSố tiền: 12.99 USD (~12.99 USD)\nTrạng thái CSV: success\nMô tả: Subscription CANVA* PRO MONTHLY",
+    "body_html_file": "html/mail_060_e_ZwLjBQVjZGRjBGZ1ZQNjAmH0Zmt3ZN.html",
+    "extracted_links": [],
+    "extracted_codes": [
+      "0069",
+      "2026",
+      "0043"
+    ],
+    "scraped_at": "2026-08-21T04:25:48.122Z"
+  },
+  {
+    "index": 61,
+    "id": "e_ZwLjBQVjZGRjBGZkZQNjAmH0Zwx0BN==",
+    "inbox": "wealifytester@yopmail.com",
+    "from": "Your receipt from CANVA",
+    "subject": "Your receipt from CANVA",
+    "date": "Wealify <no-reply@wealify.com>",
+    "timestamp": "18:09",
+    "page": 5,
+    "body_text": "Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).\n\nNgười gửi gốc (CSV): receipts@canva.com\nEmail id: EM-0068\nThời điểm CSV: 2026-05-21 08:42\n\nAmount 12.99\n\nGiao dịch thẻ\n\nCSV id: CD-0042\nWealify order_no: WLF15-CD-0042\nThẻ: VC01\nLoại: purchase\nMerchant: CANVA* PRO MONTHLY\nSố tiền: 12.99 USD (~12.99 USD)\nTrạng thái CSV: success\nMô tả: Subscription CANVA* PRO MONTHLY",
+    "body_html_file": "html/mail_061_e_ZwLjBQVjZGRjBGZkZQNjAmH0Zwx0BN.html",
+    "extracted_links": [],
+    "extracted_codes": [
+      "0068",
+      "2026",
+      "0042"
+    ],
+    "scraped_at": "2026-08-21T04:25:48.829Z"
+  },
+  {
+    "index": 62,
+    "id": "e_ZwLjBQVjZGRjBGV5ZQNjAmH0ZwD5Zj==",
+    "inbox": "wealifytester@yopmail.com",
+    "from": "Your receipt from CANVA",
+    "subject": "Your receipt from CANVA",
+    "date": "Wealify <no-reply@wealify.com>",
+    "timestamp": "18:09",
+    "page": 5,
+    "body_text": "Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).\n\nNgười gửi gốc (CSV): receipts@canva.com\nEmail id: EM-0067\nThời điểm CSV: 2026-04-21 20:47\n\nAmount 12.99\n\nGiao dịch thẻ\n\nCSV id: CD-0041\nWealify order_no: WLF15-CD-0041\nThẻ: VC01\nLoại: purchase\nMerchant: CANVA* PRO MONTHLY\nSố tiền: 12.99 USD (~12.99 USD)\nTrạng thái CSV: success\nMô tả: Subscription CANVA* PRO MONTHLY",
+    "body_html_file": "html/mail_062_e_ZwLjBQVjZGRjBGV5ZQNjAmH0ZwD5Zj.html",
+    "extracted_links": [],
+    "extracted_codes": [
+      "0067",
+      "2026",
+      "0041"
+    ],
+    "scraped_at": "2026-08-21T04:25:49.538Z"
+  },
+  {
+    "index": 63,
+    "id": "e_ZwLjBQVjZGRjBGV3ZQNjAmH0ZGx4ZD==",
+    "inbox": "wealifytester@yopmail.com",
+    "from": "Your receipt from CANVA",
+    "subject": "Your receipt from CANVA",
+    "date": "Wealify <no-reply@wealify.com>",
+    "timestamp": "18:09",
+    "page": 5,
+    "body_text": "Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).\n\nNgười gửi gốc (CSV): receipts@canva.com\nEmail id: EM-0066\nThời điểm CSV: 2026-03-21 14:04\n\nAmount 12.99\n\nGiao dịch thẻ\n\nCSV id: CD-0040\nWealify order_no: WLF15-CD-0040\nThẻ: VC01\nLoại: purchase\nMerchant: CANVA* PRO MONTHLY\nSố tiền: 12.99 USD (~12.99 USD)\nTrạng thái CSV: success\nMô tả: Subscription CANVA* PRO MONTHLY",
+    "body_html_file": "html/mail_063_e_ZwLjBQVjZGRjBGV3ZQNjAmH0ZGx4ZD.html",
+    "extracted_links": [],
+    "extracted_codes": [
+      "0066",
+      "2026",
+      "0040"
+    ],
+    "scraped_at": "2026-08-21T04:25:50.246Z"
+  },
+  {
+    "index": 64,
+    "id": "e_ZwLjBQVjZGRjBGV0ZQNjAmH0ZGZlBD==",
+    "inbox": "wealifytester@yopmail.com",
+    "from": "Your receipt from CANVA",
+    "subject": "Your receipt from CANVA",
+    "date": "Wealify <no-reply@wealify.com>",
+    "timestamp": "18:09",
+    "page": 5,
+    "body_text": "Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).\n\nNgười gửi gốc (CSV): receipts@canva.com\nEmail id: EM-0065\nThời điểm CSV: 2026-02-21 11:31\n\nAmount 12.99\n\nGiao dịch thẻ\n\nCSV id: CD-0039\nWealify order_no: WLF15-CD-0039\nThẻ: VC01\nLoại: purchase\nMerchant: CANVA* PRO MONTHLY\nSố tiền: 12.99 USD (~12.99 USD)\nTrạng thái CSV: success\nMô tả: Subscription CANVA* PRO MONTHLY",
+    "body_html_file": "html/mail_064_e_ZwLjBQVjZGRjBGV0ZQNjAmH0ZGZlBD.html",
+    "extracted_links": [],
+    "extracted_codes": [
+      "0065",
+      "2026",
+      "0039"
+    ],
+    "scraped_at": "2026-08-21T04:25:50.953Z"
+  },
+  {
+    "index": 65,
+    "id": "e_ZwLjBQVjZGRjBQD4ZQNjAmHmAQL2Zt==",
+    "inbox": "wealifytester@yopmail.com",
+    "from": "Your receipt from PADDLE.NET",
+    "subject": "Your receipt from PADDLE.NET",
+    "date": "Wealify <no-reply@wealify.com>",
+    "timestamp": "18:08",
+    "page": 5,
+    "body_text": "Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).\n\nNgười gửi gốc (CSV): receipts@paddle.com\nEmail id: EM-0064\nThời điểm CSV: 2026-08-18 19:43\n\nAmount 10.00\n\nGiao dịch thẻ\n\nCSV id: CD-0038\nWealify order_no: WLF15-CD-0038\nThẻ: VC01\nLoại: purchase\nMerchant: PADDLE.NET* NOTION\nSố tiền: 10.0 USD (~10.0 USD)\nTrạng thái CSV: success\nMô tả: Subscription PADDLE.NET* NOTION",
+    "body_html_file": "html/mail_065_e_ZwLjBQVjZGRjBQD4ZQNjAmHmAQL2Zt.html",
+    "extracted_links": [],
+    "extracted_codes": [
+      "0064",
+      "2026",
+      "0038"
+    ],
+    "scraped_at": "2026-08-21T04:25:51.658Z"
+  },
+  {
+    "index": 66,
+    "id": "e_ZwLjBQVjZGRjBQD1ZQNjAmHmZmx1BD==",
+    "inbox": "wealifytester@yopmail.com",
+    "from": "Your receipt from PADDLE.NET",
+    "subject": "Your receipt from PADDLE.NET",
+    "date": "Wealify <no-reply@wealify.com>",
+    "timestamp": "18:08",
+    "page": 5,
+    "body_text": "Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).\n\nNgười gửi gốc (CSV): receipts@paddle.com\nEmail id: EM-0063\nThời điểm CSV: 2026-07-18 11:27\n\nAmount 10.00\n\nGiao dịch thẻ\n\nCSV id: CD-0037\nWealify order_no: WLF15-CD-0037\nThẻ: VC01\nLoại: purchase\nMerchant: PADDLE.NET* NOTION\nSố tiền: 10.0 USD (~10.0 USD)\nTrạng thái CSV: success\nMô tả: Subscription PADDLE.NET* NOTION",
+    "body_html_file": "html/mail_066_e_ZwLjBQVjZGRjBQD1ZQNjAmHmZmx1BD.html",
+    "extracted_links": [],
+    "extracted_codes": [
+      "0063",
+      "2026",
+      "0037"
+    ],
+    "scraped_at": "2026-08-21T04:25:52.365Z"
+  },
+  {
+    "index": 67,
+    "id": "e_ZwLjBQVjZGRjBQDmZQNjAmHmZmZ4AN==",
+    "inbox": "wealifytester@yopmail.com",
+    "from": "Your receipt from PADDLE.NET",
+    "subject": "Your receipt from PADDLE.NET",
+    "date": "Wealify <no-reply@wealify.com>",
+    "timestamp": "18:08",
+    "page": 5,
+    "body_text": "Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).\n\nNgười gửi gốc (CSV): receipts@paddle.com\nEmail id: EM-0062\nThời điểm CSV: 2026-06-18 11:33\n\nAmount 10.00\n\nGiao dịch thẻ\n\nCSV id: CD-0036\nWealify order_no: WLF15-CD-0036\nThẻ: VC01\nLoại: purchase\nMerchant: PADDLE.NET* NOTION\nSố tiền: 10.0 USD (~10.0 USD)\nTrạng thái CSV: success\nMô tả: Subscription PADDLE.NET* NOTION",
+    "body_html_file": "html/mail_067_e_ZwLjBQVjZGRjBQDmZQNjAmHmZmZ4AN.html",
+    "extracted_links": [],
+    "extracted_codes": [
+      "0062",
+      "2026",
+      "0036"
+    ],
+    "scraped_at": "2026-08-21T04:25:53.072Z"
+  },
+  {
+    "index": 68,
+    "id": "e_ZwLjBQVjZGRjBQDkZQNjAmHmZmN5At==",
+    "inbox": "wealifytester@yopmail.com",
+    "from": "Your receipt from PADDLE.NET",
+    "subject": "Your receipt from PADDLE.NET",
+    "date": "Wealify <no-reply@wealify.com>",
+    "timestamp": "18:08",
+    "page": 5,
+    "body_text": "Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).\n\nNgười gửi gốc (CSV): receipts@paddle.com\nEmail id: EM-0061\nThời điểm CSV: 2026-05-18 13:24\n\nAmount 10.00\n\nGiao dịch thẻ\n\nCSV id: CD-0035\nWealify order_no: WLF15-CD-0035\nThẻ: VC01\nLoại: purchase\nMerchant: PADDLE.NET* NOTION\nSố tiền: 10.0 USD (~10.0 USD)\nTrạng thái CSV: success\nMô tả: Subscription PADDLE.NET* NOTION",
+    "body_html_file": "html/mail_068_e_ZwLjBQVjZGRjBQDkZQNjAmHmZmN5At.html",
+    "extracted_links": [],
+    "extracted_codes": [
+      "0061",
+      "2026",
+      "0035"
+    ],
+    "scraped_at": "2026-08-21T04:25:53.782Z"
+  },
+  {
+    "index": 69,
+    "id": "e_ZwLjBQVjZGRjZQR5ZQNjAmDkBQNmZD==",
+    "inbox": "wealifytester@yopmail.com",
+    "from": "Your receipt from PADDLE.NET",
+    "subject": "Your receipt from PADDLE.NET",
+    "date": "Wealify <no-reply@wealify.com>",
+    "timestamp": "18:00",
+    "page": 5,
+    "body_text": "Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).\n\nNgười gửi gốc (CSV): receipts@paddle.com\nEmail id: EM-0060\nThời điểm CSV: 2026-04-18 13:25\n\nAmount 10.00\n\nGiao dịch thẻ\n\nCSV id: CD-0034\nWealify order_no: WLF15-CD-0034\nThẻ: VC01\nLoại: purchase\nMerchant: PADDLE.NET* NOTION\nSố tiền: 10.0 USD (~10.0 USD)\nTrạng thái CSV: success\nMô tả: Subscription PADDLE.NET* NOTION",
+    "body_html_file": "html/mail_069_e_ZwLjBQVjZGRjZQR5ZQNjAmDkBQNmZD.html",
+    "extracted_links": [],
+    "extracted_codes": [
+      "0060",
+      "2026",
+      "0034"
+    ],
+    "scraped_at": "2026-08-21T04:25:54.489Z"
+  },
+  {
+    "index": 70,
+    "id": "e_ZwLjBQVjZGRjZQR5ZQNjAmDkAmxkZD==",
+    "inbox": "wealifytester@yopmail.com",
+    "from": "Your receipt from PADDLE.NET",
+    "subject": "Your receipt from PADDLE.NET",
+    "date": "Wealify <no-reply@wealify.com>",
+    "timestamp": "18:00",
+    "page": 5,
+    "body_text": "Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).\n\nNgười gửi gốc (CSV): receipts@paddle.com\nEmail id: EM-0058\nThời điểm CSV: 2026-02-18 17:08\n\nAmount 10.00\n\nGiao dịch thẻ\n\nCSV id: CD-0032\nWealify order_no: WLF15-CD-0032\nThẻ: VC01\nLoại: purchase\nMerchant: PADDLE.NET* NOTION\nSố tiền: 10.0 USD (~10.0 USD)\nTrạng thái CSV: success\nMô tả: Subscription PADDLE.NET* NOTION",
+    "body_html_file": "html/mail_070_e_ZwLjBQVjZGRjZQR5ZQNjAmDkAmxkZD.html",
+    "extracted_links": [],
+    "extracted_codes": [
+      "0058",
+      "2026",
+      "0032"
+    ],
+    "scraped_at": "2026-08-21T04:25:55.198Z"
+  },
+  {
+    "index": 71,
+    "id": "e_ZwLjBQVjZGRjZQR3ZQNjAmDkAmR0ZD==",
+    "inbox": "wealifytester@yopmail.com",
+    "from": "Your receipt from ADOBE",
+    "subject": "Your receipt from ADOBE",
+    "date": "Wealify <no-reply@wealify.com>",
+    "timestamp": "18:00",
+    "page": 5,
+    "body_text": "Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).\n\nNgười gửi gốc (CSV): receipts@adobe.com\nEmail id: EM-0057\nThời điểm CSV: 2026-08-15 21:22\n\nAmount 54.99\n\nGiao dịch thẻ\n\nCSV id: CD-0031\nWealify order_no: WLF15-CD-0031\nThẻ: VC03\nLoại: purchase\nMerchant: ADOBE *CREATIVE CLD\nSố tiền: 54.99 USD (~54.99 USD)\nTrạng thái CSV: success\nMô tả: Subscription ADOBE *CREATIVE CLD",
+    "body_html_file": "html/mail_071_e_ZwLjBQVjZGRjZQR3ZQNjAmDkAmR0ZD.html",
+    "extracted_links": [],
+    "extracted_codes": [
+      "0057",
+      "2026",
+      "0031"
+    ],
+    "scraped_at": "2026-08-21T04:25:55.906Z"
+  },
+  {
+    "index": 72,
+    "id": "e_ZwLjBQVjZGRjZQR3ZQNjAmDkAmN2Zt==",
+    "inbox": "wealifytester@yopmail.com",
+    "from": "Your receipt from PADDLE.NET",
+    "subject": "Your receipt from PADDLE.NET",
+    "date": "Wealify <no-reply@wealify.com>",
+    "timestamp": "18:00",
+    "page": 5,
+    "body_text": "Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).\n\nNgười gửi gốc (CSV): receipts@paddle.com\nEmail id: EM-0059\nThời điểm CSV: 2026-03-18 11:35\n\nAmount 10.00\n\nGiao dịch thẻ\n\nCSV id: CD-0033\nWealify order_no: WLF15-CD-0033\nThẻ: VC01\nLoại: purchase\nMerchant: PADDLE.NET* NOTION\nSố tiền: 10.0 USD (~10.0 USD)\nTrạng thái CSV: success\nMô tả: Subscription PADDLE.NET* NOTION",
+    "body_html_file": "html/mail_072_e_ZwLjBQVjZGRjZQR3ZQNjAmDkAmN2Zt.html",
+    "extracted_links": [],
+    "extracted_codes": [
+      "0059",
+      "2026",
+      "0033"
+    ],
+    "scraped_at": "2026-08-21T04:25:56.611Z"
+  },
+  {
+    "index": 73,
+    "id": "e_ZwLjBQVjZGRjZQRkZQNjAmDkAQD1BD==",
+    "inbox": "wealifytester@yopmail.com",
+    "from": "Your receipt from ADOBE",
+    "subject": "Your receipt from ADOBE",
+    "date": "Wealify <no-reply@wealify.com>",
+    "timestamp": "18:00",
+    "page": 5,
+    "body_text": "Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).\n\nNgười gửi gốc (CSV): receipts@adobe.com\nEmail id: EM-0056\nThời điểm CSV: 2026-07-15 11:24\n\nAmount 54.99\n\nGiao dịch thẻ\n\nCSV id: CD-0030\nWealify order_no: WLF15-CD-0030\nThẻ: VC03\nLoại: purchase\nMerchant: ADOBE *CREATIVE CLD\nSố tiền: 54.99 USD (~54.99 USD)\nTrạng thái CSV: success\nMô tả: Subscription ADOBE *CREATIVE CLD",
+    "body_html_file": "html/mail_073_e_ZwLjBQVjZGRjZQRkZQNjAmDkAQD1BD.html",
+    "extracted_links": [],
+    "extracted_codes": [
+      "0056",
+      "2026",
+      "0030"
+    ],
+    "scraped_at": "2026-08-21T04:25:57.318Z"
+  },
+  {
+    "index": 74,
+    "id": "e_ZwLjBQVjZGRjZQN5ZQNjAmDkAQN1Zj==",
+    "inbox": "wealifytester@yopmail.com",
+    "from": "Your receipt from ADOBE",
+    "subject": "Your receipt from ADOBE",
+    "date": "Wealify <no-reply@wealify.com>",
+    "timestamp": "18:00",
+    "page": 5,
+    "body_text": "Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).\n\nNgười gửi gốc (CSV): receipts@adobe.com\nEmail id: EM-0054\nThời điểm CSV: 2026-05-15 19:12\n\nAmount 54.99\n\nGiao dịch thẻ\n\nCSV id: CD-0028\nWealify order_no: WLF15-CD-0028\nThẻ: VC03\nLoại: purchase\nMerchant: ADOBE *CREATIVE CLD\nSố tiền: 54.99 USD (~54.99 USD)\nTrạng thái CSV: success\nMô tả: Subscription ADOBE *CREATIVE CLD",
+    "body_html_file": "html/mail_074_e_ZwLjBQVjZGRjZQN5ZQNjAmDkAQN1Zj.html",
+    "extracted_links": [],
+    "extracted_codes": [
+      "0054",
+      "2026",
+      "0028"
+    ],
+    "scraped_at": "2026-08-21T04:25:58.027Z"
+  },
+  {
+    "index": 75,
+    "id": "e_ZwLjBQVjZGRjZQN2ZQNjAmDkZwHkAt==",
+    "inbox": "wealifytester@yopmail.com",
+    "from": "Your receipt from ADOBE",
+    "subject": "Your receipt from ADOBE",
+    "date": "Wealify <no-reply@wealify.com>",
+    "timestamp": "18:00",
+    "page": 5,
+    "body_text": "Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).\n\nNgười gửi gốc (CSV): receipts@adobe.com\nEmail id: EM-0055\nThời điểm CSV: 2026-06-15 16:29\n\nAmount 54.99\n\nGiao dịch thẻ\n\nCSV id: CD-0029\nWealify order_no: WLF15-CD-0029\nThẻ: VC03\nLoại: purchase\nMerchant: ADOBE *CREATIVE CLD\nSố tiền: 54.99 USD (~54.99 USD)\nTrạng thái CSV: success\nMô tả: Subscription ADOBE *CREATIVE CLD",
+    "body_html_file": "html/mail_075_e_ZwLjBQVjZGRjZQN2ZQNjAmDkZwHkAt.html",
+    "extracted_links": [],
+    "extracted_codes": [
+      "0055",
+      "2026",
+      "0029"
+    ],
+    "scraped_at": "2026-08-21T04:25:58.734Z"
+  },
+  {
+    "index": 76,
+    "id": "e_ZwLjBQVjZGRjZQNkZQNjAmDkZQV2BD==",
+    "inbox": "wealifytester@yopmail.com",
+    "from": "Your receipt from ADOBE",
+    "subject": "Your receipt from ADOBE",
+    "date": "Wealify <no-reply@wealify.com>",
+    "timestamp": "18:00",
+    "page": 6,
+    "body_text": "Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).\n\nNgười gửi gốc (CSV): receipts@adobe.com\nEmail id: EM-0055\nThời điểm CSV: 2026-06-15 16:29\n\nAmount 54.99\n\nGiao dịch thẻ\n\nCSV id: CD-0029\nWealify order_no: WLF15-CD-0029\nThẻ: VC03\nLoại: purchase\nMerchant: ADOBE *CREATIVE CLD\nSố tiền: 54.99 USD (~54.99 USD)\nTrạng thái CSV: success\nMô tả: Subscription ADOBE *CREATIVE CLD",
+    "body_html_file": "html/mail_076_e_ZwLjBQVjZGRjZQNkZQNjAmDkZQV2BD.html",
+    "extracted_links": [],
+    "extracted_codes": [
+      "0055",
+      "2026",
+      "0029"
+    ],
+    "scraped_at": "2026-08-21T04:25:59.442Z"
+  },
+  {
+    "index": 77,
+    "id": "e_ZwLjBQVjZGN1BGH5ZQNjAmDjBGt2Zj==",
+    "inbox": "wealifytester@yopmail.com",
+    "from": "Your receipt from ADOBE",
+    "subject": "Your receipt from ADOBE",
+    "date": "Wealify <no-reply@wealify.com>",
+    "timestamp": "17:59",
+    "page": 6,
+    "body_text": "Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).\n\nNgười gửi gốc (CSV): receipts@adobe.com\nEmail id: EM-0052\nThời điểm CSV: 2026-03-15 13:09\n\nAmount 54.99\n\nGiao dịch thẻ\n\nCSV id: CD-0026\nWealify order_no: WLF15-CD-0026\nThẻ: VC03\nLoại: purchase\nMerchant: ADOBE *CREATIVE CLD\nSố tiền: 54.99 USD (~54.99 USD)\nTrạng thái CSV: success\nMô tả: Subscription ADOBE *CREATIVE CLD",
+    "body_html_file": "html/mail_077_e_ZwLjBQVjZGN1BGH5ZQNjAmDjBGt2Zj.html",
+    "extracted_links": [],
+    "extracted_codes": [
+      "0052",
+      "2026",
+      "0026"
+    ],
+    "scraped_at": "2026-08-21T04:26:00.150Z"
+  },
+  {
+    "index": 78,
+    "id": "e_ZwLjBQVjZGN1BGH2ZQNjAmDjBGDlZN==",
+    "inbox": "wealifytester@yopmail.com",
+    "from": "Your receipt from ADOBE",
+    "subject": "Your receipt from ADOBE",
+    "date": "Wealify <no-reply@wealify.com>",
+    "timestamp": "17:59",
+    "page": 6,
+    "body_text": "Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).\n\nNgười gửi gốc (CSV): receipts@adobe.com\nEmail id: EM-0051\nThời điểm CSV: 2026-02-15 16:24\n\nAmount 54.99\n\nGiao dịch thẻ\n\nCSV id: CD-0025\nWealify order_no: WLF15-CD-0025\nThẻ: VC03\nLoại: purchase\nMerchant: ADOBE *CREATIVE CLD\nSố tiền: 54.99 USD (~54.99 USD)\nTrạng thái CSV: success\nMô tả: Subscription ADOBE *CREATIVE CLD",
+    "body_html_file": "html/mail_078_e_ZwLjBQVjZGN1BGH2ZQNjAmDjBGDlZN.html",
+    "extracted_links": [],
+    "extracted_codes": [
+      "0051",
+      "2026",
+      "0025"
+    ],
+    "scraped_at": "2026-08-21T04:26:00.858Z"
+  },
+  {
+    "index": 79,
+    "id": "e_ZwLjBQVjZGN1BGHmZQNjAmDjBQx0AD==",
+    "inbox": "wealifytester@yopmail.com",
+    "from": "Your receipt from OPENAI",
+    "subject": "Your receipt from OPENAI",
+    "date": "Wealify <no-reply@wealify.com>",
+    "timestamp": "17:59",
+    "page": 6,
+    "body_text": "Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).\n\nNgười gửi gốc (CSV): receipts@openai.com\nEmail id: EM-0050\nThời điểm CSV: 2026-08-03 19:28\n\nAmount 20.00\n\nGiao dịch thẻ\n\nCSV id: CD-0024\nWealify order_no: WLF15-CD-0024\nThẻ: VC03\nLoại: purchase\nMerchant: OPENAI *CHATGPT SUBSCR\nSố tiền: 20.0 USD (~20.0 USD)\nTrạng thái CSV: success\nMô tả: Subscription OPENAI *CHATGPT SUBSCR",
+    "body_html_file": "html/mail_079_e_ZwLjBQVjZGN1BGHmZQNjAmDjBQx0AD.html",
+    "extracted_links": [],
+    "extracted_codes": [
+      "0050",
+      "2026",
+      "0024"
+    ],
+    "scraped_at": "2026-08-21T04:26:01.565Z"
+  },
+  {
+    "index": 80,
+    "id": "e_ZwLjBQVjZGN1BGHkZQNjAmDjBQLjBN==",
+    "inbox": "wealifytester@yopmail.com",
+    "from": "Your receipt from OPENAI",
+    "subject": "Your receipt from OPENAI",
+    "date": "Wealify <no-reply@wealify.com>",
+    "timestamp": "17:59",
+    "page": 6,
+    "body_text": "Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).\n\nNgười gửi gốc (CSV): receipts@openai.com\nEmail id: EM-0049\nThời điểm CSV: 2026-07-03 18:05\n\nAmount 20.00\n\nGiao dịch thẻ\n\nCSV id: CD-0023\nWealify order_no: WLF15-CD-0023\nThẻ: VC03\nLoại: purchase\nMerchant: OPENAI *CHATGPT SUBSCR\nSố tiền: 20.0 USD (~20.0 USD)\nTrạng thái CSV: success\nMô tả: Subscription OPENAI *CHATGPT SUBSCR",
+    "body_html_file": "html/mail_080_e_ZwLjBQVjZGN1BGHkZQNjAmDjBQLjBN.html",
+    "extracted_links": [],
+    "extracted_codes": [
+      "0049",
+      "2026",
+      "0023"
+    ],
+    "scraped_at": "2026-08-21T04:26:02.274Z"
+  },
+  {
+    "index": 81,
+    "id": "e_ZwLjBQVjZGN1BGD5ZQNjAmDjBQV0AN==",
+    "inbox": "wealifytester@yopmail.com",
+    "from": "Your receipt from OPENAI",
+    "subject": "Your receipt from OPENAI",
+    "date": "Wealify <no-reply@wealify.com>",
+    "timestamp": "17:59",
+    "page": 6,
+    "body_text": "Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).\n\nNgười gửi gốc (CSV): receipts@openai.com\nEmail id: EM-0048\nThời điểm CSV: 2026-06-03 17:59\n\nAmount 20.00\n\nGiao dịch thẻ\n\nCSV id: CD-0022\nWealify order_no: WLF15-CD-0022\nThẻ: VC03\nLoại: purchase\nMerchant: OPENAI *CHATGPT SUBSCR\nSố tiền: 20.0 USD (~20.0 USD)\nTrạng thái CSV: success\nMô tả: Subscription OPENAI *CHATGPT SUBSCR",
+    "body_html_file": "html/mail_081_e_ZwLjBQVjZGN1BGD5ZQNjAmDjBQV0AN.html",
+    "extracted_links": [],
+    "extracted_codes": [
+      "0048",
+      "2026",
+      "0022"
+    ],
+    "scraped_at": "2026-08-21T04:26:02.982Z"
+  },
+  {
+    "index": 82,
+    "id": "e_ZwLjBQVjZGN1BGD3ZQNjAmDjAmt0Zj==",
+    "inbox": "wealifytester@yopmail.com",
+    "from": "Your receipt from OPENAI",
+    "subject": "Your receipt from OPENAI",
+    "date": "Wealify <no-reply@wealify.com>",
+    "timestamp": "17:59",
+    "page": 6,
+    "body_text": "Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).\n\nNgười gửi gốc (CSV): receipts@openai.com\nEmail id: EM-0047\nThời điểm CSV: 2026-05-03 15:22\n\nAmount 20.00\n\nGiao dịch thẻ\n\nCSV id: CD-0021\nWealify order_no: WLF15-CD-0021\nThẻ: VC03\nLoại: purchase\nMerchant: OPENAI *CHATGPT SUBSCR\nSố tiền: 20.0 USD (~20.0 USD)\nTrạng thái CSV: success\nMô tả: Subscription OPENAI *CHATGPT SUBSCR",
+    "body_html_file": "html/mail_082_e_ZwLjBQVjZGN1BGD3ZQNjAmDjAmt0Zj.html",
+    "extracted_links": [],
+    "extracted_codes": [
+      "0047",
+      "2026",
+      "0021"
+    ],
+    "scraped_at": "2026-08-21T04:26:03.690Z"
+  },
+  {
+    "index": 83,
+    "id": "e_ZwLjBQVjZGN1BGD0ZQNjAmDjAmD4Aj==",
+    "inbox": "wealifytester@yopmail.com",
+    "from": "Your receipt from OPENAI",
+    "subject": "Your receipt from OPENAI",
+    "date": "Wealify <no-reply@wealify.com>",
+    "timestamp": "17:59",
+    "page": 6,
+    "body_text": "Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).\n\nNgười gửi gốc (CSV): receipts@openai.com\nEmail id: EM-0046\nThời điểm CSV: 2026-04-03 17:36\n\nAmount 20.00\n\nGiao dịch thẻ\n\nCSV id: CD-0020\nWealify order_no: WLF15-CD-0020\nThẻ: VC03\nLoại: purchase\nMerchant: OPENAI *CHATGPT SUBSCR\nSố tiền: 20.0 USD (~20.0 USD)\nTrạng thái CSV: success\nMô tả: Subscription OPENAI *CHATGPT SUBSCR",
+    "body_html_file": "html/mail_083_e_ZwLjBQVjZGN1BGD0ZQNjAmDjAmD4Aj.html",
+    "extracted_links": [],
+    "extracted_codes": [
+      "0046",
+      "2026",
+      "0020"
+    ],
+    "scraped_at": "2026-08-21T04:26:04.398Z"
+  },
+  {
+    "index": 84,
+    "id": "e_ZwLjBQVjZGN1BGDlZQNjAmDjAmN5AD==",
+    "inbox": "wealifytester@yopmail.com",
+    "from": "Your receipt from OPENAI",
+    "subject": "Your receipt from OPENAI",
+    "date": "Wealify <no-reply@wealify.com>",
+    "timestamp": "17:59",
+    "page": 6,
+    "body_text": "Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).\n\nNgười gửi gốc (CSV): receipts@openai.com\nEmail id: EM-0045\nThời điểm CSV: 2026-03-03 19:47\n\nAmount 20.00\n\nGiao dịch thẻ\n\nCSV id: CD-0019\nWealify order_no: WLF15-CD-0019\nThẻ: VC03\nLoại: purchase\nMerchant: OPENAI *CHATGPT SUBSCR\nSố tiền: 20.0 USD (~20.0 USD)\nTrạng thái CSV: success\nMô tả: Subscription OPENAI *CHATGPT SUBSCR",
+    "body_html_file": "html/mail_084_e_ZwLjBQVjZGN1BGDlZQNjAmDjAmN5AD.html",
+    "extracted_links": [],
+    "extracted_codes": [
+      "0045",
+      "2026",
+      "0019"
+    ],
+    "scraped_at": "2026-08-21T04:26:05.107Z"
+  },
+  {
+    "index": 85,
+    "id": "e_ZwLjBQVjZGN1BGZ5ZQNjAmDjAwHmZD==",
+    "inbox": "wealifytester@yopmail.com",
+    "from": "Your receipt from GOOGLE",
+    "subject": "Your receipt from GOOGLE",
+    "date": "Wealify <no-reply@wealify.com>",
+    "timestamp": "17:59",
+    "page": 6,
+    "body_text": "Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).\n\nNgười gửi gốc (CSV): receipts@google.com\nEmail id: EM-0044\nThời điểm CSV: 2026-08-12 14:46\n\nAmount 13.99\n\nGiao dịch thẻ\n\nCSV id: CD-0018\nWealify order_no: WLF15-CD-0018\nThẻ: VC02\nLoại: purchase\nMerchant: GOOGLE *YOUTUBEPREM\nSố tiền: 13.99 USD (~13.99 USD)\nTrạng thái CSV: success\nMô tả: Subscription GOOGLE *YOUTUBEPREM",
+    "body_html_file": "html/mail_085_e_ZwLjBQVjZGN1BGZ5ZQNjAmDjAwHmZD.html",
+    "extracted_links": [],
+    "extracted_codes": [
+      "0044",
+      "2026",
+      "0018"
+    ],
+    "scraped_at": "2026-08-21T04:26:05.814Z"
+  },
+  {
+    "index": 86,
+    "id": "e_ZwLjBQVjZGN1BGZ3ZQNjAmDjAwVmAD==",
+    "inbox": "wealifytester@yopmail.com",
+    "from": "Your receipt from GOOGLE",
+    "subject": "Your receipt from GOOGLE",
+    "date": "Wealify <no-reply@wealify.com>",
+    "timestamp": "17:59",
+    "page": 6,
+    "body_text": "Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).\n\nNgười gửi gốc (CSV): receipts@google.com\nEmail id: EM-0043\nThời điểm CSV: 2026-07-12 09:23\n\nAmount 13.99\n\nGiao dịch thẻ\n\nCSV id: CD-0017\nWealify order_no: WLF15-CD-0017\nThẻ: VC02\nLoại: purchase\nMerchant: GOOGLE *YOUTUBEPREM\nSố tiền: 13.99 USD (~13.99 USD)\nTrạng thái CSV: success\nMô tả: Subscription GOOGLE *YOUTUBEPREM",
+    "body_html_file": "html/mail_086_e_ZwLjBQVjZGN1BGZ3ZQNjAmDjAwVmAD.html",
+    "extracted_links": [],
+    "extracted_codes": [
+      "0043",
+      "2026",
+      "0017"
+    ],
+    "scraped_at": "2026-08-21T04:26:06.521Z"
+  },
+  {
+    "index": 87,
+    "id": "e_ZwLjBQVjZGN1BGZ1ZQNjAmDjAGp0AD==",
+    "inbox": "wealifytester@yopmail.com",
+    "from": "Your receipt from GOOGLE",
+    "subject": "Your receipt from GOOGLE",
+    "date": "Wealify <no-reply@wealify.com>",
+    "timestamp": "17:59",
+    "page": 6,
+    "body_text": "Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).\n\nNgười gửi gốc (CSV): receipts@google.com\nEmail id: EM-0042\nThời điểm CSV: 2026-06-12 15:13\n\nAmount 13.99\n\nGiao dịch thẻ\n\nCSV id: CD-0016\nWealify order_no: WLF15-CD-0016\nThẻ: VC02\nLoại: purchase\nMerchant: GOOGLE *YOUTUBEPREM\nSố tiền: 13.99 USD (~13.99 USD)\nTrạng thái CSV: success\nMô tả: Subscription GOOGLE *YOUTUBEPREM",
+    "body_html_file": "html/mail_087_e_ZwLjBQVjZGN1BGZ1ZQNjAmDjAGp0AD.html",
+    "extracted_links": [],
+    "extracted_codes": [
+      "0042",
+      "2026",
+      "0016"
+    ],
+    "scraped_at": "2026-08-21T04:26:07.230Z"
+  },
+  {
+    "index": 88,
+    "id": "e_ZwLjBQVjZGN1BGZlZQNjAmDjAGVkAj==",
+    "inbox": "wealifytester@yopmail.com",
+    "from": "Your receipt from GOOGLE",
+    "subject": "Your receipt from GOOGLE",
+    "date": "Wealify <no-reply@wealify.com>",
+    "timestamp": "17:59",
+    "page": 6,
+    "body_text": "Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).\n\nNgười gửi gốc (CSV): receipts@google.com\nEmail id: EM-0041\nThời điểm CSV: 2026-05-12 18:13\n\nAmount 13.99\n\nGiao dịch thẻ\n\nCSV id: CD-0015\nWealify order_no: WLF15-CD-0015\nThẻ: VC02\nLoại: purchase\nMerchant: GOOGLE *YOUTUBEPREM\nSố tiền: 13.99 USD (~13.99 USD)\nTrạng thái CSV: success\nMô tả: Subscription GOOGLE *YOUTUBEPREM",
+    "body_html_file": "html/mail_088_e_ZwLjBQVjZGN1BGZlZQNjAmDjAGVkAj.html",
+    "extracted_links": [],
+    "extracted_codes": [
+      "0041",
+      "2026",
+      "0015"
+    ],
+    "scraped_at": "2026-08-21T04:26:07.937Z"
+  },
+  {
+    "index": 89,
+    "id": "e_ZwLjBQVjZGN1BGZjZQNjAmDjAQt3BD==",
+    "inbox": "wealifytester@yopmail.com",
+    "from": "Your receipt from GOOGLE",
+    "subject": "Your receipt from GOOGLE",
+    "date": "Wealify <no-reply@wealify.com>",
+    "timestamp": "17:59",
+    "page": 6,
+    "body_text": "Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).\n\nNgười gửi gốc (CSV): receipts@google.com\nEmail id: EM-0040\nThời điểm CSV: 2026-04-12 19:22\n\nAmount 13.99\n\nGiao dịch thẻ\n\nCSV id: CD-0014\nWealify order_no: WLF15-CD-0014\nThẻ: VC02\nLoại: purchase\nMerchant: GOOGLE *YOUTUBEPREM\nSố tiền: 13.99 USD (~13.99 USD)\nTrạng thái CSV: success\nMô tả: Subscription GOOGLE *YOUTUBEPREM",
+    "body_html_file": "html/mail_089_e_ZwLjBQVjZGN1BGZjZQNjAmDjAQt3BD.html",
+    "extracted_links": [],
+    "extracted_codes": [
+      "0040",
+      "2026",
+      "0014"
+    ],
+    "scraped_at": "2026-08-21T04:26:08.647Z"
+  },
+  {
+    "index": 90,
+    "id": "e_ZwLjBQVjZGN1BGV2ZQNjAmDjAQN3ZN==",
+    "inbox": "wealifytester@yopmail.com",
+    "from": "Your receipt from GOOGLE",
+    "subject": "Your receipt from GOOGLE",
+    "date": "Wealify <no-reply@wealify.com>",
+    "timestamp": "17:59",
+    "page": 6,
+    "body_text": "Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).\n\nNgười gửi gốc (CSV): receipts@google.com\nEmail id: EM-0040\nThời điểm CSV: 2026-04-12 19:22\n\nAmount 13.99\n\nGiao dịch thẻ\n\nCSV id: CD-0014\nWealify order_no: WLF15-CD-0014\nThẻ: VC02\nLoại: purchase\nMerchant: GOOGLE *YOUTUBEPREM\nSố tiền: 13.99 USD (~13.99 USD)\nTrạng thái CSV: success\nMô tả: Subscription GOOGLE *YOUTUBEPREM",
+    "body_html_file": "html/mail_090_e_ZwLjBQVjZGN1BGV2ZQNjAmDjAQN3ZN.html",
+    "extracted_links": [],
+    "extracted_codes": [
+      "0040",
+      "2026",
+      "0014"
+    ],
+    "scraped_at": "2026-08-21T04:26:09.357Z"
+  },
+  {
+    "index": 91,
+    "id": "e_ZwLjBQVjZGN1BGVmZQNjAmDjZmL4ZD==",
+    "inbox": "wealifytester@yopmail.com",
+    "from": "Your receipt from Spotify P0F2K",
+    "subject": "Your receipt from Spotify P0F2K",
+    "date": "Wealify <no-reply@wealify.com>",
+    "timestamp": "17:59",
+    "page": 7,
+    "body_text": "Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).\n\nNgười gửi gốc (CSV): receipts@spotify.com\nEmail id: EM-0038\nThời điểm CSV: 2026-08-09 12:50\n\nAmount 9.99\n\nGiao dịch thẻ\n\nCSV id: CD-0012\nWealify order_no: WLF15-CD-0012\nThẻ: VC02\nLoại: purchase\nMerchant: Spotify P0F2K\nSố tiền: 9.99 USD (~9.99 USD)\nTrạng thái CSV: success\nMô tả: Subscription Spotify P0F2K",
+    "body_html_file": "html/mail_091_e_ZwLjBQVjZGN1BGVmZQNjAmDjZmL4ZD.html",
+    "extracted_links": [],
+    "extracted_codes": [
+      "0038",
+      "2026",
+      "0012"
+    ],
+    "scraped_at": "2026-08-21T04:26:10.065Z"
+  },
+  {
+    "index": 92,
+    "id": "e_ZwLjBQVjZGN1BGVlZQNjAmDjZmD0AN==",
+    "inbox": "wealifytester@yopmail.com",
+    "from": "Your receipt from Spotify P0F2K",
+    "subject": "Your receipt from Spotify P0F2K",
+    "date": "Wealify <no-reply@wealify.com>",
+    "timestamp": "17:59",
+    "page": 7,
+    "body_text": "Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).\n\nNgười gửi gốc (CSV): receipts@spotify.com\nEmail id: EM-0037\nThời điểm CSV: 2026-07-09 09:48\n\nAmount 9.99\n\nGiao dịch thẻ\n\nCSV id: CD-0011\nWealify order_no: WLF15-CD-0011\nThẻ: VC02\nLoại: purchase\nMerchant: Spotify P0F2K\nSố tiền: 9.99 USD (~9.99 USD)\nTrạng thái CSV: success\nMô tả: Subscription Spotify P0F2K",
+    "body_html_file": "html/mail_092_e_ZwLjBQVjZGN1BGVlZQNjAmDjZmD0AN.html",
+    "extracted_links": [],
+    "extracted_codes": [
+      "0037",
+      "2026",
+      "0011"
+    ],
+    "scraped_at": "2026-08-21T04:26:10.771Z"
+  },
+  {
+    "index": 93,
+    "id": "e_ZwLjBQVjZGN1BGVjZQNjAmDjZmN5At==",
+    "inbox": "wealifytester@yopmail.com",
+    "from": "Your receipt from Spotify P0F2K",
+    "subject": "Your receipt from Spotify P0F2K",
+    "date": "Wealify <no-reply@wealify.com>",
+    "timestamp": "17:59",
+    "page": 7,
+    "body_text": "Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).\n\nNgười gửi gốc (CSV): receipts@spotify.com\nEmail id: EM-0036\nThời điểm CSV: 2026-06-09 08:57\n\nAmount 9.99\n\nGiao dịch thẻ\n\nCSV id: CD-0010\nWealify order_no: WLF15-CD-0010\nThẻ: VC02\nLoại: purchase\nMerchant: Spotify P0F2K\nSố tiền: 9.99 USD (~9.99 USD)\nTrạng thái CSV: success\nMô tả: Subscription Spotify P0F2K",
+    "body_html_file": "html/mail_093_e_ZwLjBQVjZGN1BGVjZQNjAmDjZmN5At.html",
+    "extracted_links": [],
+    "extracted_codes": [
+      "0036",
+      "2026",
+      "0010"
+    ],
+    "scraped_at": "2026-08-21T04:26:11.482Z"
+  },
+  {
+    "index": 94,
+    "id": "e_ZwLjBQVjZGN1BGR3ZQNjAmDjZwp4AN==",
+    "inbox": "wealifytester@yopmail.com",
+    "from": "Your receipt from Spotify P0F2K",
+    "subject": "Your receipt from Spotify P0F2K",
+    "date": "Wealify <no-reply@wealify.com>",
+    "timestamp": "17:59",
+    "page": 7,
+    "body_text": "Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).\n\nNgười gửi gốc (CSV): receipts@spotify.com\nEmail id: EM-0035\nThời điểm CSV: 2026-05-09 13:09\n\nAmount 9.99\n\nGiao dịch thẻ\n\nCSV id: CD-0009\nWealify order_no: WLF15-CD-0009\nThẻ: VC02\nLoại: purchase\nMerchant: Spotify P0F2K\nSố tiền: 9.99 USD (~9.99 USD)\nTrạng thái CSV: success\nMô tả: Subscription Spotify P0F2K",
+    "body_html_file": "html/mail_094_e_ZwLjBQVjZGN1BGR3ZQNjAmDjZwp4AN.html",
+    "extracted_links": [],
+    "extracted_codes": [
+      "0035",
+      "2026",
+      "0009"
+    ],
+    "scraped_at": "2026-08-21T04:26:12.188Z"
+  },
+  {
+    "index": 95,
+    "id": "e_ZwLjBQVjZGN1BGR1ZQNjAmDjZwDmBN==",
+    "inbox": "wealifytester@yopmail.com",
+    "from": "Your receipt from Spotify P0F2K",
+    "subject": "Your receipt from Spotify P0F2K",
+    "date": "Wealify <no-reply@wealify.com>",
+    "timestamp": "17:59",
+    "page": 7,
+    "body_text": "Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).\n\nNgười gửi gốc (CSV): receipts@spotify.com\nEmail id: EM-0034\nThời điểm CSV: 2026-04-09 14:51\n\nAmount 9.99\n\nGiao dịch thẻ\n\nCSV id: CD-0008\nWealify order_no: WLF15-CD-0008\nThẻ: VC02\nLoại: purchase\nMerchant: Spotify P0F2K\nSố tiền: 9.99 USD (~9.99 USD)\nTrạng thái CSV: success\nMô tả: Subscription Spotify P0F2K",
+    "body_html_file": "html/mail_095_e_ZwLjBQVjZGN1BGR1ZQNjAmDjZwDmBN.html",
+    "extracted_links": [],
+    "extracted_codes": [
+      "0034",
+      "2026",
+      "0008"
+    ],
+    "scraped_at": "2026-08-21T04:26:12.895Z"
+  },
+  {
+    "index": 96,
+    "id": "e_ZwLjBQVjZGN1BGRmZQNjAmDjZwVkZN==",
+    "inbox": "wealifytester@yopmail.com",
+    "from": "Your receipt from Spotify P0F2K",
+    "subject": "Your receipt from Spotify P0F2K",
+    "date": "Wealify <no-reply@wealify.com>",
+    "timestamp": "17:59",
+    "page": 7,
+    "body_text": "Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).\n\nNgười gửi gốc (CSV): receipts@spotify.com\nEmail id: EM-0033\nThời điểm CSV: 2026-03-09 15:20\n\nAmount 9.99\n\nGiao dịch thẻ\n\nCSV id: CD-0007\nWealify order_no: WLF15-CD-0007\nThẻ: VC02\nLoại: purchase\nMerchant: Spotify P0F2K\nSố tiền: 9.99 USD (~9.99 USD)\nTrạng thái CSV: success\nMô tả: Subscription Spotify P0F2K",
+    "body_html_file": "html/mail_096_e_ZwLjBQVjZGN1BGRmZQNjAmDjZwVkZN.html",
+    "extracted_links": [],
+    "extracted_codes": [
+      "0033",
+      "2026",
+      "0007"
+    ],
+    "scraped_at": "2026-08-21T04:26:13.605Z"
+  },
+  {
+    "index": 97,
+    "id": "e_ZwLjBQVjZGN1BGRjZQNjAmDjZGt1Aj==",
+    "inbox": "wealifytester@yopmail.com",
+    "from": "Your receipt from NETFLIX.COM",
+    "subject": "Your receipt from NETFLIX.COM",
+    "date": "Wealify <no-reply@wealify.com>",
+    "timestamp": "17:59",
+    "page": 7,
+    "body_text": "Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).\n\nNgười gửi gốc (CSV): receipts@netflix.com\nEmail id: EM-0032\nThời điểm CSV: 2026-08-06 14:00\n\nAmount 17.99\n\nGiao dịch thẻ\n\nCSV id: CD-0006\nWealify order_no: WLF15-CD-0006\nThẻ: VC02\nLoại: purchase\nMerchant: NETFLIX.COM\nSố tiền: 17.99 USD (~17.99 USD)\nTrạng thái CSV: success\nMô tả: Subscription NETFLIX.COM",
+    "body_html_file": "html/mail_097_e_ZwLjBQVjZGN1BGRjZQNjAmDjZGt1Aj.html",
+    "extracted_links": [],
+    "extracted_codes": [
+      "0032",
+      "2026",
+      "0006"
+    ],
+    "scraped_at": "2026-08-21T04:26:14.314Z"
+  },
+  {
+    "index": 98,
+    "id": "e_ZwLjBQVjZGN1BGN4ZQNjAmDjZGH3Aj==",
+    "inbox": "wealifytester@yopmail.com",
+    "from": "Your receipt from NETFLIX.COM",
+    "subject": "Your receipt from NETFLIX.COM",
+    "date": "Wealify <no-reply@wealify.com>",
+    "timestamp": "17:59",
+    "page": 7,
+    "body_text": "Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).\n\nNgười gửi gốc (CSV): receipts@netflix.com\nEmail id: EM-0031\nThời điểm CSV: 2026-07-06 13:26\n\nAmount 17.99\n\nGiao dịch thẻ\n\nCSV id: CD-0005\nWealify order_no: WLF15-CD-0005\nThẻ: VC02\nLoại: purchase\nMerchant: NETFLIX.COM\nSố tiền: 17.99 USD (~17.99 USD)\nTrạng thái CSV: success\nMô tả: Subscription NETFLIX.COM",
+    "body_html_file": "html/mail_098_e_ZwLjBQVjZGN1BGN4ZQNjAmDjZGH3Aj.html",
+    "extracted_links": [],
+    "extracted_codes": [
+      "0031",
+      "2026",
+      "0005"
+    ],
+    "scraped_at": "2026-08-21T04:26:15.021Z"
+  },
+  {
+    "index": 99,
+    "id": "e_ZwLjBQVjZGN1BGN1ZQNjAmDjZGVmAN==",
+    "inbox": "wealifytester@yopmail.com",
+    "from": "Your receipt from NETFLIX.COM",
+    "subject": "Your receipt from NETFLIX.COM",
+    "date": "Wealify <no-reply@wealify.com>",
+    "timestamp": "17:59",
+    "page": 7,
+    "body_text": "Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).\n\nNgười gửi gốc (CSV): receipts@netflix.com\nEmail id: EM-0030\nThời điểm CSV: 2026-06-06 18:43\n\nAmount 17.99\n\nGiao dịch thẻ\n\nCSV id: CD-0004\nWealify order_no: WLF15-CD-0004\nThẻ: VC02\nLoại: purchase\nMerchant: NETFLIX.COM\nSố tiền: 17.99 USD (~17.99 USD)\nTrạng thái CSV: success\nMô tả: Subscription NETFLIX.COM",
+    "body_html_file": "html/mail_099_e_ZwLjBQVjZGN1BGN1ZQNjAmDjZGVmAN.html",
+    "extracted_links": [],
+    "extracted_codes": [
+      "0030",
+      "2026",
+      "0004"
+    ],
+    "scraped_at": "2026-08-21T04:26:15.728Z"
+  },
+  {
+    "index": 100,
+    "id": "e_ZwLjBQVjZGN1BGNmZQNjAmDjZQxmBD==",
+    "inbox": "wealifytester@yopmail.com",
+    "from": "Your receipt from NETFLIX.COM",
+    "subject": "Your receipt from NETFLIX.COM",
+    "date": "Wealify <no-reply@wealify.com>",
+    "timestamp": "17:59",
+    "page": 7,
+    "body_text": "Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).\n\nNgười gửi gốc (CSV): receipts@netflix.com\nEmail id: EM-0029\nThời điểm CSV: 2026-05-06 19:52\n\nAmount 15.49\n\nGiao dịch thẻ\n\nCSV id: CD-0003\nWealify order_no: WLF15-CD-0003\nThẻ: VC02\nLoại: purchase\nMerchant: NETFLIX.COM\nSố tiền: 15.49 USD (~15.49 USD)\nTrạng thái CSV: success\nMô tả: Subscription NETFLIX.COM",
+    "body_html_file": "html/mail_100_e_ZwLjBQVjZGN1BGNmZQNjAmDjZQxmBD.html",
+    "extracted_links": [],
+    "extracted_codes": [
+      "0029",
+      "2026",
+      "0003"
+    ],
+    "scraped_at": "2026-08-21T04:26:16.435Z"
+  },
+  {
+    "index": 101,
+    "id": "e_ZwLjBQVjZGN1BGNjZQNjAmDjZQLmBD==",
+    "inbox": "wealifytester@yopmail.com",
+    "from": "Your receipt from NETFLIX.COM",
+    "subject": "Your receipt from NETFLIX.COM",
+    "date": "Wealify <no-reply@wealify.com>",
+    "timestamp": "17:59",
+    "page": 7,
+    "body_text": "Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).\n\nNgười gửi gốc (CSV): receipts@netflix.com\nEmail id: EM-0028\nThời điểm CSV: 2026-04-06 20:43\n\nAmount 15.49\n\nGiao dịch thẻ\n\nCSV id: CD-0002\nWealify order_no: WLF15-CD-0002\nThẻ: VC02\nLoại: purchase\nMerchant: NETFLIX.COM\nSố tiền: 15.49 USD (~15.49 USD)\nTrạng thái CSV: success\nMô tả: Subscription NETFLIX.COM",
+    "body_html_file": "html/mail_101_e_ZwLjBQVjZGN1BGNjZQNjAmDjZQLmBD.html",
+    "extracted_links": [],
+    "extracted_codes": [
+      "0028",
+      "2026",
+      "0002"
+    ],
+    "scraped_at": "2026-08-21T04:26:17.145Z"
+  },
+  {
+    "index": 102,
+    "id": "e_ZwLjBQVjZGN1BQH4ZQNjAmDjZQZmBN==",
+    "inbox": "wealifytester@yopmail.com",
+    "from": "Your receipt from NETFLIX.COM",
+    "subject": "Your receipt from NETFLIX.COM",
+    "date": "Wealify <no-reply@wealify.com>",
+    "timestamp": "17:58",
+    "page": 7,
+    "body_text": "Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).\n\nNgười gửi gốc (CSV): receipts@netflix.com\nEmail id: EM-0027\nThời điểm CSV: 2026-03-06 14:43\n\nAmount 15.49\n\nGiao dịch thẻ\n\nCSV id: CD-0001\nWealify order_no: WLF15-CD-0001\nThẻ: VC02\nLoại: purchase\nMerchant: NETFLIX.COM\nSố tiền: 15.49 USD (~15.49 USD)\nTrạng thái CSV: success\nMô tả: Subscription NETFLIX.COM",
+    "body_html_file": "html/mail_102_e_ZwLjBQVjZGN1BQH4ZQNjAmDjZQZmBN.html",
+    "extracted_links": [],
+    "extracted_codes": [
+      "0027",
+      "2026",
+      "0001"
+    ],
+    "scraped_at": "2026-08-21T04:26:17.854Z"
+  },
+  {
+    "index": 103,
+    "id": "e_ZwLjBQVjZGN1BQH1ZQNjAmDjZQNmZj==",
+    "inbox": "wealifytester@yopmail.com",
+    "from": "Payout confirmation Amazon",
+    "subject": "Payout confirmation Amazon",
+    "date": "Wealify <no-reply@wealify.com>",
+    "timestamp": "17:58",
+    "page": 7,
+    "body_text": "Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).\n\nNgười gửi gốc (CSV): payments@amazon.com\nEmail id: EM-0026\nThời điểm CSV: 2026-05-15 00:51\n\nYou received USD 1830.84\n\nGiao dịch VA\n\nCSV id: VA-0160\nWealify order_no: WLF15-VA-0160\nVA: VA06\nLoại: payin\nNguồn / đối tác: Amazon / Amazon payout\nSố tiền: 1830.84 USD (~1830.84 USD)\nTrạng thái CSV: success\nMô tả: Nhận tiền từ Amazon",
+    "body_html_file": "html/mail_103_e_ZwLjBQVjZGN1BQH1ZQNjAmDjZQNmZj.html",
+    "extracted_links": [],
+    "extracted_codes": [
+      "0026",
+      "2026",
+      "1830",
+      "0160"
+    ],
+    "scraped_at": "2026-08-21T04:26:18.563Z"
+  },
+  {
+    "index": 104,
+    "id": "e_ZwLjBQVjZGN1BQH0ZQNjAmZ5BGtkZt==",
+    "inbox": "wealifytester@yopmail.com",
+    "from": "Payout confirmation Amazon",
+    "subject": "Payout confirmation Amazon",
+    "date": "Wealify <no-reply@wealify.com>",
+    "timestamp": "17:58",
+    "page": 7,
+    "body_text": "Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).\n\nNgười gửi gốc (CSV): payments@amazon.com\nEmail id: EM-0025\nThời điểm CSV: 2026-08-08 16:47\n\nYou received USD 2001.66\n\nGiao dịch VA\n\nCSV id: VA-0159\nWealify order_no: WLF15-VA-0159\nVA: VA06\nLoại: payin\nNguồn / đối tác: Amazon / Amazon payout\nSố tiền: 2001.66 USD (~2001.66 USD)\nTrạng thái CSV: success\nMô tả: Nhận tiền từ Amazon",
+    "body_html_file": "html/mail_104_e_ZwLjBQVjZGN1BQH0ZQNjAmZ5BGtkZt.html",
+    "extracted_links": [],
+    "extracted_codes": [
+      "0025",
+      "2026",
+      "2001",
+      "0159"
+    ],
+    "scraped_at": "2026-08-21T04:26:19.272Z"
+  },
+  {
+    "index": 105,
+    "id": "e_ZwLjBQVjZGN1BQHkZQNjAmZ5BGDlAD==",
+    "inbox": "wealifytester@yopmail.com",
+    "from": "Payout confirmation Amazon",
+    "subject": "Payout confirmation Amazon",
+    "date": "Wealify <no-reply@wealify.com>",
+    "timestamp": "17:58",
+    "page": 7,
+    "body_text": "Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).\n\nNgười gửi gốc (CSV): payments@amazon.com\nEmail id: EM-0024\nThời điểm CSV: 2026-06-07 06:31\n\nYou received USD 226.22\n\nGiao dịch VA\n\nCSV id: VA-0157\nWealify order_no: WLF15-VA-0157\nVA: VA06\nLoại: payin\nNguồn / đối tác: Amazon / Amazon payout\nSố tiền: 226.22 USD (~226.22 USD)\nTrạng thái CSV: success\nMô tả: Nhận tiền từ Amazon",
+    "body_html_file": "html/mail_105_e_ZwLjBQVjZGN1BQHkZQNjAmZ5BGDlAD.html",
+    "extracted_links": [],
+    "extracted_codes": [
+      "0024",
+      "2026",
+      "0157"
+    ],
+    "scraped_at": "2026-08-21T04:26:19.979Z"
+  },
+  {
+    "index": 106,
+    "id": "e_ZwLjBQVjZGN1BQD5ZQNjAmZ5BGRmBD==",
+    "inbox": "wealifytester@yopmail.com",
+    "from": "Payout confirmation Amazon",
+    "subject": "Payout confirmation Amazon",
+    "date": "Wealify <no-reply@wealify.com>",
+    "timestamp": "17:58",
+    "page": 8,
+    "body_text": "Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).\n\nNgười gửi gốc (CSV): payments@amazon.com\nEmail id: EM-0024\nThời điểm CSV: 2026-06-07 06:31\n\nYou received USD 226.22\n\nGiao dịch VA\n\nCSV id: VA-0157\nWealify order_no: WLF15-VA-0157\nVA: VA06\nLoại: payin\nNguồn / đối tác: Amazon / Amazon payout\nSố tiền: 226.22 USD (~226.22 USD)\nTrạng thái CSV: success\nMô tả: Nhận tiền từ Amazon",
+    "body_html_file": "html/mail_106_e_ZwLjBQVjZGN1BQD5ZQNjAmZ5BGRmBD.html",
+    "extracted_links": [],
+    "extracted_codes": [
+      "0024",
+      "2026",
+      "0157"
+    ],
+    "scraped_at": "2026-08-21T04:26:20.687Z"
+  },
+  {
+    "index": 107,
+    "id": "e_ZwLjBQVjZGN1BQD2ZQNjAmZ5BQp5ZN==",
+    "inbox": "wealifytester@yopmail.com",
+    "from": "Payout confirmation Amazon",
+    "subject": "Payout confirmation Amazon",
+    "date": "Wealify <no-reply@wealify.com>",
+    "timestamp": "17:58",
+    "page": 8,
+    "body_text": "Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).\n\nNgười gửi gốc (CSV): payments@amazon.com\nEmail id: EM-0022\nThời điểm CSV: 2026-07-08 04:58\n\nYou received USD 2044.27\n\nGiao dịch VA\n\nCSV id: VA-0153\nWealify order_no: WLF15-VA-0153\nVA: VA06\nLoại: payin\nNguồn / đối tác: Amazon / Amazon payout\nSố tiền: 2044.27 USD (~2044.27 USD)\nTrạng thái CSV: success\nMô tả: Nhận tiền từ Amazon",
+    "body_html_file": "html/mail_107_e_ZwLjBQVjZGN1BQD2ZQNjAmZ5BQp5ZN.html",
+    "extracted_links": [],
+    "extracted_codes": [
+      "0022",
+      "2026",
+      "2044",
+      "0153"
+    ],
+    "scraped_at": "2026-08-21T04:26:21.397Z"
+  },
+  {
+    "index": 108,
+    "id": "e_ZwLjBQVjZGN1BQD1ZQNjAmZ5BQHkAj==",
+    "inbox": "wealifytester@yopmail.com",
+    "from": "Payout confirmation Amazon",
+    "subject": "Payout confirmation Amazon",
+    "date": "Wealify <no-reply@wealify.com>",
+    "timestamp": "17:58",
+    "page": 8,
+    "body_text": "Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).\n\nNgười gửi gốc (CSV): payments@amazon.com\nEmail id: EM-0021\nThời điểm CSV: 2026-04-26 04:00\n\nYou received USD 974.85\n\nGiao dịch VA\n\nCSV id: VA-0144\nWealify order_no: WLF15-VA-0144\nVA: VA06\nLoại: payin\nNguồn / đối tác: Amazon / Amazon payout\nSố tiền: 974.85 USD (~974.85 USD)\nTrạng thái CSV: success\nMô tả: Nhận tiền từ Amazon",
+    "body_html_file": "html/mail_108_e_ZwLjBQVjZGN1BQD1ZQNjAmZ5BQHkAj.html",
+    "extracted_links": [],
+    "extracted_codes": [
+      "0021",
+      "2026",
+      "0144"
+    ],
+    "scraped_at": "2026-08-21T04:26:22.105Z"
+  },
+  {
+    "index": 109,
+    "id": "e_ZwLjBQVjZGN1BQDlZQNjAmZ5BQR4AN==",
+    "inbox": "wealifytester@yopmail.com",
+    "from": "Payout confirmation Amazon",
+    "subject": "Payout confirmation Amazon",
+    "date": "Wealify <no-reply@wealify.com>",
+    "timestamp": "17:58",
+    "page": 8,
+    "body_text": "Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).\n\nNgười gửi gốc (CSV): payments@amazon.com\nEmail id: EM-0020\nThời điểm CSV: 2026-04-08 03:24\n\nYou received USD 1277.73\n\nGiao dịch VA\n\nCSV id: VA-0142\nWealify order_no: WLF15-VA-0142\nVA: VA06\nLoại: payin\nNguồn / đối tác: Amazon / Amazon payout\nSố tiền: 1277.73 USD (~1277.73 USD)\nTrạng thái CSV: success\nMô tả: Nhận tiền từ Amazon",
+    "body_html_file": "html/mail_109_e_ZwLjBQVjZGN1BQDlZQNjAmZ5BQR4AN.html",
+    "extracted_links": [],
+    "extracted_codes": [
+      "0020",
+      "2026",
+      "1277",
+      "0142"
+    ],
+    "scraped_at": "2026-08-21T04:26:22.813Z"
+  },
+  {
+    "index": 110,
+    "id": "e_ZwLjBQVjZGN1BQZ5ZQNjAmZ5Amp4AN==",
+    "inbox": "wealifytester@yopmail.com",
+    "from": "Payout confirmation Paypal",
+    "subject": "Payout confirmation Paypal",
+    "date": "Wealify <no-reply@wealify.com>",
+    "timestamp": "17:58",
+    "page": 8,
+    "body_text": "Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).\n\nNgười gửi gốc (CSV): payments@paypal.com\nEmail id: EM-0019\nThời điểm CSV: 2026-07-20 13:15\n\nYou received USD 977.74\n\nGiao dịch VA\n\nCSV id: VA-0089\nWealify order_no: WLF15-VA-0089\nVA: VA03\nLoại: payin\nNguồn / đối tác: Paypal / Paypal payout\nSố tiền: 977.74 USD (~977.74 USD)\nTrạng thái CSV: success\nMô tả: Nhận tiền từ Paypal",
+    "body_html_file": "html/mail_110_e_ZwLjBQVjZGN1BQZ5ZQNjAmZ5Amp4AN.html",
+    "extracted_links": [],
+    "extracted_codes": [
+      "0019",
+      "2026",
+      "0089"
+    ],
+    "scraped_at": "2026-08-21T04:26:23.523Z"
+  },
+  {
+    "index": 111,
+    "id": "e_ZwLjBQVjZGN1BQZ3ZQNjAmZ5AmHkZt==",
+    "inbox": "wealifytester@yopmail.com",
+    "from": "Payout confirmation Paypal",
+    "subject": "Payout confirmation Paypal",
+    "date": "Wealify <no-reply@wealify.com>",
+    "timestamp": "17:58",
+    "page": 8,
+    "body_text": "Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).\n\nNgười gửi gốc (CSV): payments@paypal.com\nEmail id: EM-0018\nThời điểm CSV: 2026-05-24 06:53\n\nYou received USD 751.45\n\nGiao dịch VA\n\nCSV id: VA-0088\nWealify order_no: WLF15-VA-0088\nVA: VA03\nLoại: payin\nNguồn / đối tác: Paypal / Paypal payout\nSố tiền: 751.45 USD (~751.45 USD)\nTrạng thái CSV: success\nMô tả: Nhận tiền từ Paypal",
+    "body_html_file": "html/mail_111_e_ZwLjBQVjZGN1BQZ3ZQNjAmZ5AmHkZt.html",
+    "extracted_links": [],
+    "extracted_codes": [
+      "0018",
+      "2026",
+      "0088"
+    ],
+    "scraped_at": "2026-08-21T04:26:24.230Z"
+  },
+  {
+    "index": 112,
+    "id": "e_ZwLjBQVjZGN1BQZ1ZQNjAmZ5AmVjBD==",
+    "inbox": "wealifytester@yopmail.com",
+    "from": "Payout confirmation Paypal",
+    "subject": "Payout confirmation Paypal",
+    "date": "Wealify <no-reply@wealify.com>",
+    "timestamp": "17:58",
+    "page": 8,
+    "body_text": "Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).\n\nNgười gửi gốc (CSV): payments@paypal.com\nEmail id: EM-0018\nThời điểm CSV: 2026-05-24 06:53\n\nYou received USD 751.45\n\nGiao dịch VA\n\nCSV id: VA-0088\nWealify order_no: WLF15-VA-0088\nVA: VA03\nLoại: payin\nNguồn / đối tác: Paypal / Paypal payout\nSố tiền: 751.45 USD (~751.45 USD)\nTrạng thái CSV: success\nMô tả: Nhận tiền từ Paypal",
+    "body_html_file": "html/mail_112_e_ZwLjBQVjZGN1BQZ1ZQNjAmZ5AmVjBD.html",
+    "extracted_links": [],
+    "extracted_codes": [
+      "0018",
+      "2026",
+      "0088"
+    ],
+    "scraped_at": "2026-08-21T04:26:24.940Z"
+  },
+  {
+    "index": 113,
+    "id": "e_ZwLjBQVjZGN1BQZlZQNjAmZ5Awp4Zj==",
+    "inbox": "wealifytester@yopmail.com",
+    "from": "Payout confirmation Paypal",
+    "subject": "Payout confirmation Paypal",
+    "date": "Wealify <no-reply@wealify.com>",
+    "timestamp": "17:58",
+    "page": 8,
+    "body_text": "Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).\n\nNgười gửi gốc (CSV): payments@paypal.com\nEmail id: EM-0018\nThời điểm CSV: 2026-05-24 06:53\n\nYou received USD 751.45\n\nGiao dịch VA\n\nCSV id: VA-0088\nWealify order_no: WLF15-VA-0088\nVA: VA03\nLoại: payin\nNguồn / đối tác: Paypal / Paypal payout\nSố tiền: 751.45 USD (~751.45 USD)\nTrạng thái CSV: success\nMô tả: Nhận tiền từ Paypal",
+    "body_html_file": "html/mail_113_e_ZwLjBQVjZGN1BQZlZQNjAmZ5Awp4Zj.html",
+    "extracted_links": [],
+    "extracted_codes": [
+      "0018",
+      "2026",
+      "0088"
+    ],
+    "scraped_at": "2026-08-21T04:26:25.649Z"
+  },
+  {
+    "index": 114,
+    "id": "e_ZwLjBQVjZGN1BQZjZQNjAmZ5AwH0ZN==",
+    "inbox": "wealifytester@yopmail.com",
+    "from": "Payout confirmation Paypal",
+    "subject": "Payout confirmation Paypal",
+    "date": "Wealify <no-reply@wealify.com>",
+    "timestamp": "17:58",
+    "page": 8,
+    "body_text": "Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).\n\nNgười gửi gốc (CSV): payments@paypal.com\nEmail id: EM-0015\nThời điểm CSV: 2026-08-13 08:11\n\nYou received USD 1819.70\n\nGiao dịch VA\n\nCSV id: VA-0084\nWealify order_no: WLF15-VA-0084\nVA: VA03\nLoại: payin\nNguồn / đối tác: Paypal / Paypal payout\nSố tiền: 1819.7 USD (~1819.7 USD)\nTrạng thái CSV: success\nMô tả: Nhận tiền từ Paypal",
+    "body_html_file": "html/mail_114_e_ZwLjBQVjZGN1BQZjZQNjAmZ5AwH0ZN.html",
+    "extracted_links": [],
+    "extracted_codes": [
+      "0015",
+      "2026",
+      "1819",
+      "0084"
+    ],
+    "scraped_at": "2026-08-21T04:26:26.356Z"
+  },
+  {
+    "index": 115,
+    "id": "e_ZwLjBQVjZGN1BQV4ZQNjAmZ5AwVkZt==",
+    "inbox": "wealifytester@yopmail.com",
+    "from": "Payout confirmation Paypal",
+    "subject": "Payout confirmation Paypal",
+    "date": "Wealify <no-reply@wealify.com>",
+    "timestamp": "17:58",
+    "page": 8,
+    "body_text": "Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).\n\nNgười gửi gốc (CSV): payments@paypal.com\nEmail id: EM-0014\nThời điểm CSV: 2026-07-21 22:42\n\nYou received USD 410.96\n\nGiao dịch VA\n\nCSV id: VA-0082\nWealify order_no: WLF15-VA-0082\nVA: VA03\nLoại: payin\nNguồn / đối tác: Paypal / Paypal payout\nSố tiền: 410.96 USD (~410.96 USD)\nTrạng thái CSV: success\nMô tả: Nhận tiền từ Paypal",
+    "body_html_file": "html/mail_115_e_ZwLjBQVjZGN1BQV4ZQNjAmZ5AwVkZt.html",
+    "extracted_links": [],
+    "extracted_codes": [
+      "0014",
+      "2026",
+      "0082"
+    ],
+    "scraped_at": "2026-08-21T04:26:27.065Z"
+  },
+  {
+    "index": 116,
+    "id": "e_ZwLjBQVjZGN1BQV1ZQNjAmZ5AGL2ZD==",
+    "inbox": "wealifytester@yopmail.com",
+    "from": "Payout confirmation Paypal",
+    "subject": "Payout confirmation Paypal",
+    "date": "Wealify <no-reply@wealify.com>",
+    "timestamp": "17:58",
+    "page": 8,
+    "body_text": "Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).\n\nNgười gửi gốc (CSV): payments@paypal.com\nEmail id: EM-0013\nThời điểm CSV: 2026-04-13 09:02\n\nYou received USD 2318.76\n\nGiao dịch VA\n\nCSV id: VA-0078\nWealify order_no: WLF15-VA-0078\nVA: VA03\nLoại: payin\nNguồn / đối tác: Paypal / Paypal payout\nSố tiền: 2318.76 USD (~2318.76 USD)\nTrạng thái CSV: success\nMô tả: Nhận tiền từ Paypal",
+    "body_html_file": "html/mail_116_e_ZwLjBQVjZGN1BQV1ZQNjAmZ5AGL2ZD.html",
+    "extracted_links": [],
+    "extracted_codes": [
+      "0013",
+      "2026",
+      "2318",
+      "0078"
+    ],
+    "scraped_at": "2026-08-21T04:26:27.773Z"
+  },
+  {
+    "index": 117,
+    "id": "e_ZwLjBQVjZGN1BQVmZQNjAmZ5AGDmBD==",
+    "inbox": "wealifytester@yopmail.com",
+    "from": "Payout confirmation Paypal",
+    "subject": "Payout confirmation Paypal",
+    "date": "Wealify <no-reply@wealify.com>",
+    "timestamp": "17:58",
+    "page": 8,
+    "body_text": "Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).\n\nNgười gửi gốc (CSV): payments@paypal.com\nEmail id: EM-0012\nThời điểm CSV: 2026-04-23 00:39\n\nYou received USD 247.89\n\nGiao dịch VA\n\nCSV id: VA-0076\nWealify order_no: WLF15-VA-0076\nVA: VA03\nLoại: payin\nNguồn / đối tác: Paypal / Paypal payout\nSố tiền: 247.89 USD (~247.89 USD)\nTrạng thái CSV: success\nMô tả: Nhận tiền từ Paypal",
+    "body_html_file": "html/mail_117_e_ZwLjBQVjZGN1BQVmZQNjAmZ5AGDmBD.html",
+    "extracted_links": [],
+    "extracted_codes": [
+      "0012",
+      "2026",
+      "0076"
+    ],
+    "scraped_at": "2026-08-21T04:26:28.481Z"
+  },
+  {
+    "index": 118,
+    "id": "e_ZwLjBQVjZGN1BQVkZQNjAmZ5AGR1ZN==",
+    "inbox": "wealifytester@yopmail.com",
+    "from": "Payout confirmation Paypal",
+    "subject": "Payout confirmation Paypal",
+    "date": "Wealify <no-reply@wealify.com>",
+    "timestamp": "17:58",
+    "page": 8,
+    "body_text": "Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).\n\nNgười gửi gốc (CSV): payments@paypal.com\nEmail id: EM-0011\nThời điểm CSV: 2026-06-05 23:10\n\nYou received USD 2597.84\n\nGiao dịch VA\n\nCSV id: VA-0072\nWealify order_no: WLF15-VA-0072\nVA: VA03\nLoại: payin\nNguồn / đối tác: Paypal / Paypal payout\nSố tiền: 2597.84 USD (~2597.84 USD)\nTrạng thái CSV: success\nMô tả: Nhận tiền từ Paypal",
+    "body_html_file": "html/mail_118_e_ZwLjBQVjZGN1BQVkZQNjAmZ5AGR1ZN.html",
+    "extracted_links": [],
+    "extracted_codes": [
+      "0011",
+      "2026",
+      "2597",
+      "0072"
+    ],
+    "scraped_at": "2026-08-21T04:26:29.187Z"
+  },
+  {
+    "index": 119,
+    "id": "e_ZwLjBQVjZGN1BQR4ZQNjAmZ5AQplAt==",
+    "inbox": "wealifytester@yopmail.com",
+    "from": "Payout confirmation Paypal",
+    "subject": "Payout confirmation Paypal",
+    "date": "Wealify <no-reply@wealify.com>",
+    "timestamp": "17:58",
+    "page": 8,
+    "body_text": "Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).\n\nNgười gửi gốc (CSV): payments@paypal.com\nEmail id: EM-0010\nThời điểm CSV: 2026-05-22 05:38\n\nYou received USD 1021.88\n\nGiao dịch VA\n\nCSV id: VA-0071\nWealify order_no: WLF15-VA-0071\nVA: VA03\nLoại: payin\nNguồn / đối tác: Paypal / Paypal payout\nSố tiền: 1021.88 USD (~1021.88 USD)\nTrạng thái CSV: success\nMô tả: Nhận tiền từ Paypal",
+    "body_html_file": "html/mail_119_e_ZwLjBQVjZGN1BQR4ZQNjAmZ5AQplAt.html",
+    "extracted_links": [],
+    "extracted_codes": [
+      "0010",
+      "2026",
+      "1021",
+      "0071"
+    ],
+    "scraped_at": "2026-08-21T04:26:29.892Z"
+  },
+  {
+    "index": 120,
+    "id": "e_ZwLjBQVjZGN1BQR2ZQNjAmZ5AQZ0Aj==",
+    "inbox": "wealifytester@yopmail.com",
+    "from": "Payout confirmation Payoneer",
+    "subject": "Payout confirmation Payoneer",
+    "date": "Wealify <no-reply@wealify.com>",
+    "timestamp": "17:58",
+    "page": 8,
+    "body_text": "Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).\n\nNgười gửi gốc (CSV): payments@payoneer.com\nEmail id: EM-0009\nThời điểm CSV: 2026-03-03 12:26\n\nYou received USD 2531.07\n\nGiao dịch VA\n\nCSV id: VA-0053\nWealify order_no: WLF15-VA-0053\nVA: VA02\nLoại: payin\nNguồn / đối tác: Payoneer / Payoneer payout\nSố tiền: 2531.07 USD (~2531.07 USD)\nTrạng thái CSV: success\nMô tả: Nhận tiền từ Payoneer",
+    "body_html_file": "html/mail_120_e_ZwLjBQVjZGN1BQR2ZQNjAmZ5AQZ0Aj.html",
+    "extracted_links": [],
+    "extracted_codes": [
+      "0009",
+      "2026",
+      "2531",
+      "0053"
+    ],
+    "scraped_at": "2026-08-21T04:26:30.598Z"
+  },
+  {
+    "index": 121,
+    "id": "e_ZwLjBQVjZGN1BQRmZQNjAmZ5ZmxkZD==",
+    "inbox": "wealifytester@yopmail.com",
+    "from": "Payout confirmation Payoneer",
+    "subject": "Payout confirmation Payoneer",
+    "date": "Wealify <no-reply@wealify.com>",
+    "timestamp": "17:58",
+    "page": 9,
+    "body_text": "Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).\n\nNgười gửi gốc (CSV): payments@payoneer.com\nEmail id: EM-0008\nThời điểm CSV: 2026-03-06 02:30\n\nYou received USD 2421.86\n\nGiao dịch VA\n\nCSV id: VA-0050\nWealify order_no: WLF15-VA-0050\nVA: VA02\nLoại: payin\nNguồn / đối tác: Payoneer / Payoneer payout\nSố tiền: 2421.86 USD (~2421.86 USD)\nTrạng thái CSV: success\nMô tả: Nhận tiền từ Payoneer",
+    "body_html_file": "html/mail_121_e_ZwLjBQVjZGN1BQRmZQNjAmZ5ZmxkZD.html",
+    "extracted_links": [],
+    "extracted_codes": [
+      "0008",
+      "2026",
+      "2421",
+      "0050"
+    ],
+    "scraped_at": "2026-08-21T04:26:31.307Z"
+  },
+  {
+    "index": 122,
+    "id": "e_ZwLjBQVjZGN1BQRkZQNjAmZ5ZmLmBD==",
+    "inbox": "wealifytester@yopmail.com",
+    "from": "Payout confirmation Payoneer",
+    "subject": "Payout confirmation Payoneer",
+    "date": "Wealify <no-reply@wealify.com>",
+    "timestamp": "17:58",
+    "page": 9,
+    "body_text": "Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).\n\nNgười gửi gốc (CSV): payments@payoneer.com\nEmail id: EM-0008\nThời điểm CSV: 2026-03-06 02:30\n\nYou received USD 2421.86\n\nGiao dịch VA\n\nCSV id: VA-0050\nWealify order_no: WLF15-VA-0050\nVA: VA02\nLoại: payin\nNguồn / đối tác: Payoneer / Payoneer payout\nSố tiền: 2421.86 USD (~2421.86 USD)\nTrạng thái CSV: success\nMô tả: Nhận tiền từ Payoneer",
+    "body_html_file": "html/mail_122_e_ZwLjBQVjZGN1BQRkZQNjAmZ5ZmLmBD.html",
+    "extracted_links": [],
+    "extracted_codes": [
+      "0008",
+      "2026",
+      "2421",
+      "0050"
+    ],
+    "scraped_at": "2026-08-21T04:26:32.936Z"
+  },
+  {
+    "index": 123,
+    "id": "e_ZwLjBQVjZGN1BQN5ZQNjAmZ5ZmZ1At==",
+    "inbox": "wealifytester@yopmail.com",
+    "from": "Payout confirmation Payoneer",
+    "subject": "Payout confirmation Payoneer",
+    "date": "Wealify <no-reply@wealify.com>",
+    "timestamp": "17:58",
+    "page": 9,
+    "body_text": "Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).\n\nNgười gửi gốc (CSV): payments@payoneer.com\nEmail id: EM-0008\nThời điểm CSV: 2026-03-06 02:30\n\nYou received USD 2421.86\n\nGiao dịch VA\n\nCSV id: VA-0050\nWealify order_no: WLF15-VA-0050\nVA: VA02\nLoại: payin\nNguồn / đối tác: Payoneer / Payoneer payout\nSố tiền: 2421.86 USD (~2421.86 USD)\nTrạng thái CSV: success\nMô tả: Nhận tiền từ Payoneer",
+    "body_html_file": "html/mail_123_e_ZwLjBQVjZGN1BQN5ZQNjAmZ5ZmZ1At.html",
+    "extracted_links": [],
+    "extracted_codes": [
+      "0008",
+      "2026",
+      "2421",
+      "0050"
+    ],
+    "scraped_at": "2026-08-21T04:26:33.643Z"
+  },
+  {
+    "index": 124,
+    "id": "e_ZwLjBQVjZGN1BQN3ZQNjAmZ5ZmN0ZN==",
+    "inbox": "wealifytester@yopmail.com",
+    "from": "Payout confirmation Payoneer",
+    "subject": "Payout confirmation Payoneer",
+    "date": "Wealify <no-reply@wealify.com>",
+    "timestamp": "17:58",
+    "page": 9,
+    "body_text": "Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).\n\nNgười gửi gốc (CSV): payments@payoneer.com\nEmail id: EM-0005\nThời điểm CSV: 2026-03-31 10:08\n\nYou received USD 2139.53\n\nGiao dịch VA\n\nCSV id: VA-0045\nWealify order_no: WLF15-VA-0045\nVA: VA02\nLoại: payin\nNguồn / đối tác: Payoneer / Payoneer payout\nSố tiền: 2139.53 USD (~2139.53 USD)\nTrạng thái CSV: success\nMô tả: Nhận tiền từ Payoneer",
+    "body_html_file": "html/mail_124_e_ZwLjBQVjZGN1BQN3ZQNjAmZ5ZmN0ZN.html",
+    "extracted_links": [],
+    "extracted_codes": [
+      "0005",
+      "2026",
+      "2139",
+      "0045"
+    ],
+    "scraped_at": "2026-08-21T04:26:34.353Z"
+  },
+  {
+    "index": 125,
+    "id": "e_ZwLjBQVjZGN1BQN1ZQNjAmZ5Zwp2AD==",
+    "inbox": "wealifytester@yopmail.com",
+    "from": "Payout confirmation Payoneer",
+    "subject": "Payout confirmation Payoneer",
+    "date": "Wealify <no-reply@wealify.com>",
+    "timestamp": "17:58",
+    "page": 9,
+    "body_text": "Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).\n\nNgười gửi gốc (CSV): payments@payoneer.com\nEmail id: EM-0004\nThời điểm CSV: 2026-05-30 03:03\n\nYou received USD 1524.41\n\nGiao dịch VA\n\nCSV id: VA-0044\nWealify order_no: WLF15-VA-0044\nVA: VA02\nLoại: payin\nNguồn / đối tác: Payoneer / Payoneer payout\nSố tiền: 1524.41 USD (~1524.41 USD)\nTrạng thái CSV: success\nMô tả: Nhận tiền từ Payoneer",
+    "body_html_file": "html/mail_125_e_ZwLjBQVjZGN1BQN1ZQNjAmZ5Zwp2AD.html",
+    "extracted_links": [],
+    "extracted_codes": [
+      "0004",
+      "2026",
+      "1524",
+      "0044"
+    ],
+    "scraped_at": "2026-08-21T04:26:35.062Z"
+  },
+  {
+    "index": 126,
+    "id": "e_ZwLjBQVjZGN1BQNmZQNjAmZ5ZwD4ZN==",
+    "inbox": "wealifytester@yopmail.com",
+    "from": "Payout confirmation Payoneer",
+    "subject": "Payout confirmation Payoneer",
+    "date": "Wealify <no-reply@wealify.com>",
+    "timestamp": "17:58",
+    "page": 9,
+    "body_text": "Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).\n\nNgười gửi gốc (CSV): payments@payoneer.com\nEmail id: EM-0002\nThời điểm CSV: 2026-06-30 09:45\n\nYou received USD 2486.79\n\nGiao dịch VA\n\nCSV id: VA-0039\nWealify order_no: WLF15-VA-0039\nVA: VA02\nLoại: payin\nNguồn / đối tác: Payoneer / Payoneer payout\nSố tiền: 2486.79 USD (~2486.79 USD)\nTrạng thái CSV: success\nMô tả: Nhận tiền từ Payoneer",
+    "body_html_file": "html/mail_126_e_ZwLjBQVjZGN1BQNmZQNjAmZ5ZwD4ZN.html",
+    "extracted_links": [],
+    "extracted_codes": [
+      "0002",
+      "2026",
+      "2486",
+      "0039"
+    ],
+    "scraped_at": "2026-08-21T04:26:35.770Z"
+  },
+  {
+    "index": 127,
+    "id": "e_ZwLjBQVjZGN1BQNlZQNjAmZ5ZwZ1BD==",
+    "inbox": "wealifytester@yopmail.com",
+    "from": "Payout confirmation Payoneer",
+    "subject": "Payout confirmation Payoneer",
+    "date": "Wealify <no-reply@wealify.com>",
+    "timestamp": "17:58",
+    "page": 9,
+    "body_text": "Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).\n\nNgười gửi gốc (CSV): payments@payoneer.com\nEmail id: EM-0003\nThời điểm CSV: 2026-06-06 13:21\n\nYou received USD 2219.48\n\nGiao dịch VA\n\nCSV id: VA-0040\nWealify order_no: WLF15-VA-0040\nVA: VA02\nLoại: payin\nNguồn / đối tác: Payoneer / Payoneer payout\nSố tiền: 2219.48 USD (~2219.48 USD)\nTrạng thái CSV: success\nMô tả: Nhận tiền từ Payoneer",
+    "body_html_file": "html/mail_127_e_ZwLjBQVjZGN1BQNlZQNjAmZ5ZwZ1BD.html",
+    "extracted_links": [],
+    "extracted_codes": [
+      "0003",
+      "2026",
+      "2219",
+      "0040"
+    ],
+    "scraped_at": "2026-08-21T04:26:36.477Z"
+  },
+  {
+    "index": 128,
+    "id": "e_ZwLjBQVjZGN1AmH2ZQNjAmZ5ZGpkBN==",
+    "inbox": "wealifytester@yopmail.com",
+    "from": "Payout confirmation Payoneer",
+    "subject": "Payout confirmation Payoneer",
+    "date": "Wealify <no-reply@wealify.com>",
+    "timestamp": "17:57",
+    "page": 9,
+    "body_text": "Đây là email sandbox WLF-15 gửi từ mailbox Wealify (SMTP config).\n\nNgười gửi gốc (CSV): payments@payoneer.com\nEmail id: EM-0003\nThời điểm CSV: 2026-06-06 13:21\n\nYou received USD 2219.48\n\nGiao dịch VA\n\nCSV id: VA-0040\nWealify order_no: WLF15-VA-0040\nVA: VA02\nLoại: payin\nNguồn / đối tác: Payoneer / Payoneer payout\nSố tiền: 2219.48 USD (~2219.48 USD)\nTrạng thái CSV: success\nMô tả: Nhận tiền từ Payoneer",
+    "body_html_file": "html/mail_128_e_ZwLjBQVjZGN1AmH2ZQNjAmZ5ZGpkBN.html",
+    "extracted_links": [],
+    "extracted_codes": [
+      "0003",
+      "2026",
+      "2219",
+      "0040"
+    ],
+    "scraped_at": "2026-08-21T04:26:37.183Z"
+  },
+  {
+    "index": 129,
+    "id": "e_ZwLjBQVjZGN0AwZmZQNjAmV4ZmZ1At==",
+    "inbox": "wealifytester@yopmail.com",
+    "from": "[WEALIFY] RÚT TIỀN THÀNH CÔNG: 250 USD TỪ CARD VỀ WALLET",
+    "subject": "[WEALIFY] RÚT TIỀN THÀNH CÔNG: 250 USD TỪ CARD VỀ WALLET",
+    "date": "Wealify <no-reply@wealify.com>",
+    "timestamp": "17:46",
+    "page": 9,
+    "body_text": "Xin chào Lê Minh Anh,\n\nGiao dịch rút tiền từ Virtual Card về Wealify Wallet của bạn đã được xử lý thành công.\n\nChi tiết giao dịch:\n\nMã giao dịch: WLF15-CD-0211\nLoại thẻ: Volcano Ads (0001)\nSố tiền rút: 250 USD\nSố tiền nhận về Wallet: 250 USD\nThời gian: 2026-08-20 10:46:26\nTrạng thái: Thành công\n\nSố dư hiện tại:\n\nCard (0001): 96.33 USD\nWallet (USD): 2750.01 USD\n\nBạn có thể sử dụng số dư Wallet USD để nạp thẻ khác, chuyển đổi sang USDT, hoặc giữ lại để dùng sau.\n\nNếu bạn không thực hiện giao dịch này, vui lòng liên hệ ngay đội ngũ hỗ trợ Wealify:\n\nEmail: support@wealify.com\nTelegram: @WealifySupport\n\nTrân trọng,\nĐội ngũ Wealify\n\nCảm ơn Quý khách đã sử dụng dịch vụ của Wealify.\n\n© 2025 Wealify. Mọi quyền được bảo lưu.",
+    "body_html_file": "html/mail_129_e_ZwLjBQVjZGN0AwZmZQNjAmV4ZmZ1At.html",
+    "extracted_links": [
+      "https://t.me/WealifySupport"
+    ],
+    "extracted_codes": [
+      "0211",
+      "0001",
+      "2026",
+      "2750",
+      "2025"
+    ],
+    "scraped_at": "2026-08-21T04:26:37.893Z"
+  },
+  {
+    "index": 130,
+    "id": "e_ZwLjBQVjZGN0AGN2ZQNjAmV2ZQp0ZD==",
+    "inbox": "wealifytester@yopmail.com",
+    "from": "Giao dịch rút tiền từ Tài kho ản ảo đã bị hủy",
+    "subject": "Giao dịch rút tiền từ Tài kho ản ảo đã bị hủy",
+    "date": "Wealify <no-reply@wealify.com>",
+    "timestamp": "17:45",
+    "page": 9,
+    "body_text": "Chào Lê Minh Anh,\n\nChúng tôi rất tiếc phải thông báo rằng giao dịch rút tiền từ Tài khoản ảo của bạn đã bị hủy.\n\nLý do thất bại: Lệnh rút quá hạn — tự động hủy do không được xử lý trong thời gian quy định.\n\nChi tiết giao dịch:\n\n- Mã giao dịch: WLF15-VA-0032\n- Thời gian: 20/07/2026 08:07AM\n- Phương thức: Ngân hàng\n- Tên ngân hàng:\n- Tên tài khoản:\n- Số tài khoản:\n- Số tiền rút: 50,699,000 VND\n- Phí: 0.00%\n- Thực nhận: 50,699,000 VND\n\nVui lòng xem lại các chi tiết và thử lại quy trình rút tiền. Nếu bạn cần hỗ trợ hoặc có bất kỳ câu hỏi nào, vui lòng liên hệ với chúng tôi tại support@wealify.com.\n\nTrân trọng,\n\nĐội ngũ Wealify\n\n© 2026 Wealify. Bảo lưu mọi quyền.",
+    "body_html_file": "html/mail_130_e_ZwLjBQVjZGN0AGN2ZQNjAmV2ZQp0ZD.html",
+    "extracted_links": [],
+    "extracted_codes": [
+      "0032",
+      "2026"
+    ],
+    "scraped_at": "2026-08-21T04:26:38.602Z"
+  },
+  {
+    "index": 131,
+    "id": "e_ZwLjBQVjZGN0ZQRkZQNjAmR5AwVlZt==",
+    "inbox": "wealifytester@yopmail.com",
+    "from": "Giao dịch rút tiền từ Tài kho ản ảo đã bị hủy",
+    "subject": "Giao dịch rút tiền từ Tài kho ản ảo đã bị hủy",
+    "date": "Wealify <no-reply@wealify.com>",
+    "timestamp": "17:40",
+    "page": 9,
+    "body_text": "Chào Lê Minh Anh,\n\nChúng tôi rất tiếc phải thông báo rằng giao dịch rút tiền từ Tài khoản ảo của bạn đã bị hủy.\n\nLý do thất bại: Lệnh rút quá hạn — tự động hủy do không được xử lý trong thời gian quy định.\n\nChi tiết giao dịch:\n\n- Mã giao dịch: WLF15-VA-0032\n- Thời gian: 20/07/2026 08:07AM\n- Phương thức: Ngân hàng\n- Tên ngân hàng:\n- Tên tài khoản:\n- Số tài khoản:\n- Số tiền rút: 50,699,000 VND\n- Phí: 0.00%\n- Thực nhận: 50,699,000 VND\n\nVui lòng xem lại các chi tiết và thử lại quy trình rút tiền. Nếu bạn cần hỗ trợ hoặc có bất kỳ câu hỏi nào, vui lòng liên hệ với chúng tôi tại support@wealify.com.\n\nTrân trọng,\n\nĐội ngũ Wealify\n\n© 2026 Wealify. Bảo lưu mọi quyền.",
+    "body_html_file": "html/mail_131_e_ZwLjBQVjZGN0ZQRkZQNjAmR5AwVlZt.html",
+    "extracted_links": [],
+    "extracted_codes": [
+      "0032",
+      "2026"
+    ],
+    "scraped_at": "2026-08-21T04:26:39.309Z"
+  },
+  {
+    "index": 132,
+    "id": "e_ZwLjBQVjZGNmAwZ4ZQNjAmR1BQL1ZD==",
+    "inbox": "wealifytester@yopmail.com",
+    "from": "[WEALIFY] RÚT TIỀN THÀNH CÔNG: 250 USD TỪ CARD VỀ WALLET",
+    "subject": "[WEALIFY] RÚT TIỀN THÀNH CÔNG: 250 USD TỪ CARD VỀ WALLET",
+    "date": "Wealify <no-reply@wealify.com>",
+    "timestamp": "17:36",
+    "page": 9,
+    "body_text": "Xin chào Lê Minh Anh,\n\nGiao dịch rút tiền từ Virtual Card về Wealify Wallet của bạn đã được xử lý thành công.\n\nChi tiết giao dịch:\n\nMã giao dịch: WLF15-CD-0211\nLoại thẻ: Volcano Ads (0001)\nSố tiền rút: 250 USD\nSố tiền nhận về Wallet: 250 USD\nThời gian: 2026-08-20 10:36:26\nTrạng thái: Thành công\n\nSố dư hiện tại:\n\nCard (0001): 96.33 USD\nWallet (USD): 2750.01 USD\n\nBạn có thể sử dụng số dư Wallet USD để nạp thẻ khác, chuyển đổi sang USDT, hoặc giữ lại để dùng sau.\n\nNếu bạn không thực hiện giao dịch này, vui lòng liên hệ ngay đội ngũ hỗ trợ Wealify:\n\nEmail: support@wealify.com\nTelegram: @WealifySupport\n\nTrân trọng,\nĐội ngũ Wealify\n\nCảm ơn Quý khách đã sử dụng dịch vụ của Wealify.\n\n© 2025 Wealify. Mọi quyền được bảo lưu.",
+    "body_html_file": "html/mail_132_e_ZwLjBQVjZGNmAwZ4ZQNjAmR1BQL1ZD.html",
+    "extracted_links": [
+      "https://t.me/WealifySupport"
+    ],
+    "extracted_codes": [
+      "0211",
+      "0001",
+      "2026",
+      "2750",
+      "2025"
+    ],
+    "scraped_at": "2026-08-21T04:26:40.016Z"
+  },
+  {
+    "index": 133,
+    "id": "e_ZwLjBQVjZQxlZGR4ZQNjAwV2BGt3ZN==",
+    "inbox": "wealifytester@yopmail.com",
+    "from": "Wealify",
+    "subject": "(No Subject)",
+    "date": "Wealify <no-reply@wealify.com>",
+    "timestamp": "16:21",
+    "page": 9,
+    "body_text": "",
+    "body_html_file": "html/mail_133_e_ZwLjBQVjZQxlZGR4ZQNjAwV2BGt3ZN.html",
+    "extracted_links": [],
+    "extracted_codes": [],
+    "scraped_at": "2026-08-21T04:26:40.723Z"
+  },
+  {
+    "index": 134,
+    "id": "e_ZwLjBQVjZQxkAwZmZQNjAwVkAmtlZN==",
+    "inbox": "wealifytester@yopmail.com",
+    "from": "Wealify",
+    "subject": "Chào mừng! Việc đăng ký t ài khoản Wealify của bạn đ ã hoàn tất",
+    "date": "Wealify <no-reply@wealify.com>",
+    "timestamp": "16:16",
+    "page": 9,
+    "body_text": "",
+    "body_html_file": "html/mail_134_e_ZwLjBQVjZQxkAwZmZQNjAwVkAmtlZN.html",
+    "extracted_links": [],
+    "extracted_codes": [],
+    "scraped_at": "2026-08-21T04:26:41.431Z"
+  },
+  {
+    "index": 135,
+    "id": "e_ZwLjBQVjZQxkAQZmZQNjAwR4BGp2ZN==",
+    "inbox": "wealifytester@yopmail.com",
+    "from": "[Wealify] VERIFY YOUR EMAIL TO COMPLETE REGISTRATION",
+    "subject": "[Wealify] VERIFY YOUR EMAIL TO COMPLETE REGISTRATION",
+    "date": "Wealify <no-reply@wealify.com>",
+    "timestamp": "16:14",
+    "page": 9,
+    "body_text": "Hi there,\n\nWelcome to Wealify! To verify your email address and complete your registration, please enter the one-time verification code below:\n\n922303\n\nThe code is valid for 10 minutes. Do not share it with anyone.\n\nIf you did not initiate this registration request, please do not enter the code and contact us immediately at support@wealify.com.\n\nBest regards,\n\nThe Wealify Team\n\nThank you for choosing Wealify!\n\n© 2026 Wealify. All rights reserved.",
+    "body_html_file": "html/mail_135_e_ZwLjBQVjZQxkAQZmZQNjAwR4BGp2ZN.html",
+    "extracted_links": [],
+    "extracted_codes": [
+      "922303",
+      "2026"
+    ],
+    "scraped_at": "2026-08-21T04:26:42.138Z"
+  }
+]
