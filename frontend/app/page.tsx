@@ -5,7 +5,7 @@ import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react
 
 import { ChatPane, type ChatHandle } from "@/components/ChatPane";
 import { DraftModal } from "@/components/DraftModal";
-import { Evidence } from "@/components/Evidence";
+import { Evidence } from "@/components/evidence/Evidence";
 import { Sidebar, type ThemePref } from "@/components/Sidebar";
 import { api } from "@/lib/api";
 import { ui } from "@/lib/i18n";
@@ -110,6 +110,13 @@ export default function Page() {
     if (railOpen !== false && window.matchMedia(NARROW).matches) setRailOpen(false);
   }
 
+  // Below 1280px the drawer covers the conversation, so a question asked from
+  // inside it would send the answer somewhere the user cannot see.
+  function askFromDrawer(question: string) {
+    chat.current?.ask(question);
+    if (window.matchMedia("(max-width: 1279px)").matches) setDrawerOpen(false);
+  }
+
   return (
     <div className="app">
       <Sidebar
@@ -198,6 +205,7 @@ export default function Page() {
                   summary={summary}
                   refreshToken={refreshToken}
                   onScan={() => setRefreshToken((value) => value + 1)}
+                  onAsk={askFromDrawer}
                 />
               </div>
             </section>

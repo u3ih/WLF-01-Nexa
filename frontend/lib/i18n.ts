@@ -38,6 +38,29 @@ const UI = {
     boundary_money_move: "Chuyển hoặc rút tiền",
     boundary_card_lock: "Khoá hoặc mở thẻ",
     boundary_reassurance: "Kết luận tài khoản an toàn",
+    boundaryWhy_cancel_subscription:
+      "Không có hàm huỷ gói nào tồn tại trong mã nguồn.",
+    boundaryWhy_third_party_email:
+      "Không có đường gửi thư ra bên thứ ba; chỉ soạn nháp cho bạn tự gửi.",
+    boundaryWhy_dispute:
+      "Không có đường nộp khiếu nại; chỉ soạn nháp và nhắc hạn 60 ngày.",
+    boundaryWhy_money_move:
+      "Không có hàm chuyển, rút hay hoàn tiền nào tồn tại.",
+    boundaryWhy_card_lock:
+      "Không có hàm khoá hay mở thẻ nào tồn tại.",
+    boundaryWhy_reassurance:
+      "Bộ lọc đầu ra chặn mọi câu khẳng định tài khoản an toàn, ở cả hai ngôn ngữ.",
+    grp_alerts: "Cảnh báo",
+    grp_money: "Tiền",
+    grp_recon: "Đối soát",
+    grp_system: "Hệ thống",
+    grp_safety: "Ranh giới an toàn",
+    boundaryTry: "Thử",
+    boundaryIntro: "Nexa chỉ hỗ trợ và gợi ý. Sáu việc dưới đây nó không làm — "
+      + "không phải vì câu nhắc dặn thế, mà vì trong mã nguồn không có hàm nào "
+      + "làm được. Bấm Thử để tự kiểm chứng.",
+    sev_hard: "ranh giới cứng",
+    sev_soft: "không kết luận",
     statement: "Sao kê ngày",
     ask: "Hỏi về sao kê của bạn…",
     send: "Gửi",
@@ -141,6 +164,29 @@ const UI = {
     boundary_money_move: "Moving or withdrawing money",
     boundary_card_lock: "Locking or unlocking a card",
     boundary_reassurance: "Declaring the account safe",
+    boundaryWhy_cancel_subscription:
+      "No cancellation function exists anywhere in the codebase.",
+    boundaryWhy_third_party_email:
+      "No send path to a third party exists; drafts only, for you to send.",
+    boundaryWhy_dispute:
+      "No filing path exists; a draft and the 60-day deadline, nothing more.",
+    boundaryWhy_money_move:
+      "No transfer, withdrawal or refund function exists.",
+    boundaryWhy_card_lock:
+      "No card lock or unlock function exists.",
+    boundaryWhy_reassurance:
+      "An output filter blocks every “account is safe” phrasing, in both languages.",
+    grp_alerts: "Alerts",
+    grp_money: "Money",
+    grp_recon: "Reconciliation",
+    grp_system: "System",
+    grp_safety: "Safety boundaries",
+    boundaryTry: "Try it",
+    boundaryIntro: "Nexa only assists and suggests. It does not do the six "
+      + "things below — not because a prompt says so, but because no function "
+      + "in the codebase can. Press Try it and check for yourself.",
+    sev_hard: "hard boundary",
+    sev_soft: "no verdict",
     statement: "Statement dated",
     ask: "Ask about your statement…",
     send: "Send",
@@ -251,20 +297,63 @@ function interleave(samples: readonly string[], traps: readonly string[]): strin
   return [...merged, ...traps.slice(next)];
 }
 
-export const TRAP_QUESTIONS: Record<Lang, string[]> = {
+export interface Boundary {
+  intent: string;
+  severity: "hard" | "soft";
+  question: string;
+}
+
+/** The six intents the guardrail blocks, each paired with a phrase that
+ *  provably triggers it — every one checked against a running backend in both
+ *  languages, so the "try it" buttons cannot claim a boundary that does not
+ *  fire. `severity` mirrors INTENT_SEVERITY in backend/app/llm/guardrails.py;
+ *  what a reply actually renders comes from that reply's own guardrail block,
+ *  never from this list. */
+export const BOUNDARIES: Record<Lang, Boundary[]> = {
   vi: [
-    "Tự huỷ mấy gói không dùng đi",
-    "Gửi email khiếu nại cho Netflix giúp tôi",
-    "Tài khoản mình có an toàn không?",
+    { intent: "cancel_subscription", severity: "hard",
+      question: "Tự huỷ mấy gói không dùng đi" },
+    { intent: "third_party_email", severity: "hard",
+      question: "Gửi email khiếu nại cho Netflix giúp tôi" },
+    { intent: "dispute", severity: "hard",
+      question: "Mở khiếu nại cho khoản này giúp tôi" },
+    { intent: "money_move", severity: "hard",
+      question: "Chuyển tiền sang thẻ giúp tôi" },
+    { intent: "card_lock", severity: "hard",
+      question: "Khoá thẻ của tôi lại" },
+    { intent: "reassurance", severity: "soft",
+      question: "Tài khoản mình có an toàn không?" },
   ],
   en: [
-    "Just cancel the subscriptions I don't use",
-    "Email Netflix to complain for me",
-    "Is my account safe?",
+    { intent: "cancel_subscription", severity: "hard",
+      question: "Just cancel the subscriptions I don't use" },
+    { intent: "third_party_email", severity: "hard",
+      question: "Email Netflix to complain for me" },
+    { intent: "dispute", severity: "hard",
+      question: "Open a dispute for this charge" },
+    { intent: "money_move", severity: "hard",
+      question: "Transfer my money to the card" },
+    { intent: "card_lock", severity: "hard",
+      question: "Lock my card" },
+    { intent: "reassurance", severity: "soft",
+      question: "Is my account safe?" },
   ],
 };
 
+// Three of the six also sit among the ordinary suggestions. The other three
+// are reachable from the safety panel, which is where all six are listed.
+const SUGGESTED_PROBES = [
+  "cancel_subscription", "third_party_email", "reassurance",
+];
+
+function probeQuestions(lang: Lang): string[] {
+  return SUGGESTED_PROBES
+    .map((intent) => BOUNDARIES[lang].find((item) => item.intent === intent))
+    .filter((item): item is Boundary => item !== undefined)
+    .map((item) => item.question);
+}
+
 export const ALL_QUESTIONS: Record<Lang, string[]> = {
-  vi: interleave(SAMPLE_QUESTIONS.vi, TRAP_QUESTIONS.vi),
-  en: interleave(SAMPLE_QUESTIONS.en, TRAP_QUESTIONS.en),
+  vi: interleave(SAMPLE_QUESTIONS.vi, probeQuestions("vi")),
+  en: interleave(SAMPLE_QUESTIONS.en, probeQuestions("en")),
 };

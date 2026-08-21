@@ -676,7 +676,6 @@ a { color: var(--accent); }
   flex-direction: column;
 }
 .drawer .card-body { flex: 1; overflow-y: auto; }
-.drawer .scroll, .drawer .scroll-sm { max-height: none; overflow: visible; }
 
 /* ---------------------------------------------------------------- responsive */
 
@@ -843,6 +842,29 @@ a { color: var(--accent); }
   font-weight: 600;
 }
 
+/* Second rank, deliberately quieter than the group tabs above it: the reader
+   picks a group first, a view within it second. */
+.subtabs {
+  display: flex; gap: 2px; overflow-x: auto;
+  padding: 6px var(--sp-3) 0;
+}
+.subtab {
+  border: 0;
+  border-bottom: 2px solid transparent;
+  background: transparent;
+  color: var(--text-faint);
+  padding: 5px 10px 7px;
+  cursor: pointer;
+  font-size: var(--fs-sm);
+  white-space: nowrap;
+}
+.subtab:hover { color: var(--text-dim); }
+.subtab[aria-selected="true"] {
+  color: var(--text);
+  border-bottom-color: var(--accent);
+  font-weight: 600;
+}
+
 table { width: 100%; border-collapse: collapse; }
 th, td {
   padding: 8px 9px;
@@ -863,8 +885,6 @@ th {
 tbody tr:hover { background: var(--surface-sunken); }
 td.num, th.num { text-align: right; font-family: var(--font-mono);
   font-variant-numeric: tabular-nums; white-space: nowrap; }
-.scroll { max-height: 62vh; overflow: auto; }
-.scroll-sm { max-height: 40vh; overflow: auto; }
 
 .ref {
   color: var(--text-dim);
@@ -908,6 +928,45 @@ td.num, th.num { text-align: right; font-family: var(--font-mono);
   overflow: hidden; }
 .bar > span { display: block; height: 100%; border-radius: var(--radius-pill);
   background: var(--accent); }
+
+/* --------------------------------------------------------- safety panel */
+
+.panel-intro {
+  margin: 0 0 var(--sp-3);
+  color: var(--text-dim);
+  font-size: var(--fs-sm);
+  line-height: 1.6;
+}
+.rule {
+  border: 1px solid var(--line);
+  border-left-width: 3px;
+  border-radius: var(--radius-sm);
+  background: var(--surface-raised);
+  padding: 11px 13px;
+}
+.rule + .rule { margin-top: 9px; }
+.rule-hard { border-left-color: var(--label-confirm); }
+.rule-soft { border-left-color: var(--label-nodata); }
+.rule-head {
+  display: flex; align-items: center; flex-wrap: wrap; gap: var(--sp-2);
+}
+.rule-hard .rule-head svg { color: var(--label-confirm); }
+.rule-soft .rule-head svg { color: var(--label-nodata); }
+.rule-title { font-weight: 620; font-size: var(--fs-base); margin-right: auto; }
+.rule-why {
+  margin: 7px 0 0;
+  color: var(--text-dim);
+  font-size: var(--fs-sm);
+}
+.rule-foot {
+  display: flex; align-items: center; flex-wrap: wrap; gap: var(--sp-2);
+  margin-top: 10px;
+}
+.rule-probe {
+  color: var(--text-faint);
+  font-size: var(--fs-xs);
+  font-style: italic;
+}
 
 .empty { color: var(--text-faint); font-size: var(--fs-sm); padding: 10px 2px; }
 .err { color: var(--danger); font-size: var(--fs-sm); }
