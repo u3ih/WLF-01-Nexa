@@ -184,8 +184,8 @@ UI hiển thị chip provenance này.
 | [tools.py](../backend/app/llm/tools.py) | 581 | **Toàn bộ khả năng của model** = 14 tool đọc + `SPECS` (JSON-schema) + `ALLOWED_ARGS` (whitelist arg) + `run_tool()` |
 | [client.py](../backend/app/llm/client.py) | 613 | **2 transport chọn theo `.env`**: `OllamaBackend` (`/api/tags`, `/api/chat`, `/api/show`) và `OpenAIBackend` (`/models`, `/chat/completions`, có Bearer key) — response được normalise về cùng shape `{"message": ...}` nên phần còn lại provider-agnostic. Kèm `KEYWORD_ROUTES` (route deterministic) + `extract_args()` (bóc amount/ref/period/merchant khỏi câu hỏi) |
 | [guardrails.py](../backend/app/llm/guardrails.py) | 209 | 6 blocked intent (VI+EN regex) · `BANNED_OUTPUT` (câu trấn an) · `BANNED_IMPLICATION` (ám chỉ bank đang giữ/điều tra) · `_approved_phrases()` blank câu từ chối của chính mình trước khi match (nếu không filter sẽ tự bắn vào chính nó) |
-| [prompts.py](../backend/app/llm/prompts.py) | 196 | System prompt + `humanize()` (rút gọn tool result trước khi đưa model) |
-| [summarize.py](../backend/app/llm/summarize.py) | 297 | Câu trả lời **deterministic** cho từng tool — dùng khi model die hoặc bị reject |
+| [prompts/](../backend/app/llm/prompts/) | 322 | **Package, 1 file / 1 họ prompt**: `system.py` (hard rules) · `router.py` (`TOOL_CHOICE` + `ROUTER` + `native_tool_schemas()`) · `narrate.py` (`NARRATE` + `STRICT_RETRY`) · `smalltalk.py` · `payload.py` (`humanize()` + `fit()` rút gọn tool result theo *row*, không cắt giữa JSON) · `lang.py` (lang code → tên ngôn ngữ). Prompt **chỉ viết bằng tiếng Anh**; ngôn ngữ trả lời là param `{language}`, không phải bản copy thứ hai |
+| [summarize.py](../backend/app/llm/summarize.py) | 277 | Câu trả lời **deterministic** cho từng tool — dùng khi model die hoặc bị reject. Không hardcode câu chữ: mọi câu là key `summary.*` trong [i18n](../backend/app/i18n/) |
 | [smalltalk.py](../backend/app/llm/smalltalk.py) | 57 | Nhận diện chào/cảm ơn/"bạn là ai" |
 | [chat.py](../backend/app/llm/chat.py) | 242 | Orchestration (xem mục 4) |
 

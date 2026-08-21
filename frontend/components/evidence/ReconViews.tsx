@@ -30,7 +30,7 @@ export function EmailReconView({ data, lang }: { data: any; lang: Lang }) {
         </thead>
         <tbody>
           {data.rows.map((row: any) => (
-            <tr key={row.ref}>
+            <tr key={row.ref} data-ref={row.ref}>
               <td><span className="ref">{row.ref}</span></td>
               <td className="mono">{row.date}</td>
               <td>{row.merchant ?? row.descriptor}</td>
@@ -78,7 +78,9 @@ export function TriSourceView({ data, lang }: { data: any; lang: Lang }) {
         </thead>
         <tbody>
           {data.transfers.map((row: any) => (
-            <tr key={row.txn_id}>
+            // Both legs, so a reference cited from either side finds this row.
+            <tr key={row.txn_id}
+                data-ref={[row.txn_id, row.card_ref].filter(Boolean).join(" ")}>
               <td><span className="ref">{row.txn_id}</span></td>
               <td className="mono">{row.date}</td>
               <td className="num">{row.amount}</td>

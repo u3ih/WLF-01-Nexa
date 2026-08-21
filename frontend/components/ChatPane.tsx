@@ -37,8 +37,9 @@ export const ChatPane = forwardRef<ChatHandle, {
   disclaimer: string;
   onReply: (reply: ChatReply) => void;
   onBusyChange: (busy: boolean) => void;
+  onRef: (ref: string, tool: string | null) => void;
 }>(function ChatPane(
-  { lang, ownerName, disclaimer, onReply, onBusyChange }, ref,
+  { lang, ownerName, disclaimer, onReply, onBusyChange, onRef }, ref,
 ) {
   const [turns, setTurns] = useState<Turn[]>([]);
   const [draft, setDraft] = useState("");
@@ -166,6 +167,7 @@ export const ChatPane = forwardRef<ChatHandle, {
                   reply={turn.reply}
                   onAsk={ask}
                   onRetry={() => retry(index)}
+                  onRef={onRef}
                 />
               </div>
             ))}
