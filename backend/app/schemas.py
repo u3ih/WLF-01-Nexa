@@ -33,3 +33,15 @@ class SmtpTestRequest(BaseModel):
 class ScanRequest(BaseModel):
     lang: str = "vi"
     trigger: str = "manual"
+
+
+class ChatSessionCreateRequest(BaseModel):
+    title: str = ""
+    lang: str = "vi"
+    messages: list[dict] = []
+
+
+class ChatSessionUpdateRequest(BaseModel):
+    title: str | None = None
+    messages: list[dict] | None = None
+    lang: str | None = None

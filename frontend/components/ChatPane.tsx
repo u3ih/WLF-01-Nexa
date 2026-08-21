@@ -10,17 +10,13 @@ import {
 import { AssistantTurn } from "@/components/Message";
 import { api } from "@/lib/api";
 import { SAMPLE_QUESTIONS, ui } from "@/lib/i18n";
-import type { ChatReply, Lang } from "@/lib/types";
-
-interface Turn {
-  role: "user" | "assistant";
-  text: string;
-  reply?: ChatReply;
-}
+import type { ChatReply, Lang, Turn } from "@/lib/types";
 
 export interface ChatHandle {
   ask: (question: string) => void;
   reset: () => void;
+  loadTurns: (turns: Turn[]) => void;
+  getTurns: () => Turn[];
 }
 
 const SUGGEST_ICONS = [Receipt, Search, CreditCard, RefreshCcw];
@@ -114,6 +110,15 @@ export const ChatPane = forwardRef<ChatHandle, {
     ask(question.text);
   }
 
+  function loadTurns(newTurns: Turn[]) {
+    setTurns(newTurns);
+    setError(null);
+  }
+
+  function getTurns(): Turn[] {
+    return turns;
+  }
+
   useImperativeHandle(ref, () => ({
     ask,
     reset: () => {
@@ -121,6 +126,8 @@ export const ChatPane = forwardRef<ChatHandle, {
       setDraft("");
       setError(null);
     },
+    loadTurns,
+    getTurns,
   }));
 
   return (

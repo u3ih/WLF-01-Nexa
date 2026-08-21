@@ -1,5 +1,20 @@
 export type Lang = "vi" | "en";
 
+export interface Turn {
+  role: "user" | "assistant";
+  text: string;
+  reply?: ChatReply;
+}
+
+export interface ChatSession {
+  id: number;
+  title: string;
+  created_at: string;
+  updated_at: string;
+  messages: Turn[];
+  lang: Lang;
+}
+
 export interface Source {
   kind: string;
   kind_text: string;
