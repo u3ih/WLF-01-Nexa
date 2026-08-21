@@ -68,11 +68,7 @@ export function Sidebar({
     >
       <div className="rail-top">
         <div className="brand">
-          <BrandMark size={30} />
-          <span className="brand-text">
-            <span className="brand-name">Nexa</span>
-            <span className="brand-sub">for Wealify · WLF-01</span>
-          </span>
+          <img src="/images/logo.png" className="brand-image" alt="Nexa Logo" />
         </div>
         <button className="icon-btn" onClick={onHide} title={ui(lang, "hideRail")}
           aria-label={ui(lang, "hideRail")}>
@@ -245,22 +241,6 @@ export function Sidebar({
             <ThemeIcon size={14} />
           </button>
         </div>
-
-        <p
-          className="rail-note"
-          title={health?.llm?.detail ?? undefined}
-        >
-          {ui(lang, "model")}:{" "}
-          {health?.llm?.available ? health.llm.model : ui(lang, "offline")}
-        </p>
-        {/* The ₫ rate disclosure sits here rather than under the composer: it
-            is ours to explain, not part of the notice the brief mandates, and
-            that notice now runs in full with nothing folded away beside it. */}
-        {summary?.fx?.note ? (
-          <p className="rail-note rail-note-fx" title={summary.fx.note}>
-            {summary.fx.note}
-          </p>
-        ) : null}
       </div>
     </aside>
   );

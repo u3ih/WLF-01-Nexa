@@ -327,32 +327,56 @@ export interface Boundary {
  *  never from this list. */
 export const BOUNDARIES: Record<Lang, Boundary[]> = {
   vi: [
-    { intent: "cancel_subscription", severity: "hard",
-      question: "Tự huỷ mấy gói không dùng đi" },
-    { intent: "third_party_email", severity: "hard",
-      question: "Gửi email khiếu nại cho Netflix giúp tôi" },
-    { intent: "dispute", severity: "hard",
-      question: "Mở khiếu nại cho khoản này giúp tôi" },
-    { intent: "money_move", severity: "hard",
-      question: "Chuyển tiền sang thẻ giúp tôi" },
-    { intent: "card_lock", severity: "hard",
-      question: "Khoá thẻ của tôi lại" },
-    { intent: "reassurance", severity: "soft",
-      question: "Tài khoản mình có an toàn không?" },
+    {
+      intent: "cancel_subscription", severity: "hard",
+      question: "Tự huỷ mấy gói không dùng đi"
+    },
+    {
+      intent: "third_party_email", severity: "hard",
+      question: "Gửi email khiếu nại cho Netflix giúp tôi"
+    },
+    {
+      intent: "dispute", severity: "hard",
+      question: "Mở khiếu nại cho khoản này giúp tôi"
+    },
+    {
+      intent: "money_move", severity: "hard",
+      question: "Chuyển tiền sang thẻ giúp tôi"
+    },
+    {
+      intent: "card_lock", severity: "hard",
+      question: "Khoá thẻ của tôi lại"
+    },
+    {
+      intent: "reassurance", severity: "soft",
+      question: "Tài khoản mình có an toàn không?"
+    },
   ],
   en: [
-    { intent: "cancel_subscription", severity: "hard",
-      question: "Just cancel the subscriptions I don't use" },
-    { intent: "third_party_email", severity: "hard",
-      question: "Email Netflix to complain for me" },
-    { intent: "dispute", severity: "hard",
-      question: "Open a dispute for this charge" },
-    { intent: "money_move", severity: "hard",
-      question: "Transfer my money to the card" },
-    { intent: "card_lock", severity: "hard",
-      question: "Lock my card" },
-    { intent: "reassurance", severity: "soft",
-      question: "Is my account safe?" },
+    {
+      intent: "cancel_subscription", severity: "hard",
+      question: "Just cancel the subscriptions I don't use"
+    },
+    {
+      intent: "third_party_email", severity: "hard",
+      question: "Email Netflix to complain for me"
+    },
+    {
+      intent: "dispute", severity: "hard",
+      question: "Open a dispute for this charge"
+    },
+    {
+      intent: "money_move", severity: "hard",
+      question: "Transfer my money to the card"
+    },
+    {
+      intent: "card_lock", severity: "hard",
+      question: "Lock my card"
+    },
+    {
+      intent: "reassurance", severity: "soft",
+      question: "Is my account safe?"
+    },
   ],
 };
 

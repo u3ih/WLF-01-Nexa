@@ -1,7 +1,8 @@
 "use client";
 
 import {
-  ArrowUp, CreditCard, Receipt, RefreshCcw, Search,
+  ArrowUp, Cloud, CreditCard, Paperclip, Receipt,
+  RefreshCcw, Search, Upload,
 } from "lucide-react";
 import {
   forwardRef, useEffect, useImperativeHandle, useRef, useState,
@@ -42,8 +43,13 @@ export const ChatPane = forwardRef<ChatHandle, {
   const [draft, setDraft] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  // Gemini-like dropdown for attach options
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  // Toast notification for "under development"
+  const [toast, setToast] = useState<string | null>(null);
   const threadRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
+  const dropdownRef = useRef<HTMLDivElement>(null);
   // Vietnamese input goes through an IME. Enter pressed mid-composition is the
   // IME committing a syllable, not the user sending: submitting there clears
   // the box, and the composition that lands afterwards types the syllable back
@@ -71,6 +77,35 @@ export const ChatPane = forwardRef<ChatHandle, {
   function applyTurns(next: Turn[]) {
     turnsRef.current = next;
     setTurns(next);
+  }
+
+  useEffect(() => {
+    if (!dropdownOpen) return;
+    function handleClick(e: MouseEvent) {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+        setDropdownOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClick);
+    return () => document.removeEventListener("mousedown", handleClick);
+  }, [dropdownOpen]);
+
+  function toggleDropdown() {
+    setDropdownOpen((prev) => !prev);
+  }
+
+  function showComingSoon() {
+    setDropdownOpen(false);
+    const msg = lang === "vi"
+      ? "Tính năng đang trong quá trình phát triển"
+      : "This feature is under development";
+    setToast(msg);
+    setTimeout(() => setToast(null), 3000);
+  }
+
+  function handleUploadFile() {
+    setDropdownOpen(false);
+    showComingSoon();
   }
 
   /** Replaces the thread: the answer to anything still in flight is dropped
@@ -176,7 +211,6 @@ export const ChatPane = forwardRef<ChatHandle, {
     // rather than letting the thread render over undefined.
     loadTurns: (newTurns: Turn[]) => replaceThread(newTurns ?? []),
   }));
-
   return (
     <>
       <div className="thread" ref={threadRef}>
@@ -184,8 +218,9 @@ export const ChatPane = forwardRef<ChatHandle, {
           {turns.length === 0 ? (
             <div className="hero">
               <h1 className="hero-title">
-                {ui(lang, "greeting")}
-                {ownerName ? ` ${titleCase(ownerName)}` : ""}
+                {ownerName
+                  ? `${ui(lang, "greeting")} ${titleCase(ownerName)}`
+                  : `${ui(lang, "greeting")}${lang === "vi" ? " bạn" : ""}`}
               </h1>
               <p className="hero-sub">{ui(lang, "heroSub")}</p>
               <div className="suggest-grid">
@@ -243,6 +278,32 @@ export const ChatPane = forwardRef<ChatHandle, {
       <div className="composer-wrap">
         <div className="composer-inner">
           <div className="composer">
+            {/* Attach button + dropdown (Gemini-like) */}
+            <div className="attach-wrapper" ref={dropdownRef}>
+              <button
+                className="attach-btn"
+                onClick={toggleDropdown}
+                title={lang === "vi" ? "Đính kèm tệp" : "Attach file"}
+                aria-label={lang === "vi" ? "Đính kèm tệp" : "Attach file"}
+                aria-expanded={dropdownOpen}
+              >
+                <Paperclip size={18} />
+              </button>
+
+              {dropdownOpen ? (
+                <div className="attach-dropdown">
+                  <button className="attach-dropdown-item" onClick={handleUploadFile}>
+                    <Upload size={16} />
+                    <span>{lang === "vi" ? "Tải tệp lên" : "Upload file"}</span>
+                  </button>
+                  <button className="attach-dropdown-item" onClick={showComingSoon}>
+                    <Cloud size={16} />
+                    <span>{lang === "vi" ? "Tải từ Drive" : "Upload from Drive"}</span>
+                  </button>
+                </div>
+              ) : null}
+            </div>
+
             <textarea
               ref={inputRef}
               rows={1}
@@ -284,6 +345,13 @@ export const ChatPane = forwardRef<ChatHandle, {
               {busy ? <span className="spinner" /> : <ArrowUp size={19} />}
             </button>
           </div>
+
+          {/* Toast notification for "under development" */}
+          {toast ? (
+            <div className="upload-toast">
+              <span>{toast}</span>
+            </div>
+          ) : null}
 
           {/* Whole notice, always. The brief calls it "hiển thị cố định, KHÔNG
               cho ẩn", and a "details" toggle hides part of it by default —

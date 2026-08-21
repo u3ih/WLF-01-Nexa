@@ -388,6 +388,11 @@ code,
     color 0.14s;
 }
 
+.brand-image {
+  width: "100%";
+  height: 50px;
+}
+
 .rail-item:hover:not(:disabled) {
   background: var(--surface-sunken);
   color: var(--text);
@@ -574,6 +579,7 @@ code,
 .rail-toggles {
   display: flex;
   gap: 6px;
+  padding-bottom: 30px;
 }
 
 /* "No model — answered by the engine" is a long status in both languages;
@@ -1211,6 +1217,90 @@ tr.row-focus > td:first-child {
   color: var(--accent-text);
 }
 
+/* --------------------------------------------------------- file upload (Gemini-like) */
+
+.attach-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.attach-dropdown {
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 0;
+  min-width: 210px;
+  background: var(--surface-raised);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-lg);
+  padding: 6px;
+  z-index: 100;
+  animation: dropdown-in .14s var(--ease);
+}
+
+@keyframes dropdown-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px) scale(.96);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.attach-dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 10px 12px;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--text);
+  font-size: var(--fs-base);
+  cursor: pointer;
+  text-align: left;
+  transition: background .1s;
+}
+
+.attach-dropdown-item:hover {
+  background: var(--surface-sunken);
+}
+
+.attach-dropdown-item svg {
+  flex-shrink: 0;
+  color: var(--text-faint);
+}
+
+/* Toast notification for "under development" */
+.upload-toast {
+  margin-top: 8px;
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  background: var(--label-confirm);
+  color: #fff;
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  text-align: center;
+  animation: toast-in .2s var(--ease);
+}
+
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 /* ------------------------------------------------------------------ composer */
 
 .composer-wrap {
@@ -1221,7 +1311,7 @@ tr.row-focus > td:first-child {
   display: flex;
   align-items: flex-end;
   gap: var(--sp-2);
-  padding: 6px 6px 6px 18px;
+  padding: 6px 6px 6px 4px;
   border: 1px solid var(--line);
   border-radius: 26px;
   background: var(--surface-sunken);
@@ -1275,6 +1365,30 @@ tr.row-focus > td:first-child {
 
 .send:active:not(:disabled) {
   transform: scale(0.94);
+}
+
+.attach-btn {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--text-faint);
+  cursor: pointer;
+  transition: background .12s, color .12s;
+  margin-bottom: 2px;
+}
+
+.attach-btn:hover {
+  background: var(--surface);
+  color: var(--text-dim);
+}
+
+.attach-btn:active {
+  transform: scale(.92);
 }
 
 /* Mandated notice. Always on screen, no dismiss control — it sits under the
