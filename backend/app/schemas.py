@@ -8,6 +8,9 @@ from pydantic import BaseModel, Field
 class ChatRequest(BaseModel):
     question: str = Field(min_length=1, max_length=2000)
     lang: str = "vi"
+    # The language the user asked to be answered in on an earlier turn. The
+    # endpoint holds no session, so the client hands it back each time.
+    reply_lang: str | None = None
 
 
 class DraftRequest(BaseModel):

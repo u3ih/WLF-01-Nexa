@@ -19,12 +19,16 @@ from ..engine.models import fx_note
 from ..engine.render import disclaimer, normalise_lang, t
 from ..store import store
 from . import guardrails, prompts, smalltalk, summarize
-from .client import (CHAT_ONLY, ToolCall, client, extract_args,
+from .detect import detect_lang, requested_lang
+from .client import (CHAT_ONLY, REF_PATTERN, ToolCall, client, extract_args,
                      keyword_route)
 from .tools import ALLOWED_ARGS, run_tool
 
 MONEY_IN_TEXT = re.compile(r"\$\s?\d[\d,]*(?:\.\d{2})?")
-REF_IN_TEXT = re.compile(r"\b(?:ACC|CRD)-\d{3,5}\b", re.I)
+# Case-sensitive on purpose. References are uppercase everywhere in the data,
+# and the pattern is wide enough that a case-insensitive match would read
+# ordinary lowercase prose as a reference and flag a grounded reply.
+REF_IN_TEXT = re.compile(rf"\b{REF_PATTERN}\b")
 VND_IN_TEXT = re.compile(r"[\d][\d.]*\s?₫")
 
 
@@ -126,20 +130,57 @@ def _smalltalk_reply(question: str, lang: str, labels: dict[str, str],
             "source": source, "checks": {}, "smalltalk": True}
 
 
-def answer(question: str, lang: str = "vi",
-           today: date | None = None) -> dict[str, Any]:
-    lang = normalise_lang(lang)
+def resolve_lang(question: str, ui_lang: str,
+                 held: str | None = None) -> tuple[str, str | None]:
+    """The language to answer in, and the one to keep answering in.
+
+    Three signals, in the order a person would read them:
+
+    1. What the user asked for. "Trả lời bằng tiếng Anh" is a Vietnamese
+       sentence requesting English, so an instruction always outranks the
+       language it was written in.
+    2. What they asked for earlier. The endpoint is stateless, so the caller
+       hands that back as `held` and it survives until they ask for something
+       else — otherwise "from now on, English" lasts exactly one turn.
+    3. Failing both, the language of this message, and then the UI toggle.
+
+    The second return value is what the caller should hand back next turn:
+    None while nobody has asked for anything, so plain detection keeps working.
+    """
+    asked = requested_lang(question)
+    held = normalise_lang(held) if held else None
+    if asked:
+        return asked, asked
+    if held:
+        return held, held
+    return detect_lang(question, ui_lang), None
+
+
+def answer(question: str, lang: str = "vi", today: date | None = None,
+           reply_lang: str | None = None) -> dict[str, Any]:
+    # The toggle says which language the UI is in; the question says which
+    # language the user is speaking, and an explicit request outranks both.
+    # Whatever wins applies to the whole reply, so the prose, the labels and
+    # the rendered tool result cannot come back in two languages at once.
+    ui_lang = normalise_lang(lang)
+    lang, held_lang = resolve_lang(question, ui_lang, reply_lang)
     today = today or settings.today()
     labels = _labels(lang)
     status = client.status()
     verdict = guardrails.classify_intent(question)
 
     store.log("chat_question", reason=question[:300],
-              detail={"lang": lang, "guardrail": guardrails.describe(verdict),
+              detail={"lang": lang, "ui_lang": ui_lang,
+                      "reply_lang": held_lang,
+                      "guardrail": guardrails.describe(verdict),
                       "llm_mode": status.mode})
 
     base = {
         "lang": lang,
+        "ui_lang": ui_lang,
+        # Handed back so the next question keeps the language the user asked
+        # for, whatever language they happen to type it in.
+        "reply_lang": held_lang,
         "question": question,
         "guardrail": guardrails.describe(verdict),
         "llm": status.as_dict(),

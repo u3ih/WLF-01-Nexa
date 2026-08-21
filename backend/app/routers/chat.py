@@ -16,7 +16,8 @@ router = APIRouter(prefix="/api", tags=["chat"])
 
 @router.post("/chat")
 def chat(request: ChatRequest) -> dict[str, Any]:
-    return answer(request.question, request.lang)
+    return answer(request.question, request.lang,
+                  reply_lang=request.reply_lang)
 
 
 # -- Chat history endpoints ------------------------------------------------

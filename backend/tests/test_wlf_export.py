@@ -13,6 +13,8 @@ They are grouped by the requirement they cover:
 * `TestFiveCashFlows`    — requirement 1: money in / out / to-card / fees / spend.
 * `TestCategoryLabels`   — requirement 1's classification, as the user sees it.
 * `TestCancelGuardrail`  — the read-only promise, on plural phrasings.
+* `TestEveryLedgerIsReachableByReference`
+                         — a lookup by reference reaches the wallet ledger too.
 """
 
 from __future__ import annotations
@@ -30,6 +32,7 @@ from app.engine.models import CardTxnType
 from app.engine.render import bucket_scope_note, excluded_lines, t
 from app.engine.reports import BUCKET_KEYS
 from app.llm.guardrails import BlockedIntent, classify_intent
+from app.llm.tools import _ledger_rows
 from app.mailer import build_report_body
 
 BACKEND_ROOT = Path(__file__).resolve().parent.parent
@@ -417,3 +420,45 @@ class TestCancelGuardrail:
         decision = classify_intent(question)
         assert decision.intent is not BlockedIntent.CANCEL_SUBSCRIPTION \
             or decision.guidance_request
+
+
+# ------------------------------------------------------------- ref lookup
+
+
+class TestEveryLedgerIsReachableByReference:
+    """`search_transactions` and `explain_charge` must see all three ledgers.
+
+    Both read the same flattened row list. When it covered only the statement
+    and the card ledger, the 168 rows this export files under
+    `source_type = Ví` had no row to match, so a reference the user read off
+    their own statement came back as "0 giao dịch tìm thấy".
+    """
+
+    def test_every_row_of_every_ledger_is_present(self, analysis):
+        rows = _ledger_rows(analysis)
+        assert len(rows) == (len(analysis.ds.account) + len(analysis.ds.card)
+                             + len(analysis.ds.wallet.events))
+
+    @pytest.mark.parametrize("ref", [
+        "TW082026786190",       # wallet top-up from a card
+        "WCW082126621016",      # wallet payout to a crypto address
+        "WLF15-WL-0004",        # wallet credit from a payout provider
+        "WLF15-CD-0025",        # card ledger, the shape that always worked
+    ])
+    def test_reference_shapes_the_export_uses_all_resolve(self, analysis, ref):
+        assert ref in {r["ref"] for r in _ledger_rows(analysis)}
+
+    def test_wallet_debits_stay_negative(self, analysis):
+        """The wallet stores a magnitude plus a direction, the row a signed
+        amount. Copying `amount_cents` across would report a $750 withdrawal
+        as $750 of income."""
+        rows = {r["ref"]: r for r in _ledger_rows(analysis)}
+        assert rows["WCW082126621016"]["amount_cents"] < 0
+        assert rows["TW082026786190"]["amount_cents"] > 0
+
+    def test_every_flow_type_has_a_label(self, analysis):
+        """A row whose type has no i18n entry renders as `cashflow.<key>`."""
+        for row in _ledger_rows(analysis):
+            key = f"cashflow.{row['type']}"
+            assert t("vi", key) != key, f"no Vietnamese label for {key}"
+            assert t("en", key) != key, f"no English label for {key}"
