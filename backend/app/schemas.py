@@ -18,10 +18,16 @@ class DraftRequest(BaseModel):
 
 class SendRequest(BaseModel):
     confirm_token: str = Field(min_length=8, max_length=128)
-    # Optional and checked against the owner address; anything else is refused.
+    # Kept for backwards compatibility; delivery always uses NEXA_MAIL_TO.
     recipient: str | None = None
     lang: str = "vi"
     confirmed: bool = False
+
+
+class SmtpTestRequest(BaseModel):
+    # Kept for backwards compatibility; delivery always uses NEXA_MAIL_TO.
+    recipient: str | None = None
+    lang: str = "vi"
 
 
 class ScanRequest(BaseModel):

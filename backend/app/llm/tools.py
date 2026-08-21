@@ -1,8 +1,8 @@
 """The assistant's entire capability surface.
 
 Every tool here is read-only. There is deliberately no tool that cancels a
-plan, opens a dispute, moves money, locks a card or emails a third party — so
-no prompt, however phrased, can reach one.
+plan, opens a dispute, moves money or locks a card, so no prompt, however
+phrased, can reach one.
 
 The one tool that can cause an outward action (`draft_report_email`) only
 creates a draft and returns a confirmation token; sending is a separate,
@@ -344,7 +344,7 @@ def run_monitor_scan(lang: str = "vi") -> dict[str, Any]:
 
 def draft_report_email(lang: str = "vi", period: str = "month",
                        key: str | None = None) -> dict[str, Any]:
-    """Prepare a report addressed to the account owner. Sends nothing."""
+    """Prepare a report addressed to the configured mail recipient. Sends nothing."""
     draft = create_draft(lang=lang, period_kind=period, period_key=key)
     return {
         "draft_id": draft["draft_id"],
@@ -527,8 +527,9 @@ SPECS: list[dict[str, Any]] = [
     },
     {
         "name": "draft_report_email",
-        "description": "Prepare a report email addressed to the account owner "
-                       "and return it for confirmation. It does NOT send.",
+        "description": "Prepare a report email addressed to the configured "
+                       "mail recipient and return it for confirmation. It "
+                       "does NOT send.",
         "parameters": {
             "period": "month, quarter or year",
             "key": "optional period key",

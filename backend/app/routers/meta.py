@@ -33,6 +33,15 @@ def health() -> dict[str, Any]:
         "database": store.health(),
         "llm": client.status(refresh=True).as_dict(),
         "mail_mode": settings.mail_mode,
+        "smtp": {
+            "configured": bool(settings.smtp_host.strip()),
+            "host": settings.smtp_host,
+            "port": settings.smtp_port,
+            "starttls": settings.smtp_starttls,
+            "ssl": settings.smtp_ssl,
+            "from": settings.smtp_from or settings.smtp_user,
+            "to": settings.mail_to,
+        },
         "owner_email": settings.owner_email,
         "read_only": True,
     }

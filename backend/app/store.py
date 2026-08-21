@@ -82,7 +82,7 @@ CREATE TABLE IF NOT EXISTS report_drafts (
     status          TEXT NOT NULL DEFAULT 'draft',
     confirmed_at    TIMESTAMPTZ,
     sent_at         TIMESTAMPTZ,
-    delivery        TEXT NOT NULL DEFAULT 'outbox',
+    delivery        TEXT NOT NULL DEFAULT 'smtp',
     file_path       TEXT
 );
 
