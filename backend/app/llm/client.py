@@ -62,6 +62,11 @@ KEYWORD_ROUTES: list[tuple[str, str]] = [
      "get_tri_source"),
     (r"gói|định kỳ|đăng ký|thuê bao|tăng giá|subscription|recurring|price "
      r"(increase|rise|went up)", "list_subscriptions"),
+    # Impersonation wording ahead of the generic email route: the same tool
+    # answers it, but this also catches the question when the word "email" is
+    # never typed ("có ai giả danh Netflix không").
+    (r"lừa đảo|giả danh|mạo danh|giả mạo|email giả|phishing|fake email|"
+     r"impersonat|spoof|scam", "get_email_recon"),
     (r"email|biên lai|hoá đơn|hóa đơn|receipt|confirmation|xác nhận",
      "get_email_recon"),
     (r"trùng|hai lần|2 lần|phí kép|duplicate|twice|double.{0,10}(charge|fee)|"

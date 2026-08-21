@@ -160,11 +160,42 @@ def humanize(value: Any) -> Any:
     return value
 
 
+PAYLOAD_BUDGET = 12000
+
+
+def _dumps(value: Any) -> str:
+    return json.dumps(value, ensure_ascii=False, default=str)
+
+
+def _fit(value: Any, budget: int = PAYLOAD_BUDGET) -> str:
+    """Shrink an oversized tool result by dropping *rows*, not characters.
+
+    Cutting the string mid-object used to hand the model invalid JSON whose
+    tail was simply gone — and the tail is where the short, load-bearing lists
+    sit. Long lists are shortened instead, longest first, each one saying how
+    many entries it dropped, so nothing silently disappears.
+    """
+    payload = _dumps(value)
+    if len(payload) <= budget or not isinstance(value, dict):
+        return payload if len(payload) <= budget else payload[:budget] + "…"
+
+    trimmed = dict(value)
+    original = {k: len(v) for k, v in value.items() if isinstance(v, list)}
+    while len(payload) > budget:
+        lists = [(len(v), k) for k, v in trimmed.items()
+                 if isinstance(v, list) and len(v) > 1]
+        if not lists:
+            return payload[:budget] + "…"
+        size, key = max(lists)
+        trimmed[key] = trimmed[key][: size // 2]
+        trimmed[f"{key}_omitted"] = original[key] - len(trimmed[key])
+        payload = _dumps(trimmed)
+    return payload
+
+
 def narrate_prompt(question: str, lang: str, tool: str,
                    result: dict[str, Any]) -> str:
-    payload = json.dumps(humanize(result), ensure_ascii=False, default=str)
-    if len(payload) > 12000:
-        payload = payload[:12000] + '… (truncated)"'
+    payload = _fit(humanize(result))
     return NARRATE.format(
         question=question, language=LANG_NAME.get(lang, "Vietnamese"),
         tool=tool, result=payload,

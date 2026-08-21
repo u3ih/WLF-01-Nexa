@@ -65,7 +65,7 @@ def _money_params(params: dict[str, Any], lang: str = "vi") -> dict[str, Any]:
     return out
 
 
-def _reasons_text(lang: str, reasons: list[str], brand: str | None) -> str:
+def reasons_text(lang: str, reasons: list[str], brand: str | None) -> str:
     rendered = [
         t(lang, f"email_reason.{code}", brand=brand or t(lang, "common.unknown"))
         for code in reasons
@@ -103,7 +103,7 @@ def render_finding(finding: Finding, lang: str, today: date) -> dict[str, Any]:
     if finding.kind is FindingKind.SUSPICIOUS_EMAIL:
         params["claimed_brand"] = (finding.params.get("claimed_brand")
                                    or t(lang, "common.unknown"))
-        params["reasons"] = _reasons_text(
+        params["reasons"] = reasons_text(
             lang, finding.params.get("reasons", []),
             finding.params.get("claimed_brand"),
         )
