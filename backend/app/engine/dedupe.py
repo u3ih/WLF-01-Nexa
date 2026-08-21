@@ -27,6 +27,16 @@ REASON_FIELDS: dict[str, tuple[str, ...]] = {
     "unknown_merchant": ("descriptor", "processor_hint", "charge_count"),
     "missing_email": ("descriptor", "occurred_on", "threshold_cents"),
     "suspicious_email": ("from_addr", "claimed_brand", "reasons"),
+    # Task 4 — advanced anomaly detection
+    "suspected_duplicate": ("descriptor_a", "descriptor_b", "similarity", "seconds_apart"),
+    "spending_spike": ("period", "spend_cents", "previous_period", "reasons"),
+    "category_concentration": ("category", "percent", "charge_count"),
+    "off_hours_txn": ("descriptor", "time", "hour", "amount_cents"),
+    "rapid_spending": ("count", "total_cents", "window_minutes", "merchants"),
+    "sub_no_welcome": ("merchant", "occurred_on", "charge_count"),
+    "charged_after_cancel": ("merchant", "gap_days", "previous_charge"),
+    "free_trial_converted": ("merchant", "trial_amount_cents", "paid_amount_cents", "trial_days"),
+    "late_refund": ("merchant", "days_late", "threshold_days", "refund_amount_cents"),
 }
 
 
