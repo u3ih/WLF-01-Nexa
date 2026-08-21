@@ -43,41 +43,31 @@ npm run scrape:headers
 
 ---
 
-## 4. Chạy cron và ghi vào Postgres
+## 4. Chạy bên trong ứng dụng và ghi vào Postgres
 
-Repo có sẵn pipeline một lần tại `scripts/yopmail_cron.sh`: chạy full scraper
-headless, sau đó import `emails_full.json` vào bảng `emails`. Dữ liệu gốc cũng
-được lưu trong `dataset_imports`, `dataset_files` và `dataset_rows`; email được
-upsert theo `(mailbox, message_id)` nên chạy lại không tạo bản ghi trùng.
+Backend tự đăng ký job APScheduler theo cấu hình `NEXA_YOPMAIL_*`, không cần
+crontab của hệ điều hành. Job chạy full scraper headless rồi import
+`emails_full.json` vào bảng `emails`; dữ liệu gốc được lưu trong
+`dataset_imports`, `dataset_files` và `dataset_rows`.
 
-Chuẩn bị một lần:
-
-```bash
-cd /path/to/WLF-01-Nexa/scripts/yopmail_scraper
-npm install
-cd /path/to/WLF-01-Nexa
-mkdir -p backend/logs
-chmod +x scripts/yopmail_cron.sh
-```
-
-Chạy thử thủ công:
+Chạy ngay qua API:
 
 ```bash
-YOPMAIL_USER=wealifytester YOPMAIL_MAILBOX=tester \
-NODE_BIN=/opt/homebrew/bin/node \
-./scripts/yopmail_cron.sh
+curl -X POST http://localhost:8000/api/monitor/yopmail
 ```
 
-Thêm vào crontab, ví dụ chạy mỗi giờ ở phút 10:
+Mặc định job chạy lúc `07:10`. Có thể đổi trong `.env`, ví dụ:
 
-```cron
-10 * * * * cd /path/to/WLF-01-Nexa && YOPMAIL_USER=wealifytester YOPMAIL_MAILBOX=tester NODE_BIN=/opt/homebrew/bin/node ./scripts/yopmail_cron.sh >> /path/to/WLF-01-Nexa/backend/logs/yopmail-cron.log 2>&1
+```env
+NEXA_YOPMAIL_ENABLED=true
+NEXA_YOPMAIL_USER=wealifytester
+NEXA_YOPMAIL_MAILBOX=tester
+NEXA_YOPMAIL_HOUR=7
+NEXA_YOPMAIL_MINUTE=10
 ```
 
-`NEXA_DATABASE_URL` được đọc từ `.env` như các lệnh backend khác. Cron cần
-Postgres đang chạy và `backend/.venv` đã được tạo. Nếu YOPmail yêu cầu
-reCAPTCHA, cron sẽ dừng trước bước import để không ghi nội dung không đầy đủ;
-cần mở khóa/duy trì session theo môi trường triển khai rồi chạy lại.
+Nếu YOPmail yêu cầu reCAPTCHA, job sẽ dừng trước bước import để không ghi
+nội dung không đầy đủ.
 
 ## 📂 5. Cấu trúc dữ liệu đầu ra
 

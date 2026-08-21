@@ -2,7 +2,7 @@
 SHELL := /bin/bash
 PY := backend/.venv/bin/python
 
-.PHONY: help setup seed migrate import-dataset yopmail-cron dev run test smoke build deploy deploy-down deploy-logs purge stop
+.PHONY: help setup seed migrate import-dataset dev run test smoke build deploy deploy-down deploy-logs purge stop
 
 help:
 	@echo "make setup       install deps, start Postgres, create DB, migrate, import data"
@@ -11,7 +11,6 @@ help:
 	@echo "make seed        regenerate the sample dataset and answer key"
 	@echo "make migrate     apply versioned Postgres migrations"
 	@echo "make import-dataset  import dataset/*.csv into Postgres"
-	@echo "make yopmail-cron   scrape YOPmail and upsert emails into Postgres once"
 	@echo "make test        run the test suite (engine, guardrails, dedupe, masking)"
 	@echo "make smoke       curl the running stack and check the safety rules"
 	@echo "make deploy      build and run everything in Docker"
@@ -28,9 +27,6 @@ migrate:
 
 import-dataset: migrate
 	./scripts/import_dataset.sh
-
-yopmail-cron:
-	./scripts/yopmail_cron.sh
 
 dev:
 	./scripts/run.sh dev

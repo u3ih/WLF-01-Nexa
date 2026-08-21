@@ -82,7 +82,7 @@ async function runFullScraper() {
   // Bước 2: Khởi chạy trình duyệt
   console.log('[2/4] Đang khởi chạy trình duyệt Chromium...');
   let browser;
-  browser = await puppeteer.launch({
+  const launchOptions = {
     headless,
     defaultViewport: headless ? { width: 1400, height: 900 } : null,
     args: [
@@ -91,7 +91,11 @@ async function runFullScraper() {
       '--disable-setuid-sandbox',
       '--disable-dev-shm-usage'
     ]
-  });
+  };
+  if (process.env.PUPPETEER_EXECUTABLE_PATH) {
+    launchOptions.executablePath = process.env.PUPPETEER_EXECUTABLE_PATH;
+  }
+  browser = await puppeteer.launch(launchOptions);
 
   try {
     const page = await browser.newPage();

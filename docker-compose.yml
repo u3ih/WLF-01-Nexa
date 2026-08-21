@@ -28,7 +28,8 @@ services:
   backend:
     profiles: ["full"]
     build:
-      context: ./backend
+      context: .
+      dockerfile: backend/Dockerfile
     container_name: nexa-backend
     restart: unless-stopped
     depends_on:
@@ -55,6 +56,7 @@ services:
       - "8000:8000"
     volumes:
       - ./backend/outbox:/app/outbox
+      - ./scripts/yopmail_scraper/output:/app/scripts/yopmail_scraper/output
     extra_hosts:
       - "host.docker.internal:host-gateway"
 

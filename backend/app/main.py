@@ -58,20 +58,32 @@ async def lifespan(app: FastAPI):
                   llm_status.detail)
 
     global scheduler
-    if settings.scheduler_enabled:
+    if settings.scheduler_enabled or settings.yopmail_enabled:
         try:
             from apscheduler.schedulers.background import BackgroundScheduler
 
             from .monitor import run_scan
+            from .yopmail_job import run_yopmail_job
 
             scheduler = BackgroundScheduler(daemon=True)
-            scheduler.add_job(
-                lambda: run_scan("schedule", "vi"),
-                "cron", hour=settings.scan_hour, minute=0, id="daily-scan",
-            )
+            if settings.scheduler_enabled:
+                scheduler.add_job(
+                    lambda: run_scan("schedule", "vi"),
+                    "cron", hour=settings.scan_hour, minute=0, id="daily-scan",
+                )
+            if settings.yopmail_enabled:
+                scheduler.add_job(
+                    run_yopmail_job, "cron", hour=settings.yopmail_hour,
+                    minute=settings.yopmail_minute, id="yopmail-ingest",
+                    max_instances=1, coalesce=True,
+                )
             scheduler.start()
-            log.info("daily monitoring scan scheduled at %02d:00",
-                     settings.scan_hour)
+            if settings.scheduler_enabled:
+                log.info("daily monitoring scan scheduled at %02d:00",
+                         settings.scan_hour)
+            if settings.yopmail_enabled:
+                log.info("YOPmail ingestion scheduled at %02d:%02d",
+                         settings.yopmail_hour, settings.yopmail_minute)
         except Exception as exc:                        # noqa: BLE001
             log.warning("scheduler not started: %s", exc)
 

@@ -78,6 +78,19 @@ class Settings(BaseSettings):
     scheduler_enabled: bool = True
     scan_hour: int = 7
 
+    # YOPmail ingestion runs inside this application process. APScheduler
+    # launches the Node scraper from the backend, without machine crontab.
+    yopmail_enabled: bool = True
+    yopmail_user: str = "wealifytester"
+    yopmail_mailbox: str = "tester"
+    yopmail_hour: int = 7
+    yopmail_minute: int = 10
+    yopmail_node: str = "node"
+    yopmail_scraper_dir: Path = BACKEND_ROOT.parent / "scripts" / "yopmail_scraper"
+    yopmail_limit: int = 0
+    yopmail_delay_ms: int = 800
+    yopmail_require_unlocked: bool = True
+
     cors_origins: list[str] = Field(default_factory=lambda: [
         "http://localhost:3000", "http://127.0.0.1:3000",
     ])
