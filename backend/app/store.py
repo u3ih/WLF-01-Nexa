@@ -1,8 +1,8 @@
-"""Postgres-backed application state.
+"""Postgres-backed application state and migration entry point.
 
-Only four things are persisted, and none of them is money: the flag journal,
-the fingerprints used to avoid repeating an alert, deadline reminders, and
-report drafts awaiting the user's confirmation.
+The financial dataset is created by ``data.import_dataset``.  This store keeps
+the analysis state and delegates schema ownership to versioned SQL migrations
+so a fresh database and an existing installation use the same schema.
 """
 
 from __future__ import annotations
@@ -17,80 +17,6 @@ from psycopg.rows import dict_row
 from psycopg_pool import ConnectionPool
 
 from .config import settings
-
-SCHEMA = """
-CREATE TABLE IF NOT EXISTS scans (
-    id              BIGSERIAL PRIMARY KEY,
-    started_at      TIMESTAMPTZ NOT NULL DEFAULT now(),
-    finished_at     TIMESTAMPTZ,
-    trigger         TEXT NOT NULL DEFAULT 'manual',
-    new_count       INTEGER NOT NULL DEFAULT 0,
-    suppressed_count INTEGER NOT NULL DEFAULT 0
-);
-
-CREATE TABLE IF NOT EXISTS flags (
-    fingerprint     TEXT PRIMARY KEY,
-    kind            TEXT NOT NULL,
-    label           TEXT NOT NULL,
-    confidence      NUMERIC(4,2) NOT NULL,
-    amount_cents    BIGINT NOT NULL DEFAULT 0,
-    txn_ids         JSONB NOT NULL DEFAULT '[]'::jsonb,
-    period_key      TEXT NOT NULL DEFAULT '',
-    occurred_on     DATE,
-    statement_date  DATE,
-    dispute_deadline DATE,
-    params          JSONB NOT NULL DEFAULT '{}'::jsonb,
-    sources         JSONB NOT NULL DEFAULT '[]'::jsonb,
-    first_seen_at   TIMESTAMPTZ NOT NULL DEFAULT now(),
-    last_seen_at    TIMESTAMPTZ NOT NULL DEFAULT now(),
-    seen_count      INTEGER NOT NULL DEFAULT 1,
-    first_scan_id   BIGINT REFERENCES scans(id)
-);
-
-CREATE TABLE IF NOT EXISTS audit_log (
-    id              BIGSERIAL PRIMARY KEY,
-    logged_at       TIMESTAMPTZ NOT NULL DEFAULT now(),
-    event           TEXT NOT NULL,
-    fingerprint     TEXT,
-    kind            TEXT,
-    label           TEXT,
-    confidence      NUMERIC(4,2),
-    reason          TEXT NOT NULL DEFAULT '',
-    detail          JSONB NOT NULL DEFAULT '{}'::jsonb
-);
-
-CREATE TABLE IF NOT EXISTS reminders (
-    id              BIGSERIAL PRIMARY KEY,
-    fingerprint     TEXT NOT NULL REFERENCES flags(fingerprint) ON DELETE CASCADE,
-    due_date        DATE NOT NULL,
-    kind            TEXT NOT NULL,
-    title           TEXT NOT NULL,
-    status          TEXT NOT NULL DEFAULT 'open',
-    created_at      TIMESTAMPTZ NOT NULL DEFAULT now(),
-    UNIQUE (fingerprint, due_date)
-);
-
-CREATE TABLE IF NOT EXISTS report_drafts (
-    id              BIGSERIAL PRIMARY KEY,
-    created_at      TIMESTAMPTZ NOT NULL DEFAULT now(),
-    recipient       TEXT NOT NULL,
-    subject         TEXT NOT NULL,
-    body            TEXT NOT NULL,
-    period_key      TEXT NOT NULL DEFAULT '',
-    lang            TEXT NOT NULL DEFAULT 'vi',
-    confirm_token   TEXT NOT NULL UNIQUE,
-    status          TEXT NOT NULL DEFAULT 'draft',
-    confirmed_at    TIMESTAMPTZ,
-    sent_at         TIMESTAMPTZ,
-    delivery        TEXT NOT NULL DEFAULT 'smtp',
-    file_path       TEXT
-);
-
-CREATE INDEX IF NOT EXISTS flags_kind_idx ON flags (kind);
-CREATE INDEX IF NOT EXISTS audit_log_fingerprint_idx ON audit_log (fingerprint);
-CREATE INDEX IF NOT EXISTS reminders_due_idx ON reminders (due_date, status);
-"""
-
 
 class Store:
     def __init__(self, dsn: str | None = None) -> None:
@@ -118,8 +44,9 @@ class Store:
 
     def init_schema(self) -> bool:
         try:
-            with self.conn() as c:
-                c.execute(SCHEMA)
+            from .db.migrations import apply_migrations
+
+            apply_migrations(self.dsn)
             self._ready = True
             self.last_error = None
         except Exception as exc:                       # noqa: BLE001

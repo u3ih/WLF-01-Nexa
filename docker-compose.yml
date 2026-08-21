@@ -3,8 +3,9 @@
 #   docker compose up -d postgres          → just the database (local dev)
 #   docker compose --profile full up -d --build   → whole stack
 #
-# Postgres stores application state only (flag journal, alert de-duplication,
-# reminders, report drafts). The sample financial data lives in files.
+# Postgres stores application state and the normalized dataset. Raw source rows
+# are retained for provenance; the stale transactions_va copy is not treated as
+# a second canonical ledger.
 services:
   postgres:
     image: postgres:16-alpine
