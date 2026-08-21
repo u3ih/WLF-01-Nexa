@@ -1,0 +1,9 @@
+account_name,account_nickname,account_number,account_number_masked,payout_source,bank_name,swift_bic,total_received,currency,fee,status,managed_by,created_at
+"ETSY SELLER","ETSY SELLER","9631249900000105835","••••••5835","Etsy","BIDV","","1315868000","VND","0%","Active","Không có người quản lý","2026-08-21T07:41:43.601Z"
+"PAYONEER USD MAIN","PAYONEER USD MAIN","8891700002233145","••••••3145","Payoneer","MSB","","26405.19","USD","0%","Active","Không có người quản lý","2026-08-21T07:41:44.043Z"
+"PAYPAL SELLER","PAYPAL SELLER","96311300008896825","••••••6825","Paypal","BIDV_PREMIUM","","32060.23","USD","0%","Active","Không có người quản lý","2026-08-21T07:41:44.483Z"
+"NGUYEN THI THANH","NGUYEN THI THANH","96311300009166664","••••••6664","Etsy","BIDV","","957707000","VND","0%","Active","Không có người quản lý","2026-08-21T07:41:44.919Z"
+"PINGPONG MSB","PINGPONG MSB","96988900001918","••••••1918","PingPong","MSB","","162236000","VND","0%","Process","Không có người quản lý","2026-08-21T07:41:45.355Z"
+"AMAZON US PAYOUT","AMAZON US PAYOUT","8891700004456789","••••••6789","Amazon","TCB","","27706.54","USD","0%","Active","Không có người quản lý","2026-08-21T07:41:45.785Z"
+"PAYONEER VND","PAYONEER VND","96988900002047","••••••2047","Payoneer","TCB","","1213228000","VND","0%","Active","Không có người quản lý","2026-08-21T07:41:46.217Z"
+"ETSY OLD","ETSY OLD","**************001","**************001","Etsy","BIDV","","542508000","VND","0%","Inactive","Không có người quản lý","2026-08-21T07:41:46.653Z"
