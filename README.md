@@ -22,7 +22,7 @@ emails **you**, and only after you confirm a specific draft.
 ## Run it in 10 minutes
 
 Requirements: **Python 3.10+**, **Node 18+**, **Docker** (for Postgres).
-An LLM is optional — see *Model tiers* below.
+An LLM is optional — see *Which model, and where it runs* below.
 
 ```bash
 git clone <this-repo> && cd WLF-01-Nexa
@@ -94,19 +94,38 @@ amount 46 days apart, a two-charge merchant, a different fee on the same day).
 | No repeat alerts | Each finding has a fingerprint with a unique constraint in Postgres; a re-scan returns only what is new and reports how many repeats it suppressed. |
 | Auditability | Every flag is journaled with its reason and confidence, exportable as CSV or JSON. |
 
-## Model tiers (Ollama, local)
+## Which model, and where it runs
 
-The assistant picks the best available tier at startup and says which one it used
-under every answer:
+The provider is a matter of configuration, not of code. Two transports ship, and
+`.env` alone decides:
 
-1. **native tools** — the model advertises tool calling (e.g. `ollama pull qwen3:8b`).
+| `NEXA_AI_PROVIDER` | Talks to | Config |
+|---|---|---|
+| `ollama` | A local Ollama daemon | `NEXA_AI_URL=http://localhost:11434` |
+| `openai` | Any OpenAI-compatible API — BytePlus Ark, OpenAI, Groq, Together, vLLM, llama.cpp's server | `NEXA_AI_URL=https://…/v1` (or `/api/v3`) + `NEXA_AI_API_KEY` |
+| `auto` *(default)* | Decides from the URL shape and whether a key is set, then confirms by probing the other one | — |
+
+The key is read from the environment only; `.env` is git-ignored and no key is
+logged, returned by the API or sent to the browser.
+
+On top of that the assistant picks the best available tier at startup and says
+which one it used under every answer:
+
+1. **native tools** — the model advertises, or accepts, tool calling
+   (e.g. `ollama pull qwen3:8b`, or most hosted endpoints). If an endpoint
+   rejects the tool schema, the tier drops to the JSON router by itself.
 2. **JSON router** — any chat model; it returns `{"tool": …, "args": …}`.
 3. **engine only** — no model reachable, or `NEXA_OFFLINE_MODE=true`. The
    assistant still answers, in both languages, from the deterministic engine.
 
-Running the stack in Docker? A container cannot reach an Ollama bound to
-localhost, so start it as `OLLAMA_HOST=0.0.0.0 ollama serve` if you want model
-wording there. Without it the deployed stack still answers — from the engine.
+`GET /api/health` reports the provider, the model, the tier and — when the model
+is down — why, in a sentence you can act on (bad key, wrong base path, model not
+listed).
+
+Running the stack in Docker against a **local** Ollama? A container cannot reach
+an Ollama bound to localhost, so start it as `OLLAMA_HOST=0.0.0.0 ollama serve`.
+A hosted endpoint needs nothing extra. Without either the deployed stack still
+answers — from the engine.
 
 Routing is keyword-first and model-second: for the phrasings this dataset is
 built around the keyword table is exact and free, so a turn usually costs one
@@ -154,7 +173,8 @@ make purge      # deletes sample data, outbox, logs and all Postgres state
 backend/
   app/engine/    loaders, classification, recurrence, anomalies, email match,
                  3-source reconciliation, reports, labels, journal  (pure Python)
-  app/llm/       tools (read-only), prompts, guardrails, Ollama client, chat loop
+  app/llm/       tools (read-only), prompts, guardrails, model client
+                 (Ollama + OpenAI-compatible), chat loop
   app/routers/   FastAPI endpoints;  app/store.py  Postgres state
   data/generate.py   the synthetic dataset AND its answer key
   tests/         ground truth, guardrails, de-duplication, masking, opt-in LLM
