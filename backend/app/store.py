@@ -303,11 +303,28 @@ class Store:
             return row["id"] if row else None
 
     def list_chat_sessions(self, limit: int = 50) -> list[dict]:
+        """The sessions, newest first, without their turns.
+
+        ``messages`` holds every answer together with the evidence behind it,
+        so returning it for the whole list would ship megabytes to draw a
+        sidebar.  The two things the list actually shows — how many questions
+        were asked and what the first one was — are derived here instead.
+        """
         with self.conn() as c:
             return c.execute(
-                "SELECT id, title, created_at, updated_at, lang"
-                " FROM chat_sessions"
-                " ORDER BY updated_at DESC LIMIT %s",
+                "SELECT s.id, s.title, s.created_at, s.updated_at, s.lang,"
+                " (SELECT count(*) FROM jsonb_array_elements(s.messages) m"
+                "   WHERE m->>'role' = 'user') AS message_count,"
+                # WITH ORDINALITY because the preview has to be the *first*
+                # question asked, and a bare function scan is not ordered by
+                # anything the planner is obliged to keep.
+                " (SELECT t.m->>'text'"
+                "   FROM jsonb_array_elements(s.messages) WITH ORDINALITY"
+                "     AS t(m, ord)"
+                "   WHERE t.m->>'role' = 'user'"
+                "   ORDER BY t.ord LIMIT 1) AS preview"
+                " FROM chat_sessions s"
+                " ORDER BY s.updated_at DESC LIMIT %s",
                 (limit,),
             ).fetchall()
 

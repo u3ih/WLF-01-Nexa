@@ -11,7 +11,14 @@ export interface ChatSession {
   title: string;
   created_at: string;
   updated_at: string;
-  messages: Turn[];
+  /** Only the single-session endpoint returns the turns. The list omits them:
+   *  each answer carries the evidence behind it, so a history of any length
+   *  would be megabytes to draw a sidebar. */
+  messages?: Turn[];
+  /** Stands in for the turns in the list: how many questions were asked, and
+   *  the first of them. */
+  message_count?: number;
+  preview?: string | null;
   lang: Lang;
 }
 

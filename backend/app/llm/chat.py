@@ -19,12 +19,15 @@ from ..engine.models import fx_note
 from ..engine.render import disclaimer, normalise_lang, t
 from ..store import store
 from . import guardrails, prompts, smalltalk, summarize
-from .client import (CHAT_ONLY, ToolCall, client, extract_args,
+from .client import (CHAT_ONLY, REF_PATTERN, ToolCall, client, extract_args,
                      keyword_route)
 from .tools import ALLOWED_ARGS, run_tool
 
 MONEY_IN_TEXT = re.compile(r"\$\s?\d[\d,]*(?:\.\d{2})?")
-REF_IN_TEXT = re.compile(r"\b(?:ACC|CRD)-\d{3,5}\b", re.I)
+# Case-sensitive on purpose. References are uppercase everywhere in the data,
+# and the pattern is wide enough that a case-insensitive match would read
+# ordinary lowercase prose as a reference and flag a grounded reply.
+REF_IN_TEXT = re.compile(rf"\b{REF_PATTERN}\b")
 VND_IN_TEXT = re.compile(r"[\d][\d.]*\s?₫")
 
 
