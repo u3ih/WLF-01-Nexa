@@ -2558,3 +2558,35 @@ th.num {
 .rail-view-all:hover {
   background: var(--accent-soft);
 }
+
+/* ------------------------------------------------------------- line clamp */
+
+/* No Tailwind here, so the `line-clamp-N` classes the markup asks for are
+   spelled out. `min-width: 0` is the load-bearing part: every clamped element
+   in this UI sits in a flex row, and a flex item will not shrink below its
+   content width without it, so the clamp would never engage. */
+.line-clamp-1,
+.line-clamp-2,
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  min-width: 0;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+.line-clamp-1 {
+  -webkit-line-clamp: 1;
+  line-clamp: 1;
+}
+
+.line-clamp-2 {
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+}
+
+.line-clamp-3 {
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+}

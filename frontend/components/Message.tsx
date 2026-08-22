@@ -111,16 +111,16 @@ function markdownComponents(onRef: OnRef, refTitle: string) {
 /* ----------------------------------------------------------- engine prose */
 
 function EngineItemCard({ item, findings, deadlines, labelKeys, lang, onRef,
-                          pattern, refTitle }: {
-  item: EngineItem;
-  findings: Finding[];
-  deadlines: Set<string>;
-  labelKeys: Record<string, string>;
-  lang: Lang;
-  onRef: OnRef;
-  pattern: RegExp | null;
-  refTitle: string;
-}) {
+  pattern, refTitle }: {
+    item: EngineItem;
+    findings: Finding[];
+    deadlines: Set<string>;
+    labelKeys: Record<string, string>;
+    lang: Lang;
+    onRef: OnRef;
+    pattern: RegExp | null;
+    refTitle: string;
+  }) {
   // A bullet the engine rendered from a finding has the whole finding sitting
   // in the tool result beside it — verdict, deadline, references and all. Draw
   // that, not the flattened text, so a chat answer and the evidence panel show
@@ -128,7 +128,7 @@ function EngineItemCard({ item, findings, deadlines, labelKeys, lang, onRef,
   const finding = findingFor(item, findings);
   if (finding) {
     return <FindingCard finding={finding} lang={lang} onRef={onRef}
-                        refTitle={refTitle} />;
+      refTitle={refTitle} />;
   }
 
   const sources = item.sources ? parseSources(item.sources) : [];
@@ -143,18 +143,18 @@ function EngineItemCard({ item, findings, deadlines, labelKeys, lang, onRef,
         ) : null}
         <span className="answer-title">
           <RefText text={item.title} pattern={pattern} onRef={onRef}
-                   title={refTitle} />
+            title={refTitle} />
         </span>
       </header>
       {item.detail ? (
         <p className="answer-detail">
           <RefText text={item.detail} pattern={pattern} onRef={onRef}
-                   title={refTitle} />
+            title={refTitle} />
         </p>
       ) : null}
       {item.meta.map((line, index) => (
         <p key={index}
-           className={deadlines.has(line) ? "finding-deadline" : "answer-meta"}>
+          className={deadlines.has(line) ? "finding-deadline" : "answer-meta"}>
           <RefText text={line} pattern={pattern} onRef={onRef} title={refTitle} />
         </p>
       ))}
@@ -173,7 +173,7 @@ function EngineItemCard({ item, findings, deadlines, labelKeys, lang, onRef,
         <p className="finding-next">
           <strong>{ui(lang, "nextStep")}: </strong>
           <RefText text={item.next} pattern={pattern} onRef={onRef}
-                   title={refTitle} />
+            title={refTitle} />
         </p>
       ) : null}
     </article>
@@ -219,7 +219,7 @@ function EngineAnswer({ text, reply, lang, onRef, pattern, refTitle }: {
                 <span key={position}>
                   {position > 0 ? <br /> : null}
                   <RefText text={line} pattern={pattern} onRef={onRef}
-                           title={refTitle} />
+                    title={refTitle} />
                 </span>
               ))}
             </p>
@@ -243,7 +243,7 @@ function EngineAnswer({ text, reply, lang, onRef, pattern, refTitle }: {
                 {run.items.map((item, row) => (
                   <li key={row}>
                     <RefText text={item.title} pattern={pattern} onRef={onRef}
-                             title={refTitle} />
+                      title={refTitle} />
                   </li>
                 ))}
               </ul>
@@ -327,7 +327,7 @@ export function AssistantTurn({
     </div>
   ) : (
     <EngineAnswer text={text} reply={reply} lang={lang} onRef={openRef}
-                  pattern={pattern} refTitle={refTitle} />
+      pattern={pattern} refTitle={refTitle} />
   );
 
   return (
@@ -382,7 +382,7 @@ export function AssistantTurn({
             {/* Never folded away: this is the grounding check reporting that it
                 caught the model citing a figure the engine never produced. */}
             {rejected.length ? (
-              <span className="badge badge-nodata">
+              <span className="badge badge-nodata line-clamp-1">
                 {ui(lang, "rejectedFigures")}: {rejected.join(", ")}
               </span>
             ) : null}
