@@ -633,6 +633,220 @@ code,
   font-weight: 600;
 }
 
+/* -- Notification bell + dropdown ------------------------------------ */
+
+.convo-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  position: relative;
+}
+
+.notif-bell-btn {
+  position: relative;
+}
+
+.notif-bell-dot {
+  position: absolute;
+  top: -3px;
+  right: -3px;
+  min-width: 17px;
+  height: 17px;
+  padding: 0 5px;
+  border-radius: 9px;
+  background: var(--danger);
+  color: #fff;
+  font-size: 9px;
+  font-weight: 700;
+  line-height: 17px;
+  text-align: center;
+  pointer-events: none;
+  box-shadow: 0 0 0 2px var(--bg);
+}
+
+/* Dropdown */
+.notif-dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  width: 400px;
+  max-height: 480px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-lg);
+  z-index: 100;
+  overflow-y: auto;
+}
+
+.notif-dropdown-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--sp-3) var(--sp-3);
+  border-bottom: 1px solid var(--line-soft);
+  position: sticky;
+  top: 0;
+  background: var(--surface);
+  font-weight: 600;
+  font-size: var(--fs-sm);
+  color: var(--text);
+  z-index: 1;
+}
+
+.notif-dd-tabs {
+  display: flex;
+  gap: 3px;
+  padding: 12px 2px;
+  border-bottom: 1px solid var(--line-soft);
+  position: sticky;
+  top: 45px;
+  background: var(--surface);
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  z-index: 1;
+}
+
+.notif-dd-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.notif-dd-tab {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--text-faint);
+  padding: 5px 9px;
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  font-size: 10.5px;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: background 0.12s, color 0.12s;
+}
+
+.notif-dd-tab:hover {
+  color: var(--text-dim);
+  background: var(--surface-sunken);
+}
+
+.notif-dd-tab[aria-selected="true"] {
+  color: var(--accent-text);
+  background: var(--accent-soft);
+  border-color: color-mix(in srgb, var(--accent) 30%, transparent);
+}
+
+.notif-dd-tab-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 15px;
+  height: 15px;
+  padding: 0 4px;
+  border-radius: 8px;
+  font-size: 9px;
+  font-weight: 700;
+  line-height: 15px;
+  background: var(--surface-sunken);
+  color: var(--text-faint);
+}
+
+.notif-dd-tab[aria-selected="true"] .notif-dd-tab-count {
+  background: color-mix(in srgb, var(--accent) 18%, transparent);
+  color: var(--accent-text);
+}
+
+.notif-dd-list {
+  padding: var(--sp-2);
+}
+
+.notif-dd-empty {
+  padding: var(--sp-6) var(--sp-3);
+  text-align: center;
+  color: var(--text-faint);
+  font-size: var(--fs-sm);
+  font-style: italic;
+}
+
+.notif-dd-item {
+  display: flex;
+  gap: var(--sp-2);
+  padding: var(--sp-2) var(--sp-2);
+  border-radius: var(--radius-sm);
+  cursor: default;
+  border: 1px solid var(--line-soft);
+  background: var(--surface);
+}
+
+.notif-dd-item:hover {
+  background: var(--surface-sunken);
+  border-color: var(--line);
+}
+
+.notif-dd-item+.notif-dd-item {
+  margin-top: 6px;
+}
+
+/* Expired item: muted and struck through */
+.notif-dd-expired {
+  opacity: 0.5;
+}
+
+.notif-dd-expired .notif-dd-title {
+  text-decoration: line-through;
+}
+
+.notif-dd-body {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.notif-dd-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-2);
+}
+
+.notif-dd-title {
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  color: var(--text);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.notif-dd-desc {
+  margin: 0;
+  font-size: var(--fs-xs);
+  color: var(--text-dim);
+  line-height: 1.45;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  word-break: break-word;
+}
+
+.notif-dd-time {
+  font-size: 10px;
+  color: var(--text-faint);
+  line-height: 1;
+}
+
+.notif-dd-time-expired {
+  color: var(--danger);
+  font-weight: 600;
+}
+
 /* ------------------------------------------------------------ conversation */
 
 .workspace {
