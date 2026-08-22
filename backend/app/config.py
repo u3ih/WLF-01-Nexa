@@ -75,8 +75,14 @@ class Settings(BaseSettings):
     today_override: date | None = None
 
     # Vietnamese answers lead with đồng. The source data is USD, so the ₫ figure
-    # is a declared conversion at this configured rate — never presented as a
-    # bank rate, and always marked approximate.
+    # is always a declared conversion — never presented as a bank rate, and
+    # always marked approximate.
+    #
+    # The rate itself is fetched daily (see `fx_job.refresh_display_rate`); this
+    # number is only the fallback for a machine that has never reached the
+    # publication. It is deliberately a round figure rather than a precise one:
+    # a stale rate that looks precise invites a trust it has not earned, and the
+    # note beside the figure says which of the two is in use.
     usd_vnd_rate: float = 26_000.0
     show_vnd: bool = True
 

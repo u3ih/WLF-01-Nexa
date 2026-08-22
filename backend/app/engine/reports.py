@@ -33,6 +33,12 @@ PERIODS = ("month", "quarter", "year")
 BUCKET_KEYS = ("spend_cents", "fees_cents", "payin_cents", "payout_cents",
                "transfer_to_card_cents", "transfer_to_wallet_cents")
 
+# The figures a converted currency can be added into. The wallet side of the
+# to-card movement joins them because it is a sum, not a derivation; the gap
+# between the two ledgers is recomputed from the combined pair afterwards
+# rather than added up, or it would be counted twice.
+SUM_KEYS = BUCKET_KEYS + ("transfer_to_card_sent_cents",)
+
 
 @dataclass
 class Period:
@@ -222,49 +228,72 @@ def _converted(ds: Dataset, period: Period, code: str, currency: str,
     """Restate one currency's buckets in the reporting currency, row by row.
 
     Per row, not per total: each row is converted at the rate published for its
-    own date, because a bucket whose rows span a month has no single rate. A row
-    the table cannot cover is counted in `missing` and left out of the sum, and
-    `complete` then says the restated figure is partial — a converted total that
-    quietly dropped a row would be worse than no conversion at all.
+    own date, because a bucket whose rows span a month has no single rate. The
+    rate is looked up once per row, so a row is priced whole or not at all —
+    `missing_rows` therefore counts rows rather than bucket contributions, which
+    is what the caveat beside it claims to be counting. `complete` says whether
+    the restated figure covers every row: a converted total that quietly
+    dropped one would be worse than no conversion at all.
     """
     totals: dict[str, int] = {key: 0 for key in BUCKET_KEYS}
     used: dict[str, Any] = {}
-    missing = 0
+    arrived = sent = 0
+    priced = missing = 0
     for row in _all_rows(ds):
         if not _counts(row, period, code):
             continue
-        for bucket, cents in row_contributions(row):
-            done = fx.convert(cents, row.day, code, currency)
-            if done is None:
-                missing += 1
+        contributions = row_contributions(row)
+        if not contributions:
+            continue
+        quote = fx.rate_on(row.day, code, currency)
+        if quote is None:
+            missing += 1
+            continue
+        priced += 1
+        # The rate actually applied, kept so a restated figure can name its
+        # basis instead of asking the reader to trust it.
+        used[quote.quoted_on.isoformat()] = quote.as_dict()
+        for bucket, cents in contributions:
+            if bucket != "transfer_to_card_cents":
+                totals[bucket] += quote.apply(cents)
                 continue
-            totals[bucket] += done.cents
-            # The rate actually applied, kept so a restated figure can name its
-            # basis instead of asking the reader to trust it.
-            used[done.quote.quoted_on.isoformat()] = done.quote.as_dict()
+            # Two ledgers record this movement and they disagree, so the native
+            # figure keeps them apart. The converted one has to as well, or a
+            # card load and the wallet debit that funded it are added together
+            # into a transfer that only happened once.
+            if getattr(row, "type", None) is CardTxnType.LOAD:
+                arrived += quote.apply(cents)
+            else:
+                sent += quote.apply(cents)
+    has_card_ledger = any(c.type is CardTxnType.LOAD for c in ds.card)
+    totals["transfer_to_card_cents"] = arrived if has_card_ledger else sent
     return {
-        **{key: totals[key] for key in BUCKET_KEYS},
+        **totals,
+        # These figures are denominated in the reporting currency, not in the
+        # one being converted from. Said here because the API boundary formats
+        # money by the currency the block names, and a restated euro total
+        # labelled EUR would print €66.40 for a $66.40 figure.
+        "currency": currency,
+        "transfer_to_card_sent_cents": sent,
+        "transfer_to_card_gap_cents": sent - totals["transfer_to_card_cents"],
         "complete": missing == 0 and bool(used),
+        "priced_rows": priced,
         "missing_rows": missing,
         "rates_used": [used[day] for day in sorted(used)],
     }
 
 
-def _excluded(ds: Dataset, period: Period, currency: str = "USD",
-              fx: FxTable | None = None) -> dict[str, Any]:
-    """What a single-currency, settled-only report left out.
+def _foreign(ds: Dataset, period: Period, currency: str,
+             fx: FxTable) -> list[dict[str, Any]]:
+    """Every currency in the period that is not the reporting one.
 
-    "$0.00 in fees" reads as "you paid no fees". If €13.85 of fees were merely
-    not in the reporting currency, or a $18.93 charge is still pending, the
-    report owes the user that sentence rather than a zero that looks like an
-    answer.
-
-    When published rates cover the period, each foreign currency also carries
-    its equivalent in the reporting currency, so the caveat can say how much the
-    excluded rows were actually worth instead of only naming them.
+    One pass, read by both the totals and the caveat, because the two used to
+    decide separately what a currency was worth and could disagree about it.
+    `folded_in` is that decision: a currency priced in full joins the headline
+    figures, and one the table cannot price in full stays outside them and is
+    named instead.
     """
-    table = fx if fx is not None else fx_module.EMPTY
-    others = []
+    out: list[dict[str, Any]] = []
     for code in currencies_present(ds):
         if code == currency:
             continue
@@ -273,16 +302,104 @@ def _excluded(ds: Dataset, period: Period, currency: str = "USD",
         # the same way, and nothing about this export guarantees it never will.
         buckets = _core(ds, period, code)
         rows = len([1 for r in _all_rows(ds) if _counts(r, period, code)])
-        if rows or any(buckets[key] for key in BUCKET_KEYS):
-            converted = _converted(ds, period, code, currency, table)
-            others.append({
-                "currency": code, "txn_count": rows,
-                **{key: buckets[key] for key in BUCKET_KEYS},
-                # Absent, not zero, when no rate covers the period: zero would
-                # read as "worth nothing" rather than "not known".
-                "converted": converted if converted["complete"]
-                or converted["rates_used"] else None,
-            })
+        if not rows and not any(buckets[key] for key in BUCKET_KEYS):
+            continue
+        converted = _converted(ds, period, code, currency, fx)
+        out.append({
+            "currency": code, "txn_count": rows,
+            **{key: buckets[key] for key in SUM_KEYS},
+            # Absent, not zero, when no rate covers the period: zero would
+            # read as "worth nothing" rather than "not known".
+            "converted": converted if converted["rates_used"] else None,
+            # Only a complete conversion is folded in. A partial one would make
+            # the headline silently drop the rows it could not price, which is
+            # exactly the failure the caveat exists to prevent.
+            "folded_in": converted["complete"],
+        })
+    return out
+
+
+def _combined(ds: Dataset, period: Period, currency: str,
+              foreign: list[dict[str, Any]]) -> dict[str, Any]:
+    """The period's figures in the reporting currency, conversions included.
+
+    The report used to publish reporting-currency rows only, with the rest named
+    underneath: "Chi tiêu: $986.81 — chưa gồm €57.54 (≈$66.40)". Both figures
+    were right and the reader still had to add them up to learn what August
+    cost. Now that rates are stored and dated per row, the headline covers the
+    whole period and the parts stay beside it: `native` is what the statement
+    shows line by line, `converted_in` is what the rates added, and
+    `converted_from` names every rate used, so a restated total can still be
+    checked against the ledger it came from.
+
+    A currency the table cannot price in full is not folded in at a guess. It
+    stays out of these figures and in `excluded`, and `conversion_complete` says
+    so rather than leaving the reader to infer it.
+    """
+    native = _core(ds, period, currency)
+    added = {key: 0 for key in SUM_KEYS}
+    folded_rows = 0
+    folded: list[dict[str, Any]] = []
+    for row in foreign:
+        if not row["folded_in"]:
+            continue
+        conversion = row["converted"]
+        for key in SUM_KEYS:
+            added[key] += conversion[key]
+        folded_rows += row["txn_count"]
+        folded.append({
+            "currency": row["currency"],
+            "txn_count": row["txn_count"],
+            # Each half names the currency its cents are in. Two figures of the
+            # same charge sit side by side here — €57.54 and $66.40 — and the
+            # API boundary has no other way to tell which symbol belongs to
+            # which.
+            "native": {"currency": row["currency"],
+                       **{key: row[key] for key in SUM_KEYS}},
+            "converted": {"currency": currency,
+                          **{key: conversion[key] for key in SUM_KEYS}},
+            "rates_used": conversion["rates_used"],
+        })
+    out = {
+        "currency": currency,
+        **{key: native[key] + added[key] for key in SUM_KEYS},
+        "native": {"currency": currency,
+                   **{key: native[key] for key in SUM_KEYS}},
+        "converted_in": {"currency": currency, **added},
+        "converted_from": folded,
+        # False when a currency in this period could not be priced in full, so
+        # a reader can tell a whole-period figure from one that covers only the
+        # rows a rate reached.
+        "conversion_complete": all(row["folded_in"] for row in foreign),
+        # Counted on the same basis as the money: the rows whose amounts were
+        # folded in are rows this count has to include, or the average charge
+        # implied by the two figures is of a period neither describes.
+        "txn_count": native["txn_count"] + folded_rows,
+        "all_txn_count": native["all_txn_count"],
+    }
+    # Derived from the combined pair, never summed: adding two gaps would count
+    # the difference between the ledgers once per currency.
+    out["transfer_to_card_gap_cents"] = (out["transfer_to_card_sent_cents"]
+                                        - out["transfer_to_card_cents"])
+    return out
+
+
+def _excluded(ds: Dataset, period: Period, currency: str = "USD",
+              foreign: list[dict[str, Any]] | None = None,
+              fx: FxTable | None = None) -> dict[str, Any]:
+    """What this report still left out after converting what it could.
+
+    "$0.00 in fees" reads as "you paid no fees". If €13.85 of fees had no
+    published rate to be restated with, or a $18.93 charge is still pending, the
+    report owes the user that sentence rather than a zero that looks like an
+    answer.
+
+    A currency that *was* converted is still listed, carrying `folded_in`, so
+    the audit trail survives the fold — but the wording built from this block
+    stops calling it excluded, because it no longer is.
+    """
+    others = foreign if foreign is not None else _foreign(
+        ds, period, currency, fx if fx is not None else fx_module.EMPTY)
 
     # Pending, processing, cancelled and declined together: all four are rows
     # the period contains but no total may count. Kept under one key rather
@@ -323,8 +440,14 @@ def build(ds: Dataset, kind: str = "month", key: str | None = None,
         raise ValueError(f"period must be one of {PERIODS}")
     period = parse_period_key(kind, key, ds.statement_date)
     prev = previous_period(period)
-    current = _core(ds, period)
-    previous = _core(ds, prev)
+    table = fx if fx is not None else fx_module.EMPTY
+    foreign = _foreign(ds, period, "USD", table)
+    current = _combined(ds, period, "USD", foreign)
+    # Both periods go through the same rule, so a month-on-month change is not
+    # an artefact of one side having been converted and the other not. Each side
+    # still publishes its own `conversion_complete`, which is what tells a
+    # reader when the two rest on different coverage.
+    previous = _combined(ds, prev, "USD", _foreign(ds, prev, "USD", table))
     purchases = _purchase_rows(ds, period)
 
     return {
@@ -343,23 +466,33 @@ def build(ds: Dataset, kind: str = "month", key: str | None = None,
         "top_purchases": purchases[:3],
         "purchase_count": len(purchases),
         "fees": _fee_rows(ds, period),
-        "excluded": _excluded(ds, period, fx=fx),
+        "excluded": _excluded(ds, period, "USD", foreign),
         "categories": _period_categories(ds, period),
         "subscriptions": subs_forecast or {},
         "sources": ds.source_files,
     }
 
 
-def monthly_series(ds: Dataset, months: int = 12) -> list[dict[str, Any]]:
-    """Spend and fees per month, oldest first — feeds the UI trend chart."""
+def monthly_series(ds: Dataset, months: int = 12,
+                   fx: FxTable | None = None) -> list[dict[str, Any]]:
+    """Spend and fees per month, oldest first — feeds the UI trend chart.
+
+    Built from the same combined figures the report headline uses. A chart on a
+    reporting-currency-only basis beside a total that includes conversions is
+    two answers to one question, and the month with the euro rows in it is the
+    month the two would disagree about.
+    """
+    table = fx if fx is not None else fx_module.EMPTY
     anchor = ds.statement_date.replace(day=1)
     out = []
     for offset in range(months - 1, -1, -1):
         period = period_bounds("month", anchor - relativedelta(months=offset))
+        totals = _combined(ds, period, "USD",
+                           _foreign(ds, period, "USD", table))
         out.append({
             "key": period.key,
-            "spend_cents": spend_cents(ds, period.start, period.end),
-            "fees_cents": fee_cents(ds, period.start, period.end),
+            "spend_cents": totals["spend_cents"],
+            "fees_cents": totals["fees_cents"],
         })
     return out
 

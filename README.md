@@ -137,9 +137,15 @@ model call, used purely for wording.
 Amounts are held internally as integer cents so totals are exact, and published
 as dollars. Vietnamese answers lead with đồng and keep the exact USD figure in
 brackets — `≈519.000 ₫ ($19.95)`. The statement is denominated in USD, so the ₫
-value is a **reference conversion** at the rate you set in `NEXA_USD_VND_RATE`
-(default 26.000), never presented as a bank rate; the rate is shown in the UI
-footer and on `/api/health`.
+value is a **reference conversion**, never presented as a bank rate.
+
+The USD→VND rate is fetched daily alongside the ECB rates — the ECB publishes no
+đồng quote, so it comes from a separate publication and is labelled with its
+source and publication date wherever a ₫ figure appears. `NEXA_USD_VND_RATE`
+(default 26.000) is the fallback for a machine that has never reached that
+publication; when it is in use the note says so instead of naming a date. Both
+the rate and its basis are shown in the UI footer, on `/api/health` and in full
+on `/api/fx`.
 
 ## Configuration
 

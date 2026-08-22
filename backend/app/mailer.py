@@ -23,7 +23,8 @@ from .engine import pipeline, reports
 from .engine.mask import scrub_text
 from .engine.models import Label, fmt_display
 from .engine.render import (
-    bucket_scope_note,
+    bucket_note,
+    conversion_lines,
     disclaimer,
     excluded_lines,
     render_findings,
@@ -75,6 +76,12 @@ def build_report_body(lang: str, period_kind: str = "month",
     }
     excluded = report.get("excluded", {})
     comparison = report["comparison"]["spend"]
+    # The figures below are a sum across currencies wherever a rate covered the
+    # rows. What went into them, and at whose rate, has to be checkable from the
+    # email itself — otherwise the reader is asked to trust a restated total.
+    restated = conversion_lines(totals, lang)
+    # A $0.00 in the overview may still mean "none the rates could reach".
+    # The difference belongs in the email, not only in the API payload.
     caveats = excluded_lines(excluded, lang)
 
     # Keep the draft deliberately brief. The full evidence remains available
@@ -100,12 +107,15 @@ def build_report_body(lang: str, period_kind: str = "month",
              copy["overview"]]
     for key, catalog_key in overview_keys.items():
         lines.append(f"• {t(lang, catalog_key)}: {fmt_display(totals[key], lang)}"
-                     f"{bucket_scope_note(key, excluded, lang)}")
+                     f"{bucket_note(key, report, lang)}")
     if comparison["percent"] is not None:
         sign = "+" if comparison["delta_cents"] > 0 else ""
         lines.append(f"• vs {report['comparison']['period_key']}: "
                      f"{sign}{fmt_display(comparison['delta_cents'], lang)} "
                      f"({sign}{comparison['percent']}%)")
+    if restated:
+        lines.append(f"  {t(lang, 'fx.head')}:")
+        lines += [f"   · {line}" for line in restated]
     lines += ["", copy["top"]]
     for row in report["top_purchases"]:
         label = row["merchant"] or row["descriptor"]
@@ -138,7 +148,7 @@ def build_report_body(lang: str, period_kind: str = "month",
     metric_rows = "".join(
         "<tr><th>" + h(t(lang, catalog_key)) + "</th><td>" +
         h(fmt_display(totals[key], lang) +
-          bucket_scope_note(key, excluded, lang)) + "</td></tr>"
+          bucket_note(key, report, lang)) + "</td></tr>"
         for key, catalog_key in overview_keys.items()
     )
     comparison_html = ""
@@ -183,6 +193,12 @@ def build_report_body(lang: str, period_kind: str = "month",
                        "</strong><ul>" +
                        "".join("<li>" + h(line) + "</li>" for line in caveats) +
                        "</ul></aside>")
+    fx_html = ""
+    if restated:
+        fx_html = ("<aside><strong>" + h(t(lang, "fx.head")) +
+                   "</strong><ul>" +
+                   "".join("<li>" + h(line) + "</li>" for line in restated) +
+                   "</ul></aside>")
 
     body_html = f"""<!doctype html>
 <html lang="{h(lang)}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width">
@@ -193,7 +209,7 @@ body{{margin:0;background:#f5f6f8;color:#20242c;font:14px/1.5 Arial,sans-serif}}
 <section><h2>{h(copy['overview'])}</h2><table>{metric_rows}</table>{comparison_html}</section>
 <section><h2>{h(copy['top'])}</h2><ul class="split">{top_html}</ul></section>
 <section><h2>{h(copy['review'])}</h2><ul>{finding_html}</ul></section>
-{upcoming_html}{caveat_html}<footer>{h(disclaimer(lang))}</footer>
+{upcoming_html}{fx_html}{caveat_html}<footer>{h(disclaimer(lang))}</footer>
 </main></body></html>"""
 
     return {
