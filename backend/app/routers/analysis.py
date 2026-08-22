@@ -9,8 +9,8 @@ from fastapi import APIRouter, Query
 from ..config import settings
 from ..engine import pipeline
 from ..engine.mask import mask_card
-from ..engine.models import fmt_display, fx_note
-from ..engine.render import disclaimer, normalise_lang, t
+from ..engine.models import fmt_display
+from ..engine.render import disclaimer, fx_block, normalise_lang, t
 from ..llm.tools import run_tool
 from ..serialize import to_dollars
 
@@ -23,9 +23,7 @@ def summary(lang: str = "vi") -> dict[str, Any]:
     analysis = pipeline.cached()
     data = analysis.summary(lang, settings.today())
     data["disclaimer"] = disclaimer(lang)
-    data["fx"] = {**fx_note(lang),
-                  "note": t(lang, "fx.note",
-                            rate=f"{settings.usd_vnd_rate:,.0f}")}
+    data["fx"] = fx_block(lang)
     return to_dollars(data, lang)
 
 

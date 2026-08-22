@@ -11,6 +11,7 @@ user-confirmed endpoint.
 
 from __future__ import annotations
 
+import logging
 from datetime import date, datetime
 from typing import Any, Callable
 
@@ -24,6 +25,8 @@ from ..engine.render import reasons_text, render_finding, render_findings, t
 from ..mailer import cancellation_guide, create_draft
 from ..monitor import reminder_list, run_scan
 from ..store import store
+
+log = logging.getLogger(__name__)
 
 MAX_ROWS = 40
 
@@ -296,7 +299,7 @@ def get_report(lang: str = "vi", period: str = "month",
         {**row, "label": t(lang, f"category.{row['category']}")}
         for row in report["categories"]
     ]
-    report["trend"] = reports.monthly_series(analysis.ds, 12)
+    report["trend"] = reports.monthly_series(analysis.ds, 12, analysis.fx)
     # Which period was actually asked for, against what the export holds. A
     # month outside the export produces a report of zeros, and a zero with no
     # note beside it reads as an answer.
@@ -726,8 +729,12 @@ def run_tool(name: str, args: dict[str, Any] | None = None,
         result = TOOLS[name](lang=lang, **clean)
     except TypeError as exc:
         return {"error": f"bad arguments for {name}: {exc}"}
-    except Exception as exc:                            # noqa: BLE001
-        return {"error": f"{type(exc).__name__}: {exc}"}
+    except Exception:                                   # noqa: BLE001
+        # The traceback belongs in the server log, not in the answer. A
+        # Python exception name pasted into the chat tells the user nothing
+        # and reads as the assistant itself being broken.
+        log.exception("tool %s failed", name)
+        return {"error": t(lang, "tool.failed", tool=name)}
     return result
 
 

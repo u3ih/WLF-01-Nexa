@@ -15,8 +15,7 @@ from typing import Any
 
 from ..config import settings
 from ..engine import pipeline
-from ..engine.models import fx_note
-from ..engine.render import disclaimer, normalise_lang, t
+from ..engine.render import disclaimer, fx_block, normalise_lang, t
 from ..store import store
 from . import guardrails, prompts, smalltalk, summarize
 from .detect import detect_lang, requested_lang
@@ -186,8 +185,7 @@ def answer(question: str, lang: str = "vi", today: date | None = None,
         "llm": status.as_dict(),
         "labels": labels,
         "disclaimer": disclaimer(lang),
-        "fx": {**fx_note(lang),
-               "note": t(lang, "fx.note", rate=f"{settings.usd_vnd_rate:,.0f}")},
+        "fx": fx_block(lang),
         "statement_date": pipeline.cached().ds.meta.get("statement_date"),
         "generated_for": today.isoformat(),
     }

@@ -15,7 +15,8 @@ from typing import Any
 from ..config import BACKEND_ROOT
 from .labels import deadline_info
 from .mask import scrub_text
-from .models import Finding, FindingKind, fmt_display, fmt_money, to_amount
+from .models import (Finding, FindingKind, fmt_display, fmt_money, fx_note,
+                     to_amount)
 
 I18N_DIR = BACKEND_ROOT / "app" / "i18n"
 LANGS = ("vi", "en")
@@ -49,44 +50,139 @@ def disclaimer(lang: str) -> str:
     return catalog(lang)["disclaimer"]
 
 
-def bucket_scope_note(bucket: str, excluded: dict[str, Any], lang: str) -> str:
-    """The caveat that belongs on the same line as the figure, not below it.
+def fx_block(lang: str) -> dict[str, Any]:
+    """The ₫ basis, as both machine fields and the sentence shown to a reader.
+
+    Built in one place because the note and the fields it describes have to
+    agree: an answer that prints a fetched rate under a sentence claiming a
+    configured one is worse than either alone.
+    """
+    note = fx_note(lang)
+    key = "fx.note" if note["published"] else "fx.note_configured"
+    # Grouped the way the language groups thousands. Every other ₫ figure on
+    # screen goes through `fmt_vnd`, which uses dots; a note that wrote the
+    # rate as "26,039" beside amounts written "519.000" would read as a
+    # different kind of number.
+    rate = f"{note['vnd_rate']:,.0f}"
+    return {**note,
+            "note": t(lang, key,
+                      rate=rate.replace(",", ".") if lang == "vi" else rate,
+                      source=note["source"], quoted_on=note["quoted_on"] or "")}
+
+
+def _rate_line(code: str, reporting: str, rates: list[dict[str, Any]],
+               lang: str) -> str:
+    """The publication a restated figure rests on, or "" when there is none.
+
+    A converted amount a reader cannot audit is an amount to distrust, so the
+    rate travels with it whether it was folded into a total or only named beside
+    one. A month whose rows used several days' rates states the span rather than
+    one of them, which would be true of only some of the rows.
+    """
+    if not rates:
+        return ""
+    first, last = rates[0], rates[-1]
+    return t(
+        lang, "fx.rate_basis", currency=code, reporting=reporting,
+        source=first["source"].upper(),
+        rate=first["rate"] if len(rates) == 1
+        else f"{first['rate']}–{last['rate']}",
+        quoted_on=first["quoted_on"] if len(rates) == 1
+        else f"{first['quoted_on']} → {last['quoted_on']}",
+    )
+
+
+def bucket_note(bucket: str, report: dict[str, Any], lang: str) -> str:
+    """What the figure on this line took in, and what it still leaves out.
 
     August reported "Phí: $0.00" and, six lines later, "phí €0.58". Both true —
-    the first is USD-only — but a reader meets the zero long before the
-    explanation and has already concluded there were no fees. So the currencies
-    this bucket does not cover are named where the zero is.
+    the first was USD-only — but a reader meets the zero long before the
+    explanation and has already concluded there were no fees. So both halves are
+    said where the number is: the currencies converted into it, and the ones no
+    published rate could reach.
     """
-    reporting = excluded.get("reporting_currency", "USD")
-    amounts = []
+    totals = report.get("totals") or {}
+    excluded = report.get("excluded") or {}
+    reporting = totals.get("currency") or excluded.get("reporting_currency",
+                                                       "USD")
+    parts: list[str] = []
+
+    # Folded in. Named anyway: the figure is a sum of two currencies now, and a
+    # reader checking it against the statement needs to know which rows of it
+    # will not be there at that amount.
+    included = [
+        t(lang, "fx.native_converted",
+          native=fmt_money(row["native"][bucket], row["currency"]),
+          converted=fmt_money(row["converted"][bucket], reporting))
+        for row in totals.get("converted_from", [])
+        if row["native"].get(bucket)
+    ]
+    if included:
+        parts.append(t(lang, "fx.bucket_included",
+                       amounts=", ".join(included)))
+
+    outside = []
     for row in excluded.get("other_currencies", []):
-        if not row.get(bucket):
+        if row.get("folded_in") or not row.get(bucket):
             continue
         native = fmt_money(row[bucket], row["currency"])
         converted = (row.get("converted") or {}).get(bucket)
-        if not converted:
-            amounts.append(native)
-            continue
         # The equivalent is offered, never substituted: the charge happened in
         # its own currency and that is the figure the statement will show.
-        amounts.append(t(lang, "excluded.bucket_converted", native=native,
-                         converted=fmt_money(converted, reporting)))
-    if not amounts:
-        return ""
-    return t(lang, "excluded.bucket_other", amounts=", ".join(amounts))
+        outside.append(
+            t(lang, "fx.native_converted", native=native,
+              converted=fmt_money(converted, reporting))
+            if converted else native)
+    if outside:
+        parts.append(t(lang, "excluded.bucket_other",
+                       amounts=", ".join(outside)))
+    return "".join(parts)
+
+
+def conversion_lines(totals: dict[str, Any], lang: str) -> list[str]:
+    """Name what the headline figures converted, and on whose publication.
+
+    The report used to print $986.81 and leave the reader to add ≈$66.40 of euro
+    charges to it themselves. Those charges are inside the total now, so what
+    this says is no longer "excluded" but "restated": how many rows, in which
+    currency, worth what on both sides, at which rate.
+    """
+    reporting = totals.get("currency", "USD")
+    lines: list[str] = []
+    for row in totals.get("converted_from", []):
+        code = row["currency"]
+        lines.append(t(
+            lang, "fx.folded_in", count=row["txn_count"], currency=code,
+            reporting=reporting,
+            spend=fmt_money(row["native"]["spend_cents"], code),
+            fees=fmt_money(row["native"]["fees_cents"], code),
+            converted_spend=fmt_money(row["converted"]["spend_cents"],
+                                      reporting),
+            converted_fees=fmt_money(row["converted"]["fees_cents"], reporting),
+        ))
+        basis = _rate_line(code, reporting, row["rates_used"], lang)
+        if basis:
+            lines.append(basis)
+    return lines
 
 
 def excluded_lines(excluded: dict[str, Any], lang: str) -> list[str]:
-    """Say what a single-currency, settled-only report set aside.
+    """Say what this report still set aside after converting what it could.
 
     Without this the report shows "Phí: $0.00" for a month that carried €0.58
     of fees and a $750 withdrawal still in flight, and a zero with no caveat
     beside it does not read as "in this currency, so far" — it reads as
     "nothing happened". Every caller that prints the totals prints these too.
+
+    A currency that was priced in full is no longer here: it is in the totals,
+    and `conversion_lines` says so. Only the rows nothing could price, and the
+    rows that have not settled, are still outside.
     """
     reporting = excluded.get("reporting_currency", "USD")
+    outside = [row for row in excluded.get("other_currencies", [])
+               if not row.get("folded_in")]
     lines: list[str] = []
-    for row in excluded.get("other_currencies", []):
+    for row in outside:
         code = row["currency"]
         converted = row.get("converted")
         common = {
@@ -96,10 +192,11 @@ def excluded_lines(excluded: dict[str, Any], lang: str) -> list[str]:
         }
         if converted:
             # Two wordings, because the reason the amounts sit outside the
-            # totals differs: with a rate they are excluded because the report
-            # is single-currency; without one, because nothing says what they
-            # are worth. Reusing one sentence would make the second claim while
-            # the equivalent is printed right beside it.
+            # totals differs: here a rate covers part of the period but not all
+            # of it, so the equivalent is worth printing while the total stays
+            # single-currency; without any rate, nothing says what the rows are
+            # worth at all. Reusing one sentence would make the second claim
+            # while the equivalent is printed right beside it.
             lines.append(t(
                 lang, "excluded.other_currency_converted", **common,
                 converted_spend=fmt_money(converted["spend_cents"], reporting),
@@ -107,20 +204,14 @@ def excluded_lines(excluded: dict[str, Any], lang: str) -> list[str]:
             ))
         else:
             lines.append(t(lang, "excluded.other_currency", **common))
-    for row in excluded.get("other_currencies", []):
+    for row in outside:
         converted = row.get("converted")
-        if not converted or not converted.get("rates_used"):
+        if not converted:
             continue
-        rates = converted["rates_used"]
-        first, last = rates[0], rates[-1]
-        lines.append(t(
-            lang, "excluded.rate_basis", currency=row["currency"],
-            reporting=reporting, source=first["source"].upper(),
-            rate=first["rate"] if len(rates) == 1
-            else f"{first['rate']}–{last['rate']}",
-            quoted_on=first["quoted_on"] if len(rates) == 1
-            else f"{first['quoted_on']} → {last['quoted_on']}",
-        ))
+        basis = _rate_line(row["currency"], reporting,
+                           converted.get("rates_used", []), lang)
+        if basis:
+            lines.append(basis)
         if not converted.get("complete"):
             lines.append(t(lang, "excluded.rate_partial",
                            count=converted.get("missing_rows", 0)))

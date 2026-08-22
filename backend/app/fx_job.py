@@ -36,6 +36,37 @@ def _span(ds: Any, today: date) -> tuple[date, date]:
     return start, end
 
 
+def refresh_display_rate() -> dict[str, Any]:
+    """Top up the rate the ₫ figures are converted at.
+
+    Its own step, and its own publication: the ECB carries no đồng, so without
+    this the ₫ beside every USD amount would stay at a number compiled into the
+    settings — right on the day it was written and drifting from then on.
+
+    Only the newest rate is kept. Unlike the report's row-by-row restatement,
+    the ₫ display is not dated by the transaction, so a history of đồng rates
+    would be a table nothing ever reads.
+    """
+    base, quote = fx.DISPLAY_PAIR
+    label = f"{base}/{quote}"
+    quoted = fx.fetch_display_quote(base, quote)
+    if quoted is None:
+        return {"pair": label, "stored": 0,
+                "note": "no published rate, ₫ stays on the configured one"}
+    try:
+        stored = store.upsert_fx_quotes([quoted])
+    except Exception as exc:                                # noqa: BLE001
+        log.warning("display rate could not be stored: %s", exc)
+        return {"pair": label, "stored": 0, "error": str(exc)}
+    # The rate is held per process; a fresh one stays invisible until the hold
+    # is replaced, and it is already in hand here — no need to read it back.
+    fx.hold_display_quote(quoted)
+    log.info("fx: display rate %s = %s (%s, %s)", label,
+             format(quoted.rate.normalize(), "f"), quoted.source,
+             quoted.quoted_on)
+    return {"pair": label, "stored": stored, "rate": quoted.as_dict()}
+
+
 def run_fx_job(full: bool = False) -> dict[str, Any]:
     """Fetch the rates this dataset needs and store them.
 
@@ -47,33 +78,43 @@ def run_fx_job(full: bool = False) -> dict[str, Any]:
     scheduler — or the analysis — down with it.
     """
     today = settings.today()
+    # First, and independent of the dataset: the ₫ display rate is needed even
+    # by a statement that is USD from end to end.
+    display = refresh_display_rate() if settings.show_vnd else None
+
     try:
         analysis = pipeline.cached()
     except Exception as exc:                                # noqa: BLE001
         log.warning("fx job skipped, dataset not loadable: %s", exc)
-        return {"ok": False, "error": str(exc)}
+        return {"ok": False, "error": str(exc), "display": display}
 
     pairs = fx.pairs_needed(analysis.ds.currencies, reporting="USD")
     if not pairs:
         # A single-currency dataset needs no rates at all, and saying so is
         # better than an empty success that looks like a failed fetch.
-        return {"ok": True, "pairs": [], "note": "dataset is single-currency"}
+        return {"ok": True, "pairs": [], "display": display,
+                "note": "dataset is single-currency"}
 
     span_start, span_end = _span(analysis.ds, today)
     if full:
         start = span_start
     else:
         try:
-            latest = store.fx_latest_quoted_on()
+            # Filtered to the reporting currency on purpose. The display rate
+            # is refreshed to today every run and lives in the same table, so
+            # an unfiltered "latest" would read as "nothing to backfill" and
+            # leave the statement's own months without rates for ever.
+            latest = store.fx_latest_quoted_on(quote="USD")
         except Exception as exc:                            # noqa: BLE001
             log.warning("fx job cannot read stored rates: %s", exc)
-            return {"ok": False, "error": str(exc)}
+            return {"ok": False, "error": str(exc), "display": display}
         start = span_start if latest is None else max(
             span_start, fx.gap_start(latest, span_end))
 
     summary = fx.backfill(pairs, start, span_end)
     summary["ok"] = not summary["errors"]
     summary["pairs_requested"] = [f"{b}/{q}" for b, q in pairs]
+    summary["display"] = display
     if summary["stored"]:
         # The analysis is cached per process and holds the rate table it was
         # built with, so newly stored rates are invisible until it reloads.

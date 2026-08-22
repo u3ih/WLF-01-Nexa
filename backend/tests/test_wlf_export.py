@@ -29,7 +29,7 @@ from app.engine import pipeline
 from app.engine.classify import fee_cents, wallet_only_events
 from app.engine.merchants import RULES
 from app.engine.models import CardTxnType
-from app.engine.render import bucket_scope_note, excluded_lines, t
+from app.engine.render import bucket_note, excluded_lines, t
 from app.engine.reports import BUCKET_KEYS
 from app.llm.guardrails import BlockedIntent, classify_intent
 from app.llm.tools import _ledger_rows
@@ -309,13 +309,12 @@ class TestNothingIsDroppedSilently:
         fees. The currencies a bucket does not cover belong beside the bucket.
         """
         report = pipeline.report_for(analysis, "month", "2026-08")
-        excluded = report["excluded"]
         assert report["totals"]["fees_cents"] == 0
-        assert "0.58" in bucket_scope_note("fees_cents", excluded, "vi")
-        assert "57.54" in bucket_scope_note("spend_cents", excluded, "vi")
+        assert "0.58" in bucket_note("fees_cents", report, "vi")
+        assert "57.54" in bucket_note("spend_cents", report, "vi")
         # A bucket with nothing hidden behind it stays unannotated, or the note
         # becomes noise and stops meaning anything where it does matter.
-        assert bucket_scope_note("payin_cents", excluded, "vi") == ""
+        assert bucket_note("payin_cents", report, "vi") == ""
 
     def test_every_bucket_is_tracked_per_currency_not_just_spend_and_fees(
             self, analysis):

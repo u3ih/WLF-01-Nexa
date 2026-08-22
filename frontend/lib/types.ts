@@ -78,7 +78,16 @@ export interface ChatReply {
     guidance_request: boolean;
   };
   llm: { mode: string; model: string; available: boolean; detail: string };
-  fx: { vnd_rate: number; vnd_enabled: boolean; note: string };
+  fx: {
+    vnd_rate: number;
+    vnd_enabled: boolean;
+    note: string;
+    // Where the rate came from: a publication with a date, or the
+    // configured fallback, which has none.
+    source?: string;
+    quoted_on?: string | null;
+    published?: boolean;
+  };
   checks?: { violations?: string[]; ungrounded_numbers?: string[] };
   data?: any;
 }
@@ -137,5 +146,14 @@ export interface Summary {
   statement_date: string;
   findings: Finding[];
   disclaimer: string;
-  fx: { vnd_rate: number; vnd_enabled: boolean; note: string };
+  fx: {
+    vnd_rate: number;
+    vnd_enabled: boolean;
+    note: string;
+    // Where the rate came from: a publication with a date, or the
+    // configured fallback, which has none.
+    source?: string;
+    quoted_on?: string | null;
+    published?: boolean;
+  };
 }

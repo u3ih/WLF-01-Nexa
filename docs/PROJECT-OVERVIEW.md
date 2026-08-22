@@ -368,8 +368,9 @@ Config qua `.env` (prefix `NEXA_`). Đáng chú ý:
 - **Dữ liệu**: `NEXA_DATA_DIR` (mặc định `./dataset` = export Wealify; trỏ
   `backend/data/sample` để dùng bộ có đáp án chuẩn) · `NEXA_MAILBOX`
   (`tester`/`senior`/`junior`, rỗng = chọn theo inbox đăng ký với cards.csv)
-- **Khác**: `NEXA_USD_VND_RATE` (26.000, hiện ở footer UI + `/api/health`) ·
-  `NEXA_MAIL_MODE` · `NEXA_SCAN_HOUR`
+- **Khác**: `NEXA_USD_VND_RATE` (26.000 — chỉ là mức dự phòng; tỷ giá USD→VND
+  được fetch hằng ngày, xem `/api/fx` mục `display`) · `NEXA_MAIL_MODE` ·
+  `NEXA_SCAN_HOUR`
 
 Kiểm tra model có sống không:
 
