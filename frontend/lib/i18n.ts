@@ -136,6 +136,13 @@ const UI = {
     thisWeek: "Tuần này",
     earlier: "Trước đó",
     historyModal: "Lịch sử trò chuyện",
+    // Notifications
+    notifLabel: "Thông báo",
+    notifEmpty: "Không có thông báo mới",
+    notifTabAll: "Tất cả",
+    notifTabConfirm: "Cần xác nhận",
+    notifTabNodata: "Chưa đủ dữ liệu",
+    notifTabRecurring: "Đã xác định",
   },
   en: {
     tagline: "Statement review assistant · read-only, you decide",
@@ -270,6 +277,13 @@ const UI = {
     thisWeek: "This week",
     earlier: "Earlier",
     historyModal: "Chat history",
+    // Notifications
+    notifLabel: "Notifications",
+    notifEmpty: "No new notifications",
+    notifTabAll: "All",
+    notifTabConfirm: "Needs review",
+    notifTabNodata: "No data",
+    notifTabRecurring: "Confirmed",
   },
 } as const;
 
