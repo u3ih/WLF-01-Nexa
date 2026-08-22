@@ -70,7 +70,7 @@ export function Sidebar({
   }, []);
 
   const isDark = theme === "dark" || (theme === "system" && systemDark);
-  const logoSrc = isDark ? "/images/dark-logo.png" : "/images/logo.png";
+  const logoSrc = isDark ? "/images/logo-dark-theme.png" : "/images/logo.png";
 
   return (
     <aside
