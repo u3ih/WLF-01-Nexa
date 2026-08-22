@@ -21,7 +21,7 @@ emails **you**, and only after you confirm a specific draft.
 
 ## Run it in 10 minutes
 
-Requirements: **Python 3.10+**, **Node 18+**, **Docker** (for Postgres).
+Requirements: **Python 3.10+**, **Node 22.12+**, **Docker** (for Postgres).
 An LLM is optional — see *Which model, and where it runs* below.
 
 ```bash
@@ -167,6 +167,36 @@ NEXA_SMTP_STARTTLS=true
 
 Use `POST /api/report/smtp-test` to send a small test email to `NEXA_MAIL_TO`
 before sending a report.
+
+## Deploy backend on Railway and frontend on Vercel
+
+Railway must build from the repository root because `backend/Dockerfile` copies
+the shared `dataset/`, `migrations/` and scraper directories. Leave Railway's
+**Root Directory empty**; `railway.json` selects `backend/Dockerfile` and adds
+the `/api/health` deployment healthcheck.
+
+Add a Railway Postgres service and set the backend variable to Railway's
+reference variable instead of localhost:
+
+```env
+NEXA_DATABASE_URL=${{Postgres.DATABASE_URL}}
+```
+
+Add the remaining `NEXA_*` variables from `.env.example`, then generate a public
+Railway domain for the backend. Do not copy the local `localhost:55432` database
+URL into Railway.
+
+On Vercel, import the same repository and set **Root Directory** to `frontend`.
+Add this server-side environment variable for Production and Preview, replacing
+the example with the Railway public domain (without a trailing slash):
+
+```env
+BACKEND_URL=https://your-backend.up.railway.app
+```
+
+Do not set `NEXT_PUBLIC_API_BASE`. The browser calls same-origin `/api/*`, and
+the Next.js rewrite proxies those requests to Railway. This also avoids exposing
+backend configuration in the client bundle and does not require production CORS.
 
 ## After the contest
 

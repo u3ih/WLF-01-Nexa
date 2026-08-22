@@ -104,8 +104,8 @@ async def lifespan(app: FastAPI):
                 log.info("daily monitoring scan scheduled at %02d:00",
                          settings.scan_hour)
             if settings.yopmail_enabled:
-                log.info("YOPmail ingestion scheduled at %02d:%02d",
-                         settings.yopmail_hour, settings.yopmail_minute)
+                log.info("YOPmail ingestion scheduled every %d minute(s)",
+                         settings.yopmail_interval_minutes)
             if settings.fx_enabled:
                 log.info("FX rate fetch scheduled at %02d:%02d",
                          settings.fx_hour, settings.fx_minute)

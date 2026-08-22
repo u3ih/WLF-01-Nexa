@@ -1,5 +1,10 @@
 # Nexa backend — read-only statement analysis API.
-FROM python:3.12-slim
+# Keep Node on the version required by the Puppeteer lockfile. Debian's
+# nodejs package currently lags behind and only emits an engine warning during
+# npm ci, then can fail when the scheduled scraper actually runs.
+FROM node:22-bookworm-slim AS node-runtime
+
+FROM python:3.12-slim-bookworm
 
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
@@ -7,8 +12,14 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 
 WORKDIR /app/backend
 
+# Reuse the official Node runtime while keeping Python as the final base image.
+COPY --from=node-runtime /usr/local/bin/node /usr/local/bin/node
+COPY --from=node-runtime /usr/local/lib/node_modules /usr/local/lib/node_modules
+RUN ln -s /usr/local/lib/node_modules/npm/bin/npm-cli.js /usr/local/bin/npm \
+    && ln -s /usr/local/lib/node_modules/npm/bin/npx-cli.js /usr/local/bin/npx
+
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends curl nodejs npm chromium \
+    && apt-get install -y --no-install-recommends curl chromium \
     && rm -rf /var/lib/apt/lists/*
 
 COPY backend/requirements.txt ./
@@ -38,6 +49,8 @@ RUN python -m data.generate
 
 EXPOSE 8000
 HEALTHCHECK --interval=10s --timeout=5s --start-period=20s --retries=6 \
-    CMD curl -fsS http://127.0.0.1:8000/api/health || exit 1
+    CMD curl -fsS "http://127.0.0.1:${PORT:-8000}/api/health" || exit 1
 
-CMD ["python", "-m", "uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+# Railway injects PORT. The fallback keeps Docker Compose and local runs on
+# port 8000 without requiring another environment variable.
+CMD ["sh", "-c", "exec python -m uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8000}"]
