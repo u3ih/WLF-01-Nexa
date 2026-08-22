@@ -1,6 +1,6 @@
 "use client";
 
-import { PanelLeft, Table2, X } from "lucide-react";
+import { Bell, PanelLeft, Table2, X } from "lucide-react";
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 
 import { ChatPane, type ChatHandle } from "@/components/ChatPane";
@@ -12,6 +12,7 @@ import { api } from "@/lib/api";
 import { ui } from "@/lib/i18n";
 import { viewForTool, type RefFocus } from "@/lib/refs";
 import type { ChatReply, ChatSession, Lang, Summary, Turn } from "@/lib/types";
+import { LabelBadge } from "@/components/Badges";
 
 // Kept in step with the rail's breakpoint in globals.css: below this the rail
 // is an overlay, so opening one covers the conversation.
@@ -44,6 +45,126 @@ export default function Page() {
   const [focus, setFocus] = useState<RefFocus | null>(null);
   const chat = useRef<ChatHandle>(null);
   const [historyModalOpen, setHistoryModalOpen] = useState(false);
+  const [notifOpen, setNotifOpen] = useState(false);
+  const [notifTab, setNotifTab] = useState<string>("all");
+
+  const NOTIF_TABS = [
+    { id: "all", key: "notifTabAll" },
+    { id: "needs_your_confirmation", key: "notifTabConfirm" },
+    { id: "insufficient_data", key: "notifTabNodata" },
+    { id: "recurring_confirmed", key: "notifTabRecurring" },
+  ] as const;
+
+  // ── Notifications từ findings data (mock nội dung) ──────────────────
+  // Dùng findings từ summary nếu có, fallback về mock data
+  // 3 trạng thái: needs_your_confirmation / insufficient_data / recurring_confirmed
+  const findings = summary?.findings ?? [];
+  const notifList = findings.length > 0
+    ? findings.map((f) => ({
+        id: f.id,
+        title: f.title,
+        detail: f.detail,
+        badgeKey: f.label,           // "needs_your_confirmation" | "insufficient_data" | "recurring_confirmed"
+        badgeText: f.label_text,
+        isAlert: f.label !== "recurring_confirmed",
+        time: f.occurred_on ?? "",
+      }))
+    : [
+        {
+          id: "mock-1",
+          title: lang === "vi" ? "Phát hiện giao dịch bất thường" : "Abnormal transaction detected",
+          detail: lang === "vi"
+            ? "AliExpress $237.21 — Tần suất cao (3 giao dịch trong 30 phút)"
+            : "AliExpress $237.21 — Unusual frequency (3 transactions in 30 min)",
+          badgeKey: "needs_your_confirmation" as const,
+          badgeText: lang === "vi" ? "Cần bạn tự xác nhận" : "Needs your confirmation",
+          isAlert: true,
+          time: new Date(Date.now() - 2 * 3600_000).toISOString(),
+        },
+        {
+          id: "mock-2",
+          title: lang === "vi" ? "Nghi tính trùng" : "Possible duplicate charge",
+          detail: lang === "vi"
+            ? "Spotify $9.99 — Hai giao dịch giống nhau trong cùng ngày"
+            : "Spotify $9.99 — Two identical transactions on the same day",
+          badgeKey: "needs_your_confirmation" as const,
+          badgeText: lang === "vi" ? "Cần bạn tự xác nhận" : "Needs your confirmation",
+          isAlert: true,
+          time: new Date(Date.now() - 24 * 3600_000).toISOString(),
+        },
+        {
+          id: "mock-3",
+          title: lang === "vi" ? "Email nghi giả mạo" : "Suspicious email detected",
+          detail: lang === "vi"
+            ? "netfl1x-billing.com — Email giả mạo thương hiệu Netflix"
+            : "netfl1x-billing.com — Impersonation email claiming to be Netflix",
+          badgeKey: "insufficient_data" as const,
+          badgeText: lang === "vi" ? "Chưa đủ dữ liệu" : "Insufficient data",
+          isAlert: true,
+          time: new Date(Date.now() - 24 * 3600_000).toISOString(),
+        },
+        {
+          id: "mock-4",
+          title: lang === "vi" ? "Tiền rời tài khoản chưa lên thẻ" : "Transfer not on card",
+          detail: lang === "vi"
+            ? "$2,014.08 — Giao dịch rút tiền không khớp sao kê thẻ"
+            : "$2,014.08 — Withdrawal doesn't match card statement",
+          badgeKey: "insufficient_data" as const,
+          badgeText: lang === "vi" ? "Chưa đủ dữ liệu" : "Insufficient data",
+          isAlert: true,
+          time: new Date(Date.now() - 2 * 24 * 3600_000).toISOString(),
+        },
+        {
+          id: "mock-5",
+          title: lang === "vi" ? "Tập trung chi tiêu bất thường" : "Abnormal spending concentration",
+          detail: lang === "vi"
+            ? "Subscription — Chiếm 72% tổng chi tiêu"
+            : "Subscription — 72% of total spending",
+          badgeKey: "recurring_confirmed" as const,
+          badgeText: lang === "vi" ? "Định kỳ đã xác định" : "Recurring confirmed",
+          isAlert: false,
+          time: new Date(Date.now() - 3 * 24 * 3600_000).toISOString(),
+        },
+      ];
+
+  const hasRealFindings = (summary?.findings?.length ?? 0) > 0;
+  const alertCount = notifList.filter((n) => n.isAlert).length;
+  const filteredNotifs = notifTab === "all"
+    ? notifList
+    : notifList.filter((n) => n.badgeKey === notifTab);
+
+  const OVERDUE_DAYS = 60;
+
+  function formatNotifTime(iso: string): { text: string; expired: boolean } {
+    if (!iso) return { text: "", expired: false };
+    const diffMs = Date.now() - new Date(iso).getTime();
+    const days = Math.floor(diffMs / (24 * 3600_000));
+    if (days > OVERDUE_DAYS) {
+      return {
+        text: lang === "vi" ? "Đã quá hạn" : "Expired",
+        expired: true,
+      };
+    }
+    const mins = Math.floor(diffMs / 60_000);
+    if (mins < 1) return { text: lang === "vi" ? "Vừa xong" : "Just now", expired: false };
+    if (mins < 60) return { text: lang === "vi" ? `${mins} phút trước` : `${mins} min ago`, expired: false };
+    const hrs = Math.floor(mins / 60);
+    if (hrs < 24) return { text: lang === "vi" ? `${hrs} giờ trước` : `${hrs} hours ago`, expired: false };
+    if (days === 1) return { text: lang === "vi" ? "Hôm qua" : "Yesterday", expired: false };
+    return { text: lang === "vi" ? `${days} ngày trước` : `${days} days ago`, expired: false };
+  }
+
+  // Click outside to close dropdown
+  const notifRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    function handleClick(e: MouseEvent) {
+      if (notifRef.current && !notifRef.current.contains(e.target as Node)) {
+        setNotifOpen(false);
+      }
+    }
+    if (notifOpen) document.addEventListener("mousedown", handleClick);
+    return () => document.removeEventListener("mousedown", handleClick);
+  }, [notifOpen]);
 
   // -- Chat history state -------------------------------------------------
   const [history, setHistory] = useState<ChatSession[]>([]);
@@ -272,15 +393,93 @@ export default function Page() {
             <div className="convo-title">
               <span>{ui(lang, "tagline")}</span>
             </div>
-            <button
-              className="icon-btn"
-              onClick={() => setDrawerOpen(!drawerOpen)}
-              aria-pressed={drawerOpen}
-              title={ui(lang, drawerOpen ? "closeEvidence" : "openEvidence")}
-              aria-label={ui(lang, drawerOpen ? "closeEvidence" : "openEvidence")}
-            >
-              <Table2 size={18} />
-            </button>
+            <div className="convo-actions" ref={notifRef}>
+              <button
+                className="icon-btn notif-bell-btn"
+                onClick={() => setNotifOpen(!notifOpen)}
+                aria-pressed={notifOpen}
+                title={ui(lang, "notifLabel")}
+                aria-label={ui(lang, "notifLabel")}
+              >
+                <Bell size={18} />
+                {hasRealFindings && alertCount > 0 && (
+                  <span className="notif-bell-dot">{alertCount}</span>
+                )}
+              </button>
+
+              {notifOpen && (
+                <div className="notif-dropdown" onMouseDown={(e) => e.stopPropagation()}>
+                  <div className="notif-dropdown-head">
+                    <span>{ui(lang, "notifLabel")}</span>
+                    <span className="chip">{notifList.length}</span>
+                  </div>
+
+                  <div className="notif-dd-tabs" role="tablist">
+                    {NOTIF_TABS.map((tab) => {
+                      const count = tab.id === "all"
+                        ? notifList.length
+                        : notifList.filter((n) => n.badgeKey === tab.id).length;
+                      return (
+                        <button
+                          key={tab.id}
+                          role="tab"
+                          aria-selected={notifTab === tab.id}
+                          className="notif-dd-tab"
+                          onClick={(e) => { e.stopPropagation(); setNotifTab(tab.id); }}
+                        >
+                          {ui(lang, tab.key as never)}
+                          {count > 0 && (
+                            <span className="notif-dd-tab-count">{count}</span>
+                          )}
+                        </button>
+                      );
+                    })}
+                  </div>
+
+                  <div className="notif-dd-list">
+                    {filteredNotifs.length === 0 ? (
+                      <div className="notif-dd-empty">
+                        {ui(lang, "notifEmpty")}
+                      </div>
+                    ) : (
+                      filteredNotifs.map((n) => {
+                        const ft = formatNotifTime(n.time);
+                        return (
+                          <div
+                            key={n.id}
+                            className={`notif-dd-item ${ft.expired ? "notif-dd-expired" : ""}`}
+                          >
+                            <div className="notif-dd-body">
+                              <div className="notif-dd-head">
+                                <span className="notif-dd-title">{n.title}</span>
+                                <LabelBadge
+                                  label={n.badgeKey}
+                                  text={n.badgeText}
+                                />
+                              </div>
+                              <p className="notif-dd-desc">{n.detail}</p>
+                              <span className={`notif-dd-time ${ft.expired ? "notif-dd-time-expired" : ""}`}>
+                                {ft.text}
+                              </span>
+                            </div>
+                          </div>
+                        );
+                      })
+                    )}
+                  </div>
+                </div>
+              )}
+
+              <button
+                className="icon-btn"
+                onClick={() => setDrawerOpen(!drawerOpen)}
+                aria-pressed={drawerOpen}
+                title={ui(lang, drawerOpen ? "closeEvidence" : "openEvidence")}
+                aria-label={ui(lang, drawerOpen ? "closeEvidence" : "openEvidence")}
+              >
+                <Table2 size={18} />
+              </button>
+            </div>
           </header>
 
           {error ? <p className="err" style={{ padding: "8px 16px" }}>{error}</p> : null}
