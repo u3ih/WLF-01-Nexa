@@ -16,7 +16,7 @@ from __future__ import annotations
 from typing import Any
 
 from ..engine.models import fmt_display
-from ..engine.render import bucket_scope_note, excluded_lines, t
+from ..engine.render import bucket_note, conversion_lines, excluded_lines, t
 
 BULLET = "• "
 
@@ -191,9 +191,13 @@ def summarize(tool: str, result: dict[str, Any], lang: str) -> str:
             # only explained six bullets later has already been read as "none".
             lines.append(f"{BULLET}{t(lang, 'cashflow.' + key)}: "
                          f"{fmt_display(totals[bucket], lang)}"
-                         f"{bucket_scope_note(bucket, excluded, lang)}")
-        # Printed with the totals, never apart from them: a zero above without
-        # this line beside it is the answer the user reads as "none at all".
+                         f"{bucket_note(bucket, result, lang)}")
+        # What the totals converted to become whole, and what they still leave
+        # out. Printed with the figures, never apart from them: a restated total
+        # nobody can audit and a zero with no caveat beside it are both read as
+        # answers when neither is the whole one.
+        for line in conversion_lines(totals, lang):
+            lines.append(f"{BULLET}{line}")
         for caveat in excluded_lines(excluded, lang):
             lines.append(f"{BULLET}{caveat}")
         if comparison.get("percent") is not None:

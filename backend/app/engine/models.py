@@ -72,6 +72,29 @@ def fmt_vnd(cents: int, rate: float) -> str:
     return f"{sign}{dong:,.0f}".replace(",", ".") + " ₫"
 
 
+def vnd_basis() -> tuple[float, str, str | None]:
+    """The rate the ₫ display converts at, and where it came from.
+
+    A published rate when one has been fetched, the configured number when not.
+    The two are never presented alike: a reader who is shown ₫ is entitled to
+    know whether the figure tracks the market or a constant somebody typed into
+    an env file months ago, so the source travels with the rate rather than
+    being assumed by whoever renders it.
+
+    Reading it here rather than threading it through every caller matches how
+    `settings` is already reached, and costs one query per process — `fx`
+    holds the answer and the fetch job drops that hold when it stores a newer
+    one.
+    """
+    from ..config import settings
+    from ..fx import display_quote
+
+    quote = display_quote()
+    if quote is None:
+        return settings.usd_vnd_rate, "configured (NEXA_USD_VND_RATE)", None
+    return float(quote.rate), quote.source, quote.quoted_on.isoformat()
+
+
 def fmt_display(cents: int, lang: str = "vi", currency: str = "USD") -> str:
     """User-facing money.
 
@@ -83,20 +106,29 @@ def fmt_display(cents: int, lang: str = "vi", currency: str = "USD") -> str:
         return usd
     from ..config import settings
 
-    if not settings.show_vnd or not settings.usd_vnd_rate:
+    if not settings.show_vnd:
         return usd
-    return f"≈{fmt_vnd(cents, settings.usd_vnd_rate)} ({usd})"
+    rate, _, _ = vnd_basis()
+    if not rate:
+        return usd
+    return f"≈{fmt_vnd(cents, rate)} ({usd})"
 
 
 def fx_note(lang: str = "vi") -> dict[str, Any]:
     """The conversion basis, surfaced everywhere ₫ appears."""
     from ..config import settings
 
+    rate, source, quoted_on = vnd_basis()
     return {
         "base_currency": "USD",
-        "vnd_rate": settings.usd_vnd_rate,
+        "vnd_rate": rate,
         "vnd_enabled": bool(settings.show_vnd and lang == "vi"),
-        "source": "configured (NEXA_USD_VND_RATE)",
+        "source": source,
+        # None when the rate is the configured constant — it has no publication
+        # date, and inventing one would be the exact lie the source label is
+        # there to prevent.
+        "quoted_on": quoted_on,
+        "published": quoted_on is not None,
     }
 
 

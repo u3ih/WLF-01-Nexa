@@ -34,9 +34,11 @@ Five things about this export need saying before the code makes sense.
 
 5. **The wallet is credited only in USD but debited in EUR too.** The 22
    FX-fee lines are EUR and nothing ever funds the wallet in EUR, so the ledger
-   implies a EUR balance that cannot exist. No exchange rate is supplied to
-   restate them, so they are kept as written and the gap is reported by
-   `unfunded_currency_notes` rather than converted at a guessed rate.
+   implies a EUR balance that cannot exist. The rows carry no exchange rate, so
+   the loader keeps them as written and reports the gap through
+   `unfunded_currency_notes` rather than restating them at a guessed rate. The
+   report converts them where a stored ECB publication covers the date, which
+   is a rate that can be named — this file never invents one.
 
 6. **The mailbox is a relay.** Every message was delivered by the sandbox
    address `no-reply@wealify.com`; the sender the user is asked to trust —
@@ -611,8 +613,11 @@ def unfunded_currency_notes(events: list[WalletEvent],
     figure that only looks more complete than the data behind it.
 
     So the rows are left exactly as the export wrote them and the gap is
-    stated. `reports._excluded` is what stops that becoming a silent "$0.00 in
-    fees" for a user who did pay some.
+    stated. Restating them is the report's job, not the loader's, and only ever
+    against a published rate: `reports._foreign` converts the dates the stored
+    ECB series covers and folds those into the totals, and `reports._excluded`
+    names whatever it could not price. Either way the user is not shown a
+    silent "$0.00 in fees" for a month they did pay some.
     """
     funded = {e.currency for e in events if e.kind == "credit"}
     funded.add(wallet_currency)
@@ -624,9 +629,10 @@ def unfunded_currency_notes(events: list[WalletEvent],
     return [
         f"{TXN_CSV}: {count} wallet debit(s) are denominated in {code}, which "
         f"this ledger is never credited in — the {code} funding rows are "
-        f"missing from the export, and no exchange rate is supplied to restate "
-        f"them in {wallet_currency}, so they are reported in {code} and left "
-        f"out of {wallet_currency} totals rather than converted at a guess"
+        f"missing from the export, and the rows carry no exchange rate of "
+        f"their own, so they are recorded in {code} rather than restated at a "
+        f"guess. A report states them in {wallet_currency} only where a "
+        f"published rate covers the date, and names the rate it used"
         for code, count in sorted(unfunded.items())
     ]
 

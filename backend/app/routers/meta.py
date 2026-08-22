@@ -16,6 +16,22 @@ from ..store import store
 router = APIRouter(prefix="/api", tags=["meta"])
 
 
+def display_basis() -> dict[str, Any]:
+    """Where the ₫ figures beside USD amounts get their rate."""
+    from ..engine.models import vnd_basis
+
+    rate, source, quoted_on = vnd_basis()
+    return {
+        "pair": "/".join(fx.DISPLAY_PAIR),
+        "enabled": settings.show_vnd,
+        "rate": rate,
+        "source": source,
+        "quoted_on": quoted_on,
+        "published": quoted_on is not None,
+        "configured_fallback": settings.usd_vnd_rate,
+    }
+
+
 @router.get("/fx")
 def fx_status() -> dict[str, Any]:
     """What rates are held, and which pairs this dataset needs.
@@ -53,6 +69,11 @@ def fx_status() -> dict[str, Any]:
                              if analysis.fx.latest_quoted_on else None),
         "coverage": coverage,
         "scheduled_at": f"{settings.fx_hour:02d}:{settings.fx_minute:02d}",
+        # The ₫ conversion shown beside USD amounts. Reported separately from
+        # the pairs above because it comes from a different publication and,
+        # unlike them, has a fallback: when it says "configured", every ₫ on
+        # screen is a constant, and that is worth being able to see.
+        "display": display_basis(),
     }
 
 
